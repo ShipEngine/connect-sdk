@@ -1,4 +1,4 @@
-import { myLibrary } from "./my-package-name";
+import { myLibrary } from "./ipaas";
 
 export { Options } from "./settings";
 export { myLibrary };

@@ -1,15 +1,15 @@
-remote_theme: MyGitHubOrg/gh-pages-theme
+remote_theme: ShipEngine/gh-pages-theme
 
-title: My Project Name
+title: ShipEngine IPaaS
 logo: https://jstools.dev/img/logos/logo.png
 
 author:
-  twitter: MyTwitterAccount
+  twitter: ShipEngineAPI
 
 google_analytics: UA-68102273-3
 
 twitter:
-  username: MyTwitterAccount
+  username: ShipEngineAPI
   card: summary
 
 defaults:

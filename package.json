@@ -1,25 +1,21 @@
 {
-  "name": "@my-npm-scope/my-package-name",
+  "name": "@shipengine/ipaas",
   "version": "0.0.1",
-  "description": "The description of my library",
+  "description": "Core functionality for creating, testing, and building an IPaaS integration.",
   "keywords": [],
   "author": {
     "name": "James Messinger",
     "url": "https://jamesmessinger.com"
   },
   "license": "MIT",
-  "homepage": "https://jstools.dev/my-repo-name",
+  "homepage": "https://jstools.dev/shipengine-ipaas",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MyGitHubOrg/my-repo-name.git"
+    "url": "https://github.com/ShipEngine/shipengine-ipaas.git"
   },
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "bin": {
-    "my-cli": "bin/my-cli.js"
-  },
   "files": [
-    "bin",
     "lib"
   ],
   "scripts": {
@@ -39,12 +35,10 @@
     "node": ">=10"
   },
   "devDependencies": {
-    "@jsdevtools/chai-exec": "^2.0.1",
     "@jsdevtools/eslint-config-modular": "^8.0.0",
     "@jsdevtools/tslint-modular": "^2.0.2",
     "@jsdevtools/version-bump-prompt": "^6.0.2",
     "@types/chai": "^4.1.7",
-    "@types/command-line-args": "^5.0.0",
     "@types/mocha": "^7.0.2",
     "@types/node": "^13.9.0",
     "chai": "^4.2.0",
@@ -58,7 +52,5 @@
     "typescript": "^3.5.1",
     "typescript-tslint-plugin": "^0.5.0"
   },
-  "dependencies": {
-    "command-line-args": "^5.1.1"
-  }
+  "dependencies": {}
 }

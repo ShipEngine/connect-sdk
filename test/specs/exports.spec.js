@@ -4,7 +4,7 @@ const commonJSExport = require("../../");
 const { default: defaultExport, myLibrary: namedExport } = require("../../");
 const { expect } = require("chai");
 
-describe("my-package-name package exports", () => {
+describe("ipaas package exports", () => {
 
   it("should export the myLibrary() function as the default CommonJS export", () => {
     expect(commonJSExport).to.be.a("function");

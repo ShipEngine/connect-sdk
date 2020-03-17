@@ -1,7 +1,7 @@
 import { Options, Settings } from "./settings";
 
 /**
- * The description of my library
+ * Core functionality for creating, testing, and building an IPaaS integration.
  *
  * @returns - Options
  */

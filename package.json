@@ -23,7 +23,7 @@
     "lint": "npm run lint:typescript && npm run lint:javascript",
     "lint:typescript": "tslint -p tsconfig.json",
     "lint:javascript": "eslint test",
-    "build": "tsc",
+    "build": "tsc && shx cp -r src/template lib/",
     "watch": "tsc --watch",
     "test": "mocha && npm run lint",
     "coverage": "nyc node_modules/mocha/bin/mocha",
@@ -52,5 +52,10 @@
     "typescript": "^3.5.1",
     "typescript-tslint-plugin": "^0.5.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@types/fs-extra": "^8.1.0",
+    "@types/inquirer": "^6.5.0",
+    "fs-extra": "^8.1.0",
+    "inquirer": "^7.1.0"
+  }
 }

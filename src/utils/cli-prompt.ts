@@ -10,6 +10,7 @@ export async function cliPrompt(questions: QuestionCollection): Promise<Answers>
     answers = await inquirer.prompt(questions);
   }
   catch (e) {
+    // tslint:disable-next-line: no-unsafe-any
     throw new Error(e);
   }
 

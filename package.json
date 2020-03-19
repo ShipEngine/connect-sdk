@@ -38,7 +38,6 @@
     "@jsdevtools/eslint-config-modular": "^8.0.0",
     "@jsdevtools/tslint-modular": "^2.0.2",
     "@jsdevtools/version-bump-prompt": "^6.0.2",
-    "@shipengine/ipaas-types": "0.0.2",
     "@types/chai": "^4.1.7",
     "@types/mocha": "^7.0.2",
     "@types/node": "^13.9.0",

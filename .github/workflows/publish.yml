@@ -1,4 +1,4 @@
-name: Custom Store Build and Test and Publish
+name: ShipEngine IPaaS Build and Test and Publish
 
 on: 
   push:

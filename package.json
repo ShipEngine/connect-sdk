@@ -1,14 +1,12 @@
 {
   "name": "@shipengine/ipaas",
-  "version": "0.0.2",
-  "description": "Core functionality for creating, testing, and building an IPaaS integration.",
+  "version": "0.0.3",
+  "description": "Core functionality for creating, testing, and publishing an IPaaS integration.",
   "keywords": [],
   "author": {
-    "name": "James Messinger",
-    "url": "https://jamesmessinger.com"
+    "name": "Randall Krauskopf"
   },
-  "license": "MIT",
-  "homepage": "https://jstools.dev/shipengine-ipaas",
+  "license": "UNLICENSED",
   "repository": {
     "type": "git",
     "url": "https://github.com/ShipEngine/shipengine-ipaas.git"

@@ -32,7 +32,9 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v2
-
+      - name: NPM Login
+        run: echo "//registry.npmjs.org/:_authToken=${{secrets.NPM_AUTH_TOKEN}}" > ~/.npmrc
+        
       - name: Install Node ${{ matrix.node }}
         uses: actions/setup-node@v1
         with:

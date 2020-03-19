@@ -30,7 +30,6 @@ export async function createTemplate(cwd?: string): Promise<void> {
   );
   // TODO: What type of integration would you like to build?
 
-  // @ts-ignore
   const projectName = answers["project-name"] as string;
 
   const templatePath = path.join(__dirname, "template");

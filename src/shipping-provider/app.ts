@@ -82,14 +82,14 @@ export class ShippingProviderApp {
   public constructor(manifest: AppManifest, config: ShippingProviderConfig) {
     assert.type.object(config, "ShipEngine IPaaS app");
     this.name = assert.string.nonWhitespace(config.name, "shipping provider name");
-    this.description = assert.string(config.name, "shipping provider description", "");
+    this.description = assert.string(config.description, "shipping provider description", "");
     this.websiteURL = new URL(assert.string.nonWhitespace(config.websiteURL, "websiteURL"));
-    this.logo =  new Logo(config.logo as LogoConfig);
+    this.logo = new Logo(config.logo as LogoConfig);
     this.deliveryServices = assert.array.nonEmpty(config.deliveryServices, "deliveryServices")
       .map((svc: DeliveryServiceConfig) => new DeliveryService(svc));
     this.pickupServices = assert.array(config.pickupServices, "pickupServices", [])
       .map((svc: PickupServiceConfig) => new PickupService(svc));
-    this.loginForm =  new Form(config.loginForm as FormConfig);
+    this.loginForm = new Form(config.loginForm as FormConfig);
     this.settingsForm = config.loginForm ? new Form(config.loginForm as FormConfig) : undefined;
 
     // Store any user-defined methods as private fields.

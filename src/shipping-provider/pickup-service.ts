@@ -36,9 +36,9 @@ export class PickupService {
    */
   public constructor(config: PickupServiceConfig) {
     assert.type.object(config, "pickup service");
-    this.id = assert.string.uuid(config.name, "pickup service ID");
+    this.id = assert.string.uuid(config.id, "pickup service ID");
     this.name = assert.string.nonWhitespace(config.name, "pickup service name");
-    this.description = assert.string(config.name, "pickup service description", "");
+    this.description = assert.string(config.description, "pickup service description", "");
     this.carrier = new Carrier(config.carrier as CarrierConfig);
 
     // Prevent modifications after validation

@@ -41,9 +41,9 @@ export class Carrier {
    */
   public constructor(config: CarrierConfig) {
     assert.type.object(config, "carrier");
-    this.id = assert.string.uuid(config.name, "carrier ID");
+    this.id = assert.string.uuid(config.id, "carrier ID");
     this.name = assert.string.nonWhitespace(config.name, "carrier name");
-    this.description = assert.string(config.name, "carrier description", "");
+    this.description = assert.string(config.description, "carrier description", "");
     this.websiteURL = new URL(assert.string.nonWhitespace(config.websiteURL, "websiteURL"));
     this.logo =  new Logo(config.logo);
 

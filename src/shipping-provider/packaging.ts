@@ -51,9 +51,9 @@ export class Packaging {
    */
   public constructor(config: PackagingConfig) {
     assert.type.object(config, "packaging");
-    this.id = assert.string.uuid(config.name, "packaging ID");
+    this.id = assert.string.uuid(config.id, "packaging ID");
     this.name = assert.string.nonWhitespace(config.name, "packaging name");
-    this.description = assert.string(config.name, "packaging description", "");
+    this.description = assert.string(config.description, "packaging description", "");
     this.area = config.area && assert.string.enum(config.area, ServiceArea, "packaging area");
     this.isConsolidator = assert.type.boolean(config.isConsolidator, "isConsolidator flag", false);
     this.requiresWeight = assert.type.boolean(config.requiresWeight, "requiresWeight flag", false);

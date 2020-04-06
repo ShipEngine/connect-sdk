@@ -4,8 +4,6 @@
     "module": "commonjs",
     "moduleResolution": "node",
 
-    "esModuleInterop": true,
-
     "outDir": "lib",
     "sourceMap": true,
     "declaration": true,
@@ -33,7 +31,6 @@
     "src/**/*.ts"
   ],
   "exclude": [
-    "node_modules",
-    "src/template/**/*.ts"
+    "node_modules"
   ]
 }

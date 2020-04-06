@@ -1,44 +1,47 @@
-ShipEngine IPaaS
+ShipEngine IPaaS SDK
 ==============================================
-Core Library for all IPaaS integration related functionality, used by the [ShipEngine CLI](https://github.com/ShipEngine/shipengine-cli) to provide a development environment for customers integrating with the ShipEngine ecosytem.
+### The official SDK for building a ShipEngine IPaaS app
 
-> **NOTE:** This is an **internal library** that is only intended to be used by CodeEngine. Using it outside of CodeEngine is discouraged.
+[![Cross-Platform Compatibility](https://shipengine.github.io/img/badges/os-badges.svg)](https://github.com/ShipEngine/shipengine-ipaas/blob/master/.github/workflows/CI-CD.yaml)
+[![Build Status](https://github.com/ShipEngine/shipengine-ipaas/workflows/CI-CD/badge.svg)](https://github.com/ShipEngine/shipengine-ipaas/blob/master/.github/workflows/CI-CD.yaml)
+
+[![Coverage Status](https://coveralls.io/repos/github/ShipEngine/shipengine-ipaas/badge.svg?branch=master)](https://coveralls.io/github/ShipEngine/shipengine-ipaas)
+[![Dependencies](https://david-dm.org/ShipEngine/shipengine-ipaas.svg)](https://david-dm.org/ShipEngine/shipengine-ipaas)
+
+[![npm](https://img.shields.io/npm/v/@shipengine/ipaas.svg)](https://www.npmjs.com/package/@shipengine/ipaas)
+[![License](https://img.shields.io/npm/l/@shipengine/ipaas.svg)](LICENSE)
+
+
+
+Features
+--------------------------
+- Feature 1
+- Feature 2
+- Feature 3
+
+
 
 Example
 --------------------------
 
-```typescript
-import { createTemplate }  from "@shipengine/ipaas";
+```javascript
+import XXXXXXX from "@shipengine/ipaas";
 
-await createTemplate("path-to-template-dir");
+// TODO: Add a usage example here
 ```
 
 
 
 Installation
 --------------------------
-You can install ShipEngine IPaaS via [npm](https://docs.npmjs.com/about-npm/).
+You can install ShipEngine IPaaS SDK via [npm](https://docs.npmjs.com/about-npm/).
 
 ```bash
 npm install @shipengine/ipaas
 ```
 
 
-Contributing
+
+Usage
 --------------------------
-Contributions, enhancements, and bug-fixes are welcome!  [File an issue](https://github.com/ShipEngine/shipengine-ipaas/issues) on GitHub and [submit a pull request](https://github.com/ShipEngine/shipengine-ipaas/pulls).
-
-#### Building
-To build the project locally on your computer:
-
-1. __Clone this repo__<br>
-`git clone https://github.com/ShipEngine/shipengine-ipaas.git`
-
-2. __Install dependencies__<br>
-`npm install`
-
-3. __Build the code__<br>
-`npm run build`
-
-4. __Run the tests__<br>
-`npm test`
+TODO: Document the library's API and usage

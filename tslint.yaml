@@ -6,3 +6,11 @@ extends:
   - "@jsdevtools/tslint-modular/best-practices"
   - "@jsdevtools/tslint-modular/style"
   - "@jsdevtools/tslint-modular/node"
+
+rules:
+  no-implicit-dependencies:
+    severity: error
+    options:
+      -
+        - "json-schema"
+        - "react-jsonschema-form"

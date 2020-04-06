@@ -15,16 +15,6 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
-      "program": "${workspaceFolder}/lib/index.js",
-      "skipFiles": [
-        "<node_internals>/**"
-      ]
-    },
-
-    {
-      "type": "node",
-      "request": "launch",
       "name": "Run Mocha",
       "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
       "args": [
@@ -38,6 +28,6 @@
       "skipFiles": [
         "<node_internals>/**/*.js"
       ],
-    }
+    },
   ]
 }

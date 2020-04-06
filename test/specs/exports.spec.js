@@ -14,6 +14,7 @@ describe("ipaas package exports", () => {
   it("should not export anything else", () => {
     expect(commonJSExport).to.have.same.keys(
       "createTemplate",
+      "testIntegration"
     );
   });
 

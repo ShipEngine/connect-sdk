@@ -2,9 +2,12 @@
   "name": "<PROJECT_NAME>",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
   "author": "",
   "license": "ISC",
+  "scripts": {
+    "build": "tsc"
+  },
   "devDependencies": {
     "eslint": "^6.8.0",
     "@shipengine/ipaas-types": "0.0.1",

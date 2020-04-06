@@ -28,7 +28,6 @@ export async function createTemplate(cwd?: string): Promise<void> {
       }
     }
   );
-  // TODO: What type of integration would you like to build?
 
   const projectName = answers["project-name"] as string;
 
@@ -36,12 +35,12 @@ export async function createTemplate(cwd?: string): Promise<void> {
   const newProjectPath = path.join(createCwd, projectName);
 
   if (!fs.existsSync(newProjectPath)) {
-    fs.mkdirSync(newProjectPath);
+    await fs.promises.mkdir(newProjectPath);
     await fsExtra.copy(templatePath, newProjectPath);
 
-    const data = fs.readFileSync(path.join(newProjectPath, "package.json"), "utf-8");
+    const data = await fs.promises.readFile(path.join(newProjectPath, "package.json"), "utf-8");
     const replacedData = data.replace(/<PROJECT_NAME>/g, projectName);
-    fs.writeFileSync(path.join(newProjectPath, "package.json"), replacedData, "utf-8");
+    await fs.promises.writeFile(path.join(newProjectPath, "package.json"), replacedData, "utf-8");
 
     // TODO: uncomment this once the package is publicly available, there's some weird linking issues.
     // execSync("npm install", { cwd: newProjectPath });

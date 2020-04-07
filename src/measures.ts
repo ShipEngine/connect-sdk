@@ -1,5 +1,6 @@
 // tslint:disable: max-classes-per-file
 
+import * as currency from "currency.js";
 import { assert } from "./assert";
 import { DimensionsConfig, MonetaryValueConfig, QuantityConfig, WeightConfig } from "./config";
 
@@ -198,12 +199,12 @@ export class MonetaryValue {
 
   public constructor(config: MonetaryValueConfig) {
     assert.type.object(config, "monetary value");
-    if (typeof config.value === "number") {
-      this.value = assert.number.positive(config.value, "monetary value").toFixed(3);
-    }
-    else {
-      this.value = assert.string.pattern(config.value, moneyValue, "monetary value");
-    }
+
+    let value = typeof config.value === "number"
+      ? assert.number.positive(config.value, "monetary value")
+      : assert.string.pattern(config.value, moneyValue, "monetary value");
+
+    this.value = currency(value).toString();
     this.currency = assert.string.enum(config.currency, Currency, "currency");
 
     // Prevent modifications after validation

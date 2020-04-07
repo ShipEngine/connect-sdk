@@ -67,6 +67,7 @@
     "@jsdevtools/ono": "^7.1.1",
     "@types/json-schema": "^7.0.4",
     "@types/react-jsonschema-form": "^1.7.1",
+    "currency.js": "^1.2.2",
     "date-fns": "^2.11.1",
     "date-fns-tz": "^1.0.10"
   }

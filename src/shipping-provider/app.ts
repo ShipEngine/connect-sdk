@@ -1,12 +1,11 @@
 import { humanize } from "@jsdevtools/humanize-anything";
 import { ono } from "@jsdevtools/ono";
-import * as path from "path";
-import { AppManifest } from "../app-manifest";
 import { assert } from "../assert";
 import { DeliveryServiceConfig, FormConfig, LabelSpecConfig, LogoConfig, PickupCancellationConfig, PickupRequestConfig, PickupServiceConfig, ShippingProviderConfig, TransactionConfig } from "../config";
+import { AppManifest } from "../import-app";
 import { readConfig } from "../read-config";
 import { Transaction } from "../transaction";
-import { UUID } from "../types";
+import { InlineOrReference, UUID } from "../types";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
 import { Form } from "./form";
@@ -138,34 +137,11 @@ export class ShippingProviderApp {
   }
 
   /**
-   * Imports a ShipEngine IPaaS shipping provider app
-   */
-  public static async import(appPath: string): Promise<ShippingProviderApp> {
-    let manifest = await ShippingProviderApp.readManifest(appPath);
-    let config = await ShippingProviderApp.readConfig(appPath);
-    return new ShippingProviderApp(manifest, config);
-  }
-
-  /**
-   * Reads the ShipEngine IPaaS shipping provider app manifest (package.json file)
-   */
-  public static async readManifest(appPath: string): Promise<AppManifest> {
-    let manifestPath = path.join(appPath, "package.json");
-
-    try {
-      return await readConfig<AppManifest>(manifestPath, "package.json");
-    }
-    catch (error) {
-      throw ono(error, `Error reading the ShipEngine IPaaS app: ${humanize(manifestPath)}`);
-    }
-  }
-
-  /**
    * Reads the config for a ShipEngine IPaaS shipping provider app
    */
-  public static async readConfig(appPath: string): Promise<ShippingProviderConfig> {
+  public static async readConfig(config: InlineOrReference<ShippingProviderConfig>): Promise<ShippingProviderConfig> {
     try {
-      let config = await readConfig<ShippingProviderConfig>(appPath);
+      config = await readConfig<ShippingProviderConfig>(config);
 
       return {
         ...config,
@@ -186,7 +162,7 @@ export class ShippingProviderApp {
       };
     }
     catch (error) {
-      throw ono(error, `Error reading the ShipEngine IPaaS app config: ${humanize(appPath)}`);
+      throw ono(error, `Error reading the ShipEngine IPaaS app config: ${humanize(config)}`);
     }
   }
 

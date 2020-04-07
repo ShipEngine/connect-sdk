@@ -1,4 +1,5 @@
 import { PickupCancellationConfirmationConfig, PickupConfirmationConfig } from "../config";
+import { LabelConfirmationConfig } from "../config/label-confirmation-config";
 import { Shipment } from "../shipment";
 import { Transaction } from "../transaction";
 import { UrlString } from "../types";
@@ -28,7 +29,8 @@ export type CancelPickup = (transaction: Transaction, cancellation: PickupCancel
 /**
  * Creates a shipping label
  */
-export type CreateLabel = (transaction: Transaction, label: LabelSpec) => void | Promise<void>;
+export type CreateLabel = (transaction: Transaction, label: LabelSpec)
+  => LabelConfirmationConfig | Promise<LabelConfirmationConfig>;
 
 /**
  * Voids a previously-created shipping label

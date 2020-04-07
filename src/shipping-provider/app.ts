@@ -6,6 +6,7 @@ import { UUID } from "../types";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
 import { Form } from "./form";
+import { LabelConfirmation } from "./labels/label-confirmation";
 import { LabelSpec } from "./labels/label-spec";
 import { Logo } from "./logo";
 import { CancelPickup, CreateLabel, CreateManifest, GetRates, GetTrackingUrl, Login, RequestPickup, Track, VoidLabel } from "./methods";
@@ -201,12 +202,14 @@ export class ShippingProviderApp {
   /**
    * Creates a shipping label
    */
-  public async createLabel?(transaction: TransactionConfig, label: LabelSpecConfig): Promise<void> {
+  public async createLabel?(transaction: TransactionConfig, label: LabelSpecConfig): Promise<LabelConfirmation> {
     try {
-      await this.#createLabel!(
+      let confirmation = await this.#createLabel!(
         new Transaction(transaction),
         new LabelSpec(this, label),
       );
+
+      return new LabelConfirmation(confirmation);
     }
     catch (error) {
       throw ono(error, { transactionID: transaction.id }, `Error in createLabel method.`);
@@ -216,9 +219,10 @@ export class ShippingProviderApp {
   /**
    * Voids a previously-created shipping label
    */
-  public async voidLabel?(transaction: TransactionConfig): Promise<void> {
+  public async voidLabel?(transaction: TransactionConfig): Promise<unknown> {
     try {
-      await Promise.resolve();
+      // TODO: NOT IMPLEMENTED YET
+      return await Promise.resolve(undefined);
     }
     catch (error) {
       throw ono(error, { transactionID: transaction.id }, `Error in voidLabel method.`);
@@ -228,9 +232,10 @@ export class ShippingProviderApp {
   /**
    * Gets shipping rates for a shipment
    */
-  public async getRates?(transaction: TransactionConfig): Promise<void> {
+  public async getRates?(transaction: TransactionConfig): Promise<unknown> {
     try {
-      await Promise.resolve();
+      // TODO: NOT IMPLEMENTED YET
+      return await Promise.resolve(undefined);
     }
     catch (error) {
       throw ono(error, { transactionID: transaction.id }, `Error in getRates method.`);
@@ -240,9 +245,10 @@ export class ShippingProviderApp {
   /**
    * Returns the web page URL where a customer can track a shipment
    */
-  public async getTrackingUrl?(transaction: TransactionConfig): Promise<void> {
+  public async getTrackingUrl?(transaction: TransactionConfig): Promise<unknown> {
     try {
-      await Promise.resolve();
+      // TODO: NOT IMPLEMENTED YET
+      return await Promise.resolve(undefined);
     }
     catch (error) {
       throw ono(error, { transactionID: transaction.id }, `Error in getTrackingUrl method.`);
@@ -252,9 +258,10 @@ export class ShippingProviderApp {
   /**
    * Returns tracking details for a shipment
    */
-  public async track?(transaction: TransactionConfig): Promise<void> {
+  public async track?(transaction: TransactionConfig): Promise<unknown> {
     try {
-      await Promise.resolve();
+      // TODO: NOT IMPLEMENTED YET
+      return await Promise.resolve(undefined);
     }
     catch (error) {
       throw ono(error, { transactionID: transaction.id }, `Error in track method.`);
@@ -264,9 +271,10 @@ export class ShippingProviderApp {
   /**
    * Creates a manifest for multiple shipments
    */
-  public async createManifest?(transaction: TransactionConfig): Promise<void> {
+  public async createManifest?(transaction: TransactionConfig): Promise<unknown> {
     try {
-      await Promise.resolve();
+      // TODO: NOT IMPLEMENTED YET
+      return await Promise.resolve(undefined);
     }
     catch (error) {
       throw ono(error, { transactionID: transaction.id }, `Error in createManifest method.`);

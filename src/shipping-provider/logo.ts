@@ -1,10 +1,5 @@
-import { humanize } from "@jsdevtools/humanize-anything";
-import { ono } from "@jsdevtools/ono";
-import * as fs from "fs";
-import * as path from "path";
 import { assert } from "../assert";
 import { LogoConfig } from "../config";
-import { readConfig } from "../read-config";
 import { InlineOrReference } from "../types";
 
 /**
@@ -31,27 +26,6 @@ export class Logo {
 
     // Prevent modifications after validation
     Object.freeze(this);
-  }
-
-  /**
-   * Reads the config for a ShipEngine IPaaS logo
-   */
-  public static async readConfig(config: InlineOrReference<LogoConfig>, cwd = "."): Promise<LogoConfig> {
-    try {
-      config = await readConfig(config, undefined, cwd);
-
-      const colorSVGBuffer = await fs.promises.readFile(path.join(cwd, config.colorSVG as string));
-      const blackAndWhiteSVGBuffer = await fs.promises.readFile(path.join(cwd, config.blackAndWhiteSVG as string));
-
-      return {
-        ...config,
-        colorSVG: colorSVGBuffer.toString(),
-        blackAndWhiteSVG: blackAndWhiteSVGBuffer.toString(),
-      };
-    }
-    catch (error) {
-      throw ono(error, `Error reading the delivery service config: ${humanize(config)}`);
-    }
   }
 }
 

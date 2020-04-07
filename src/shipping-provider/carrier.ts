@@ -1,9 +1,6 @@
-import { humanize } from "@jsdevtools/humanize-anything";
-import { ono } from "@jsdevtools/ono";
 import { assert } from "../assert";
 import { CarrierConfig } from "../config";
-import { readConfig } from "../read-config";
-import { InlineOrReference, UUID } from "../types";
+import { UUID } from "../types";
 import { Logo } from "./logo";
 
 /**
@@ -50,22 +47,5 @@ export class Carrier {
     // Prevent modifications after validation
     Object.freeze(this);
     Object.freeze(this.websiteURL);
-  }
-
-  /**
-   * Reads the config for a ShipEngine IPaaS carrier
-   */
-  public static async readConfig(config: InlineOrReference<CarrierConfig>, cwd = "."): Promise<CarrierConfig> {
-    try {
-      config = await readConfig(config, "carrier", cwd);
-
-      return {
-        ...config,
-        logo: await Logo.readConfig(config.logo, cwd),
-      };
-    }
-    catch (error) {
-      throw ono(error, `Error reading the carrier config: ${humanize(config)}`);
-    }
   }
 }

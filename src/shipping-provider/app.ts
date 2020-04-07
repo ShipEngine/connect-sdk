@@ -1,12 +1,8 @@
-import { humanize } from "@jsdevtools/humanize-anything";
 import { ono } from "@jsdevtools/ono";
-import * as path from "path";
 import { assert } from "../assert";
 import { DeliveryServiceConfig, FormConfig, LabelSpecConfig, LogoConfig, PickupCancellationConfig, PickupRequestConfig, PickupServiceConfig, ShippingProviderConfig, TransactionConfig } from "../config";
-import { AppManifest } from "../import-app";
-import { readConfig } from "../read-config";
 import { Transaction } from "../transaction";
-import { InlineOrReference, UUID } from "../types";
+import { UUID } from "../types";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
 import { Form } from "./form";
@@ -19,8 +15,19 @@ import { PickupCancellation } from "./pickups/pickup-cancellation";
 import { PickupCancellationConfirmation } from "./pickups/pickup-cancellation-confirmation";
 import { PickupConfirmation } from "./pickups/pickup-confirmation";
 import { PickupRequest } from "./pickups/pickup-request";
-import { getCwd } from "../file-utils";
 
+
+/**
+ * A ShipEngine IPaaS app manifest (package.json file)
+ */
+export interface AppManifest {
+  name?: string;
+  description?: string;
+  version?: string;
+  dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
+  [key: string]: unknown;
+}
 
 /**
  * A ShipEngine IPaaS shipping provider app.
@@ -137,38 +144,6 @@ export class ShippingProviderApp {
     Object.freeze(this.websiteURL);
     Object.freeze(this.deliveryServices);
     Object.freeze(this.pickupServices);
-  }
-
-  /**
-   * Reads the config for a ShipEngine IPaaS shipping provider app
-   */
-  public static async readConfig(config: InlineOrReference<ShippingProviderConfig>, cwd = "."): Promise<ShippingProviderConfig> {
-    try {
-      config = await readConfig<ShippingProviderConfig>(config);
-
-      const appDir = getCwd(config, cwd);
-
-      return {
-        ...config,
-        logo: await Logo.readConfig(config.logo, appDir),
-        deliveryServices: await DeliveryService.readArrayConfig(config.deliveryServices, appDir),
-        pickupServices: config.pickupServices && await PickupService.readArrayConfig(config.pickupServices, appDir),
-        loginForm: await Form.readConfig(config.loginForm, "loginForm", appDir),
-        settingsForm: config.settingsForm && await Form.readConfig(config.settingsForm, "settingsForm", appDir),
-        login: await readConfig(config.login),
-        requestPickup: await readConfig(config.requestPickup),
-        cancelPickup: await readConfig(config.cancelPickup),
-        createLabel: await readConfig(config.createLabel),
-        voidLabel: await readConfig(config.voidLabel),
-        getRates: await readConfig(config.getRates),
-        getTrackingUrl: await readConfig(config.getTrackingUrl),
-        track: await readConfig(config.track),
-        createManifest: await readConfig(config.createManifest),
-      };
-    }
-    catch (error) {
-      throw ono(error, `Error reading the ShipEngine IPaaS app config: ${humanize(config)}`);
-    }
   }
 
   /**

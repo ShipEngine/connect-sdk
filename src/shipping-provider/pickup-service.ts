@@ -1,11 +1,7 @@
-import { humanize } from "@jsdevtools/humanize-anything";
-import { ono } from "@jsdevtools/ono";
 import { assert } from "../assert";
 import { CarrierConfig, PickupServiceConfig } from "../config";
-import { readArrayConfig, readConfig } from "../read-config";
-import { InlineOrReference, InlineOrReferenceArray, UUID } from "../types";
+import { UUID } from "../types";
 import { Carrier } from "./carrier";
-import { getCwd } from "../file-utils";
 
 /**
  * A package pickup service that is offered by a shipping provider
@@ -44,47 +40,5 @@ export class PickupService {
 
     // Prevent modifications after validation
     Object.freeze(this);
-  }
-
-  /**
-   * Reads the config for a pickup service
-   */
-  public static async readConfig(config: InlineOrReference<PickupServiceConfig>, cwd = ".")
-    : Promise<PickupServiceConfig> {
-    try {
-
-      config = await readConfig(config, cwd);
-
-      return {
-        ...config,
-        carrier: await Carrier.readConfig(config.carrier, cwd)
-      };
-
-    }
-    catch (error) {
-      throw ono(error, `Error reading the pickup service config: ${humanize(config)}`);
-    }
-  }
-
-  /**
-   * Reads the config for an array of pickup services
-   */
-  public static async readArrayConfig(config: InlineOrReferenceArray<PickupServiceConfig>, cwd = ".")
-    : Promise<PickupServiceConfig[]> {
-    try {
-
-      const arrayItemCwd = getCwd(config, cwd);
-      const arrayConfig = await readArrayConfig(config, "pickup_services", cwd);
-      const dereferencedArray = [];
-
-      for (let item of arrayConfig) {
-        const dereferencedConfig = await PickupService.readConfig(item, arrayItemCwd);
-        dereferencedArray.push(dereferencedConfig);
-      }
-      return dereferencedArray;
-    }
-    catch (error) {
-      throw ono(error, `Error reading the pickup service config: ${humanize(config)}`);
-    }
   }
 }

@@ -1,11 +1,7 @@
-import { humanize } from "@jsdevtools/humanize-anything";
-import { ono } from "@jsdevtools/ono";
 import { JSONSchema6 } from "json-schema";
 import { UiSchema } from "react-jsonschema-form";
 import { assert } from "../assert";
 import { FormConfig } from "../config";
-import { readConfig } from "../read-config";
-import { InlineOrReference } from "../types";
 
 /**
  * Defines a user-interface form that collects data from the user.
@@ -33,23 +29,5 @@ export class Form {
     Object.freeze(this);
     Object.freeze(this.dataSchema);
     Object.freeze(this.uiSchema);
-  }
-
-  /**
-   * Reads the config for a form
-   */
-  public static async readConfig(config: InlineOrReference<FormConfig>, fieldName: string, cwd = "."): Promise<FormConfig> {
-    try {
-      config = await readConfig(config, fieldName, cwd);
-
-      return {
-        ...config,
-        dataSchema: await readConfig(config.dataSchema),
-        uiSchema: await readConfig(config.uiSchema),
-      };
-    }
-    catch (error) {
-      throw ono(error, `Error reading the form config: ${humanize(config)}`);
-    }
   }
 }

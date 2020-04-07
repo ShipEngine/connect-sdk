@@ -1,11 +1,7 @@
-import { humanize } from "@jsdevtools/humanize-anything";
-import { ono } from "@jsdevtools/ono";
 import { assert } from "../assert";
 import { PackagingConfig } from "../config";
 import { ServiceArea } from "../enums";
-import { readArrayConfig, readConfig } from "../read-config";
-import { InlineOrReference, InlineOrReferenceArray, UUID } from "../types";
-import { getCwd } from "../file-utils";
+import { UUID } from "../types";
 
 /**
  * Describes a type of packaging
@@ -62,38 +58,5 @@ export class Packaging {
 
     // Prevent modifications after validation
     Object.freeze(this);
-  }
-
-  /**
-   * Reads the config for a packaging type
-   */
-  public static async readConfig(config: InlineOrReference<PackagingConfig>, cwd = "."): Promise<PackagingConfig> {
-    try {
-      return await readConfig(config, "packaging", cwd);
-    }
-    catch (error) {
-      throw ono(error, `Error reading the packaging config: ${humanize(config)}`);
-    }
-  }
-
-  /**
-   * Reads the config for an array of packaging types
-   */
-  public static async readArrayConfig(config: InlineOrReferenceArray<PackagingConfig>, cwd = "."): Promise<PackagingConfig[]> {
-    try {
-      const arrayItemCwd = getCwd(config, cwd);
-
-      const arrayConfig = await readArrayConfig(config, "delivery_services,", cwd);
-      const dereferencedArray = [];
-
-      for (let item of arrayConfig) {
-        const dereferencedConfig = await Packaging.readConfig(item, arrayItemCwd);
-        dereferencedArray.push(dereferencedConfig);
-      }
-      return dereferencedArray;
-    }
-    catch (error) {
-      throw ono(error, `Error reading the packaging config: ${humanize(config)}`);
-    }
   }
 }

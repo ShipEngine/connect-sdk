@@ -2,7 +2,6 @@ export * from "./address";
 export * from "./config";
 export * from "./countries";
 export * from "./enums";
-export * from "./import-app";
 export * from "./measures";
 export * from "./package";
 export * from "./parsed-name";

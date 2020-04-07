@@ -127,5 +127,5 @@ export class DeliveryService {
     Object.freeze(this.labelFormats);
     Object.freeze(this.labelSizes);
   }
-  
+
 }

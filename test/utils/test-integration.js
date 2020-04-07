@@ -1,47 +1,47 @@
-import * as fs from "fs";
-import * as path from "path";
+// "use strict";
 
-/**
- * Test a ShipEngine IPaaS integration
- */
-export async function testIntegration(cwd?: string): Promise<void> {
+// const fs = require("fs");
+// const path = require("path");
 
-  const projectCwd = cwd || process.cwd();
+// /**
+//  * Test a ShipEngine IPaaS integration
+//  */
+// module.exports = async function testIntegration(cwd) {
 
-  const packageJSONPath = path.join(projectCwd, "package.json");
+//   const projectCwd = cwd || process.cwd();
 
-  let exportPath;
-  // Verify Project Stucture
+//   const packageJSONPath = path.join(projectCwd, "package.json");
 
-  if (fs.existsSync(packageJSONPath)) {
+//   let exportPath;
+//   // Verify Project Stucture
 
-    const packageContents = fs.readFileSync(packageJSONPath, "utf-8");
+//   if (fs.existsSync(packageJSONPath)) {
 
-    exportPath = JSON.parse(packageContents).main as string;
-  }
+//     const packageContents = fs.readFileSync(packageJSONPath, "utf-8");
 
-  if (!exportPath) {
-    throw new Error("Specify the entry point for your app via the 'main' propery in your integration\'s package.json file");
-  }
+//     exportPath = JSON.parse(packageContents).main;
+//   }
 
-  // Verify that the project exports a module
-  //TODO: replace this with fs.promises.access
-  if (!fs.existsSync(exportPath)) {
-    throw new Error("Location specified by the main property in package.json does not exist. Please update location or build project");
-  }
+//   if (!exportPath) {
+//     throw new Error("Specify the entry point for your app via the 'main' propery in your integration\'s package.json file");
+//   }
 
-  const integrationModule = await import(path.join(projectCwd, exportPath));
+//   // Verify that the project exports a module
+//   // TODO: replace this with fs.promises.access
+//   if (!fs.existsSync(exportPath)) {
+//     throw new Error("Location specified by the main property in package.json does not exist. Please update location or build project");
+//   }
 
-  if (!integrationModule) {
-    throw new Error("Integration module not found, make sure it is being exported correctly");
-  }
+//   const integrationModule = require(path.join(projectCwd, exportPath));
 
-  const integrationErrors: string[] = [];
+//   if (!integrationModule) {
+//     throw new Error("Integration module not found, make sure it is being exported correctly");
+//   }
 
-
-  const validIntegrationTypes = ["carrier", "order-source"];
-
-  // Verify that the module has the expected webhooks
+//   const integrationErrors = [];
 
 
-}
+//   const validIntegrationTypes = ["carrier", "order-source"];
+
+//   // Verify that the module has the expected webhooks
+// };

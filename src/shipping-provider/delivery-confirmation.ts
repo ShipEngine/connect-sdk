@@ -27,9 +27,9 @@ export class DeliveryConfirmation {
    */
   public constructor(config: DeliveryConfirmationConfig) {
     assert.type.object(config, "delivery confirmation");
-    this.id = assert.string.uuid(config.name, "delivery confirmation ID");
+    this.id = assert.string.uuid(config.id, "delivery confirmation ID");
     this.name = assert.string.nonWhitespace(config.name, "delivery confirmation name");
-    this.description = assert.string(config.name, "delivery confirmation description", "");
+    this.description = assert.string(config.description, "delivery confirmation description", "");
 
     // Prevent modifications after validation
     Object.freeze(this);

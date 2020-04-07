@@ -1,13 +1,13 @@
 "use strict";
 
-const { ipaasLoader } = require("../../lib");
+const { importApp } = require("../../lib");
 const { expect } = require("chai");
 let yamlConfig;
 
 describe("ipaasLoader() with reference to yaml config files that have nested references", () => {
 
   beforeEach(async () => {
-    yamlConfig = await ipaasLoader("../fixtures/integration-apps/carrier-yaml-app.js");
+    yamlConfig = await importApp("../fixtures/integration-apps/carrier-yaml-app.js");
   });
 
   it("should properly dereference a config file", () => {

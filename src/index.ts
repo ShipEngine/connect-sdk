@@ -10,4 +10,3 @@ export * from "./shipment";
 export * from "./shipping-provider";
 export * from "./transaction";
 export * from "./types";
-export * from "./ipaas-loader";

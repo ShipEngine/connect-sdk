@@ -1,13 +1,13 @@
 "use strict";
 
-const { ipaasLoader } = require("../../lib");
+const { importApp } = require("../../lib");
 const { expect } = require("chai");
 let jsonConfig;
 
 describe("ipaasLoader() with reference to json config files that have nested schema references", () => {
 
   beforeEach(async () => {
-    jsonConfig = await ipaasLoader("../fixtures/integration-apps/carrier-json-app.js");
+    jsonConfig = await importApp("../fixtures/integration-apps/carrier-json-app.js");
   });
 
   it("should properly dereference a config file", () => {

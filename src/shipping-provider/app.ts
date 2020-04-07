@@ -1,5 +1,6 @@
 import { humanize } from "@jsdevtools/humanize-anything";
 import { ono } from "@jsdevtools/ono";
+import * as path from "path";
 import { assert } from "../assert";
 import { DeliveryServiceConfig, FormConfig, LabelSpecConfig, LogoConfig, PickupCancellationConfig, PickupRequestConfig, PickupServiceConfig, ShippingProviderConfig, TransactionConfig } from "../config";
 import { AppManifest } from "../import-app";
@@ -18,6 +19,8 @@ import { PickupCancellation } from "./pickups/pickup-cancellation";
 import { PickupCancellationConfirmation } from "./pickups/pickup-cancellation-confirmation";
 import { PickupConfirmation } from "./pickups/pickup-confirmation";
 import { PickupRequest } from "./pickups/pickup-request";
+import { getCwd } from "../file-utils";
+
 
 /**
  * A ShipEngine IPaaS shipping provider app.
@@ -139,11 +142,11 @@ export class ShippingProviderApp {
   /**
    * Reads the config for a ShipEngine IPaaS shipping provider app
    */
-  public static async readConfig(config: InlineOrReference<ShippingProviderConfig>): Promise<ShippingProviderConfig> {
+  public static async readConfig(config: InlineOrReference<ShippingProviderConfig>, cwd = "."): Promise<ShippingProviderConfig> {
     try {
       config = await readConfig<ShippingProviderConfig>(config);
 
-      const appDir = path.parse(appPath).dir;
+      const appDir = getCwd(config, cwd);
 
       return {
         ...config,

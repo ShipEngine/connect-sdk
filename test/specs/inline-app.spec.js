@@ -1,13 +1,13 @@
 "use strict";
 
-const { ipaasLoader } = require("../../lib");
+const { importApp } = require("../../lib");
 const { expect } = require("chai");
 let inlineConfig;
 
 describe("ipaasLoader() with inline config", () => {
 
   beforeEach(async () => {
-    inlineConfig = await ipaasLoader("../fixtures/integration-apps/carrier-inline-app.js");
+    inlineConfig = await importApp("../fixtures/integration-apps/carrier-inline-app.js");
   });
 
   it("should not attempt to dereference a config that has all properties inlined", () => {

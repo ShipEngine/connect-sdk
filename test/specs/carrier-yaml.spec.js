@@ -26,22 +26,26 @@ describe("ipaasLoader() with reference to yaml config files that have nested ref
     expect(yamlConfig.deliveryServices[0].name).to.equal("Priority Overnight");
 
 
-    // expect(jsonConfig.pickupServices).to.be.an("array");
-    // expect(jsonConfig.pickupServices).to.be.an("array").with.lengthOf(2);
-    // expect(jsonConfig.pickupServices[0].name).to.equal("Drop Off Pickup");
-    // expect(jsonConfig.pickupServices[1].name).to.equal("One Time Pickup");
+    expect(yamlConfig.pickupServices).to.be.an("array");
+    expect(yamlConfig.pickupServices).to.be.an("array").with.lengthOf(2);
+    expect(yamlConfig.pickupServices[0].name).to.equal("Drop Off Pickup");
+    expect(yamlConfig.pickupServices[1].name).to.equal("One Time Pickup");
 
-    // expect(jsonConfig.registrationForm).to.be.an("object");
-    // expect(jsonConfig.registrationForm.dataSchema.title).to.equal("Carrier One Registration");
+    expect(yamlConfig.loginForm).to.be.an("object");
+    expect(yamlConfig.loginForm.dataSchema.title).to.equal("Carrier One Registration");
 
-    // expect(jsonConfig.settingsForm).to.be.an("object");
-    // expect(jsonConfig.settingsForm.dataSchema.title).to.equal("Carrier One Settings");
+    expect(yamlConfig.settingsForm).to.be.an("object");
+    expect(yamlConfig.settingsForm.dataSchema.title).to.equal("Carrier One Settings");
 
-    // expect(jsonConfig.requestPickup).to.be.a("function");
-  });
-
-  it("should properly dereference an array that has inline and references to config files", () => {
-
+    expect(yamlConfig.login).to.be.a("function");
+    expect(yamlConfig.requestPickup).to.be.a("function");
+    expect(yamlConfig.cancelPickup).to.be.a("function");
+    expect(yamlConfig.createLabel).to.be.a("function");
+    expect(yamlConfig.voidLabel).to.be.a("function");
+    expect(yamlConfig.getRates).to.be.a("function");
+    expect(yamlConfig.getTrackingUrl).to.be.a("function");
+    expect(yamlConfig.track).to.be.a("function");
+    expect(yamlConfig.createManifest).to.be.a("function");
   });
 
 });

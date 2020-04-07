@@ -90,7 +90,7 @@ export class ShippingProviderApp {
     this.pickupServices = assert.array(config.pickupServices, "pickupServices", [])
       .map((svc: PickupServiceConfig) => new PickupService(svc));
     this.loginForm = new Form(config.loginForm as FormConfig);
-    this.settingsForm = config.loginForm ? new Form(config.loginForm as FormConfig) : undefined;
+    this.settingsForm = config.settingsForm ? new Form(config.settingsForm as FormConfig) : undefined;
 
     // Store any user-defined methods as private fields.
     // For any methods that aren't implemented, set the corresponding class method to undefined.

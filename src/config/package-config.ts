@@ -1,5 +1,7 @@
 import { Dimensions, Weight } from "../measures";
 import { Identifier, UUID } from "../types";
+import { MonetaryValueConfig } from "./measures-config";
+import { PackageItemConfig } from "./package-item-config";
 
 /**
  * A package that has already been created and assigned identifiers
@@ -39,4 +41,31 @@ export interface NewPackageConfig {
    * The package weight
    */
   weight?: Weight;
+
+  /**
+   * The insured value of this package
+   */
+  insuredValue?: MonetaryValueConfig;
+
+  /**
+   * Indicates whether the package contains alcohol
+   */
+  containsAlcohol?: boolean;
+
+  /**
+   * Indicates whether the
+   */
+  isNonMachineable?: boolean;
+
+  /**
+   * Customized strings the end user expects to appear on their label.
+   * The exact location on the label depends on the carrier. Some carriers
+   * may limit the number of allowed label messages, or not support them at all.
+   */
+  labelMessages?: string[];
+
+  /**
+   * Describes the items inside the package
+   */
+  contents?: PackageItemConfig[];
 }

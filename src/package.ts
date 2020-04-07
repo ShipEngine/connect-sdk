@@ -1,7 +1,9 @@
 // tslint:disable: max-classes-per-file
 import { assert } from "./assert";
 import { NewPackageConfig, PackageConfig, PackageIdentifierConfig } from "./config";
-import { Dimensions, Weight } from "./measures";
+import { PackageItemConfig } from "./config/package-item-config";
+import { Currency, Dimensions, MonetaryValue, Weight } from "./measures";
+import { PackageItem } from "./package-item";
 import { Packaging, ShippingProviderApp } from "./shipping-provider";
 import { Identifier } from "./types";
 
@@ -49,12 +51,52 @@ export class NewPackage {
    */
   public readonly weight?: Weight;
 
+  /**
+   * The insured value of this package
+   */
+  public readonly insuredValue: MonetaryValue;
+
+  /**
+   * Indicates whether the package contains alcohol
+   */
+  public readonly containsAlcohol: boolean;
+
+  /**
+   * Indicates whether the
+   */
+  public readonly isNonMachineable: boolean;
+
+  /**
+   * Customized strings the end user expects to appear on their label.
+   * The exact location on the label depends on the carrier. Some carriers
+   * may limit the number of allowed label messages, or not support them at all.
+   */
+  public readonly labelMessages: string[];
+
+  /**
+   * Describes the items inside the package
+   */
+  public readonly contents: PackageItem[];
+
   public constructor(app: ShippingProviderApp, config: NewPackageConfig) {
     assert.type.object(config, "package");
     this.packaging = app.getPackaging(config.packagingID);
+    this.dimensions = (config.dimensions || this.packaging.requiresDimensions)
+      ? new Dimensions(config.dimensions!) : undefined;
+    this.weight = (config.weight || this.packaging.requiresWeight)
+      ? new Weight(config.weight!) : undefined;
+    this.insuredValue = new MonetaryValue(config.insuredValue || { value: 0, currency: Currency.UnitedStatesDollar });
+    this.containsAlcohol = assert.type.boolean(config.containsAlcohol, "containsAlcohol flag", false);
+    this.isNonMachineable = assert.type.boolean(config.isNonMachineable, "isNonMachineable flag", false);
+    this.labelMessages = assert.array(config.labelMessages, "label messages", [])
+      .map((message) => assert.string(message, "label message"));
+    this.contents = assert.array(config.contents, "package contents", [])
+      .map((item: PackageItemConfig) => new PackageItem(item));
 
     // Prevent modifications after validation
     Object.freeze(this);
+    Object.freeze(this.labelMessages);
+    Object.freeze(this.contents);
   }
 }
 

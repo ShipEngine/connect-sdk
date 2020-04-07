@@ -1,7 +1,6 @@
 import { Country } from "../countries";
 import { BilledParty, InsuranceProvider, NonDeliveryAction } from "../enums";
 import { Identifier, UUID } from "../types";
-import { MonetaryValueConfig } from "./measures-config";
 import { NewPackageConfig, PackageConfig } from "./package-config";
 
 /**
@@ -60,6 +59,11 @@ export interface NewShipmentConfig {
   // allowSaturdayDelivery?: boolean;
 
   /**
+   * Which party will be insuring the shipment. Defaults to carrier-provided insurance.
+   */
+  insuranceProvider?: InsuranceProvider;
+
+  /**
    * Billing details. If `undefined`, then the sender is billed for all shipping costs.
    */
   billing?: {
@@ -87,23 +91,6 @@ export interface NewShipmentConfig {
      * The country of the third-party that is responsible for shipping costs
      */
     country?: Country;
-  };
-
-  /**
-   * Information about the insurance for the shipment.
-   * If `undefined`, then the shipment is uninsured.
-   */
-  insurance?: {
-    /**
-     * Which party will be insuring the shipment
-     */
-    provider: InsuranceProvider;
-
-    /**
-     * The total insured value of the shipment.
-     * This is the sum of the insured value of each package.
-     */
-    amount: MonetaryValueConfig;
   };
 
   /**

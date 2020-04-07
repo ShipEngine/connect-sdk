@@ -1,9 +1,11 @@
 // tslint:disable: max-classes-per-file
+import humanize from "@jsdevtools/humanize-anything";
+import * as currency from "currency.js";
 import { assert } from "./assert";
 import { NewShipmentConfig, PackageConfig, ShipmentConfig, ShipmentIdentifierConfig } from "./config";
 import { Country } from "./countries";
 import { BilledParty, InsuranceProvider, NonDeliveryAction } from "./enums";
-import { MonetaryValue } from "./measures";
+import { Currency, MonetaryValue } from "./measures";
 import { NewPackage, Package } from "./package";
 import { DeliveryConfirmation, DeliveryService, ShippingProviderApp } from "./shipping-provider";
 import { Identifier } from "./types";
@@ -59,6 +61,22 @@ export class NewShipment {
   public readonly nonDeliveryAction: NonDeliveryAction;
 
   /**
+   * Information about the insurance for the shipment.
+   */
+  public readonly insurance: {
+    /**
+     * Which party will be insuring the shipment
+     */
+    readonly provider: InsuranceProvider;
+
+    /**
+     * The total insured value of the shipment.
+     * This is the sum of the insured value of each package.
+     */
+    readonly amount: MonetaryValue;
+  };
+
+  /**
    * Billing details.
    */
   public billing: {
@@ -86,23 +104,6 @@ export class NewShipment {
      * The country of the third-party that is responsible for shipping costs
      */
     country?: Country;
-  };
-
-  /**
-   * Information about the insurance for the shipment.
-   * If `undefined`, then the shipment is uninsured.
-   */
-  public readonly insurance?: {
-    /**
-     * Which party will be insuring the shipment
-     */
-    readonly provider: InsuranceProvider;
-
-    /**
-     * The total insured value of the shipment.
-     * This is the sum of the insured value of each package.
-     */
-    readonly amount: MonetaryValue;
   };
 
   /**
@@ -153,14 +154,6 @@ export class NewShipment {
         ? assert.string.enum(billing.country, Country, "billing country") : undefined,
     };
 
-    if (config.insurance) {
-      assert.type.object(config.insurance, "insurance info");
-      this.insurance = {
-        provider: assert.string.enum(config.insurance.provider, InsuranceProvider, "insurance provider"),
-        amount: new MonetaryValue(config.insurance.amount),
-      };
-    }
-
     if (config.return) {
       assert.type.object(config.return, "return info");
       this.return = {
@@ -172,8 +165,18 @@ export class NewShipment {
     this.packages = assert.array.nonEmpty(config.packages, "packages")
       .map((parcel: PackageConfig) => new NewPackage(app, parcel));
 
+    this.insurance = {
+      provider: assert.string.enum(
+        config.insuranceProvider, InsuranceProvider, "insurance provider", InsuranceProvider.Carrier),
+
+      amount: calculateTotalInsuranceAmount(this.packages),
+    };
+
     // Prevent modifications after validation
     Object.freeze(this);
+    Object.freeze(this.insurance);
+    Object.freeze(this.billing);
+    Object.freeze(this.return);
     Object.freeze(this.packages);
   }
 }
@@ -203,4 +206,34 @@ export class Shipment extends NewShipment {
       .map((parcel: PackageConfig) => new Package(app, parcel));
     ShipmentIdentifier.call(this, config);
   }
+}
+
+/**
+ * Calculates the total insurance amount for the shipment,
+ * which is the sum of the insured value of all packages.
+ */
+function calculateTotalInsuranceAmount(packages: NewPackage[]): MonetaryValue {
+  let currencies = new Set<Currency>();
+  let total = currency(0);
+
+  for (let parcel of packages) {
+    let value = currency(parcel.insuredValue.value);
+
+    if (value.intValue > 0) {
+      total.add(parcel.insuredValue.value);
+      currencies.add(parcel.insuredValue.currency);
+    }
+  }
+
+  if (currencies.size > 1) {
+    throw new Error(
+      `All packages in a shipment must be insured in the same currency. ` +
+      `This shipment includes ${humanize.list([...currencies])}`
+    );
+  }
+
+  return new MonetaryValue({
+    currency: [...currencies][0] || Currency.UnitedStatesDollar,
+    value: total.toString(),
+  });
 }

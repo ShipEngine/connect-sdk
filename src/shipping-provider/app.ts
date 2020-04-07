@@ -153,7 +153,7 @@ export class ShippingProviderApp {
     let manifestPath = path.join(appPath, "package.json");
 
     try {
-      return await readConfig<AppManifest>(manifestPath, "package.json");
+      return await readConfig<AppManifest>(manifestPath);
     }
     catch (error) {
       throw ono(error, `Error reading the ShipEngine IPaaS app: ${humanize(manifestPath)}`);
@@ -167,13 +167,15 @@ export class ShippingProviderApp {
     try {
       let config = await readConfig<ShippingProviderConfig>(appPath);
 
+      const appDir = path.parse(appPath).dir;
+
       return {
         ...config,
-        logo: await Logo.readConfig(config.logo),
-        deliveryServices: await DeliveryService.readArrayConfig(config.deliveryServices),
-        pickupServices: config.pickupServices && await PickupService.readArrayConfig(config.pickupServices),
-        loginForm: await Form.readConfig(config.loginForm),
-        settingsForm: config.settingsForm && await Form.readConfig(config.settingsForm),
+        logo: await Logo.readConfig(config.logo, appDir),
+        deliveryServices: await DeliveryService.readArrayConfig(config.deliveryServices, appDir),
+        pickupServices: config.pickupServices && await PickupService.readArrayConfig(config.pickupServices, appDir),
+        loginForm: await Form.readConfig(config.loginForm, "loginForm", appDir),
+        settingsForm: config.settingsForm && await Form.readConfig(config.settingsForm, "settingsForm", appDir),
         login: await readConfig(config.login),
         requestPickup: await readConfig(config.requestPickup),
         cancelPickup: await readConfig(config.cancelPickup),
@@ -186,6 +188,8 @@ export class ShippingProviderApp {
       };
     }
     catch (error) {
+      // TODO: currently if there's a method missing for example, it's hard to tell _what_ is exactly missing. 
+      // Needs more context
       throw ono(error, `Error reading the ShipEngine IPaaS app config: ${humanize(appPath)}`);
     }
   }
@@ -208,7 +212,7 @@ export class ShippingProviderApp {
    * Requests a package pickup at a time and place
    */
   public async requestPickup?(transaction: TransactionConfig, request: PickupRequestConfig)
-  : Promise<PickupConfirmation> {
+    : Promise<PickupConfirmation> {
     try {
       let confirmation = await this.#requestPickup!(
         new Transaction(transaction),
@@ -227,7 +231,7 @@ export class ShippingProviderApp {
    * Cancels a previously-requested package pickup
    */
   public async cancelPickup?(transaction: TransactionConfig, cancellation: PickupCancellationConfig)
-  : Promise<PickupCancellationConfirmation> {
+    : Promise<PickupCancellationConfirmation> {
     try {
       let confirmation = await this.#cancelPickup!(
         new Transaction(transaction),

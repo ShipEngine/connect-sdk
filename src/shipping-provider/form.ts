@@ -38,9 +38,9 @@ export class Form {
   /**
    * Reads the config for a form
    */
-  public static async readConfig(config: InlineOrReference<FormConfig>): Promise<FormConfig> {
+  public static async readConfig(config: InlineOrReference<FormConfig>, fieldName: string, cwd = "."): Promise<FormConfig> {
     try {
-      config = await readConfig(config);
+      config = await readConfig(config, fieldName, cwd);
 
       return {
         ...config,

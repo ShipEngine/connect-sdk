@@ -1,5 +1,7 @@
 import { humanize } from "@jsdevtools/humanize-anything";
 import { ono } from "@jsdevtools/ono";
+import * as fs from "fs";
+import * as path from "path";
 import { assert } from "../assert";
 import { LogoConfig } from "../config";
 import { readConfig } from "../read-config";
@@ -34,14 +36,17 @@ export class Logo {
   /**
    * Reads the config for a ShipEngine IPaaS logo
    */
-  public static async readConfig(config: InlineOrReference<LogoConfig>): Promise<LogoConfig> {
+  public static async readConfig(config: InlineOrReference<LogoConfig>, cwd = "."): Promise<LogoConfig> {
     try {
-      config = await readConfig(config);
+      config = await readConfig(config, undefined, cwd);
+
+      const colorSVGBuffer = await fs.promises.readFile(path.join(cwd, config.colorSVG as string));
+      const blackAndWhiteSVGBuffer = await fs.promises.readFile(path.join(cwd, config.blackAndWhiteSVG as string));
 
       return {
         ...config,
-        colorSVG: await readConfig(config.colorSVG),
-        blackAndWhiteSVG: await readConfig(config.blackAndWhiteSVG),
+        colorSVG: colorSVGBuffer.toString(),
+        blackAndWhiteSVG: blackAndWhiteSVGBuffer.toString(),
       };
     }
     catch (error) {

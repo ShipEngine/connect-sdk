@@ -1,5 +1,6 @@
 import { humanize } from "@jsdevtools/humanize-anything";
 import { ono } from "@jsdevtools/ono";
+import * as path from "path";
 import { assert } from "../assert";
 import { CarrierConfig, DeliveryConfirmationConfig, DeliveryServiceConfig, PackagingConfig } from "../config";
 import { Country } from "../countries";
@@ -9,6 +10,7 @@ import { InlineOrReference, InlineOrReferenceArray, UUID } from "../types";
 import { Carrier } from "./carrier";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { Packaging } from "./packaging";
+import { getCwd } from "../file-utils";
 
 /**
  * A delivery service that is offered by a shipping provider
@@ -134,7 +136,7 @@ export class DeliveryService {
   /**
    * Reads the config for a delivery service
    */
-  public static async readConfig(config: InlineOrReference<DeliveryServiceConfig>): Promise<DeliveryServiceConfig> {
+  public static async readConfig(config: InlineOrReference<DeliveryServiceConfig>, cwd = "."): Promise<DeliveryServiceConfig> {
     try {
       config = await readConfig(config);
 
@@ -142,8 +144,8 @@ export class DeliveryService {
         ...config,
         originCountries: await readArrayConfig(config.originCountries),
         destinationCountries: await readArrayConfig(config.destinationCountries),
-        carrier: await Carrier.readConfig(config.carrier),
-        packaging: await Packaging.readArrayConfig(config.packaging),
+        carrier: await Carrier.readConfig(config.carrier, cwd),
+        packaging: await Packaging.readArrayConfig(config.packaging, cwd),
         deliveryConfirmations:
           config.deliveryConfirmations && await DeliveryConfirmation.readArrayConfig(config.deliveryConfirmations),
       };
@@ -156,10 +158,20 @@ export class DeliveryService {
   /**
    * Reads the config for an array of delivery services
    */
-  public static async readArrayConfig(config: InlineOrReferenceArray<DeliveryServiceConfig>)
-  : Promise<DeliveryServiceConfig[]> {
+  public static async readArrayConfig(config: InlineOrReferenceArray<DeliveryServiceConfig>, cwd = ".")
+    : Promise<DeliveryServiceConfig[]> {
     try {
-      return await readArrayConfig(config);
+
+      const arrayItemCwd = getCwd(config, cwd);
+
+      const arrayConfig = await readArrayConfig(config, "delivery_services,", cwd);
+      const dereferencedArray = [];
+
+      for (let item of arrayConfig) {
+        const dereferencedConfig = await DeliveryService.readConfig(item, arrayItemCwd);
+        dereferencedArray.push(dereferencedConfig);
+      }
+      return dereferencedArray;
     }
     catch (error) {
       throw ono(error, `Error reading the packaging config: ${humanize(config)}`);

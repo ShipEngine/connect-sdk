@@ -1,9 +1,9 @@
-import { assert } from "./assert";
+import { getCwd, isFilePath, loadConfigOrModuleFiles } from "./file-utils";
 import { InlineOrReference, InlineOrReferenceArray } from "./types";
 
 /**
  * Reads an ShipEngine IPaaS config that is expected to be a single value.
- * The canfig can be any of:
+ * The config can be any of:
  *
  *    - an inline value
  *    - a YAML file path
@@ -12,15 +12,22 @@ import { InlineOrReference, InlineOrReferenceArray } from "./types";
  *    - a TypeScript file path
  *    - a dynamic import via `require()` or `import()`
  */
-export async function readConfig<T>(config: InlineOrReference<T>, fieldName = "config"): Promise<T> {
-  let value = (await config) as T;
-  assert.value(value, fieldName);
-  return value;
+export async function readConfig<T>(config: InlineOrReference<T>, fieldName = "config", cwd = "."): Promise<T> {
+
+  if (typeof config === "string" && isFilePath(config)) {
+    let object = await loadConfigOrModuleFiles<T>(config, cwd);
+
+    if (typeof object === "object") {
+      return object as T;
+    }
+  }
+
+  return config as T;
 }
 
 /**
  * Reads an ShipEngine IPaaS config that is expected to be an array of values or other configs.
- * Each canfig can be any of:
+ * Each config can be any of:
  *
  *    - an inline value
  *    - a YAML file path
@@ -29,9 +36,22 @@ export async function readConfig<T>(config: InlineOrReference<T>, fieldName = "c
  *    - a TypeScript file path
  *    - a dynamic import via `require()` or `import()`
  */
-export async function readArrayConfig<T>(config: InlineOrReferenceArray<T>, fieldName = "config list"): Promise<T[]> {
-  let values = (await config) as T[];
-  assert.type.array(values, fieldName);
-  values = await Promise.all(values.map((conf) => readConfig(conf)));
-  return values;
+export async function readArrayConfig<T>(config: InlineOrReferenceArray<T>, fieldName = "config list", cwd = "."): Promise<T[]> {
+
+  const arrayCwd = getCwd(config, cwd);
+
+  if (typeof config === "string" && isFilePath(config)) {
+    let array = await loadConfigOrModuleFiles(config, cwd);
+    if (Array.isArray(array)) {
+      const resolvedArray = [];
+      for (let item of array) {
+        const resolvedItem = await readConfig(item, undefined, arrayCwd);
+        resolvedArray.push(resolvedItem);
+      }
+
+      return resolvedArray as T[];
+    }
+  }
+
+  return config as T[];
 }

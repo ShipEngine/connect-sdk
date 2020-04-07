@@ -55,13 +55,13 @@ export class Carrier {
   /**
    * Reads the config for a ShipEngine IPaaS carrier
    */
-  public static async readConfig(config: InlineOrReference<CarrierConfig>): Promise<CarrierConfig> {
+  public static async readConfig(config: InlineOrReference<CarrierConfig>, cwd = "."): Promise<CarrierConfig> {
     try {
-      config = await readConfig(config);
+      config = await readConfig(config, "carrier", cwd);
 
       return {
         ...config,
-        logo: await Logo.readConfig(config.logo),
+        logo: await Logo.readConfig(config.logo, cwd),
       };
     }
     catch (error) {

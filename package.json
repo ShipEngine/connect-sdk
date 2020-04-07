@@ -65,9 +65,13 @@
     "@jsdevtools/assert": "^1.3.0",
     "@jsdevtools/humanize-anything": "^1.0.0",
     "@jsdevtools/ono": "^7.1.1",
+    "@types/callsites": "^3.0.0",
+    "@types/js-yaml": "^3.12.3",
     "@types/json-schema": "^7.0.4",
     "@types/react-jsonschema-form": "^1.7.1",
+    "callsites": "^3.1.0",
     "date-fns": "^2.11.1",
-    "date-fns-tz": "^1.0.10"
+    "date-fns-tz": "^1.0.10",
+    "js-yaml": "^3.13.1"
   }
 }

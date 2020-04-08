@@ -53,7 +53,7 @@ export class NewShipment {
    * The date/time that the package is expected to ship.
    * This is not guaranteed to be in the future.
    */
-  public readonly shipmentDate: Date;
+  public readonly shipmentDateTime: Date;
 
   /**
    * Indicates how a non-deliverable package should be handled
@@ -142,7 +142,7 @@ export class NewShipment {
     this.deliveryService = app.getDeliveryService(config.deliveryServiceID);
     this.deliveryConfirmation = config.deliveryConfirmationID === undefined ? undefined
       : app.getDeliveryConfirmation(config.deliveryConfirmationID);
-    this.shipmentDate = assert.type.date(config.shipmentDate, "shipment date");
+    this.shipmentDateTime = assert.type.date(config.shipmentDateTime, "shipment date/time");
     this.nonDeliveryAction = assert.string.enum(config.nonDeliveryAction, NonDeliveryAction, "non-delivery action");
 
     // If there is no billing info, then the sender is billed by default.

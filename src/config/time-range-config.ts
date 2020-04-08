@@ -7,14 +7,14 @@ export interface TimeRangeConfig {
    *
    * @see https://en.wikipedia.org/wiki/ISO_8601
    */
-  start: Date | string;
+  startDateTime: Date | string;
 
   /**
    * The end date/time of the range. Can be specified as a Date object or an ISO 8601 string.
    *
    * @see https://en.wikipedia.org/wiki/ISO_8601
    */
-  end: Date | string;
+  endDateTime: Date | string;
 
   /**
    * The local time zone, as an IANA name (e.g. "America/Los_Angeles", "Asia/Tokyo").

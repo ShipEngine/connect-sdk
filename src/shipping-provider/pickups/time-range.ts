@@ -12,12 +12,12 @@ export class TimeRange {
   /**
    * The start date/time of the range
    */
-  public readonly start: Date;
+  public readonly startDateTime: Date;
 
   /**
    * The end date/time of the range
    */
-  public readonly end: Date;
+  public readonly endDateTime: Date;
 
   /**
    * The local time zone, as an IANA name (e.g. "America/Los_Angeles", "Asia/Tokyo").
@@ -33,20 +33,20 @@ export class TimeRange {
   public constructor(config: TimeRangeConfig) {
     assert.type.object(config, "time range");
     this.timeZone = assert.string.nonWhitespace(config.timeZone, "IANA time zone");
-    this.start = validateDate(config.start, "start date/time", this.timeZone);
-    this.end = validateDate(config.start, "end date/time", this.timeZone);
+    this.startDateTime = validateDate(config.startDateTime, "start date/time", this.timeZone);
+    this.endDateTime = validateDate(config.startDateTime, "end date/time", this.timeZone);
 
-    if (this.end.getTime() < this.start.getTime()) {
+    if (this.endDateTime.getTime() < this.startDateTime.getTime()) {
       throw new RangeError(
-        `Invalid time range: ${this.start.toISOString()} - ${this.end.toISOString()}. ` +
+        `Invalid time range: ${this.startDateTime.toISOString()} - ${this.endDateTime.toISOString()}. ` +
         "The start date occurs after the end date."
       );
     }
 
     // Prevent modifications after validation
     Object.freeze(this);
-    Object.freeze(this.start);
-    Object.freeze(this.end);
+    Object.freeze(this.startDateTime);
+    Object.freeze(this.endDateTime);
   }
 }
 

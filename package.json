@@ -45,6 +45,7 @@
   "engineStrict": true,
   "devDependencies": {
     "@jsdevtools/eslint-config-modular": "^8.0.0",
+    "@jsdevtools/readdir-enhanced": "^6.0.3",
     "@jsdevtools/tslint-modular": "^2.0.5",
     "@jsdevtools/version-bump-prompt": "^6.0.2",
     "@types/chai": "^4.1.7",

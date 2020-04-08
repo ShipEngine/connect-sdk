@@ -24,7 +24,7 @@ export interface PackagingConfig {
   /**
    * The service area this packaging can be shipped to
    */
-  area?: ServiceArea;
+  serviceArea?: ServiceArea;
 
   /**
    * Indicates whether this packaging is delivered using multiple carrier services

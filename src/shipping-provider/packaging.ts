@@ -26,7 +26,7 @@ export class Packaging {
   /**
    * The service area this packaging can be shipped to
    */
-  public readonly area: ServiceArea | undefined;
+  public readonly serviceArea: ServiceArea | undefined;
 
   /**
    * Indicates whether this packaging is delivered using multiple carrier services
@@ -51,7 +51,7 @@ export class Packaging {
     this.id = assert.string.uuid(config.id, "packaging ID");
     this.name = assert.string.nonWhitespace(config.name, "packaging name");
     this.description = assert.string(config.description, "packaging description", "");
-    this.area = config.area && assert.string.enum(config.area, ServiceArea, "packaging area");
+    this.serviceArea = config.serviceArea && assert.string.enum(config.serviceArea, ServiceArea, "service area");
     this.isConsolidator = assert.type.boolean(config.isConsolidator, "isConsolidator flag", false);
     this.requiresWeight = assert.type.boolean(config.requiresWeight, "requiresWeight flag", false);
     this.requiresDimensions = assert.type.boolean(config.requiresDimensions, "requiresDimensions flag", false);

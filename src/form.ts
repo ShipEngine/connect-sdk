@@ -1,7 +1,7 @@
 import { JSONSchema6 } from "json-schema";
 import { UiSchema } from "react-jsonschema-form";
-import { assert } from "../assert";
-import { FormConfig } from "../config";
+import { assert } from "./assert";
+import { FormConfig } from "./config";
 
 /**
  * Defines a user-interface form that collects data from the user.

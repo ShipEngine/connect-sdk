@@ -2,6 +2,7 @@ export * from "./address";
 export * from "./config";
 export * from "./countries";
 export * from "./enums";
+export * from "./form";
 export * from "./measures";
 export * from "./package";
 export * from "./parsed-name";

@@ -1,6 +1,8 @@
 import { ono } from "@jsdevtools/ono";
 import { assert } from "../assert";
 import { DeliveryServiceConfig, FormConfig, LabelSpecConfig, LogoConfig, PickupCancellationConfig, PickupRequestConfig, PickupServiceConfig, ShippingProviderConfig, TransactionConfig } from "../config";
+import { Country } from "../countries";
+import { ServiceArea } from "../enums";
 import { Transaction } from "../transaction";
 import { UUID } from "../types";
 import { DeliveryConfirmation } from "./delivery-confirmation";
@@ -34,6 +36,8 @@ export interface AppManifest {
  * A ShipEngine IPaaS shipping provider app.
  */
 export class ShippingProviderApp {
+  //#region Fields
+
   /**
    * The user-friendly provider name (e.g. "Stamps.com", "FirstMile")
    */
@@ -85,6 +89,74 @@ export class ShippingProviderApp {
   readonly #getTrackingUrl: GetTrackingUrl | undefined;        // tslint:disable-line: member-access
   readonly #track: Track | undefined;                          // tslint:disable-line: member-access
   readonly #createManifest: CreateManifest | undefined;        // tslint:disable-line: member-access
+
+  //#endregion
+
+  //#region Helper properties
+
+  /**
+   * All countries that this provider ships to or from
+   */
+  public get countries(): Country[] {
+    let countries = new Set(this.originCountries.concat(this.destinationCountries));
+    return [...countries];
+  }
+
+  /**
+   * All origin countries that this provider ships from
+   */
+  public get originCountries(): Country[] {
+    let countries = new Set<Country>();
+    for (let service of this.deliveryServices) {
+      for (let country of service.originCountries) {
+        countries.add(country);
+      }
+    }
+    return [...countries];
+  }
+
+  /**
+   * All destination countries that this provider ships to
+   */
+  public get destinationCountries(): Country[] {
+    let countries = new Set<Country>();
+    for (let service of this.deliveryServices) {
+      for (let country of service.destinationCountries) {
+        countries.add(country);
+      }
+    }
+    return [...countries];
+  }
+
+  /**
+   * The service area that this provider covers
+   */
+  public get serviceArea(): ServiceArea {
+    let maxArea = ServiceArea.Regional;
+
+    // Find the broadest service area supported by this provider
+    for (let service of this.deliveryServices) {
+      if (service.serviceArea === ServiceArea.Worldwide) {
+        // This is the widest possible service area, so no need to continue crawling.
+        return ServiceArea.Worldwide;
+      }
+      else if (service.serviceArea === ServiceArea.Domestic) {
+        // Replace "regional" with "domestic"
+        maxArea = ServiceArea.Domestic;
+      }
+    }
+
+    return maxArea;
+  }
+
+  /**
+   * Indicates whether this provider consolidates multiple carrier services
+   */
+  public get isConsolidator(): boolean {
+    return this.deliveryServices.some((svc) => svc.isConsolidator);
+  }
+
+  //#endregion
 
   /**
    * Creates a ShipEngine IPaaS shipping provider app from a fully-resolved config object
@@ -146,6 +218,8 @@ export class ShippingProviderApp {
     Object.freeze(this.deliveryServices);
     Object.freeze(this.pickupServices);
   }
+
+  //#region Wrappers around user-defined methdos
 
   /**
    * Verifies a user's credentials and establishes or renews a session
@@ -281,6 +355,10 @@ export class ShippingProviderApp {
     }
   }
 
+  //#endregion
+
+  //#region Helper methods
+
   /**
    * Returns the pickup service with the specified ID
    */
@@ -332,4 +410,6 @@ export class ShippingProviderApp {
     }
     throw new ReferenceError(`Unable to find delivery confirmation "${id}" in the ${this.name} app.`);
   }
+
+  //#endregion
 }

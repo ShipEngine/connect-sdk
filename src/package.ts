@@ -62,7 +62,8 @@ export class NewPackage {
   public readonly containsAlcohol: boolean;
 
   /**
-   * Indicates whether the
+   * Indicates whether the package cannot be processed automatically due to size, shape, weight, etc.
+   * and requires manual handling.
    */
   public readonly isNonMachineable: boolean;
 

@@ -1,7 +1,7 @@
 import { assert } from "../assert";
 import { CarrierConfig, DeliveryConfirmationConfig, DeliveryServiceConfig, PackagingConfig } from "../config";
 import { Country } from "../countries";
-import { DeliveryServiceClass, DeliveryServiceGrade, LabelFormat, LabelSize, ManifestType } from "../enums";
+import { DeliveryServiceClass, DeliveryServiceGrade, LabelFormat, LabelSize, ManifestType, ServiceArea } from "../enums";
 import { UUID } from "../types";
 import { Carrier } from "./carrier";
 import { DeliveryConfirmation } from "./delivery-confirmation";
@@ -11,6 +11,8 @@ import { Packaging } from "./packaging";
  * A delivery service that is offered by a shipping provider
  */
 export class DeliveryService {
+  //#region Fields
+
   /**
    * A UUID that uniquely identifies the delivery service.
    * This ID should never change, even if the service name changes.
@@ -91,6 +93,48 @@ export class DeliveryService {
    * Indicates whether this service requires a manifest, and if so, what type
    */
   public readonly requiresManifest: false | ManifestType;
+
+  //#endregion
+
+  //#region Helper properties
+
+  /**
+   * All countries that this service ships to or from
+   */
+  public get countries(): Country[] {
+    let countries = new Set(this.originCountries.concat(this.destinationCountries));
+    return [...countries];
+  }
+
+  /**
+   * The service area that this service covers
+   */
+  public get serviceArea(): ServiceArea {
+    let maxArea = ServiceArea.Regional;
+
+    // Find the broadest service area supported by this service
+    for (let packaging of this.packaging) {
+      if (packaging.serviceArea === ServiceArea.Worldwide) {
+        // This is the widest possible service area, so no need to continue crawling.
+        return ServiceArea.Worldwide;
+      }
+      else if (packaging.serviceArea === ServiceArea.Domestic) {
+        // Replace "regional" with "domestic"
+        maxArea = ServiceArea.Domestic;
+      }
+    }
+
+    return maxArea;
+  }
+
+  /**
+   * Indicates whether this service consolidates multiple carrier services
+   */
+  public get isConsolidator(): boolean {
+    return this.packaging.some((pkg) => pkg.isConsolidator);
+  }
+
+  //#endregion
 
   /**
    * Creates a DeliveryService object from a fully-resolved config object

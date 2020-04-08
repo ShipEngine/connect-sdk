@@ -61,6 +61,14 @@ export class NewShipment {
   public readonly nonDeliveryAction: NonDeliveryAction;
 
   /**
+   * Indicates whether the shipment cannot be processed automatically due to size, shape, weight, etc.
+   * and requires manual handling.
+   */
+  public get isNonMachineable(): boolean {
+    return this.packages.some((pkg) => pkg.isNonMachineable);
+  }
+
+  /**
    * Information about the insurance for the shipment.
    */
   public readonly insurance: {

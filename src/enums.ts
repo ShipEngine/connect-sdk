@@ -92,3 +92,38 @@ export enum BilledParty {
   Recipient = "recipient",
   ThirdParty = "third_party",
 }
+
+/**
+ * The types of itemized charges that can make up the total cost of a shipment
+ */
+export enum ShippingChargeType {
+  /**
+   * The charge to ship the package to its destination
+   */
+  Shipping = "shipping",
+
+  /**
+   * The charge for delivery confirmation, such as a signature or photo
+   */
+  DeliveryConfirmation = "delivery_confirmation",
+
+  /**
+   * The charge to insure the package
+   */
+  Insurance = "insurance",
+
+  /**
+   * An import/export duty or tariff imposed by a government
+   */
+  Duty = "duty",
+
+  /**
+   * A tax imposed by a government
+   */
+  Tax = "tax",
+
+  /**
+   * Other charges that don't fit into other categories
+   */
+  Other = "other",
+}

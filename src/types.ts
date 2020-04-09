@@ -38,8 +38,8 @@ export type InlineOrReferenceArray<T> = Array<InlineOrReference<T>> | FilePath |
  * A value that identifies a resource
  */
 export interface Identifier {
-  type: string;
   id: string;
+  description: string;
 }
 
 /**

@@ -1,4 +1,5 @@
 import { ono } from "@jsdevtools/ono";
+import { App, AppManifest } from "../app";
 import { assert } from "../assert";
 import { DeliveryServiceConfig, FormConfig, LabelSpecConfig, LogoConfig, PickupCancellationConfig, PickupRequestConfig, PickupServiceConfig, ShippingProviderConfig, TransactionConfig } from "../config";
 import { Country } from "../countries";
@@ -19,24 +20,23 @@ import { PickupCancellationConfirmation } from "./pickups/pickup-cancellation-co
 import { PickupConfirmation } from "./pickups/pickup-confirmation";
 import { PickupRequest } from "./pickups/pickup-request";
 
-
-/**
- * A ShipEngine IPaaS app manifest (package.json file)
- */
-export interface AppManifest {
-  name?: string;
-  description?: string;
-  version?: string;
-  dependencies?: Record<string, string>;
-  devDependencies?: Record<string, string>;
-  [key: string]: unknown;
-}
-
 /**
  * A ShipEngine IPaaS shipping provider app.
  */
-export class ShippingProviderApp {
+export class ShippingProviderApp extends App {
   //#region Fields
+
+  // Store the user-defined methods as private fields.
+  // We wrap these methods with our own signatures below
+  readonly #login: Login | undefined;                          // tslint:disable-line: member-access
+  readonly #requestPickup: RequestPickup | undefined;          // tslint:disable-line: member-access
+  readonly #cancelPickup: CancelPickup | undefined;            // tslint:disable-line: member-access
+  readonly #createLabel: CreateLabel | undefined;              // tslint:disable-line: member-access
+  readonly #voidLabel: VoidLabel | undefined;                  // tslint:disable-line: member-access
+  readonly #getRates: GetRates | undefined;                    // tslint:disable-line: member-access
+  readonly #getTrackingUrl: GetTrackingUrl | undefined;        // tslint:disable-line: member-access
+  readonly #track: Track | undefined;                          // tslint:disable-line: member-access
+  readonly #createManifest: CreateManifest | undefined;        // tslint:disable-line: member-access
 
   /**
    * The user-friendly provider name (e.g. "Stamps.com", "FirstMile")
@@ -77,18 +77,6 @@ export class ShippingProviderApp {
    * A form that allows the user to configure settings
    */
   public readonly settingsForm: Form | undefined;
-
-  // Store the user-defined methods as private fields.
-  // We wrap these methods with our own signatures below
-  readonly #login: Login | undefined;                          // tslint:disable-line: member-access
-  readonly #requestPickup: RequestPickup | undefined;          // tslint:disable-line: member-access
-  readonly #cancelPickup: CancelPickup | undefined;            // tslint:disable-line: member-access
-  readonly #createLabel: CreateLabel | undefined;              // tslint:disable-line: member-access
-  readonly #voidLabel: VoidLabel | undefined;                  // tslint:disable-line: member-access
-  readonly #getRates: GetRates | undefined;                    // tslint:disable-line: member-access
-  readonly #getTrackingUrl: GetTrackingUrl | undefined;        // tslint:disable-line: member-access
-  readonly #track: Track | undefined;                          // tslint:disable-line: member-access
-  readonly #createManifest: CreateManifest | undefined;        // tslint:disable-line: member-access
 
   //#endregion
 
@@ -162,6 +150,7 @@ export class ShippingProviderApp {
    * Creates a ShipEngine IPaaS shipping provider app from a fully-resolved config object
    */
   public constructor(manifest: AppManifest, config: ShippingProviderConfig) {
+    super(manifest);
     assert.type.object(config, "ShipEngine IPaaS app");
     this.name = assert.string.nonWhitespace(config.name, "shipping provider name");
     this.description = assert.string(config.description, "shipping provider description", "");

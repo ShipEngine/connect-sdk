@@ -62,7 +62,7 @@ export interface NewShipmentConfig {
    * The date/time that the package is expected to ship.
    * This is not guaranteed to be in the future.
    */
-  shipmentDateTime: Date;
+  shipDateTime: Date;
 
   /**
    * Indicates how a non-deliverable package should be handled

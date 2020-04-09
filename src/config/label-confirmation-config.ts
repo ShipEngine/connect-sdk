@@ -19,7 +19,7 @@ export interface LabelConfirmationConfig {
   shipmentTrackingNumber?: string;
 
   /**
-   * The estimated date and time for when the shipment will be delivered.
+   * The estimated date and time the shipment will be delivered
    */
   estimatedDeliveryDateTime?: Date;
 

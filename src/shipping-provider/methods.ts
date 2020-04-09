@@ -6,6 +6,7 @@ import { UrlString } from "../types";
 import { LabelSpec } from "./labels/label-spec";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
 import { PickupRequest } from "./pickups/pickup-request";
+import { RateCriteria } from "./rates/rate-criteria";
 
 /**
  * Verifies a user's credentials and establishes or renews a session.
@@ -40,7 +41,7 @@ export type VoidLabel = (transaction: Transaction, params: unknown) => void | Pr
 /**
  * Gets shipping rates for a shipment
  */
-export type GetRates = (transaction: Transaction, params: unknown) => void | Promise<void>;
+export type GetRates = (transaction: Transaction, criteria: RateCriteria) => void | Promise<void>;
 
 /**
  * Returns the web page URL where a customer can track a shipment

@@ -119,7 +119,7 @@ function assertArrayOfIdentifiers(value: unknown, fieldName: string, defaultValu
   for (let identifier of array) {
     assert.type.object(identifier, fieldName);
     assert.string.nonWhitespace(identifier.id, fieldName);
-    assert.string.nonWhitespace(identifier.type, fieldName);
+    assert.string.nonWhitespace(identifier.description, fieldName);
   }
 
   return array;

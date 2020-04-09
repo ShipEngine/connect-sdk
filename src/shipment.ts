@@ -69,7 +69,7 @@ export class NewShipment {
    * The date/time that the package is expected to ship.
    * This is not guaranteed to be in the future.
    */
-  public readonly shipmentDateTime: Date;
+  public readonly shipDateTime: Date;
 
   /**
    * Indicates how a non-deliverable package should be handled
@@ -150,7 +150,7 @@ export class NewShipment {
     this.shipFrom = new Address(config.shipFrom);
     this.shipTo = new Address(config.shipTo);
     this.returnTo = config.returnTo ? new Address(config.returnTo) : new Address(config.shipFrom);
-    this.shipmentDateTime = assert.type.date(config.shipmentDateTime, "shipment date/time");
+    this.shipDateTime = assert.type.date(config.shipDateTime, "shipment date/time");
     this.nonDeliveryAction = assert.string.enum(config.nonDeliveryAction, NonDeliveryAction, "non-delivery action");
     this.insuranceProvider = assert.string.enum(
         config.insuranceProvider, InsuranceProvider, "insurance provider", InsuranceProvider.Carrier);
@@ -218,7 +218,7 @@ export class Shipment extends NewShipment {
  * Calculates the total insurance amount for the shipment,
  * which is the sum of the insured value of all packages.
  */
-function calculateTotalInsuranceAmount(packages: NewPackage[]): MonetaryValue {
+function calculateTotalInsuranceAmount(packages: ReadonlyArray<NewPackage>): MonetaryValue {
   let currencies = new Set<Currency>();
   let total = currency(0);
 

@@ -15,7 +15,7 @@ export class SalesOrderIdentifier {
   /**
    * Alternative identifiers associated with this sales order
    */
-  public readonly identifiers: Identifier[];
+  public readonly identifiers: ReadonlyArray<Identifier>;
 
   public constructor(config: SalesOrderIdentifierConfig) {
     assert.type.object(config, "sales order");

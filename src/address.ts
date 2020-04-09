@@ -33,7 +33,7 @@ export class ContactInfo {
  */
 export class Address extends ContactInfo {
   public readonly company?: string;
-  public readonly addressLines: string[];
+  public readonly addressLines: ReadonlyArray<string>;
   public readonly cityLocality: string;
   public readonly stateProvince: string;
   public readonly postalCode: string;

@@ -23,7 +23,7 @@ export class ShipmentIdentifier {
   /**
    * Alternative identifiers associated with this shipment
    */
-  public readonly identifiers: Identifier[];
+  public readonly identifiers: ReadonlyArray<Identifier>;
 
   public constructor(config: ShipmentIdentifierConfig) {
     assert.type.object(config, "shipment");
@@ -140,7 +140,7 @@ export class NewShipment {
   /**
    * The list of packages in the shipment
    */
-  public readonly packages: NewPackage[];
+  public readonly packages: ReadonlyArray<NewPackage>;
 
   public constructor(app: ShippingProviderApp, config: NewShipmentConfig) {
     assert.type.object(config, "shipment");
@@ -199,12 +199,12 @@ export class Shipment extends NewShipment {
   /**
    * Alternative identifiers associated with this shipment
    */
-  public readonly identifiers!: Identifier[];
+  public readonly identifiers!: ReadonlyArray<Identifier>;
 
   /**
    * The list of packages in the shipment
    */
-  public readonly packages: Package[];
+  public readonly packages: ReadonlyArray<Package>;
 
   public constructor(app: ShippingProviderApp, config: ShipmentConfig) {
     super(app, config);

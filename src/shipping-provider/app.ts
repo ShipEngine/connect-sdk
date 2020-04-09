@@ -61,12 +61,12 @@ export class ShippingProviderApp extends App {
   /**
    * The delivery services that are offered
    */
-  public readonly deliveryServices: DeliveryService[];
+  public readonly deliveryServices: ReadonlyArray<DeliveryService>;
 
   /**
    * The package pickup services that are offered
    */
-  public readonly pickupServices: PickupService[];
+  public readonly pickupServices: ReadonlyArray<PickupService>;
 
   /**
    * A form that allows the user to enter their login credentials

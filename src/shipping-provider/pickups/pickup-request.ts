@@ -38,7 +38,7 @@ export class PickupRequest {
   /**
    * The shipments to be picked up
    */
-  public readonly shipments: Shipment[];
+  public readonly shipments: ReadonlyArray<Shipment>;
 
   /**
    * Creates a PickupRequest from a config object

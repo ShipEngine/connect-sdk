@@ -19,7 +19,7 @@ export class PackageIdentifier {
   /**
    * Alternative identifiers associated with this package
    */
-  public readonly identifiers: Identifier[];
+  public readonly identifiers: ReadonlyArray<Identifier>;
 
   public constructor(config: PackageIdentifierConfig) {
     assert.type.object(config, "package");
@@ -72,12 +72,12 @@ export class NewPackage {
    * The exact location on the label depends on the carrier. Some carriers
    * may limit the number of allowed label messages, or not support them at all.
    */
-  public readonly labelMessages: string[];
+  public readonly labelMessages: ReadonlyArray<string>;
 
   /**
    * Describes the items inside the package
    */
-  public readonly contents: PackageItem[];
+  public readonly contents: ReadonlyArray<PackageItem>;
 
   public constructor(app: ShippingProviderApp, config: NewPackageConfig) {
     assert.type.object(config, "package");
@@ -113,7 +113,7 @@ export class Package extends NewPackage {
   /**
    * Alternative identifiers associated with this package
    */
-  public readonly identifiers!: Identifier[];
+  public readonly identifiers!: ReadonlyArray<Identifier>;
 
   public constructor(app: ShippingProviderApp, config: PackageConfig) {
     super(app, config);

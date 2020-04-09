@@ -25,7 +25,7 @@ export class PickupCancellation {
   /**
    * Alternative identifiers associated with this confirmation
    */
-  public readonly identifiers: Identifier[];
+  public readonly identifiers: ReadonlyArray<Identifier>;
 
   /**
    * The reason for the cancellation
@@ -50,12 +50,12 @@ export class PickupCancellation {
   /**
    * A list of dates and times when the carrier intended to pickup
    */
-  public readonly timeWindows: TimeRange[];
+  public readonly timeWindows: ReadonlyArray<TimeRange>;
 
   /**
    * The shipments to be picked up
    */
-  public readonly shipments: Shipment[];
+  public readonly shipments: ReadonlyArray<Shipment>;
 
   /**
    * Arbitrary data that was returned when the pickup was originally confirmed.

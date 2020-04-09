@@ -16,17 +16,17 @@ export class PickupConfirmation {
   /**
    * Alternative identifiers associated with this confirmation
    */
-  public readonly identifiers: Identifier[];
+  public readonly identifiers: ReadonlyArray<Identifier>;
 
   /**
    * The shipments to be picked-up
    */
-  public readonly shipments: ShipmentIdentifier[];
+  public readonly shipments: ReadonlyArray<ShipmentIdentifier>;
 
   /**
    * A list of dates and times when the carrier intends to be available to pickup
    */
-  public readonly timeWindows: TimeRange[];
+  public readonly timeWindows: ReadonlyArray<TimeRange>;
 
   /**
    * Additional information about the pickup confirmation

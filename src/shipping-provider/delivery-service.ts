@@ -42,12 +42,12 @@ export class DeliveryService {
   /**
    * The countries that can be shipped from using this service
    */
-  public readonly originCountries: Country[];
+  public readonly originCountries: ReadonlyArray<Country>;
 
   /**
    * The countries that can be shipped to using this service
    */
-  public readonly destinationCountries: Country[];
+  public readonly destinationCountries: ReadonlyArray<Country>;
 
   /**
    * The carrier that provides this service
@@ -57,22 +57,22 @@ export class DeliveryService {
   /**
    * The types of packaging that are provided/allowed for this service
    */
-  public readonly packaging: Packaging[];
+  public readonly packaging: ReadonlyArray<Packaging>;
 
   /**
    * The types of package delivery confirmations offered for this service
    */
-  public readonly deliveryConfirmations: DeliveryConfirmation[];
+  public readonly deliveryConfirmations: ReadonlyArray<DeliveryConfirmation>;
 
   /**
    * The label formats that are offered for this service
    */
-  public readonly labelFormats: LabelFormat[];
+  public readonly labelFormats: ReadonlyArray<LabelFormat>;
 
   /**
    * The label dimensions that are used for this service
    */
-  public readonly labelSizes: LabelSize[];
+  public readonly labelSizes: ReadonlyArray<LabelSize>;
 
   /**
    * TODO: Does this mean that the service is ONLY for return shipping? Or that it ALSO supports return shipping?

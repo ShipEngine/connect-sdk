@@ -30,12 +30,12 @@ export class LabelConfirmation {
    * If the carrier does not provide a detailed breakdown, then just use a single
    * charge of type "shipping".
    */
-  public readonly charges: ShippingCharge[];
+  public readonly charges: ReadonlyArray<ShippingCharge>;
 
   /**
    * The shipping labels that were created
    */
-  public readonly labels: Label[];
+  public readonly labels: ReadonlyArray<Label>;
 
   /**
    * Creates a LabelConfirmation from a config object

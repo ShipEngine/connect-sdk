@@ -18,7 +18,7 @@ export class PackageItem {
   /**
    * Alternative identifiers associated with this item
    */
-  public readonly identifiers: Identifier[];
+  public readonly identifiers: ReadonlyArray<Identifier>;
 
   /**
    * A description of the item. Often used for customs declarations.

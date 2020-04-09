@@ -1,6 +1,7 @@
 import { Country } from "../countries";
 import { BilledParty, InsuranceProvider, NonDeliveryAction } from "../enums";
 import { Identifier, UUID } from "../types";
+import { AddressConfig } from "./address-config";
 import { NewPackageConfig, PackageConfig } from "./package-config";
 
 /**
@@ -43,6 +44,21 @@ export interface NewShipmentConfig {
   deliveryConfirmationID?: UUID;
 
   /**
+   * The sender's contact info and address
+   */
+  shipFrom: AddressConfig;
+
+  /**
+   * The recipient's contact info and address
+   */
+  shipTo: AddressConfig;
+
+  /**
+   * The return address. Defautls to the `shipFrom` address
+   */
+  returnTo?: AddressConfig;
+
+  /**
    * The date/time that the package is expected to ship.
    * This is not guaranteed to be in the future.
    */
@@ -62,6 +78,17 @@ export interface NewShipmentConfig {
    * Which party will be insuring the shipment. Defaults to carrier-provided insurance.
    */
   insuranceProvider?: InsuranceProvider;
+
+  /**
+   * The original (outgoing) shipment that this return shipment is for.
+   * This associates the two shipments, which is required by some carriers.
+   */
+  outboundShipment?: ShipmentIdentifierConfig;
+
+  /**
+   * Indicates whether this is a return shipment
+   */
+  isReturn?: boolean;
 
   /**
    * Billing details. If `undefined`, then the sender is billed for all shipping costs.
@@ -91,24 +118,6 @@ export interface NewShipmentConfig {
      * The country of the third-party that is responsible for shipping costs
      */
     country?: Country;
-  };
-
-  /**
-   * Information that is specific to return shipments.
-   * If `undefined`, then the shipment is not a return.
-   */
-  return?: {
-    /**
-     * The original (outgoing) shipment that this return shipment is for.
-     * This associates the two shipments, which is required by some carriers.
-     * This field is `undefined` if the outbound shipment was not specified.
-     */
-    outboundShipment?: ShipmentIdentifierConfig;
-
-    /**
-     * The Return Merchandise Authorization number, if any.
-     */
-    rmaNumber?: string;
   };
 
   /**

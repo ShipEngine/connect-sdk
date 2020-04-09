@@ -1,6 +1,7 @@
 // tslint:disable: max-classes-per-file
 import humanize from "@jsdevtools/humanize-anything";
 import * as currency from "currency.js";
+import { Address } from "./address";
 import { assert } from "./assert";
 import { NewShipmentConfig, PackageConfig, ShipmentConfig, ShipmentIdentifierConfig } from "./config";
 import { Country } from "./countries";
@@ -50,6 +51,21 @@ export class NewShipment {
   public readonly deliveryConfirmation?: DeliveryConfirmation;
 
   /**
+   * The sender's contact info and address
+   */
+  public readonly shipFrom: Address;
+
+  /**
+   * The recipient's contact info and address
+   */
+  public readonly shipTo: Address;
+
+  /**
+   * The return address. Defautls to the `shipFrom` address
+   */
+  public readonly returnTo: Address;
+
+  /**
    * The date/time that the package is expected to ship.
    * This is not guaranteed to be in the future.
    */
@@ -61,28 +77,35 @@ export class NewShipment {
   public readonly nonDeliveryAction: NonDeliveryAction;
 
   /**
+   * Which party will be insuring the shipment
+   */
+  public readonly insuranceProvider: InsuranceProvider;
+
+  /**
+   * The total insured value of all packages in the shipment
+   */
+  public readonly totalInsuredValue: MonetaryValue;
+
+  /**
+   * The original (outgoing) shipment that this return shipment is for.
+   * This associates the two shipments, which is required by some carriers.
+   * This field is `undefined` if this is not a return shipment, or if no
+   * outbound shipment was specified.
+   */
+  public readonly outboundShipment?: ShipmentIdentifier;
+
+  /**
+   * Indicates whether this is a return shipment
+   */
+  public readonly isReturn: boolean;
+
+  /**
    * Indicates whether the shipment cannot be processed automatically due to size, shape, weight, etc.
    * and requires manual handling.
    */
   public get isNonMachineable(): boolean {
     return this.packages.some((pkg) => pkg.isNonMachineable);
   }
-
-  /**
-   * Information about the insurance for the shipment.
-   */
-  public readonly insurance: {
-    /**
-     * Which party will be insuring the shipment
-     */
-    readonly provider: InsuranceProvider;
-
-    /**
-     * The total insured value of the shipment.
-     * This is the sum of the insured value of each package.
-     */
-    readonly amount: MonetaryValue;
-  };
 
   /**
    * Billing details.
@@ -115,24 +138,6 @@ export class NewShipment {
   };
 
   /**
-   * Information that is specific to return shipments.
-   * If `undefined`, then the shipment is not a return.
-   */
-  public readonly return?: {
-    /**
-     * The original (outgoing) shipment that this return shipment is for.
-     * This associates the two shipments, which is required by some carriers.
-     * This field is `undefined` if the outbound shipment was not specified.
-     */
-    readonly outboundShipment?: ShipmentIdentifier;
-
-    /**
-     * The Return Merchandise Authorization number, if any.
-     */
-    readonly rmaNumber?: string;
-  };
-
-  /**
    * The list of packages in the shipment
    */
   public readonly packages: NewPackage[];
@@ -142,8 +147,15 @@ export class NewShipment {
     this.deliveryService = app.getDeliveryService(config.deliveryServiceID);
     this.deliveryConfirmation = config.deliveryConfirmationID === undefined ? undefined
       : app.getDeliveryConfirmation(config.deliveryConfirmationID);
+    this.shipFrom = new Address(config.shipFrom);
+    this.shipTo = new Address(config.shipTo);
+    this.returnTo = config.returnTo ? new Address(config.returnTo) : new Address(config.shipFrom);
     this.shipmentDateTime = assert.type.date(config.shipmentDateTime, "shipment date/time");
     this.nonDeliveryAction = assert.string.enum(config.nonDeliveryAction, NonDeliveryAction, "non-delivery action");
+    this.insuranceProvider = assert.string.enum(
+        config.insuranceProvider, InsuranceProvider, "insurance provider", InsuranceProvider.Carrier);
+    this.outboundShipment = config.outboundShipment && new ShipmentIdentifier(config.outboundShipment);
+    this.isReturn = assert.type.boolean(config.isReturn, "isReturn flag", false);
 
     // If there is no billing info, then the sender is billed by default.
     // If billing a third-party, then account, postalCode, and country are required.
@@ -162,29 +174,15 @@ export class NewShipment {
         ? assert.string.enum(billing.country, Country, "billing country") : undefined,
     };
 
-    if (config.return) {
-      assert.type.object(config.return, "return info");
-      this.return = {
-        outboundShipment: config.return.outboundShipment && new ShipmentIdentifier(config.return.outboundShipment),
-        rmaNumber: config.return.rmaNumber && assert.string.nonWhitespace(config.return.rmaNumber, "RMA number"),
-      };
-    }
-
     this.packages = assert.array.nonEmpty(config.packages, "packages")
       .map((parcel: PackageConfig) => new NewPackage(app, parcel));
 
-    this.insurance = {
-      provider: assert.string.enum(
-        config.insuranceProvider, InsuranceProvider, "insurance provider", InsuranceProvider.Carrier),
-
-      amount: calculateTotalInsuranceAmount(this.packages),
-    };
+    // NOTE: This must be calculated AFTER setting the packages property
+    this.totalInsuredValue = calculateTotalInsuranceAmount(this.packages);
 
     // Prevent modifications after validation
     Object.freeze(this);
-    Object.freeze(this.insurance);
     Object.freeze(this.billing);
-    Object.freeze(this.return);
     Object.freeze(this.packages);
   }
 }

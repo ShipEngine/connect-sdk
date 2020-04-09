@@ -16,6 +16,8 @@ export * from "./pickup-cancellation-confirmation-config";
 export * from "./pickup-confirmation-config";
 export * from "./pickup-request-config";
 export * from "./pickup-service-config";
+export * from "./rate-config";
+export * from "./rate-criteria-config";
 export * from "./sales-order-config";
 export * from "./shipment-config";
 export * from "./shipping-charge-config";

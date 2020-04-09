@@ -1,4 +1,5 @@
 export * from "./address";
+export * from "./app";
 export * from "./config";
 export * from "./countries";
 export * from "./enums";

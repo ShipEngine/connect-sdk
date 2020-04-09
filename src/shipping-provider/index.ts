@@ -16,3 +16,4 @@ export * from "./pickups/pickup-cancellation-confirmation";
 export * from "./pickups/pickup-confirmation";
 export * from "./pickups/pickup-request";
 export * from "./pickups/time-range";
+export * from "./rates/rate-criteria";

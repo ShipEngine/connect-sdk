@@ -1,6 +1,6 @@
 ShipEngine IPaaS SDK
 ==============================================
-### The official SDK for building a ShipEngine IPaaS app
+### The official SDK for building ShipEngine IPaaS apps
 
 [![Cross-Platform Compatibility](https://shipengine.github.io/img/badges/os-badges.svg)](https://github.com/ShipEngine/shipengine-ipaas/blob/master/.github/workflows/CI-CD.yaml)
 [![Build Status](https://github.com/ShipEngine/shipengine-ipaas/workflows/CI-CD/badge.svg)](https://github.com/ShipEngine/shipengine-ipaas/blob/master/.github/workflows/CI-CD.yaml)
@@ -13,35 +13,5 @@ ShipEngine IPaaS SDK
 
 
 
-Features
---------------------------
-- Feature 1
-- Feature 2
-- Feature 3
-
-
-
-Example
---------------------------
-
-```javascript
-import XXXXXXX from "@shipengine/ipaas";
-
-// TODO: Add a usage example here
-```
-
-
-
-Installation
---------------------------
-You can install ShipEngine IPaaS SDK via [npm](https://docs.npmjs.com/about-npm/).
-
-```bash
-npm install @shipengine/ipaas
-```
-
-
-
-Usage
---------------------------
-TODO: Document the library's API and usage
+# 🚧 UNDER CONSTRUCTION 🚧
+### This SDK is still being developed and is <u><big>not ready for public use</big></u> yet.

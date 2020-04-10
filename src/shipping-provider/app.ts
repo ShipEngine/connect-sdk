@@ -42,6 +42,12 @@ export class ShippingProviderApp extends App {
   private readonly _createManifest: CreateManifest | undefined;
 
   /**
+   * A UUID that uniquely identifies the shipping provider.
+   * This ID should never change, even if the provider name changes.
+   */
+  public readonly id: UUID;
+
+  /**
    * The user-friendly provider name (e.g. "Stamps.com", "FirstMile")
    */
   public readonly name: string;
@@ -155,6 +161,7 @@ export class ShippingProviderApp extends App {
   public constructor(manifest: AppManifest, config: ShippingProviderConfig) {
     super(manifest);
     assert.type.object(config, "ShipEngine IPaaS app");
+    this.id = assert.string.uuid(config.id, "provider ID");
     this.name = assert.string.nonWhitespace(config.name, "shipping provider name");
     this.description = assert.string(config.description, "shipping provider description", "");
     this.websiteURL = new URL(assert.string.nonWhitespace(config.websiteURL, "websiteURL"));

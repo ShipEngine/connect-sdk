@@ -1,6 +1,6 @@
 import { CancelPickup, CreateLabel, CreateManifest, GetRates, GetTrackingUrl, RequestPickup, Track, VoidLabel } from "../shipping-provider";
 import { Login } from "../shipping-provider/methods";
-import { InlineOrReference, InlineOrReferenceArray, UrlString } from "../types";
+import { InlineOrReference, InlineOrReferenceArray, UrlString, UUID } from "../types";
 import { DeliveryServiceConfig } from "./delivery-service-config";
 import { FormConfig } from "./form-config";
 import { LogoConfig } from "./logo-config";
@@ -14,6 +14,12 @@ export interface ShippingProviderConfig {
    * Indicates that this is a ShipEngine IPaaS shipping provider app.
    */
   type: "shipping_provider";
+
+  /**
+   * A UUID that uniquely identifies the shipping provider.
+   * This ID should never change, even if the provider name changes.
+   */
+  id: UUID;
 
   /**
    * The user-friendly provider name (e.g. "Stamps.com", "FirstMile")

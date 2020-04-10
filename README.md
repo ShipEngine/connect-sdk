@@ -1,6 +1,6 @@
 ShipEngine IPaaS SDK
 ==============================================
-### The official SDK for building ShipEngine IPaaS apps
+### The official SDK for building [**ShipEngine IPaaS apps**](https://www.shipengine.com/docs/ipaas/)
 
 [![Cross-Platform Compatibility](https://shipengine.github.io/img/badges/os-badges.svg)](https://github.com/ShipEngine/shipengine-ipaas/blob/master/.github/workflows/CI-CD.yaml)
 [![Build Status](https://github.com/ShipEngine/shipengine-ipaas/workflows/CI-CD/badge.svg)](https://github.com/ShipEngine/shipengine-ipaas/blob/master/.github/workflows/CI-CD.yaml)

@@ -1,7 +1,7 @@
 import { ono } from "@jsdevtools/ono";
 import { App, AppManifest } from "../app";
 import { assert } from "../assert";
-import { DeliveryServiceConfig, FormConfig, LabelSpecConfig, LogoConfig, PickupCancellationConfig, PickupRequestConfig, PickupServiceConfig, ShippingProviderConfig, TransactionConfig } from "../config";
+import { DeliveryServiceConfig, FormConfig, LabelSpecConfig, LogoConfig, PickupCancellationConfig, PickupRequestConfig, PickupServiceConfig, RateCriteriaConfig, ShippingProviderConfig, TransactionConfig } from "../config";
 import { Country } from "../countries";
 import { ServiceArea } from "../enums";
 import { Form } from "../form";
@@ -19,6 +19,8 @@ import { PickupCancellation } from "./pickups/pickup-cancellation";
 import { PickupCancellationConfirmation } from "./pickups/pickup-cancellation-confirmation";
 import { PickupConfirmation } from "./pickups/pickup-confirmation";
 import { PickupRequest } from "./pickups/pickup-request";
+import { RateCriteria } from "./rates/rate-criteria";
+import { RateQuote } from "./rates/rate-quote";
 
 /**
  * A ShipEngine IPaaS shipping provider app.
@@ -295,10 +297,14 @@ export class ShippingProviderApp extends App {
   /**
    * Gets shipping rates for a shipment
    */
-  public async getRates?(transaction: TransactionConfig): Promise<unknown> {
+  public async getRates?(transaction: TransactionConfig, criteria: RateCriteriaConfig): Promise<RateQuote> {
     try {
-      // TODO: NOT IMPLEMENTED YET
-      return await Promise.resolve(undefined);
+      let quote = await this.#getRates!(
+        new Transaction(transaction),
+        new RateCriteria(this, criteria),
+      );
+
+      return new RateQuote(this, quote);
     }
     catch (error) {
       throw ono(error, { transactionID: transaction.id }, `Error in getRates method.`);

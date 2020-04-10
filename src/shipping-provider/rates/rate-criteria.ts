@@ -1,5 +1,5 @@
 import { assert } from "../../assert";
-import { NewShipmentConfig } from "../../config";
+import { RateCriteriaConfig } from "../../config";
 import { NewShipment } from "../../shipment";
 import { ShippingProviderApp } from "../app";
 
@@ -15,9 +15,9 @@ export class RateCriteria {
   /**
    * Creates a RateCriteria object from a config object
    */
-  public constructor(app: ShippingProviderApp, config: NewShipmentConfig) {
+  public constructor(app: ShippingProviderApp, config: RateCriteriaConfig) {
     assert.type.object(config, "rate criteria");
-    this.shipment = new NewShipment(app, config);
+    this.shipment = new NewShipment(app, config.shipment);
 
     // Prevent modifications after validation
     Object.freeze(this);

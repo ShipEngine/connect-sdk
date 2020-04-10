@@ -1,4 +1,4 @@
-import { PickupCancellationConfirmationConfig, PickupConfirmationConfig } from "../config";
+import { PickupCancellationConfirmationConfig, PickupConfirmationConfig, RateQuoteConfig } from "../config";
 import { LabelConfirmationConfig } from "../config/label-confirmation-config";
 import { Shipment } from "../shipment";
 import { Transaction } from "../transaction";
@@ -41,7 +41,7 @@ export type VoidLabel = (transaction: Transaction, params: unknown) => void | Pr
 /**
  * Gets shipping rates for a shipment
  */
-export type GetRates = (transaction: Transaction, criteria: RateCriteria) => void | Promise<void>;
+export type GetRates = (transaction: Transaction, criteria: RateCriteria) => RateQuoteConfig | Promise<RateQuoteConfig>;
 
 /**
  * Returns the web page URL where a customer can track a shipment

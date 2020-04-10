@@ -30,15 +30,15 @@ export class ShippingProviderApp extends App {
 
   // Store the user-defined methods as private fields.
   // We wrap these methods with our own signatures below
-  readonly #login: Login | undefined;                          // tslint:disable-line: member-access
-  readonly #requestPickup: RequestPickup | undefined;          // tslint:disable-line: member-access
-  readonly #cancelPickup: CancelPickup | undefined;            // tslint:disable-line: member-access
-  readonly #createLabel: CreateLabel | undefined;              // tslint:disable-line: member-access
-  readonly #voidLabel: VoidLabel | undefined;                  // tslint:disable-line: member-access
-  readonly #getRates: GetRates | undefined;                    // tslint:disable-line: member-access
-  readonly #getTrackingUrl: GetTrackingUrl | undefined;        // tslint:disable-line: member-access
-  readonly #track: Track | undefined;                          // tslint:disable-line: member-access
-  readonly #createManifest: CreateManifest | undefined;        // tslint:disable-line: member-access
+  private readonly _login: Login | undefined;
+  private readonly _requestPickup: RequestPickup | undefined;
+  private readonly _cancelPickup: CancelPickup | undefined;
+  private readonly _createLabel: CreateLabel | undefined;
+  private readonly _voidLabel: VoidLabel | undefined;
+  private readonly _getRates: GetRates | undefined;
+  private readonly _getTrackingUrl: GetTrackingUrl | undefined;
+  private readonly _track: Track | undefined;
+  private readonly _createManifest: CreateManifest | undefined;
 
   /**
    * The user-friendly provider name (e.g. "Stamps.com", "FirstMile")
@@ -168,39 +168,39 @@ export class ShippingProviderApp extends App {
     // Store any user-defined methods as private fields.
     // For any methods that aren't implemented, set the corresponding class method to undefined.
     config.login
-      ? (this.#login = assert.type.function(config.login as Login, "login method"))
+      ? (this._login = assert.type.function(config.login as Login, "login method"))
       : (this.login = undefined);
 
     config.requestPickup
-      ? (this.#requestPickup = assert.type.function(config.requestPickup as RequestPickup, "requestPickup method"))
+      ? (this._requestPickup = assert.type.function(config.requestPickup as RequestPickup, "requestPickup method"))
       : (this.requestPickup = undefined);
 
     config.cancelPickup
-      ? (this.#cancelPickup = assert.type.function(config.cancelPickup as CancelPickup, "cancelPickup method"))
+      ? (this._cancelPickup = assert.type.function(config.cancelPickup as CancelPickup, "cancelPickup method"))
       : (this.cancelPickup = undefined);
 
     config.createLabel
-      ? (this.#createLabel = assert.type.function(config.createLabel as CreateLabel, "createLabel method"))
+      ? (this._createLabel = assert.type.function(config.createLabel as CreateLabel, "createLabel method"))
       : (this.createLabel = undefined);
 
     config.voidLabel
-      ? (this.#voidLabel = assert.type.function(config.voidLabel as VoidLabel, "voidLabel method"))
+      ? (this._voidLabel = assert.type.function(config.voidLabel as VoidLabel, "voidLabel method"))
       : (this.voidLabel = undefined);
 
     config.getRates
-      ? (this.#getRates = assert.type.function(config.getRates as GetRates, "getRates method"))
+      ? (this._getRates = assert.type.function(config.getRates as GetRates, "getRates method"))
       : (this.getRates = undefined);
 
     config.getTrackingUrl
-      ? (this.#getTrackingUrl = assert.type.function(config.getTrackingUrl as GetTrackingUrl, "getTrackingUrl method"))
+      ? (this._getTrackingUrl = assert.type.function(config.getTrackingUrl as GetTrackingUrl, "getTrackingUrl method"))
       : (this.getTrackingUrl = undefined);
 
     config.track
-      ? (this.#track = assert.type.function(config.track as Track, "track method"))
+      ? (this._track = assert.type.function(config.track as Track, "track method"))
       : (this.track = undefined);
 
     config.createManifest
-      ? (this.#createManifest = assert.type.function(config.createManifest as CreateManifest, "createManifest method"))
+      ? (this._createManifest = assert.type.function(config.createManifest as CreateManifest, "createManifest method"))
       : (this.createManifest = undefined);
 
     // Prevent modifications after validation
@@ -219,7 +219,7 @@ export class ShippingProviderApp extends App {
    */
   public async login?(transaction: TransactionConfig): Promise<void> {
     try {
-      await this.#login!(new Transaction(transaction));
+      await this._login!(new Transaction(transaction));
     }
     catch (error) {
       throw ono(error, { transactionID: transaction.id }, `Error in login method.`);
@@ -232,7 +232,7 @@ export class ShippingProviderApp extends App {
   public async requestPickup?(transaction: TransactionConfig, request: PickupRequestConfig)
     : Promise<PickupConfirmation> {
     try {
-      let confirmation = await this.#requestPickup!(
+      let confirmation = await this._requestPickup!(
         new Transaction(transaction),
         new PickupRequest(this, request),
       );
@@ -251,7 +251,7 @@ export class ShippingProviderApp extends App {
   public async cancelPickup?(transaction: TransactionConfig, cancellation: PickupCancellationConfig)
     : Promise<PickupCancellationConfirmation> {
     try {
-      let confirmation = await this.#cancelPickup!(
+      let confirmation = await this._cancelPickup!(
         new Transaction(transaction),
         new PickupCancellation(this, cancellation),
       );
@@ -269,7 +269,7 @@ export class ShippingProviderApp extends App {
    */
   public async createLabel?(transaction: TransactionConfig, label: LabelSpecConfig): Promise<LabelConfirmation> {
     try {
-      let confirmation = await this.#createLabel!(
+      let confirmation = await this._createLabel!(
         new Transaction(transaction),
         new LabelSpec(this, label),
       );
@@ -299,7 +299,7 @@ export class ShippingProviderApp extends App {
    */
   public async getRates?(transaction: TransactionConfig, criteria: RateCriteriaConfig): Promise<RateQuote> {
     try {
-      let quote = await this.#getRates!(
+      let quote = await this._getRates!(
         new Transaction(transaction),
         new RateCriteria(this, criteria),
       );

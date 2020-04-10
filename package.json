@@ -40,7 +40,7 @@
     "release": "npm run upgrade && npm run clean && npm run build && npm test && npm run bump"
   },
   "engines": {
-    "node": ">=12"
+    "node": ">=10"
   },
   "engineStrict": true,
   "devDependencies": {

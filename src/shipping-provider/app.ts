@@ -1,5 +1,6 @@
 import { ono } from "@jsdevtools/ono";
-import { App, AppManifest } from "../app";
+import { App } from "../app";
+import { AppManifest } from "../app-manifest";
 import { assert } from "../assert";
 import { DeliveryServiceConfig, FormConfig, LabelSpecConfig, LogoConfig, PickupCancellationConfig, PickupRequestConfig, PickupServiceConfig, RateCriteriaConfig, ShippingProviderConfig, TransactionConfig } from "../config";
 import { Country } from "../countries";

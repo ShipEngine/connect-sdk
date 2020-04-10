@@ -1,19 +1,8 @@
+import { AppManifest } from "./app-manifest";
 import { assert } from "./assert";
 
 const versionNumberPattern = /^\d+\.\d+\.\d+/;
 versionNumberPattern.example = "1.23.456";
-
-/**
- * A ShipEngine IPaaS app manifest (package.json file)
- */
-export interface AppManifest {
-  name?: string;
-  description?: string;
-  version?: string;
-  dependencies?: Record<string, string>;
-  devDependencies?: Record<string, string>;
-  [key: string]: unknown;
-}
 
 /**
  * A ShipEngine IPaaS app

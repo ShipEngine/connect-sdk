@@ -159,8 +159,9 @@ export class DeliveryService {
     this.allowsMultiplePackages =
       assert.type.boolean(config.allowsMultiplePackages, "allowsMultiplePackages flag", false);
     this.hasTracking = assert.type.boolean(config.hasTracking, "hasTracking flag", false);
-    this.requiresManifest = config.requiresManifest === false ? false
-      : assert.string.enum(config.requiresManifest, ManifestType, "requiresManifest value");
+    this.requiresManifest = config.requiresManifest
+      ? assert.string.enum(config.requiresManifest, ManifestType, "requiresManifest value")
+      : false;
 
     // Prevent modifications after validation
     Object.freeze(this);

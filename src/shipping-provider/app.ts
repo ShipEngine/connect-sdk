@@ -226,11 +226,13 @@ export class ShippingProviderApp extends App {
    * NOTE: This function does not return a value. It updates the `transaction.session` property.
    */
   public async login?(transaction: TransactionConfig): Promise<void> {
+    let _transaction = new Transaction(transaction);
+
     try {
-      await this._login!(new Transaction(transaction));
+      await this._login!(_transaction);
     }
     catch (error) {
-      throw ono(error, { transactionID: transaction.id }, `Error in login method.`);
+      throw ono(error, { transactionID: _transaction.id }, `Error in login method.`);
     }
   }
 
@@ -239,17 +241,16 @@ export class ShippingProviderApp extends App {
    */
   public async requestPickup?(transaction: TransactionConfig, request: PickupRequestConfig)
     : Promise<PickupConfirmation> {
-    try {
-      let confirmation = await this._requestPickup!(
-        new Transaction(transaction),
-        new PickupRequest(this, request),
-      );
+    let _transaction = new Transaction(transaction);
+    let _request = new PickupRequest(this, request);
 
+    try {
+      let confirmation = await this._requestPickup!(_transaction, _request);
       confirmation.shipments = confirmation.shipments || request.shipments;
       return new PickupConfirmation(confirmation);
     }
     catch (error) {
-      throw ono(error, { transactionID: transaction.id }, `Error in requestPickup method.`);
+      throw ono(error, { transactionID: _transaction.id }, `Error in requestPickup method.`);
     }
   }
 
@@ -258,17 +259,16 @@ export class ShippingProviderApp extends App {
    */
   public async cancelPickup?(transaction: TransactionConfig, cancellation: PickupCancellationConfig)
     : Promise<PickupCancellationConfirmation> {
-    try {
-      let confirmation = await this._cancelPickup!(
-        new Transaction(transaction),
-        new PickupCancellation(this, cancellation),
-      );
+    let _transaction = new Transaction(transaction);
+    let _cancellation = new PickupCancellation(this, cancellation);
 
+    try {
+      let confirmation = await this._cancelPickup!(_transaction, _cancellation);
       confirmation = confirmation || { successful: true };
       return new PickupCancellationConfirmation(confirmation);
     }
     catch (error) {
-      throw ono(error, { transactionID: transaction.id }, `Error in cancelPickup method.`);
+      throw ono(error, { transactionID: _transaction.id }, `Error in cancelPickup method.`);
     }
   }
 
@@ -276,16 +276,15 @@ export class ShippingProviderApp extends App {
    * Creates a shipping label
    */
   public async createLabel?(transaction: TransactionConfig, label: LabelSpecConfig): Promise<LabelConfirmation> {
-    try {
-      let confirmation = await this._createLabel!(
-        new Transaction(transaction),
-        new LabelSpec(this, label),
-      );
+    let _transaction = new Transaction(transaction);
+    let _label = new LabelSpec(this, label);
 
+    try {
+      let confirmation = await this._createLabel!(_transaction, _label);
       return new LabelConfirmation(confirmation);
     }
     catch (error) {
-      throw ono(error, { transactionID: transaction.id }, `Error in createLabel method.`);
+      throw ono(error, { transactionID: _transaction.id }, `Error in createLabel method.`);
     }
   }
 
@@ -293,12 +292,14 @@ export class ShippingProviderApp extends App {
    * Voids a previously-created shipping label
    */
   public async voidLabel?(transaction: TransactionConfig): Promise<unknown> {
+    let _transaction = new Transaction(transaction);
+
     try {
       // TODO: NOT IMPLEMENTED YET
       return await Promise.resolve(undefined);
     }
     catch (error) {
-      throw ono(error, { transactionID: transaction.id }, `Error in voidLabel method.`);
+      throw ono(error, { transactionID: _transaction.id }, `Error in voidLabel method.`);
     }
   }
 
@@ -306,16 +307,15 @@ export class ShippingProviderApp extends App {
    * Gets shipping rates for a shipment
    */
   public async getRates?(transaction: TransactionConfig, criteria: RateCriteriaConfig): Promise<RateQuote> {
-    try {
-      let quote = await this._getRates!(
-        new Transaction(transaction),
-        new RateCriteria(this, criteria),
-      );
+    let _transaction = new Transaction(transaction);
+    let _criteria = new RateCriteria(this, criteria);
 
+    try {
+      let quote = await this._getRates!(_transaction, _criteria);
       return new RateQuote(this, quote);
     }
     catch (error) {
-      throw ono(error, { transactionID: transaction.id }, `Error in getRates method.`);
+      throw ono(error, { transactionID: _transaction.id }, `Error in getRates method.`);
     }
   }
 
@@ -323,12 +323,14 @@ export class ShippingProviderApp extends App {
    * Returns the web page URL where a customer can track a shipment
    */
   public async getTrackingUrl?(transaction: TransactionConfig): Promise<unknown> {
+    let _transaction = new Transaction(transaction);
+
     try {
       // TODO: NOT IMPLEMENTED YET
       return await Promise.resolve(undefined);
     }
     catch (error) {
-      throw ono(error, { transactionID: transaction.id }, `Error in getTrackingUrl method.`);
+      throw ono(error, { transactionID: _transaction.id }, `Error in getTrackingUrl method.`);
     }
   }
 
@@ -336,12 +338,14 @@ export class ShippingProviderApp extends App {
    * Returns tracking details for a shipment
    */
   public async track?(transaction: TransactionConfig): Promise<unknown> {
+    let _transaction = new Transaction(transaction);
+
     try {
       // TODO: NOT IMPLEMENTED YET
       return await Promise.resolve(undefined);
     }
     catch (error) {
-      throw ono(error, { transactionID: transaction.id }, `Error in track method.`);
+      throw ono(error, { transactionID: _transaction.id }, `Error in track method.`);
     }
   }
 
@@ -349,12 +353,14 @@ export class ShippingProviderApp extends App {
    * Creates a manifest for multiple shipments
    */
   public async createManifest?(transaction: TransactionConfig): Promise<unknown> {
+    let _transaction = new Transaction(transaction);
+
     try {
       // TODO: NOT IMPLEMENTED YET
       return await Promise.resolve(undefined);
     }
     catch (error) {
-      throw ono(error, { transactionID: transaction.id }, `Error in createManifest method.`);
+      throw ono(error, { transactionID: _transaction.id }, `Error in createManifest method.`);
     }
   }
 

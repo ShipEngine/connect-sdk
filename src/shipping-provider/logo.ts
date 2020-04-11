@@ -1,6 +1,5 @@
 import { assert } from "../assert";
 import { LogoConfig } from "../config";
-import { InlineOrReference } from "../types";
 
 /**
  * Logo images
@@ -32,7 +31,7 @@ export class Logo {
 /**
  * Validates and sanitizes an SVG image
  */
-function validateSVG(svg: InlineOrReference<string>, blackAndWhite = false): string {
+function validateSVG(svg: string, blackAndWhite = false): string {
   svg = assert.string.nonWhitespace(svg, "SVG image").trim();
 
   if (!svg.includes("<svg") && !svg.includes("</svg>")) {

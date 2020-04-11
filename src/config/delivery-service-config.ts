@@ -38,12 +38,12 @@ export interface DeliveryServiceConfig {
   /**
    * The countries that can be shipped from using this service
    */
-  originCountries: InlineOrReferenceArray<Country>;
+  originCountries: InlineOrReference<Country[]>;
 
   /**
    * The countries that can be shipped to using this service
    */
-  destinationCountries: InlineOrReferenceArray<Country>;
+  destinationCountries: InlineOrReference<Country[]>;
 
   /**
    * The carrier that provides this service

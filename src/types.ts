@@ -14,9 +14,17 @@ export type UrlString = string;
 export type FilePath = string;
 
 /**
- * A JavaScript module that is dynamically imported via `require()` or `import()`
+ * A JavaScript module that is dynamically imported via `import()`
  */
-export type DynamicImport<T> = Promise<T | { [key: string]: T }>;
+export type DynamicImport<T> = Promise<EcmaScriptModule<T>>;
+
+/**
+ * An ECMAScript module
+ */
+export interface EcmaScriptModule<T = unknown> {
+  default: T;
+  [key: string]: unknown;
+}
 
 /**
  * A single value that can be provided multiple different ways:

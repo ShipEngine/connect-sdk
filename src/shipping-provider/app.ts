@@ -226,7 +226,14 @@ export class ShippingProviderApp extends App {
    * NOTE: This function does not return a value. It updates the `transaction.session` property.
    */
   public async login?(transaction: TransactionConfig): Promise<void> {
-    let _transaction = new Transaction(transaction);
+    let _transaction;
+
+    try {
+      _transaction = new Transaction(transaction);
+    }
+    catch (error) {
+      throw ono(error, { code: "" });
+    }
 
     try {
       await this._login!(_transaction);

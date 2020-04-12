@@ -1,6 +1,6 @@
 import { assert } from "../../assert";
 import { LabelConfirmationConfig } from "../../config/label-confirmation-config";
-import { MonetaryValue } from "../../measures";
+import { MonetaryValue } from "../../monetary-value";
 import { Label } from "./label";
 import { ShippingCharge } from "./shipping-charge";
 

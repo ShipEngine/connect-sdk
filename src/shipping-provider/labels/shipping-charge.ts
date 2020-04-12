@@ -1,7 +1,7 @@
 import { assert } from "../../assert";
 import { ShippingChargeConfig } from "../../config/shipping-charge-config";
 import { ShippingChargeType } from "../../enums";
-import { MonetaryValue } from "../../measures";
+import { MonetaryValue } from "../../monetary-value";
 
 /**
  * An itemized shipping charge in the total cost of a shipment

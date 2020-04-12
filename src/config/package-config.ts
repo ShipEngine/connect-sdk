@@ -1,5 +1,6 @@
-import { Dimensions, Weight } from "../measures";
+import { Dimensions } from "../dimensions";
 import { Identifier, UUID } from "../types";
+import { Weight } from "../weight";
 import { MonetaryValueConfig } from "./measures-config";
 import { PackageItemConfig } from "./package-item-config";
 

@@ -2,7 +2,8 @@ import * as currency from "currency.js";
 import { assert } from "./assert";
 import { PackageItemConfig } from "./config/package-item-config";
 import { Country } from "./countries";
-import { MonetaryValue, Quantity } from "./measures";
+import { MonetaryValue } from "./monetary-value";
+import { Quantity } from "./quantity";
 import { SalesOrderIdentifier } from "./sales-order";
 import { Identifier } from "./types";
 

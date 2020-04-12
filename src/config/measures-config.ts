@@ -1,4 +1,7 @@
-import { Currency, LengthUnit, QuantityUnit, WeightUnit } from "../measures";
+import { LengthUnit } from "../dimensions";
+import { Currency } from "../monetary-value";
+import { QuantityUnit } from "../quantity";
+import { WeightUnit } from "../weight";
 
 /**
  * The dimensions of a package

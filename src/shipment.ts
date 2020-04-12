@@ -5,7 +5,7 @@ import { assert } from "./assert";
 import { NewShipmentConfig, PackageConfig, ShipmentConfig, ShipmentIdentifierConfig } from "./config";
 import { Country } from "./countries";
 import { BilledParty, InsuranceProvider, NonDeliveryAction } from "./enums";
-import { Currency, MonetaryValue } from "./measures";
+import { Currency, MonetaryValue } from "./monetary-value";
 import { NewPackage, Package } from "./package";
 import { DeliveryConfirmation, DeliveryService, ShippingProviderApp } from "./shipping-provider";
 import { Identifier } from "./types";

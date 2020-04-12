@@ -2,10 +2,12 @@
 import { assert } from "./assert";
 import { NewPackageConfig, PackageConfig, PackageIdentifierConfig } from "./config";
 import { PackageItemConfig } from "./config/package-item-config";
-import { Currency, Dimensions, MonetaryValue, Weight } from "./measures";
+import { Dimensions } from "./dimensions";
+import { Currency, MonetaryValue } from "./monetary-value";
 import { PackageItem } from "./package-item";
 import { Packaging, ShippingProviderApp } from "./shipping-provider";
 import { Identifier } from "./types";
+import { Weight } from "./weight";
 
 /**
  * Identifies a package

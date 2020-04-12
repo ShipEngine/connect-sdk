@@ -1,6 +1,6 @@
 import { assert } from "../../assert";
 import { RateConfig } from "../../config";
-import { MonetaryValue } from "../../measures";
+import { MonetaryValue } from "../../monetary-value";
 import { ShippingProviderApp } from "../app";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";

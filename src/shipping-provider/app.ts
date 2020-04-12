@@ -23,6 +23,7 @@ import { PickupConfirmation } from "./pickups/pickup-confirmation";
 import { PickupRequest } from "./pickups/pickup-request";
 import { RateCriteria } from "./rates/rate-criteria";
 import { RateQuote } from "./rates/rate-quote";
+import { getMaxServiceArea } from "./utils";
 
 /**
  * A ShipEngine IPaaS shipping provider app.
@@ -143,21 +144,7 @@ export class ShippingProviderApp extends App {
    * The service area that this provider covers
    */
   public get serviceArea(): ServiceArea {
-    let maxArea = ServiceArea.Regional;
-
-    // Find the broadest service area supported by this provider
-    for (let service of this.deliveryServices) {
-      if (service.serviceArea === ServiceArea.Worldwide) {
-        // This is the widest possible service area, so no need to continue crawling.
-        return ServiceArea.Worldwide;
-      }
-      else if (service.serviceArea === ServiceArea.Domestic) {
-        // Replace "regional" with "domestic"
-        maxArea = ServiceArea.Domestic;
-      }
-    }
-
-    return maxArea;
+    return getMaxServiceArea(this.deliveryServices);
   }
 
   /**

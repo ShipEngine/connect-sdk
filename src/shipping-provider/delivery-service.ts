@@ -6,6 +6,7 @@ import { UUID } from "../types";
 import { Carrier } from "./carrier";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { Packaging } from "./packaging";
+import { getMaxServiceArea } from "./utils";
 
 /**
  * A delivery service that is offered by a shipping provider
@@ -110,21 +111,7 @@ export class DeliveryService {
    * The service area that this service covers
    */
   public get serviceArea(): ServiceArea {
-    let maxArea = ServiceArea.Regional;
-
-    // Find the broadest service area supported by this service
-    for (let packaging of this.packaging) {
-      if (packaging.serviceArea === ServiceArea.Worldwide) {
-        // This is the widest possible service area, so no need to continue crawling.
-        return ServiceArea.Worldwide;
-      }
-      else if (packaging.serviceArea === ServiceArea.Domestic) {
-        // Replace "regional" with "domestic"
-        maxArea = ServiceArea.Domestic;
-      }
-    }
-
-    return maxArea;
+    return getMaxServiceArea(this.packaging);
   }
 
   /**

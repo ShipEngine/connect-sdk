@@ -45,7 +45,8 @@ describe("@shipengine/ipaas package exports", () => {
   });
 
   it("should export all shipping-provider files", () => {
-    assertFileExports("src/shipping-provider", true);
+    let exceptions = ["utils.ts"];
+    assertFileExports("src/shipping-provider", true, exceptions);
   });
 
 });

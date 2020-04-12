@@ -45,7 +45,8 @@ export enum DeliveryServiceGrade {
 export enum ServiceArea {
   Regional = "regional",
   Domestic = "domestic",
-  Worldwide = "worldwide",
+  International = "international",
+  Global = "global",
 }
 
 /**

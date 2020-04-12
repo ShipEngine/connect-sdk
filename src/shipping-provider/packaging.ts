@@ -1,6 +1,6 @@
+import { App } from "../app";
 import { assert } from "../assert";
 import { PackagingConfig } from "../config";
-import { ServiceArea } from "../enums";
 import { UUID } from "../types";
 
 /**
@@ -24,16 +24,6 @@ export class Packaging {
   public readonly description: string;
 
   /**
-   * The service area this packaging can be shipped to
-   */
-  public readonly serviceArea: ServiceArea | undefined;
-
-  /**
-   * Indicates whether this packaging is delivered using multiple carrier services
-   */
-  public readonly isConsolidator: boolean;
-
-  /**
    * Indicates whether the weight must be specified when using this packaging
    */
   public readonly requiresWeight: boolean;
@@ -46,13 +36,11 @@ export class Packaging {
   /**
    * Creates a Packaging object from a fully-resolved config object
    */
-  public constructor(config: PackagingConfig) {
+  public constructor(app: App, config: PackagingConfig) {
     assert.type.object(config, "packaging");
-    this.id = assert.string.uuid(config.id, "packaging ID");
+    this.id = app._references.add(this, config, "packaging");
     this.name = assert.string.nonWhitespace(config.name, "packaging name");
     this.description = assert.string(config.description, "packaging description", "");
-    this.serviceArea = config.serviceArea && assert.string.enum(config.serviceArea, ServiceArea, "service area");
-    this.isConsolidator = assert.type.boolean(config.isConsolidator, "isConsolidator flag", false);
     this.requiresWeight = assert.type.boolean(config.requiresWeight, "requiresWeight flag", false);
     this.requiresDimensions = assert.type.boolean(config.requiresDimensions, "requiresDimensions flag", false);
 

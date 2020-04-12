@@ -1,7 +1,6 @@
 import { Country } from "../countries";
-import { DeliveryServiceClass, DeliveryServiceGrade, LabelFormat, LabelSize, ManifestType } from "../enums";
+import { DeliveryServiceClass, DeliveryServiceGrade, LabelFormat, LabelSize, ManifestType, ServiceArea } from "../enums";
 import { InlineOrReference, InlineOrReferenceArray, UUID } from "../types";
-import { CarrierConfig } from "./carrier-config";
 import { DeliveryConfirmationConfig } from "./delivery-confirmation-config";
 import { PackagingConfig } from "./packaging-config";
 
@@ -36,39 +35,14 @@ export interface DeliveryServiceConfig {
   grade: DeliveryServiceGrade;
 
   /**
-   * The countries that can be shipped from using this service
+   * The service area this service covers
    */
-  originCountries: InlineOrReference<Country[]>;
+  serviceArea?: ServiceArea;
 
   /**
-   * The countries that can be shipped to using this service
+   * Indicates whether this service is a consolidation of multiple carrier services
    */
-  destinationCountries: InlineOrReference<Country[]>;
-
-  /**
-   * The carrier that provides this service
-   */
-  carrier: InlineOrReference<CarrierConfig>;
-
-  /**
-   * The types of packaging that are provided/allowed for this service
-   */
-  packaging: InlineOrReferenceArray<PackagingConfig>;
-
-  /**
-   * The types of package delivery confirmations offered for this service
-   */
-  deliveryConfirmations?: InlineOrReferenceArray<DeliveryConfirmationConfig>;
-
-  /**
-   * The label formats that are offered for this service
-   */
-  labelFormats?: LabelFormat[];
-
-  /**
-   * The label dimensions that are used for this service
-   */
-  labelSizes?: LabelSize[];
+  isConsolidator?: boolean;
 
   /**
    * TODO: Does this mean that the service is ONLY for return shipping? Or that it ALSO supports return shipping?
@@ -89,4 +63,34 @@ export interface DeliveryServiceConfig {
    * Indicates whether this service requires a manifest, and if so, what type
    */
   requiresManifest?: false | ManifestType;
+
+  /**
+   * The label formats that are offered for this service
+   */
+  labelFormats?: LabelFormat[];
+
+  /**
+   * The label dimensions that are used for this service
+   */
+  labelSizes?: LabelSize[];
+
+  /**
+   * The countries that can be shipped from using this service
+   */
+  originCountries: InlineOrReference<Country[]>;
+
+  /**
+   * The countries that can be shipped to using this service
+   */
+  destinationCountries: InlineOrReference<Country[]>;
+
+  /**
+   * The types of packaging that are provided/allowed for this service
+   */
+  packaging: InlineOrReferenceArray<PackagingConfig>;
+
+  /**
+   * The types of package delivery confirmations offered for this service
+   */
+  deliveryConfirmations?: InlineOrReferenceArray<DeliveryConfirmationConfig>;
 }

@@ -36,7 +36,7 @@ describe("@shipengine/ipaas package exports", () => {
   });
 
   it("should export all root files", () => {
-    let exceptions = ["app.ts", "assert.ts"];
+    let exceptions = ["app.ts", "assert.ts", "reference-map.ts"];
     assertFileExports("src", false, exceptions);
   });
 

@@ -1,7 +1,7 @@
+import { App } from "../../app";
 import { assert } from "../../assert";
 import { RateConfig } from "../../config";
 import { MonetaryValue } from "../../monetary-value";
-import { ShippingProviderApp } from "../app";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
 import { ShippingCharge } from "../labels/shipping-charge";
@@ -13,7 +13,7 @@ export class Rate {
   /**
    * The ID of the delivery service this rate is for
    */
-  public readonly deliveryService?: DeliveryService;
+  public readonly deliveryService: DeliveryService;
 
   /**
    * The ID of the delivery confirmation included in this rate
@@ -56,12 +56,10 @@ export class Rate {
   /**
    * Creates a RateCriteria object from a config object
    */
-  public constructor(app: ShippingProviderApp, config: RateConfig) {
+  public constructor(app: App, config: RateConfig) {
     assert.type.object(config, "rate");
-    this.deliveryService = config.deliveryServiceID === undefined ? undefined
-      : app.getDeliveryService(config.deliveryServiceID);
-    this.deliveryConfirmation = config.deliveryConfirmationID === undefined ? undefined
-      : app.getDeliveryConfirmation(config.deliveryConfirmationID);
+    this.deliveryService = app._references.lookup(config.deliveryServiceID, "delivery service");
+    this.deliveryConfirmation = app._references.get(config.deliveryConfirmationID, "delivery confirmation");
     this.estimatedDeliveryDateTime = config.estimatedDeliveryDateTime
       && assert.type.date(config.estimatedDeliveryDateTime, "estimated delivery date/time");
     this.charges = assert.array.nonEmpty(config.charges, "rate charges")

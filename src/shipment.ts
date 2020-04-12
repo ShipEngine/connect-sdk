@@ -1,6 +1,7 @@
 // tslint:disable: max-classes-per-file
 import humanize from "@jsdevtools/humanize-anything";
 import { Address } from "./address";
+import { App } from "./app";
 import { assert } from "./assert";
 import { NewShipmentConfig, PackageConfig, ShipmentConfig, ShipmentIdentifierConfig } from "./config";
 import { Country } from "./countries";
@@ -8,7 +9,7 @@ import { BilledParty, InsuranceProvider, NonDeliveryAction } from "./enums";
 import { ErrorCode, IpaasError } from "./errors";
 import { Currency, MonetaryValue } from "./monetary-value";
 import { NewPackage, Package } from "./package";
-import { DeliveryConfirmation, DeliveryService, ShippingProviderApp } from "./shipping-provider";
+import { DeliveryConfirmation, DeliveryService } from "./shipping-provider";
 import { Identifier } from "./types";
 
 /**
@@ -142,11 +143,10 @@ export class NewShipment {
    */
   public readonly packages: ReadonlyArray<NewPackage>;
 
-  public constructor(app: ShippingProviderApp, config: NewShipmentConfig) {
+  public constructor(app: App, config: NewShipmentConfig) {
     assert.type.object(config, "shipment");
-    this.deliveryService = app.getDeliveryService(config.deliveryServiceID);
-    this.deliveryConfirmation = config.deliveryConfirmationID === undefined ? undefined
-      : app.getDeliveryConfirmation(config.deliveryConfirmationID);
+    this.deliveryService = app._references.lookup(config.deliveryServiceID, "delivery service");
+    this.deliveryConfirmation = app._references.get(config.deliveryConfirmationID, "delivery confirmation");
     this.shipFrom = new Address(config.shipFrom);
     this.shipTo = new Address(config.shipTo);
     this.returnTo = config.returnTo ? new Address(config.returnTo) : new Address(config.shipFrom);
@@ -206,7 +206,7 @@ export class Shipment extends NewShipment {
    */
   public readonly packages: ReadonlyArray<Package>;
 
-  public constructor(app: ShippingProviderApp, config: ShipmentConfig) {
+  public constructor(app: App, config: ShipmentConfig) {
     super(app, config);
     this.packages = assert.array.nonEmpty(config.packages, "packages")
       .map((parcel: PackageConfig) => new Package(app, parcel));

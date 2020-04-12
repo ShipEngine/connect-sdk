@@ -1,10 +1,10 @@
 import { Address, ContactInfo } from "../../address";
+import { App } from "../../app";
 import { assert } from "../../assert";
 import { PickupCancellationConfig } from "../../config";
 import { PickupCancellationReason } from "../../enums";
 import { Shipment } from "../../shipment";
 import { CustomData, Identifier } from "../../types";
-import { ShippingProviderApp } from "../app";
 import { PickupService } from "../pickup-service";
 import { TimeRange } from "./time-range";
 
@@ -65,10 +65,10 @@ export class PickupCancellation {
   /**
    * Creates a PickupRequest from a config object
    */
-  public constructor(app: ShippingProviderApp, config: PickupCancellationConfig) {
+  public constructor(app: App, config: PickupCancellationConfig) {
     assert.type.object(config, "pickup cancellation");
     this.confirmationID = assert.string.nonWhitespace(config.confirmationID);
-    this.pickupService = app.getPickupService(config.pickupServiceID);
+    this.pickupService = app._references.lookup(config.pickupServiceID, "pickup service");
     this.identifiers = assert.array.ofIdentifiers(config.identifiers, "identifiers", []);
     this.reason = assert.string.enum(config.reason, PickupCancellationReason, "pickup cancellation reason");
     this.notes = assert.string(config.notes, "pickup cancellation notes", "");

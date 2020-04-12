@@ -1,4 +1,3 @@
-import { ServiceArea } from "../enums";
 import { UUID } from "../types";
 
 /**
@@ -20,16 +19,6 @@ export interface PackagingConfig {
    * A short, user-friendly description of the packaging
    */
   description?: string;
-
-  /**
-   * The service area this packaging can be shipped to
-   */
-  serviceArea?: ServiceArea;
-
-  /**
-   * Indicates whether this packaging is delivered using multiple carrier services
-   */
-  isConsolidator?: boolean;
 
   /**
    * Indicates whether the weight must be specified when using this packaging

@@ -1,11 +1,12 @@
 // tslint:disable: max-classes-per-file
+import { App } from "./app";
 import { assert } from "./assert";
 import { NewPackageConfig, PackageConfig, PackageIdentifierConfig } from "./config";
 import { PackageItemConfig } from "./config/package-item-config";
 import { Dimensions } from "./dimensions";
 import { Currency, MonetaryValue } from "./monetary-value";
 import { PackageItem } from "./package-item";
-import { Packaging, ShippingProviderApp } from "./shipping-provider";
+import { Packaging } from "./shipping-provider";
 import { Identifier } from "./types";
 import { Weight } from "./weight";
 
@@ -81,9 +82,9 @@ export class NewPackage {
    */
   public readonly contents: ReadonlyArray<PackageItem>;
 
-  public constructor(app: ShippingProviderApp, config: NewPackageConfig) {
+  public constructor(app: App, config: NewPackageConfig) {
     assert.type.object(config, "package");
-    this.packaging = app.getPackaging(config.packagingID);
+    this.packaging = app._references.lookup(config.packagingID, "packaging");
     this.dimensions = (config.dimensions || this.packaging.requiresDimensions)
       ? new Dimensions(config.dimensions!) : undefined;
     this.weight = (config.weight || this.packaging.requiresWeight)
@@ -117,7 +118,7 @@ export class Package extends NewPackage {
    */
   public readonly identifiers!: ReadonlyArray<Identifier>;
 
-  public constructor(app: ShippingProviderApp, config: PackageConfig) {
+  public constructor(app: App, config: PackageConfig) {
     super(app, config);
     PackageIdentifier.call(this, config);
   }

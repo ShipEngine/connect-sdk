@@ -1,3 +1,4 @@
+import { App } from "../app";
 import { assert } from "../assert";
 import { DeliveryConfirmationConfig } from "../config";
 import { UUID } from "../types";
@@ -25,9 +26,9 @@ export class DeliveryConfirmation {
   /**
    * Creates a DeliveryConfirmation object from a fully-resolved config object
    */
-  public constructor(config: DeliveryConfirmationConfig) {
+  public constructor(app: App, config: DeliveryConfirmationConfig) {
     assert.type.object(config, "delivery confirmation");
-    this.id = assert.string.uuid(config.id, "delivery confirmation ID");
+    this.id = app._references.add(this, config, "delivery confirmation");
     this.name = assert.string.nonWhitespace(config.name, "delivery confirmation name");
     this.description = assert.string(config.description, "delivery confirmation description", "");
 

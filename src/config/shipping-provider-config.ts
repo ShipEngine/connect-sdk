@@ -1,10 +1,9 @@
 import { CancelPickup, CreateLabel, CreateManifest, GetRates, GetTrackingUrl, RequestPickup, Track, VoidLabel } from "../shipping-provider";
 import { Login } from "../shipping-provider/methods";
 import { InlineOrReference, InlineOrReferenceArray, UrlString, UUID } from "../types";
-import { DeliveryServiceConfig } from "./delivery-service-config";
+import { CarrierConfig } from "./carrier-config";
 import { FormConfig } from "./form-config";
 import { LogoConfig } from "./logo-config";
-import { PickupServiceConfig } from "./pickup-service-config";
 
 /**
  * A ShipEngine IPaaS shipping provider app config.
@@ -42,16 +41,6 @@ export interface ShippingProviderConfig {
   logo: InlineOrReference<LogoConfig>;
 
   /**
-   * The delivery services that are offered
-   */
-  deliveryServices: InlineOrReferenceArray<DeliveryServiceConfig>;
-
-  /**
-   * The package pickup services that are offered
-   */
-  pickupServices?: InlineOrReferenceArray<PickupServiceConfig>;
-
-  /**
    * A form that allows the user to enter their login credentials
    */
   loginForm: InlineOrReference<FormConfig>;
@@ -60,6 +49,11 @@ export interface ShippingProviderConfig {
    * A form that allows the user to configure settings
    */
   settingsForm?: InlineOrReference<FormConfig>;
+
+  /**
+   * The carriers that this provider provides services for
+   */
+  carriers: InlineOrReferenceArray<CarrierConfig>;
 
   /**
    * Verifies a user's credentials and establishes or renews a session

@@ -2,20 +2,19 @@ import { ono } from "@jsdevtools/ono";
 import { App } from "../app";
 import { AppManifest } from "../app-manifest";
 import { assert } from "../assert";
-import { DeliveryServiceConfig, FormConfig, LabelSpecConfig, LogoConfig, PickupCancellationConfig, PickupRequestConfig, PickupServiceConfig, RateCriteriaConfig, ShippingProviderConfig, TransactionConfig } from "../config";
+import { CarrierConfig, FormConfig, LabelSpecConfig, LogoConfig, PickupCancellationConfig, PickupRequestConfig, RateCriteriaConfig, ShippingProviderConfig, TransactionConfig } from "../config";
 import { Country } from "../countries";
 import { ServiceArea } from "../enums";
 import { ErrorCode } from "../errors";
 import { Form } from "../form";
 import { Transaction } from "../transaction";
 import { UUID } from "../types";
-import { DeliveryConfirmation } from "./delivery-confirmation";
+import { Carrier } from "./carrier";
 import { DeliveryService } from "./delivery-service";
 import { LabelConfirmation } from "./labels/label-confirmation";
 import { LabelSpec } from "./labels/label-spec";
 import { Logo } from "./logo";
 import { CancelPickup, CreateLabel, CreateManifest, GetRates, GetTrackingUrl, Login, RequestPickup, Track, VoidLabel } from "./methods";
-import { Packaging } from "./packaging";
 import { PickupService } from "./pickup-service";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
 import { PickupCancellationConfirmation } from "./pickups/pickup-cancellation-confirmation";
@@ -70,16 +69,6 @@ export class ShippingProviderApp extends App {
   public readonly logo: Logo;
 
   /**
-   * The delivery services that are offered
-   */
-  public readonly deliveryServices: ReadonlyArray<DeliveryService>;
-
-  /**
-   * The package pickup services that are offered
-   */
-  public readonly pickupServices: ReadonlyArray<PickupService>;
-
-  /**
    * A form that allows the user to enter their login credentials
    */
   public readonly loginForm: Form;
@@ -89,56 +78,14 @@ export class ShippingProviderApp extends App {
    */
   public readonly settingsForm: Form | undefined;
 
+  /**
+   * The carriers that this provider provides services for
+   */
+  public readonly carriers: ReadonlyArray<Carrier>;
+
   //#endregion
 
-  //#region Helper properties
-
-  /**
-   * All carriers that this provider provides
-   */
-  public get carriers(): Carrier[] {
-    let carriers = new Map<string, Carrier>();
-    for (let service of this.deliveryServices) {
-      if (!carriers.has(service.carrier.id)) {
-        carriers.set(service.carrier.id, service.carrier);
-      }
-    }
-    return [...carriers.values()];
-  }
-
-  /**
-   * All countries that this provider ships to or from
-   */
-  public get countries(): Country[] {
-    let countries = new Set(this.originCountries.concat(this.destinationCountries));
-    return [...countries];
-  }
-
-  /**
-   * All origin countries that this provider ships from
-   */
-  public get originCountries(): Country[] {
-    let countries = new Set<Country>();
-    for (let service of this.deliveryServices) {
-      for (let country of service.originCountries) {
-        countries.add(country);
-      }
-    }
-    return [...countries];
-  }
-
-  /**
-   * All destination countries that this provider ships to
-   */
-  public get destinationCountries(): Country[] {
-    let countries = new Set<Country>();
-    for (let service of this.deliveryServices) {
-      for (let country of service.destinationCountries) {
-        countries.add(country);
-      }
-    }
-    return [...countries];
-  }
+  //#region Helper Properties
 
   /**
    * The service area that this provider covers
@@ -154,6 +101,66 @@ export class ShippingProviderApp extends App {
     return this.deliveryServices.some((svc) => svc.isConsolidator);
   }
 
+  /**
+   * All delivery services that are offered
+   */
+  public get deliveryServices(): ReadonlyArray<DeliveryService> {
+    let services = new Set<DeliveryService>();
+    for (let carrier of this.carriers) {
+      for (let service of carrier.deliveryServices) {
+        services.add(service);
+      }
+    }
+    return Object.freeze([...services]);
+  }
+
+  /**
+   * All package pickup services that are offered
+   */
+  public get pickupServices(): ReadonlyArray<PickupService> {
+    let services = new Set<PickupService>();
+    for (let carrier of this.carriers) {
+      for (let service of carrier.pickupServices) {
+        services.add(service);
+      }
+    }
+    return Object.freeze([...services]);
+  }
+
+  /**
+   * All countries that this provider ships to or from
+   */
+  public get countries(): ReadonlyArray<Country> {
+    let countries = new Set(this.originCountries.concat(this.destinationCountries));
+    return Object.freeze([...countries]);
+  }
+
+  /**
+   * All origin countries that this provider ships from
+   */
+  public get originCountries(): ReadonlyArray<Country> {
+    let countries = new Set<Country>();
+    for (let service of this.deliveryServices) {
+      for (let country of service.originCountries) {
+        countries.add(country);
+      }
+    }
+    return Object.freeze([...countries]);
+  }
+
+  /**
+   * All destination countries that this provider ships to
+   */
+  public get destinationCountries(): ReadonlyArray<Country> {
+    let countries = new Set<Country>();
+    for (let service of this.deliveryServices) {
+      for (let country of service.destinationCountries) {
+        countries.add(country);
+      }
+    }
+    return Object.freeze([...countries]);
+  }
+
   //#endregion
 
   /**
@@ -161,18 +168,16 @@ export class ShippingProviderApp extends App {
    */
   public constructor(manifest: AppManifest, config: ShippingProviderConfig) {
     super(manifest);
-    assert.type.object(config, "ShipEngine IPaaS app");
-    this.id = assert.string.uuid(config.id, "provider ID");
+
+    this.id = this._references.add(this, config, "shipping provider");
     this.name = assert.string.nonWhitespace(config.name, "shipping provider name");
     this.description = assert.string(config.description, "shipping provider description", "");
     this.websiteURL = new URL(assert.string.nonWhitespace(config.websiteURL, "websiteURL"));
     this.logo = new Logo(config.logo as LogoConfig);
-    this.deliveryServices = assert.array.nonEmpty(config.deliveryServices, "deliveryServices")
-      .map((svc: DeliveryServiceConfig) => new DeliveryService(svc));
-    this.pickupServices = assert.array(config.pickupServices, "pickupServices", [])
-      .map((svc: PickupServiceConfig) => new PickupService(svc));
     this.loginForm = new Form(config.loginForm as FormConfig);
     this.settingsForm = config.settingsForm ? new Form(config.settingsForm as FormConfig) : undefined;
+    this.carriers = assert.array.nonEmpty(config.carriers, "carriers")
+      .map((carrier: CarrierConfig) => new Carrier(this, carrier));
 
     // Store any user-defined methods as private fields.
     // For any methods that aren't implemented, set the corresponding class method to undefined.
@@ -219,8 +224,7 @@ export class ShippingProviderApp extends App {
     // Prevent modifications after validation
     Object.freeze(this);
     Object.freeze(this.websiteURL);
-    Object.freeze(this.deliveryServices);
-    Object.freeze(this.pickupServices);
+    Object.freeze(this.carriers);
   }
 
   //#region Wrappers around user-defined methdos
@@ -430,62 +434,6 @@ export class ShippingProviderApp extends App {
     catch (error) {
       throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in createManifest method.`);
     }
-  }
-
-  //#endregion
-
-  //#region Helper methods
-
-  /**
-   * Returns the pickup service with the specified ID
-   */
-  public getPickupService(id: UUID): PickupService {
-    for (let service of this.pickupServices) {
-      if (service.id === id) {
-        return service;
-      }
-    }
-    throw new ReferenceError(`Unable to find pickup service "${id}" in the ${this.name} app.`);
-  }
-
-  /**
-   * Returns the delivery service with the specified ID
-   */
-  public getDeliveryService(id: UUID): DeliveryService {
-    for (let service of this.deliveryServices) {
-      if (service.id === id) {
-        return service;
-      }
-    }
-    throw new ReferenceError(`Unable to find delivery service "${id}" in the ${this.name} app.`);
-  }
-
-  /**
-   * Returns the packaging with the specified ID
-   */
-  public getPackaging(id: UUID): Packaging {
-    for (let service of this.deliveryServices) {
-      for (let packaging of service.packaging) {
-        if (packaging.id === id) {
-          return packaging;
-        }
-      }
-    }
-    throw new ReferenceError(`Unable to find packaging "${id}" in the ${this.name} app.`);
-  }
-
-  /**
-   * Returns the delivery confirmation with the specified ID
-   */
-  public getDeliveryConfirmation(id: UUID): DeliveryConfirmation {
-    for (let service of this.deliveryServices) {
-      for (let confirmation of service.deliveryConfirmations) {
-        if (confirmation.id === id) {
-          return confirmation;
-        }
-      }
-    }
-    throw new ReferenceError(`Unable to find delivery confirmation "${id}" in the ${this.name} app.`);
   }
 
   //#endregion

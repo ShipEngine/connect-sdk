@@ -1,8 +1,8 @@
 import { Address, ContactInfo } from "../../address";
+import { App } from "../../app";
 import { assert } from "../../assert";
 import { PickupRequestConfig, ShipmentConfig } from "../../config";
 import { Shipment } from "../../shipment";
-import { ShippingProviderApp } from "../app";
 import { PickupService } from "../pickup-service";
 import { TimeRange } from "./time-range";
 
@@ -43,9 +43,9 @@ export class PickupRequest {
   /**
    * Creates a PickupRequest from a config object
    */
-  public constructor(app: ShippingProviderApp, config: PickupRequestConfig) {
+  public constructor(app: App, config: PickupRequestConfig) {
     assert.type.object(config, "pickup request");
-    this.pickupService = app.getPickupService(config.pickupServiceID);
+    this.pickupService = app._references.lookup(config.pickupServiceID, "pickup service");
     this.timeWindow = new TimeRange(config.timeWindow);
     this.address = new Address(config.address);
     this.notes = assert.string(config.notes, "pickup request notes", "");

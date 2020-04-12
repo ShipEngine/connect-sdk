@@ -1,7 +1,7 @@
+import { App } from "../../app";
 import { assert } from "../../assert";
 import { RateCriteriaConfig } from "../../config";
 import { NewShipment } from "../../shipment";
-import { ShippingProviderApp } from "../app";
 
 /**
  * Specifies the criteria for rate quotes
@@ -15,7 +15,7 @@ export class RateCriteria {
   /**
    * Creates a RateCriteria object from a config object
    */
-  public constructor(app: ShippingProviderApp, config: RateCriteriaConfig) {
+  public constructor(app: App, config: RateCriteriaConfig) {
     assert.type.object(config, "rate criteria");
     this.shipment = new NewShipment(app, config.shipment);
 

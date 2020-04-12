@@ -1,8 +1,8 @@
+import { App } from "../../app";
 import { assert } from "../../assert";
 import { LabelSpecConfig } from "../../config";
 import { LabelFormat, LabelSize } from "../../enums";
 import { NewShipment } from "../../shipment";
-import { ShippingProviderApp } from "../app";
 
 /**
  * Specifies the information needed to create a shipping label for a shipment.
@@ -32,7 +32,7 @@ export class LabelSpec {
   /**
    * Creates a PickupRequest from a config object
    */
-  public constructor(app: ShippingProviderApp, config: LabelSpecConfig) {
+  public constructor(app: App, config: LabelSpecConfig) {
     assert.type.object(config, "pickup request");
     this.format = assert.string.enum(config.format, LabelFormat, "label format");
     this.size = assert.string.enum(config.size, LabelSize, "label size");

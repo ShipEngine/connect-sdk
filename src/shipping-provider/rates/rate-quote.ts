@@ -1,6 +1,6 @@
+import { App } from "../../app";
 import { assert } from "../../assert";
 import { RateQuoteConfig } from "../../config";
-import { ShippingProviderApp } from "../app";
 import { Rate } from "./rate";
 
 /**
@@ -15,7 +15,7 @@ export class RateQuote {
   /**
    * Creates a RateCriteria object from a config object
    */
-  public constructor(app: ShippingProviderApp, config: RateQuoteConfig) {
+  public constructor(app: App, config: RateQuoteConfig) {
     assert.type.object(config, "rate");
     this.rates = assert.array(config.rates, "rates").map((rate) => new Rate(app, rate));
 

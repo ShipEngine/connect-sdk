@@ -1,5 +1,4 @@
-import { InlineOrReference, UUID } from "../types";
-import { CarrierConfig } from "./carrier-config";
+import { UUID } from "../types";
 
 /**
  * A package pickup service that is offered by a shipping provider
@@ -20,9 +19,4 @@ export interface PickupServiceConfig {
    * A short, user-friendly description of the service
    */
   description?: string;
-
-  /**
-   * The carrier that provides this service
-   */
-  carrier: InlineOrReference<CarrierConfig>;
 }

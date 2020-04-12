@@ -143,9 +143,10 @@ export class DeliveryService {
     this.originCountries = assert.array.ofEnum(config.originCountries, Country, "originCountries");
     this.destinationCountries = assert.array.ofEnum(config.destinationCountries, Country, "destinationCountries");
     this.packaging = assert.array.nonEmpty(config.packaging, "packaging")
-      .map((svc: PackagingConfig) => app._references.get(config) || new Packaging(app, svc));
+      .map((svc: PackagingConfig) => app._references.get(svc, Packaging) || new Packaging(app, svc));
     this.deliveryConfirmations = assert.array(config.deliveryConfirmations, "deliveryConfirmations", [])
-      .map((svc: DeliveryConfirmationConfig) => app._references.get(config) || new DeliveryConfirmation(app, svc));
+      .map((svc: DeliveryConfirmationConfig) =>
+        app._references.get(svc, DeliveryConfirmation) || new DeliveryConfirmation(app, svc));
 
     // Prevent modifications after validation
     Object.freeze(this);

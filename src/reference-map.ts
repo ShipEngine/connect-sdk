@@ -3,6 +3,7 @@ import { UUID } from "./types";
 
 interface Config { id: UUID; }
 interface Class { id: UUID; }
+type Constructor = Function;  // tslint:disable-line: ban-types
 
 /**
  * Maps ShipEngine IPaaS classes by their UUIDs and Config object instances.
@@ -30,36 +31,46 @@ export class ReferenceMap {
   /**
    * Determines whether a class instance has been created for the given Config object
    */
-  public has(config: Config): boolean {
-    return Boolean(this.get(config));
+  public has(config: Config, ctor: Constructor): boolean {
+    return Boolean(this.get(config, ctor));
   }
 
   /**
    * Returns the class instance that corresponds to the specified Config object, if any
    */
-  public get<T extends Class>(config: Config): T | undefined;
+  public get<T extends Class>(config: Config, ctor: Constructor): T | undefined;
 
   /**
    * Returns the class instance with the specified ID, if any
    */
-  public get<T extends Class>(id: UUID | undefined, type: string): T | undefined;
+  public get<T extends Class>(id: UUID | undefined, ctor: Constructor, type: string): T | undefined;
 
-  public get<T extends Class>(config: Config | UUID | undefined, type?: string): T | undefined {
+  public get<T extends Class>(config: Config | UUID | undefined, ctor: Constructor, type?: string): T | undefined {
+    let obj: T | undefined;
+
     if (typeof config === "string") {
       assert.string.uuid(config, `${type} ID`);
-      return this._byID.get(config) as T | undefined;
+      obj = this._byID.get(config) as T | undefined;
     }
     else if (config) {
-      return this._byConfig.get(config) as T | undefined;
+      obj = this._byConfig.get(config) as T | undefined;
     }
+
+    if (obj && !(obj instanceof ctor)) {
+      // We found a matching class instance, but it's of the wrong type,
+      // which means there are two different types that have the same UUID
+      throw new ReferenceError(`Duplicate UUID: ${(config as Config).id || config}`);
+    }
+
+    return obj;
   }
 
   /**
    * Returns the class instance that corresponds to the specified UUID, or throws an error if not found
    */
-  public lookup<T extends Class>(id: UUID, type: string): T {
+  public lookup<T extends Class>(id: UUID, ctor: Constructor, type: string): T {
     assert.string.uuid(id, `${type} ID`);
-    let value = this.get<T>({ id });
+    let value = this.get<T>({ id }, ctor);
 
     if (!value) {
       throw new ReferenceError(`Unable to find ${type}: ${id}`);

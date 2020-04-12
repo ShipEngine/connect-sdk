@@ -145,8 +145,8 @@ export class NewShipment {
 
   public constructor(app: App, config: NewShipmentConfig) {
     assert.type.object(config, "shipment");
-    this.deliveryService = app._references.lookup(config.deliveryServiceID, "delivery service");
-    this.deliveryConfirmation = app._references.get(config.deliveryConfirmationID, "delivery confirmation");
+    this.deliveryService = app._references.lookup(config.deliveryServiceID, DeliveryService, "delivery service");
+    this.deliveryConfirmation = app._references.get(config.deliveryConfirmationID, DeliveryConfirmation, "delivery confirmation");
     this.shipFrom = new Address(config.shipFrom);
     this.shipTo = new Address(config.shipTo);
     this.returnTo = config.returnTo ? new Address(config.returnTo) : new Address(config.shipFrom);

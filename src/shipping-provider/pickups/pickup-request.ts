@@ -45,7 +45,7 @@ export class PickupRequest {
    */
   public constructor(app: App, config: PickupRequestConfig) {
     assert.type.object(config, "pickup request");
-    this.pickupService = app._references.lookup(config.pickupServiceID, "pickup service");
+    this.pickupService = app._references.lookup(config.pickupServiceID, PickupService, "pickup service");
     this.timeWindow = new TimeRange(config.timeWindow);
     this.address = new Address(config.address);
     this.notes = assert.string(config.notes, "pickup request notes", "");

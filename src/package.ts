@@ -84,7 +84,7 @@ export class NewPackage {
 
   public constructor(app: App, config: NewPackageConfig) {
     assert.type.object(config, "package");
-    this.packaging = app._references.lookup(config.packagingID, "packaging");
+    this.packaging = app._references.lookup(config.packagingID, Packaging, "packaging");
     this.dimensions = (config.dimensions || this.packaging.requiresDimensions)
       ? new Dimensions(config.dimensions!) : undefined;
     this.weight = (config.weight || this.packaging.requiresWeight)

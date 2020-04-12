@@ -58,8 +58,8 @@ export class Rate {
    */
   public constructor(app: App, config: RateConfig) {
     assert.type.object(config, "rate");
-    this.deliveryService = app._references.lookup(config.deliveryServiceID, "delivery service");
-    this.deliveryConfirmation = app._references.get(config.deliveryConfirmationID, "delivery confirmation");
+    this.deliveryService = app._references.lookup(config.deliveryServiceID, DeliveryService, "delivery service");
+    this.deliveryConfirmation = app._references.get(config.deliveryConfirmationID, DeliveryConfirmation, "delivery confirmation");
     this.estimatedDeliveryDateTime = config.estimatedDeliveryDateTime
       && assert.type.date(config.estimatedDeliveryDateTime, "estimated delivery date/time");
     this.charges = assert.array.nonEmpty(config.charges, "rate charges")

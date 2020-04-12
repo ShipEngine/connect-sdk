@@ -1,5 +1,4 @@
 import { assert } from "../../assert";
-import { MonetaryValueConfig } from "../../config";
 import { ShippingChargeConfig } from "../../config/shipping-charge-config";
 import { ShippingChargeType } from "../../enums";
 import { MonetaryValue } from "../../measures";
@@ -9,7 +8,7 @@ import { MonetaryValue } from "../../measures";
  */
 export class ShippingCharge {
   public readonly type: ShippingChargeType;
-  public readonly amount: MonetaryValueConfig;
+  public readonly amount: MonetaryValue;
   public readonly description: string;
 
   /**

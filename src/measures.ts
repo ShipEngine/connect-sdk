@@ -201,7 +201,7 @@ export class MonetaryValue {
     assert.type.object(config, "monetary value");
 
     let value = typeof config.value === "number"
-      ? assert.number.positive(config.value, "monetary value")
+      ? assert.number.nonNegative(config.value, "monetary value")
       : assert.string.pattern(config.value, moneyValue, "monetary value");
 
     this.value = currency(value).toString();

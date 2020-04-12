@@ -13,7 +13,7 @@ export class ContactInfo {
   public readonly phoneNumber?: string;
   public readonly phoneNumberExtension?: string;
 
-  public constructor(config: ContactInfoConfig) {
+  public constructor(config: ContactInfoConfig, freeze = true) {
     assert.type.object(config, "contact info");
     this.name = new ParsedName(config.name);
     this.email = config.email === undefined ? undefined
@@ -23,8 +23,10 @@ export class ContactInfo {
     this.phoneNumberExtension = config.phoneNumberExtension === undefined ? undefined
       : assert.string.nonWhitespace(config.phoneNumberExtension, "phone number extension");
 
-    // Prevent modifications after validation
-    Object.freeze(this);
+    if (freeze) {
+      // Prevent modifications after validation
+      Object.freeze(this);
+    }
   }
 }
 
@@ -42,7 +44,7 @@ export class Address extends ContactInfo {
 
   public constructor(config: AddressConfig) {
     assert.type.object(config, "address");
-    super(config);
+    super(config, false);
 
     this.company = config.company === undefined ? undefined
       : assert.string.nonWhitespace(config.company, "company name");
@@ -52,7 +54,8 @@ export class Address extends ContactInfo {
     this.stateProvince = assert.string.nonWhitespace(config.stateProvince, "state/province");
     this.postalCode = assert.string.nonWhitespace(config.postalCode, "postal code");
     this.country = assert.string.enum(config.country, Country, "country");
-    this.isResidential = assert.type.boolean(config.isResidential, "isResidential flag", false);
+    this.isResidential = config.isResidential === undefined ? undefined
+      : assert.type.boolean(config.isResidential, "isResidential flag");
 
     // Prevent modifications after validation
     Object.freeze(this);

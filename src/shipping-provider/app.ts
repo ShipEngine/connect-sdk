@@ -212,6 +212,10 @@ export class ShippingProviderApp extends App {
       ? (this._createManifest = assert.type.function(config.createManifest as CreateManifest, "createManifest method"))
       : (this.createManifest = undefined);
 
+    // Now that we're done configuring this entire app,
+    // we no longer need to keep all the Config objects in memory
+    this._references.clearConfigs();
+
     // Prevent modifications after validation
     Object.freeze(this);
     Object.freeze(this.websiteURL);

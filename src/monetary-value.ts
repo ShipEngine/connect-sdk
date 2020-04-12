@@ -4,6 +4,7 @@ import { ono } from "@jsdevtools/ono";
 import * as currency from "currency.js";
 import { assert } from "./assert";
 import { MonetaryValueConfig } from "./config";
+import { ErrorCode } from "./errors";
 
 const moneyValue = /^\d+(\.\d+)?$/;
 moneyValue.example = "##.##";
@@ -72,7 +73,7 @@ export class MonetaryValue {
     if (uniqueCurrencies.size > 1) {
       let currencies = [...uniqueCurrencies];
       throw ono(
-        { code: "E_CURRENCY_MISMATCH", currencies },  // <--- code used in Shipment class
+        { code: ErrorCode.CurrencyMismatch, currencies },
         `All charges must be in the same currency. These charges include ${humanize.list(currencies)}`
       );
     }

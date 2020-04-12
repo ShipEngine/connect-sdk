@@ -5,6 +5,7 @@ import { assert } from "./assert";
 import { NewShipmentConfig, PackageConfig, ShipmentConfig, ShipmentIdentifierConfig } from "./config";
 import { Country } from "./countries";
 import { BilledParty, InsuranceProvider, NonDeliveryAction } from "./enums";
+import { ErrorCode, IpaasError } from "./errors";
 import { Currency, MonetaryValue } from "./monetary-value";
 import { NewPackage, Package } from "./package";
 import { DeliveryConfirmation, DeliveryService, ShippingProviderApp } from "./shipping-provider";
@@ -227,10 +228,10 @@ function calculateTotalInsuranceAmount(packages: ReadonlyArray<NewPackage>): Mon
     return MonetaryValue.sum(insuredValues);
   }
   catch (e) {
-    let error = e as Error & { code: string; currencies: Currency[] };
+    let error = e as IpaasError & { currencies: Currency[] };
 
     // Check for a currency mismatch, and throw a more specific error message
-    if (error.code === "E_CURRENCY_MISMATCH") {
+    if (error.code === ErrorCode.CurrencyMismatch) {
       throw new Error(
         `All packages in a shipment must be insured in the same currency. ` +
         `This shipment includes ${humanize.list(error.currencies)}`

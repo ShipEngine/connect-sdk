@@ -5,6 +5,7 @@ import { assert } from "../assert";
 import { DeliveryServiceConfig, FormConfig, LabelSpecConfig, LogoConfig, PickupCancellationConfig, PickupRequestConfig, PickupServiceConfig, RateCriteriaConfig, ShippingProviderConfig, TransactionConfig } from "../config";
 import { Country } from "../countries";
 import { ServiceArea } from "../enums";
+import { ErrorCode } from "../errors";
 import { Form } from "../form";
 import { Transaction } from "../transaction";
 import { UUID } from "../types";
@@ -232,14 +233,14 @@ export class ShippingProviderApp extends App {
       _transaction = new Transaction(transaction);
     }
     catch (error) {
-      throw ono(error, { code: "" });
+      throw ono(error, { code: ErrorCode.InvalidInput });
     }
 
     try {
       await this._login!(_transaction);
     }
     catch (error) {
-      throw ono(error, { transactionID: _transaction.id }, `Error in login method.`);
+      throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in login method.`);
     }
   }
 
@@ -247,9 +248,16 @@ export class ShippingProviderApp extends App {
    * Requests a package pickup at a time and place
    */
   public async requestPickup?(transaction: TransactionConfig, request: PickupRequestConfig)
-    : Promise<PickupConfirmation> {
-    let _transaction = new Transaction(transaction);
-    let _request = new PickupRequest(this, request);
+  : Promise<PickupConfirmation> {
+    let _transaction, _request;
+
+    try {
+      _transaction = new Transaction(transaction);
+      _request = new PickupRequest(this, request);
+    }
+    catch (error) {
+      throw ono(error, { code: ErrorCode.InvalidInput });
+    }
 
     try {
       let confirmation = await this._requestPickup!(_transaction, _request);
@@ -257,7 +265,7 @@ export class ShippingProviderApp extends App {
       return new PickupConfirmation(confirmation);
     }
     catch (error) {
-      throw ono(error, { transactionID: _transaction.id }, `Error in requestPickup method.`);
+      throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in requestPickup method.`);
     }
   }
 
@@ -265,9 +273,16 @@ export class ShippingProviderApp extends App {
    * Cancels a previously-requested package pickup
    */
   public async cancelPickup?(transaction: TransactionConfig, cancellation: PickupCancellationConfig)
-    : Promise<PickupCancellationConfirmation> {
-    let _transaction = new Transaction(transaction);
-    let _cancellation = new PickupCancellation(this, cancellation);
+  : Promise<PickupCancellationConfirmation> {
+    let _transaction, _cancellation;
+
+    try {
+      _transaction = new Transaction(transaction);
+      _cancellation = new PickupCancellation(this, cancellation);
+    }
+    catch (error) {
+      throw ono(error, { code: ErrorCode.InvalidInput });
+    }
 
     try {
       let confirmation = await this._cancelPickup!(_transaction, _cancellation);
@@ -275,7 +290,7 @@ export class ShippingProviderApp extends App {
       return new PickupCancellationConfirmation(confirmation);
     }
     catch (error) {
-      throw ono(error, { transactionID: _transaction.id }, `Error in cancelPickup method.`);
+      throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in cancelPickup method.`);
     }
   }
 
@@ -283,15 +298,22 @@ export class ShippingProviderApp extends App {
    * Creates a shipping label
    */
   public async createLabel?(transaction: TransactionConfig, label: LabelSpecConfig): Promise<LabelConfirmation> {
-    let _transaction = new Transaction(transaction);
-    let _label = new LabelSpec(this, label);
+    let _transaction, _label;
+
+    try {
+      _transaction = new Transaction(transaction);
+      _label = new LabelSpec(this, label);
+    }
+    catch (error) {
+      throw ono(error, { code: ErrorCode.InvalidInput });
+    }
 
     try {
       let confirmation = await this._createLabel!(_transaction, _label);
       return new LabelConfirmation(confirmation);
     }
     catch (error) {
-      throw ono(error, { transactionID: _transaction.id }, `Error in createLabel method.`);
+      throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in createLabel method.`);
     }
   }
 
@@ -299,14 +321,21 @@ export class ShippingProviderApp extends App {
    * Voids a previously-created shipping label
    */
   public async voidLabel?(transaction: TransactionConfig): Promise<unknown> {
-    let _transaction = new Transaction(transaction);
+    let _transaction;
+
+    try {
+      _transaction = new Transaction(transaction);
+    }
+    catch (error) {
+      throw ono(error, { code: ErrorCode.InvalidInput });
+    }
 
     try {
       // TODO: NOT IMPLEMENTED YET
       return await Promise.resolve(undefined);
     }
     catch (error) {
-      throw ono(error, { transactionID: _transaction.id }, `Error in voidLabel method.`);
+      throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in voidLabel method.`);
     }
   }
 
@@ -314,15 +343,22 @@ export class ShippingProviderApp extends App {
    * Gets shipping rates for a shipment
    */
   public async getRates?(transaction: TransactionConfig, criteria: RateCriteriaConfig): Promise<RateQuote> {
-    let _transaction = new Transaction(transaction);
-    let _criteria = new RateCriteria(this, criteria);
+    let _transaction, _criteria;
+
+    try {
+      _transaction = new Transaction(transaction);
+      _criteria = new RateCriteria(this, criteria);
+    }
+    catch (error) {
+      throw ono(error, { code: ErrorCode.InvalidInput });
+    }
 
     try {
       let quote = await this._getRates!(_transaction, _criteria);
       return new RateQuote(this, quote);
     }
     catch (error) {
-      throw ono(error, { transactionID: _transaction.id }, `Error in getRates method.`);
+      throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in getRates method.`);
     }
   }
 
@@ -330,14 +366,21 @@ export class ShippingProviderApp extends App {
    * Returns the web page URL where a customer can track a shipment
    */
   public async getTrackingUrl?(transaction: TransactionConfig): Promise<unknown> {
-    let _transaction = new Transaction(transaction);
+    let _transaction;
+
+    try {
+      _transaction = new Transaction(transaction);
+    }
+    catch (error) {
+      throw ono(error, { code: ErrorCode.InvalidInput });
+    }
 
     try {
       // TODO: NOT IMPLEMENTED YET
       return await Promise.resolve(undefined);
     }
     catch (error) {
-      throw ono(error, { transactionID: _transaction.id }, `Error in getTrackingUrl method.`);
+      throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in getTrackingUrl method.`);
     }
   }
 
@@ -345,14 +388,21 @@ export class ShippingProviderApp extends App {
    * Returns tracking details for a shipment
    */
   public async track?(transaction: TransactionConfig): Promise<unknown> {
-    let _transaction = new Transaction(transaction);
+    let _transaction;
+
+    try {
+      _transaction = new Transaction(transaction);
+    }
+    catch (error) {
+      throw ono(error, { code: ErrorCode.InvalidInput });
+    }
 
     try {
       // TODO: NOT IMPLEMENTED YET
       return await Promise.resolve(undefined);
     }
     catch (error) {
-      throw ono(error, { transactionID: _transaction.id }, `Error in track method.`);
+      throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in track method.`);
     }
   }
 
@@ -360,14 +410,21 @@ export class ShippingProviderApp extends App {
    * Creates a manifest for multiple shipments
    */
   public async createManifest?(transaction: TransactionConfig): Promise<unknown> {
-    let _transaction = new Transaction(transaction);
+    let _transaction;
+
+    try {
+      _transaction = new Transaction(transaction);
+    }
+    catch (error) {
+      throw ono(error, { code: ErrorCode.InvalidInput });
+    }
 
     try {
       // TODO: NOT IMPLEMENTED YET
       return await Promise.resolve(undefined);
     }
     catch (error) {
-      throw ono(error, { transactionID: _transaction.id }, `Error in createManifest method.`);
+      throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in createManifest method.`);
     }
   }
 

@@ -93,6 +93,19 @@ export class ShippingProviderApp extends App {
   //#region Helper properties
 
   /**
+   * All carriers that this provider provides
+   */
+  public get carriers(): Carrier[] {
+    let carriers = new Map<string, Carrier>();
+    for (let service of this.deliveryServices) {
+      if (!carriers.has(service.carrier.id)) {
+        carriers.set(service.carrier.id, service.carrier);
+      }
+    }
+    return [...carriers.values()];
+  }
+
+  /**
    * All countries that this provider ships to or from
    */
   public get countries(): Country[] {

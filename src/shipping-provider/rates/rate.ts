@@ -1,5 +1,6 @@
 import { assert } from "../../assert";
 import { RateConfig } from "../../config";
+import { MonetaryValue } from "../../measures";
 import { ShippingProviderApp } from "../app";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
@@ -38,6 +39,11 @@ export class Rate {
   public readonly charges: ReadonlyArray<ShippingCharge>;
 
   /**
+   * The total cost of all charges for this rate.
+   */
+  public readonly totalAmount: MonetaryValue;
+
+  /**
    * Indicates whether this rate is based on pre-negotiated terms
    */
   public readonly isNegotiatedRate: boolean;
@@ -60,6 +66,7 @@ export class Rate {
       && assert.type.date(config.estimatedDeliveryDateTime, "estimated delivery date/time");
     this.charges = assert.array.nonEmpty(config.charges, "rate charges")
       .map((charge) => new ShippingCharge(charge));
+    this.totalAmount = MonetaryValue.sum(this.charges.map((charge) => charge.amount));
     this.isNegotiatedRate = assert.type.boolean(config.isNegotiatedRate, "isNegotiatedRate flag", false);
     this.notes = assert.array(typeof config.notes === "string" ? [config.notes] : config.notes, "notes", [])
       .map((note) => assert.string.nonWhitespace(note, "notes"));

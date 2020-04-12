@@ -1,5 +1,6 @@
 import { assert } from "../../assert";
 import { LabelConfirmationConfig } from "../../config/label-confirmation-config";
+import { MonetaryValue } from "../../measures";
 import { Label } from "./label";
 import { ShippingCharge } from "./shipping-charge";
 
@@ -33,6 +34,11 @@ export class LabelConfirmation {
   public readonly charges: ReadonlyArray<ShippingCharge>;
 
   /**
+   * The total cost of all charges for this label.
+   */
+  public readonly totalAmount: MonetaryValue;
+
+  /**
    * The shipping labels that were created
    */
   public readonly labels: ReadonlyArray<Label>;
@@ -50,6 +56,7 @@ export class LabelConfirmation {
       && assert.type.date(config.estimatedDeliveryDateTime, "estimated delivery date/time");
     this.charges = assert.array.nonEmpty(config.charges, "shipping charges")
       .map((charge) => new ShippingCharge(charge));
+    this.totalAmount = MonetaryValue.sum(this.charges.map((charge) => charge.amount));
     this.labels = assert.array.nonEmpty(config.labels, "labels").map((label) => new Label(label));
 
     // Prevent modifications after validation

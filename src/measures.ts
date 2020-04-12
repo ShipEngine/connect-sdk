@@ -1,5 +1,7 @@
 // tslint:disable: max-classes-per-file
 
+import { humanize } from "@jsdevtools/humanize-anything";
+import { ono } from "@jsdevtools/ono";
 import * as currency from "currency.js";
 import { assert } from "./assert";
 import { DimensionsConfig, MonetaryValueConfig, QuantityConfig, WeightConfig } from "./config";
@@ -209,6 +211,36 @@ export class MonetaryValue {
 
     // Prevent modifications after validation
     Object.freeze(this);
+  }
+
+  /**
+   * Returns the sum total of all the given monetary values
+   */
+  public static sum(charges: MonetaryValue[]): MonetaryValue {
+    let uniqueCurrencies = new Set<Currency>();
+    let total = currency(0);
+
+    for (let charge of charges) {
+      let value = currency(charge.value);
+
+      if (value.intValue > 0) {
+        total = total.add(charge.value);
+        uniqueCurrencies.add(charge.currency);
+      }
+    }
+
+    if (uniqueCurrencies.size > 1) {
+      let currencies = [...uniqueCurrencies];
+      throw ono(
+        { code: "E_CURRENCY_MISMATCH", currencies },  // <--- code used in Shipment class
+        `All charges must be in the same currency. These charges include ${humanize.list(currencies)}`
+      );
+    }
+
+    return new MonetaryValue({
+      currency: [...uniqueCurrencies][0] || Currency.UnitedStatesDollar,
+      value: total.toString(),
+    });
   }
 }
 

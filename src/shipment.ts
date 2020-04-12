@@ -1,6 +1,5 @@
 // tslint:disable: max-classes-per-file
 import humanize from "@jsdevtools/humanize-anything";
-import * as currency from "currency.js";
 import { Address } from "./address";
 import { assert } from "./assert";
 import { NewShipmentConfig, PackageConfig, ShipmentConfig, ShipmentIdentifierConfig } from "./config";
@@ -219,27 +218,25 @@ export class Shipment extends NewShipment {
  * which is the sum of the insured value of all packages.
  */
 function calculateTotalInsuranceAmount(packages: ReadonlyArray<NewPackage>): MonetaryValue {
-  let currencies = new Set<Currency>();
-  let total = currency(0);
-
+  let insuredValues: MonetaryValue[] = [];
   for (let parcel of packages) {
-    let value = currency(parcel.insuredValue.value);
+    insuredValues.push(parcel.insuredValue);
+  }
 
-    if (value.intValue > 0) {
-      total.add(parcel.insuredValue.value);
-      currencies.add(parcel.insuredValue.currency);
+  try {
+    return MonetaryValue.sum(insuredValues);
+  }
+  catch (e) {
+    let error = e as Error & { code: string; currencies: Currency[] };
+
+    // Check for a currency mismatch, and throw a more specific error message
+    if (error.code === "E_CURRENCY_MISMATCH") {
+      throw new Error(
+        `All packages in a shipment must be insured in the same currency. ` +
+        `This shipment includes ${humanize.list(error.currencies)}`
+      );
     }
-  }
 
-  if (currencies.size > 1) {
-    throw new Error(
-      `All packages in a shipment must be insured in the same currency. ` +
-      `This shipment includes ${humanize.list([...currencies])}`
-    );
+    throw error;
   }
-
-  return new MonetaryValue({
-    currency: [...currencies][0] || Currency.UnitedStatesDollar,
-    value: total.toString(),
-  });
 }

@@ -1,6 +1,6 @@
 {
   "name": "@shipengine/ipaas",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "The official SDK for building ShipEngine IPaaS apps",
   "keywords": [
     "shipengine",

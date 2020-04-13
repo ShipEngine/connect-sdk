@@ -15,5 +15,12 @@ export interface TransactionConfig {
    * Arbitrary session data that was established upon logging in.
    * This object matches the structure defined by the shipping provider's login form.
    */
-  session?: object;
+  session?: SessionState;
+}
+
+/**
+ * Arbitrary Session data
+ */
+export interface SessionState {
+  [key: string]: unknown;
 }

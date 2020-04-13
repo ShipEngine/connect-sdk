@@ -1,5 +1,6 @@
+import { inspect } from "util";
 import { assert } from "./assert";
-import { TransactionConfig } from "./config";
+import { SessionState, TransactionConfig } from "./config";
 import { UUID } from "./types";
 
 /**
@@ -7,6 +8,8 @@ import { UUID } from "./types";
  * transaction being performed, including authentication, metadata, etc.
  */
 export class Transaction {
+  private readonly _session: SessionState;
+
   /**
    * Uniquely identifies the current transaction. If the transaction is retried, then this ID will
    * remain the same. You can use this to detect/prevent duplicate operations.
@@ -20,7 +23,27 @@ export class Transaction {
    * The properties of the session object are mutable. Any method may update the session data,
    * such as renewing a session token or updating a timestamp.
    */
-  public readonly session: object;
+  public get session(): SessionState {
+    return this._session;
+  }
+
+  /**
+   * Updates the session data, creating new keys, updating existing keys, and/or deleting keys
+   * that are no longer present.
+   */
+  public set session(value: SessionState) {
+    assert.type.object(value, "session state");
+    let keys = Object.keys(this._session).concat(Object.keys(value));
+    for (let key of keys) {
+      if (key in value) {
+        this._session[key] = value[key];
+      }
+      else {
+        // tslint:disable-next-line: no-dynamic-delete
+        delete this._session[key];
+      }
+    }
+  }
 
   /**
    * Creates a Transaction object from a config object
@@ -28,9 +51,27 @@ export class Transaction {
   public constructor(config: TransactionConfig) {
     assert.type.object(config, "transaction");
     this.id = assert.string.uuid(config.id, "transaction ID");
-    this.session = assert.type.object<object>(config.session, "session data", {});
+    this._session = assert.type.object<SessionState>(config.session, "session data", {});
 
-    // NOTE: We don't use Object.freeze() here because we want the session property to be writable
-    Object.defineProperty(this, "id", { value: config.id, writable: false });
+    // Prevent modifications after validation
+    // NOTE: The session object is NOT frozen. It can be mutated by user code.
+    Object.freeze(this);
+  }
+
+  /**
+   * Returns the transaction data as a POJO
+   */
+  public toJSON() {
+    return {
+      id: this.id,
+      session: this.session,
+    };
+  }
+
+  /**
+   * Returns the transaction data for the Node.js console
+   */
+  public [inspect.custom]() {
+    return this.toJSON();
   }
 }

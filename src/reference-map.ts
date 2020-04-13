@@ -70,7 +70,7 @@ export class ReferenceMap {
    */
   public lookup<T extends Class>(id: UUID, ctor: Constructor, type: string): T {
     assert.string.uuid(id, `${type} ID`);
-    let value = this.get<T>({ id }, ctor);
+    let value = this.get<T>(id, ctor, type);
 
     if (!value) {
       throw new ReferenceError(`Unable to find ${type}: ${id}`);

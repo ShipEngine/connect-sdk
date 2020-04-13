@@ -30,8 +30,7 @@ export class Transaction {
     this.id = assert.string.uuid(config.id, "transaction ID");
     this.session = assert.type.object<object>(config.session, "session data", {});
 
-    // Prevent modifications after validation
-    // NOTE: The session object is NOT frozen. It can be mutated by user code.
-    Object.freeze(this);
+    // NOTE: We don't use Object.freeze() here because we want the session property to be writable
+    Object.defineProperty(this, "id", { value: config.id, writable: false });
   }
 }

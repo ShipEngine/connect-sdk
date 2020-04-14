@@ -19,3 +19,4 @@ export * from "./pickups/time-range";
 export * from "./rates/rate";
 export * from "./rates/rate-criteria";
 export * from "./rates/rate-quote";
+export * from "./tracking/tracking-criteria";

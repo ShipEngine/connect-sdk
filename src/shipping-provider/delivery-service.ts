@@ -118,6 +118,22 @@ export class DeliveryService {
     return Object.freeze([...countries]);
   }
 
+  /**
+   * Indicates whether the weight may be required when using this service.
+   * This property is `true` if any of the service's packaging requires weight.
+   */
+  public get requiresWeight(): boolean {
+    return this.packaging.some((pkg) => pkg.requiresWeight);
+  }
+
+  /**
+   * Indicates whether the dimensions may be required when using this service.
+   * This property is `true` if any of the service's packaging requires dimensions.
+   */
+  public get requiresDimensions(): boolean {
+    return this.packaging.some((pkg) => pkg.requiresDimensions);
+  }
+
   //#endregion
 
   /**

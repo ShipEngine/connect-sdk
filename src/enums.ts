@@ -13,7 +13,6 @@ export enum LabelFormat {
 export enum LabelSize {
   Inches4x6 = "4x6",
   Inches4x8 = "4x8",
-  Letter = "letter",
 }
 
 /**

@@ -58,28 +58,32 @@ export class Carrier {
   //#region Helper Properties
 
   /**
-   * The service area that this provider covers
+   * The service area that this provider covers.
+   * This is the maximum service area of all delivery services offered by the carrier.
    */
   public get serviceArea(): ServiceArea {
     return getMaxServiceArea(this.deliveryServices);
   }
 
   /**
-   * Indicates whether this provider consolidates multiple carrier services
+   * Indicates whether this provider consolidates multiple carrier services.
+   * This property is `true` if any of the carrier's delivery services are consolidation services.
    */
   public get isConsolidator(): boolean {
     return this.deliveryServices.some((svc) => svc.isConsolidator);
   }
 
   /**
-   * Indicates whether a tracking number is provided
+   * Indicates whether a tracking number is provided.
+   * This property is `true` if any of the carrier's delivery services have tracking.
    */
   public get hasTracking(): boolean {
     return this.deliveryServices.some((svc) => svc.hasTracking);
   }
 
   /**
-   * Indicates whether this service requires a manifest, and if so, what type
+   * Indicates whether this service requires a manifest, and if so, what type.
+   * This property is `false` if none of the carrier's delivery services require a manifest.
    */
   public get requiresManifest(): false | ManifestType {
     for (let service of this.deliveryServices) {
@@ -91,7 +95,8 @@ export class Carrier {
   }
 
   /**
-   * The label formats that are offered for this service
+   * The label formats that are offered for this service.
+   * This list includes all unique label formats that are offered by all of the carrier's delivery services.
    */
   public get labelFormats(): ReadonlyArray<LabelFormat> {
     let labelFormats = new Set<LabelFormat>();
@@ -104,7 +109,8 @@ export class Carrier {
   }
 
   /**
-   * The label dimensions that are used for this service
+   * The label dimensions that are used for this service.
+   * This list includes all unique label sizes that are offered by all of the carrier's delivery services.
    */
   public get labelSizes(): ReadonlyArray<LabelSize> {
     let labelSizes = new Set<LabelSize>();
@@ -117,7 +123,8 @@ export class Carrier {
   }
 
   /**
-   * All countries that this provider ships to or from
+   * All countries that this provider ships to or from.
+   * This list includes all unique origin and delivery countries for all of the carrier's delivery services.
    */
   public get countries(): ReadonlyArray<Country> {
     let countries = new Set(this.originCountries.concat(this.destinationCountries));
@@ -125,7 +132,8 @@ export class Carrier {
   }
 
   /**
-   * All origin countries that this provider ships from
+   * All origin countries that this provider ships from.
+   * This list includes all unique origin countries for all of the carrier's delivery services.
    */
   public get originCountries(): ReadonlyArray<Country> {
     let countries = new Set<Country>();
@@ -138,7 +146,8 @@ export class Carrier {
   }
 
   /**
-   * All destination countries that this provider ships to
+   * All destination countries that this provider ships to.
+   * This list includes all unique delivery countries for all of the carrier's delivery services.
    */
   public get destinationCountries(): ReadonlyArray<Country> {
     let countries = new Set<Country>();
@@ -151,7 +160,8 @@ export class Carrier {
   }
 
   /**
-   * The types of packaging that are provided/allowed for this service
+   * The types of packaging that are provided/allowed for this service.
+   * This list includes all unique packaging types for all of the carrier's delivery services.
    */
   public get packaging(): ReadonlyArray<Packaging> {
     let packaging = new Set<Packaging>();
@@ -164,7 +174,8 @@ export class Carrier {
   }
 
   /**
-   * The types of package delivery confirmations offered for this service
+   * The types of package delivery confirmations offered for this service.
+   * This list includes all unique delivery confirmations for all of the carrier's delivery services.
    */
   public get deliveryConfirmations(): ReadonlyArray<DeliveryConfirmation> {
     let deliveryConfirmations = new Set<DeliveryConfirmation>();

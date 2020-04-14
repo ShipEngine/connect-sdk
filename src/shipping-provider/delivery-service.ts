@@ -110,7 +110,8 @@ export class DeliveryService {
   //#region Helper properties
 
   /**
-   * All countries that this service ships to or from
+   * All countries that this service ships to or from.
+   * This list includes all unique origin and destination countries.
    */
   public get countries(): ReadonlyArray<Country> {
     let countries = new Set(this.originCountries.concat(this.destinationCountries));

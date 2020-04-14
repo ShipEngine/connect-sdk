@@ -88,21 +88,24 @@ export class ShippingProviderApp extends App {
   //#region Helper Properties
 
   /**
-   * The service area that this provider covers
+   * The service area that this provider covers.
+   * This is the maximum service area of all delivery services offered by the provider.
    */
   public get serviceArea(): ServiceArea {
     return getMaxServiceArea(this.deliveryServices);
   }
 
   /**
-   * Indicates whether this provider consolidates multiple carrier services
+   * Indicates whether this provider consolidates multiple carrier services.
+   * This property is `true` if any of the provider's delivery services are consolidation services.
    */
   public get isConsolidator(): boolean {
     return this.deliveryServices.some((svc) => svc.isConsolidator);
   }
 
   /**
-   * All delivery services that are offered
+   * All delivery services that are offered by this provider.
+   * This list includes all unique delivery services that are offered by all of this provider's carriers.
    */
   public get deliveryServices(): ReadonlyArray<DeliveryService> {
     let services = new Set<DeliveryService>();
@@ -115,7 +118,8 @@ export class ShippingProviderApp extends App {
   }
 
   /**
-   * All package pickup services that are offered
+   * All package pickup services that are offered.
+   * This list includes all unique pickup services that are offered by all of this provider's carriers.
    */
   public get pickupServices(): ReadonlyArray<PickupService> {
     let services = new Set<PickupService>();
@@ -128,7 +132,8 @@ export class ShippingProviderApp extends App {
   }
 
   /**
-   * All countries that this provider ships to or from
+   * All countries that this provider ships to or from.
+   * This list includes all unique origin and delivery countries for all of the provider's carriers.
    */
   public get countries(): ReadonlyArray<Country> {
     let countries = new Set(this.originCountries.concat(this.destinationCountries));
@@ -136,7 +141,8 @@ export class ShippingProviderApp extends App {
   }
 
   /**
-   * All origin countries that this provider ships from
+   * All origin countries that this provider ships from.
+   * This list includes all unique origin countries for all of the provider's carriers.
    */
   public get originCountries(): ReadonlyArray<Country> {
     let countries = new Set<Country>();
@@ -149,7 +155,8 @@ export class ShippingProviderApp extends App {
   }
 
   /**
-   * All destination countries that this provider ships to
+   * All destination countries that this provider ships to.
+   * This list includes all unique destination countries for all of the provider's carriers.
    */
   public get destinationCountries(): ReadonlyArray<Country> {
     let countries = new Set<Country>();

@@ -103,6 +103,8 @@ export class NewShipment {
   /**
    * Indicates whether the shipment cannot be processed automatically due to size, shape, weight, etc.
    * and requires manual handling.
+   *
+   * This property is `true` if any package in the shipment is non-machineable.
    */
   public get isNonMachineable(): boolean {
     return this.packages.some((pkg) => pkg.isNonMachineable);

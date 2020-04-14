@@ -1,12 +1,12 @@
 import { PickupCancellationConfirmationConfig, PickupConfirmationConfig, RateQuoteConfig } from "../config";
 import { LabelConfirmationConfig } from "../config/label-confirmation-config";
-import { Shipment } from "../shipment";
 import { Transaction } from "../transaction";
 import { UrlString } from "../types";
 import { LabelSpec } from "./labels/label-spec";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
 import { PickupRequest } from "./pickups/pickup-request";
 import { RateCriteria } from "./rates/rate-criteria";
+import { TrackingCriteria } from "./tracking/tracking-criteria";
 
 /**
  * Verifies a user's credentials and establishes or renews a session.
@@ -44,10 +44,12 @@ export type VoidLabel = (transaction: Transaction, params: unknown) => void | Pr
 export type GetRates = (transaction: Transaction, criteria: RateCriteria) => RateQuoteConfig | Promise<RateQuoteConfig>;
 
 /**
- * Returns the web page URL where a customer can track a shipment
+ * Returns the web page URL where a customer can track a shipment.
+ *
+ * NOTE: This method is synchronous, so it cannot perform API calls.
+ * The function must contain all necessary logic for generating the tracking URL locally.
  */
-export type GetTrackingUrl = (transaction: Transaction, shipment: Shipment)
-  => undefined | URL | UrlString | Promise<URL | UrlString | undefined>;
+export type GetTrackingURL = (transaction: Transaction, criteria: TrackingCriteria) => undefined | URL | UrlString;
 
 /**
  * Returns tracking details for a shipment

@@ -2,19 +2,19 @@ import { ono } from "@jsdevtools/ono";
 import { App } from "../app";
 import { AppManifest } from "../app-manifest";
 import { assert } from "../assert";
-import { CarrierConfig, FormConfig, LabelSpecConfig, LogoConfig, PickupCancellationConfig, PickupRequestConfig, RateCriteriaConfig, ShippingProviderConfig, TransactionConfig } from "../config";
+import { CarrierConfig, FormConfig, LabelSpecConfig, LogoConfig, PickupCancellationConfig, PickupRequestConfig, RateCriteriaConfig, ShippingProviderConfig, TrackingCriteriaConfig, TransactionConfig } from "../config";
 import { Country } from "../countries";
 import { ServiceArea } from "../enums";
 import { ErrorCode } from "../errors";
 import { Form } from "../form";
 import { Transaction } from "../transaction";
-import { UUID } from "../types";
+import { UrlString, UUID } from "../types";
 import { Carrier } from "./carrier";
 import { DeliveryService } from "./delivery-service";
 import { LabelConfirmation } from "./labels/label-confirmation";
 import { LabelSpec } from "./labels/label-spec";
 import { Logo } from "./logo";
-import { CancelPickup, CreateLabel, CreateManifest, GetRates, GetTrackingUrl, Login, RequestPickup, Track, VoidLabel } from "./methods";
+import { CancelPickup, CreateLabel, CreateManifest, GetRates, GetTrackingURL, Login, RequestPickup, Track, VoidLabel } from "./methods";
 import { PickupService } from "./pickup-service";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
 import { PickupCancellationConfirmation } from "./pickups/pickup-cancellation-confirmation";
@@ -22,6 +22,7 @@ import { PickupConfirmation } from "./pickups/pickup-confirmation";
 import { PickupRequest } from "./pickups/pickup-request";
 import { RateCriteria } from "./rates/rate-criteria";
 import { RateQuote } from "./rates/rate-quote";
+import { TrackingCriteria } from "./tracking/tracking-criteria";
 import { getMaxServiceArea } from "./utils";
 
 /**
@@ -38,7 +39,7 @@ export class ShippingProviderApp extends App {
   private readonly _createLabel: CreateLabel | undefined;
   private readonly _voidLabel: VoidLabel | undefined;
   private readonly _getRates: GetRates | undefined;
-  private readonly _getTrackingUrl: GetTrackingUrl | undefined;
+  private readonly _getTrackingURL: GetTrackingURL | undefined;
   private readonly _track: Track | undefined;
   private readonly _createManifest: CreateManifest | undefined;
 
@@ -212,9 +213,9 @@ export class ShippingProviderApp extends App {
       ? (this._getRates = assert.type.function(config.getRates as GetRates, "getRates method"))
       : (this.getRates = undefined);
 
-    config.getTrackingUrl
-      ? (this._getTrackingUrl = assert.type.function(config.getTrackingUrl as GetTrackingUrl, "getTrackingUrl method"))
-      : (this.getTrackingUrl = undefined);
+    config.getTrackingURL
+      ? (this._getTrackingURL = assert.type.function(config.getTrackingURL as GetTrackingURL, "getTrackingUrl method"))
+      : (this.getTrackingURL = undefined);
 
     config.track
       ? (this._track = assert.type.function(config.track as Track, "track method"))
@@ -380,22 +381,23 @@ export class ShippingProviderApp extends App {
   /**
    * Returns the web page URL where a customer can track a shipment
    */
-  public async getTrackingUrl?(transaction: TransactionConfig): Promise<unknown> {
-    let _transaction;
+  public getTrackingURL?(transaction: TransactionConfig, criteria: TrackingCriteriaConfig): URL | undefined {
+    let _transaction, _criteria;
 
     try {
       _transaction = new Transaction(transaction);
+      _criteria = new TrackingCriteria(this, criteria);
     }
     catch (error) {
       throw ono(error, { code: ErrorCode.InvalidInput });
     }
 
     try {
-      // TODO: NOT IMPLEMENTED YET
-      return await Promise.resolve(undefined);
+      let url = this._getTrackingURL!(_transaction, _criteria);
+      return url ? new URL(url as UrlString) : undefined;
     }
     catch (error) {
-      throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in getTrackingUrl method.`);
+      throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in getTrackingURL method.`);
     }
   }
 

@@ -1,4 +1,4 @@
-import { CancelPickup, CreateLabel, CreateManifest, GetRates, GetTrackingUrl, RequestPickup, Track, VoidLabel } from "../shipping-provider";
+import { CancelPickup, CreateLabel, CreateManifest, GetRates, GetTrackingURL, RequestPickup, Track, VoidLabel } from "../shipping-provider";
 import { Login } from "../shipping-provider/methods";
 import { InlineOrReference, InlineOrReferenceArray, UrlString, UUID } from "../types";
 import { CarrierConfig } from "./carrier-config";
@@ -88,7 +88,7 @@ export interface ShippingProviderConfig {
   /**
    * Returns the tracking URL for a shipment
    */
-  getTrackingUrl?: InlineOrReference<GetTrackingUrl>;
+  getTrackingURL?: InlineOrReference<GetTrackingURL>;
 
   /**
    * Returns tracking details for a shipment

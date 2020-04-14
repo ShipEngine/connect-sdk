@@ -23,4 +23,5 @@ export * from "./shipment-config";
 export * from "./shipping-charge-config";
 export * from "./shipping-provider-config";
 export * from "./time-range-config";
+export * from "./tracking-criteria-config";
 export * from "./transaction-config";

@@ -145,7 +145,7 @@ export class NewShipment {
    */
   public readonly packages: ReadonlyArray<NewPackage>;
 
-  public constructor(app: App, config: NewShipmentConfig) {
+  public constructor(app: App, config: NewShipmentConfig, freeze = true) {
     assert.type.object(config, "shipment");
     this.deliveryService = app._references.lookup(config.deliveryServiceID, DeliveryService, "delivery service");
     this.deliveryConfirmation = app._references.get(config.deliveryConfirmationID, DeliveryConfirmation, "delivery confirmation");
@@ -182,10 +182,12 @@ export class NewShipment {
     // NOTE: This must be calculated AFTER setting the packages property
     this.totalInsuredValue = calculateTotalInsuranceAmount(this.packages);
 
-    // Prevent modifications after validation
-    Object.freeze(this);
-    Object.freeze(this.billing);
-    Object.freeze(this.packages);
+    if (freeze) {
+      // Prevent modifications after validation
+      Object.freeze(this);
+      Object.freeze(this.billing);
+      Object.freeze(this.packages);
+    }
   }
 }
 
@@ -196,12 +198,12 @@ export class Shipment extends NewShipment {
   /**
    * The carrier tracking number
    */
-  public readonly trackingNumber!: string;
+  public readonly trackingNumber: string;
 
   /**
    * Alternative identifiers associated with this shipment
    */
-  public readonly identifiers!: ReadonlyArray<Identifier>;
+  public readonly identifiers: ReadonlyArray<Identifier>;
 
   /**
    * The list of packages in the shipment
@@ -209,10 +211,17 @@ export class Shipment extends NewShipment {
   public readonly packages: ReadonlyArray<Package>;
 
   public constructor(app: App, config: ShipmentConfig) {
-    super(app, config);
+    super(app, config, false);
+    this.trackingNumber = assert.string.nonWhitespace(config.trackingNumber, "tracking number");
+    this.identifiers = assert.array.ofIdentifiers(config.identifiers, "shipment identifiers", []);
     this.packages = assert.array.nonEmpty(config.packages, "packages")
       .map((parcel: PackageConfig) => new Package(app, parcel));
-    ShipmentIdentifier.call(this, config);
+
+    // Prevent modifications after validation
+    Object.freeze(this);
+    Object.freeze(this.identifiers);
+    Object.freeze(this.billing);
+    Object.freeze(this.packages);
   }
 }
 

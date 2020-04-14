@@ -82,7 +82,7 @@ export class NewPackage {
    */
   public readonly contents: ReadonlyArray<PackageItem>;
 
-  public constructor(app: App, config: NewPackageConfig) {
+  public constructor(app: App, config: NewPackageConfig, freeze = true) {
     assert.type.object(config, "package");
     this.packaging = app._references.lookup(config.packagingID, Packaging, "packaging");
     this.dimensions = (config.dimensions || this.packaging.requiresDimensions)
@@ -97,10 +97,12 @@ export class NewPackage {
     this.contents = assert.array(config.contents, "package contents", [])
       .map((item: PackageItemConfig) => new PackageItem(item));
 
-    // Prevent modifications after validation
-    Object.freeze(this);
-    Object.freeze(this.labelMessages);
-    Object.freeze(this.contents);
+    if (freeze) {
+      // Prevent modifications after validation
+      Object.freeze(this);
+      Object.freeze(this.labelMessages);
+      Object.freeze(this.contents);
+    }
   }
 }
 
@@ -119,7 +121,14 @@ export class Package extends NewPackage {
   public readonly identifiers!: ReadonlyArray<Identifier>;
 
   public constructor(app: App, config: PackageConfig) {
-    super(app, config);
-    PackageIdentifier.call(this, config);
+    super(app, config, false);
+    this.trackingNumber = assert.string.nonWhitespace(config.trackingNumber, "tracking number");
+    this.identifiers = assert.array.ofIdentifiers(config.identifiers, "package identifiers", []);
+
+    // Prevent modifications after validation
+    Object.freeze(this);
+    Object.freeze(this.identifiers);
+    Object.freeze(this.labelMessages);
+    Object.freeze(this.contents);
   }
 }

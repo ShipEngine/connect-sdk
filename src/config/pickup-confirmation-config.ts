@@ -27,7 +27,7 @@ export interface PickupConfirmationConfig {
   timeWindows: TimeRangeConfig[];
 
   /**
-   * Additional information about the pickup confirmation
+   * Human-readable information about the pickup confirmation
    */
   notes?: string;
 

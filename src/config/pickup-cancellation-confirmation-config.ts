@@ -17,7 +17,7 @@ export interface PickupCancellationConfirmationConfig {
   cancellationID?: string;
 
   /**
-   * Additional information/instructions regarding the cancellation
+   * Human-readable information/instructions regarding the cancellation
    * (e.g. "Please call ###-#### to cancel", "Cannot cancel because driver is en-route")
    */
   notes?: string;

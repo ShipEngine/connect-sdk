@@ -23,7 +23,7 @@ export interface PickupRequestConfig {
   address: AddressConfig;
 
   /**
-   * Additional information about the pickup
+   * Human-readable information about the pickup
    */
   notes?: string;
 

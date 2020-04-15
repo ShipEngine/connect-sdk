@@ -29,7 +29,7 @@ export interface PickupCancellationConfig {
   reason: PickupCancellationReason;
 
   /**
-   * Information about why the customer is cancelling the pickup
+   * Human-readable information about why the customer is cancelling the pickup
    */
   notes?: string;
 

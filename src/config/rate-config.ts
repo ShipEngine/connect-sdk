@@ -49,7 +49,7 @@ export interface RateConfig {
   isNegotiatedRate?: boolean;
 
   /**
-   * Additional information regarding this rate quote, such as limitations or restrictions
+   * Human-readable information regarding this rate quote, such as limitations or restrictions
    */
   notes?: string | string[];
 }

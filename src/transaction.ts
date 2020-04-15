@@ -17,6 +17,15 @@ export class Transaction {
   public readonly id: UUID;
 
   /**
+   * Indicates whether the operation should use the carrier's sandbox/development API rather than
+   * the normal/production API.
+   *
+   * If the `useSandbox` is `true`, then the operation MUST NOT incur any actual costs or affect
+   * production data.
+   */
+  public readonly useSandbox: boolean;
+
+  /**
    * Arbitrary session data that was established upon logging in.
    * This object initially matches the structure defined by the shipping provider's login form.
    *
@@ -51,6 +60,7 @@ export class Transaction {
   public constructor(config: TransactionConfig) {
     assert.type.object(config, "transaction");
     this.id = assert.string.uuid(config.id, "transaction ID");
+    this.useSandbox = assert.type.boolean(config.useSandbox, "useSandbox flag", false);
     this._session = assert.type.object<SessionState>(config.session, "session data", {});
 
     // Prevent modifications after validation

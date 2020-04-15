@@ -66,6 +66,13 @@ export class DeliveryService {
   public readonly hasTracking: boolean;
 
   /**
+   * Indicates whether the carrier provides a sandbox/development API for this delivery service.
+   * A sandbox should mimic real functionality as much as possible but MUST NOT incur any actual
+   * costs or affect production data.
+   */
+  public readonly hasSandbox: boolean;
+
+  /**
    * Indicates whether this service requires a manifest, and if so, what type
    */
   public readonly requiresManifest: false | ManifestType;
@@ -152,6 +159,7 @@ export class DeliveryService {
     this.allowsMultiplePackages =
       assert.type.boolean(config.allowsMultiplePackages, "allowsMultiplePackages flag", false);
     this.hasTracking = assert.type.boolean(config.hasTracking, "hasTracking flag", false);
+    this.hasSandbox = assert.type.boolean(config.hasSandbox, "hasSandbox flag", false);
     this.requiresManifest = config.requiresManifest
       ? assert.string.enum(config.requiresManifest, ManifestType, "requiresManifest value")
       : false;

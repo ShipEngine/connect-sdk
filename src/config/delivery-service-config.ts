@@ -60,6 +60,13 @@ export interface DeliveryServiceConfig {
   hasTracking?: boolean;
 
   /**
+   * Indicates whether the carrier provides a sandbox/development API for this delivery service.
+   * A sandbox should mimic real functionality as much as possible but MUST NOT incur any actual
+   * costs or affect production data.
+   */
+  hasSandbox?: boolean;
+
+  /**
    * Indicates whether this service requires a manifest, and if so, what type
    */
   requiresManifest?: false | ManifestType;

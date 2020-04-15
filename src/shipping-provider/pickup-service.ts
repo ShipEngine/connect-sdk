@@ -25,6 +25,13 @@ export class PickupService {
   public readonly description: string;
 
   /**
+   * Indicates whether the carrier provides a sandbox/development API for this pickup service.
+   * A sandbox should mimic real functionality as much as possible but MUST NOT incur any actual
+   * costs or affect production data.
+   */
+  public readonly hasSandbox: boolean;
+
+  /**
    * The carrier that provides this service
    */
   public readonly  carrier: Carrier;
@@ -37,6 +44,7 @@ export class PickupService {
     this.id = app._references.add(this, config, "pickup service");
     this.name = assert.string.nonWhitespace(config.name, "pickup service name");
     this.description = assert.string(config.description, "pickup service description", "");
+    this.hasSandbox = assert.type.boolean(config.hasSandbox, "hasSandbox flag", false);
 
     // Prevent modifications after validation
     Object.freeze(this);

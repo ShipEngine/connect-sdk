@@ -54,7 +54,7 @@ export type GetTrackingURL = (transaction: Transaction, criteria: TrackingCriter
 /**
  * Returns tracking details for a shipment
  */
-export type Track = (transaction: Transaction, params: unknown) => void | Promise<void>;
+export type Track = (transaction: Transaction, criteria: TrackingCriteria) => void | Promise<void>;
 
 /**
  * Creates a manifest for multiple shipments

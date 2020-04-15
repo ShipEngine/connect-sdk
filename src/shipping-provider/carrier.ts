@@ -82,6 +82,17 @@ export class Carrier {
   }
 
   /**
+   * Indicates whether the carrier provides a sandbox/development API for any of its delivery
+   * or pickup services.
+   */
+  public get hasSandbox(): boolean {
+    let hasSandbox = (svc: { hasSandbox: boolean }) => svc.hasSandbox;
+    let found = this.deliveryServices.some(hasSandbox);
+    found || (found = this.pickupServices.some(hasSandbox));
+    return found;
+  }
+
+  /**
    * Indicates whether this service requires a manifest, and if so, what type.
    * This property is `false` if none of the carrier's delivery services require a manifest.
    */

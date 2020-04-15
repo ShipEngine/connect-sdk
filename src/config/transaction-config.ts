@@ -12,6 +12,15 @@ export interface TransactionConfig {
   id: UUID;
 
   /**
+   * Indicates whether the operation should use the carrier's sandbox/development API rather than
+   * the normal/production API.
+   *
+   * If the `useSandbox` is `true`, then the operation MUST NOT incur any actual costs or affect
+   * production data.
+   */
+  useSandbox?: boolean;
+
+  /**
    * Arbitrary session data that was established upon logging in.
    * This object matches the structure defined by the shipping provider's login form.
    */

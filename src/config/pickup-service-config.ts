@@ -19,4 +19,11 @@ export interface PickupServiceConfig {
    * A short, user-friendly description of the service
    */
   description?: string;
+
+  /**
+   * Indicates whether the carrier provides a sandbox/development API for this pickup service.
+   * A sandbox should mimic real functionality as much as possible but MUST NOT incur any actual
+   * costs or affect production data.
+   */
+  hasSandbox?: boolean;
 }

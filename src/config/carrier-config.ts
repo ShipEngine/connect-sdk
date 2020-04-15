@@ -1,4 +1,4 @@
-import { InlineOrReferenceArray, UrlString, UUID } from "../types";
+import { InlineOrReference, InlineOrReferenceArray, UrlString, UUID } from "../types";
 import { DeliveryServiceConfig } from "./delivery-service-config";
 import { LogoConfig } from "./logo-config";
 import { PickupServiceConfig } from "./pickup-service-config";
@@ -31,7 +31,7 @@ export interface CarrierConfig {
   /**
    * The carrier's logo image
    */
-  logo: LogoConfig;
+  logo: InlineOrReference<LogoConfig>;
 
   /**
    * The delivery services that are offered by the carrier

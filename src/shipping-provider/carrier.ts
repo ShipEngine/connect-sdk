@@ -1,6 +1,6 @@
 import { App } from "../app";
 import { assert } from "../assert";
-import { CarrierConfig, DeliveryServiceConfig, PickupServiceConfig } from "../config";
+import { CarrierConfig, DeliveryServiceConfig, LogoConfig, PickupServiceConfig } from "../config";
 import { Country } from "../countries";
 import { LabelFormat, LabelSize, ManifestType, ServiceArea } from "../enums";
 import { UUID } from "../types";
@@ -208,7 +208,7 @@ export class Carrier {
     this.name = assert.string.nonWhitespace(config.name, "carrier name");
     this.description = assert.string(config.description, "carrier description", "");
     this.websiteURL = new URL(assert.string.nonWhitespace(config.websiteURL, "websiteURL"));
-    this.logo =  new Logo(config.logo);
+    this.logo =  new Logo(config.logo as LogoConfig);
     this.deliveryServices = assert.array.nonEmpty(config.deliveryServices, "delivery services")
       .map((svc: DeliveryServiceConfig) => new DeliveryService(app, this, svc));
     this.pickupServices = assert.array(config.pickupServices, "pickup services", [])

@@ -36,7 +36,7 @@ export interface Package extends PackageIdentifier, NewPackage {}
 /**
  * A package that has already been created and assigned identifiers
  */
-export class Package extends newPackageMixin(PackageIdentifier) {
+export class Package extends newPackageMixin(packageIdentifierMixin()) {
   public constructor(app: App, config: PackageConfig) {
     super(app, config, true);
 
@@ -46,8 +46,8 @@ export class Package extends newPackageMixin(PackageIdentifier) {
 }
 
 
-function packageIdentifierMixin() {
-  return class PackageIdentifierMixin {
+function packageIdentifierMixin(base: Constructor = Object) {
+  return class PackageIdentifierMixin extends base {
     /**
      * The carrier tracking number
      */
@@ -59,6 +59,7 @@ function packageIdentifierMixin() {
     public readonly identifiers: ReadonlyArray<Identifier>;
 
     public constructor(config: PackageIdentifierConfig, isMixin: boolean) {
+      base === Object ? super() : super(config, isMixin);
       assert.type.object(config, "package");
       this.trackingNumber = assert.string.nonWhitespace(config.trackingNumber, "tracking number");
       this.identifiers = assert.array.ofIdentifiers(config.identifiers, "package identifiers", []);
@@ -118,7 +119,7 @@ function newPackageMixin(base: Constructor = Object) {
     public readonly contents: ReadonlyArray<PackageItem>;
 
     public constructor(app: App, config: NewPackageConfig, isMixin: boolean) {
-      super(config, isMixin);
+      base === Object ? super() : super(config, isMixin);
       assert.type.object(config, "package");
       this.packaging = app._references.lookup(config.packagingID, Packaging, "packaging");
       this.dimensions = (config.dimensions || this.packaging.requiresDimensions)

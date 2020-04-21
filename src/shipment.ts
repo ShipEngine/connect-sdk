@@ -38,7 +38,7 @@ export interface Shipment extends ShipmentIdentifier, NewShipment {}
 /**
  * A shipment that has already been created and assigned identifiers
  */
-export class Shipment extends newShipmentMixin(ShipmentIdentifier) {
+export class Shipment extends newShipmentMixin(shipmentIdentifierMixin()) {
   /**
    * The list of packages in the shipment
    */
@@ -55,8 +55,8 @@ export class Shipment extends newShipmentMixin(ShipmentIdentifier) {
 }
 
 
-function shipmentIdentifierMixin() {
-  return class ShipmentIdentifierMixin {
+function shipmentIdentifierMixin(base: Constructor = Object) {
+  return class ShipmentIdentifierMixin extends base {
     /**
      * The carrier tracking number
      */
@@ -68,6 +68,7 @@ function shipmentIdentifierMixin() {
     public readonly identifiers: ReadonlyArray<Identifier>;
 
     public constructor(config: ShipmentIdentifierConfig, isMixin: boolean) {
+      base === Object ? super() : super(config, isMixin);
       assert.type.object(config, "shipment");
       this.trackingNumber = assert.string.nonWhitespace(config.trackingNumber, "tracking number");
       this.identifiers = assert.array.ofIdentifiers(config.identifiers, "shipment identifiers", []);
@@ -188,7 +189,7 @@ function newShipmentMixin(base: Constructor = Object) {
     public readonly packages: ReadonlyArray<NewPackage>;
 
     public constructor(app: App, config: NewShipmentConfig, isMixin: boolean) {
-      super(config, isMixin);
+      base === Object ? super() : super(config, isMixin);
       assert.type.object(config, "shipment");
       this.deliveryService = app._references.lookup(config.deliveryServiceID, DeliveryService, "delivery service");
       this.deliveryConfirmation = app._references.get(config.deliveryConfirmationID, DeliveryConfirmation, "delivery confirmation");

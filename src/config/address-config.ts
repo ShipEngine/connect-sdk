@@ -1,9 +1,10 @@
 import { Country } from "../countries";
+import { ContactInfoConfig } from "./contact-info-config";
 
 /**
  * A mailing address
  */
-export interface AddressConfig extends ContactInfoConfig {
+export interface AddressConfig {
   company?: string;
   addressLines: string[];
   cityLocality: string;
@@ -11,22 +12,29 @@ export interface AddressConfig extends ContactInfoConfig {
   postalCode: string;
   country: Country;
   isResidential?: boolean;
+  coordinates?: GeoCoordinateConfig;
 }
 
 /**
- * A person's contact information
+ * A mailing address with a person's contact info
  */
-export interface ContactInfoConfig {
-  name: string | ParsedNameConfig;
-  email?: string;
-  phoneNumber?: string;
-  phoneNumberExtension?: string;
-}
+export interface AddressWithContactInfoConfig extends AddressConfig, ContactInfoConfig {}
 
 /**
- * A person's name that has been parsed into separate fields.
+ * The geo coordinates of a location on Earth
  */
-export interface ParsedNameConfig {
-  first: string;
-  last: string;
+export interface GeoCoordinateConfig {
+  /**
+   * The latitude of the point. Represented as signed degrees between -90.0 and +90.0.
+   *
+   * @see http://www.geomidpoint.com/latlon.html
+   */
+  latitude: number;
+
+  /**
+   * The longitude of the point. Represented as signed degrees between -180.0 and +180.0.
+   *
+   * @see http://www.geomidpoint.com/latlon.html
+   */
+  longitude: number;
 }

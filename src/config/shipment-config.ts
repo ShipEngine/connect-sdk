@@ -1,7 +1,7 @@
 import { Country } from "../countries";
 import { BilledParty, InsuranceProvider, NonDeliveryAction } from "../enums";
 import { Identifier, UUID } from "../types";
-import { AddressConfig } from "./address-config";
+import { AddressWithContactInfoConfig } from "./address-config";
 import { NewPackageConfig, PackageConfig } from "./package-config";
 
 /**
@@ -46,17 +46,17 @@ export interface NewShipmentConfig {
   /**
    * The sender's contact info and address
    */
-  shipFrom: AddressConfig;
+  shipFrom: AddressWithContactInfoConfig;
 
   /**
    * The recipient's contact info and address
    */
-  shipTo: AddressConfig;
+  shipTo: AddressWithContactInfoConfig;
 
   /**
    * The return address. Defautls to the `shipFrom` address
    */
-  returnTo?: AddressConfig;
+  returnTo?: AddressWithContactInfoConfig;
 
   /**
    * The date/time that the package is expected to ship.

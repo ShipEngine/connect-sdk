@@ -56,3 +56,8 @@ export interface Identifier {
 export interface CustomData {
   [key: string]: string;
 }
+
+/**
+ * A constructor function
+ */
+export type Constructor<T extends object = object> = new(...args: unknown[]) => T;

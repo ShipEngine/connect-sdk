@@ -1,6 +1,6 @@
 // tslint:disable: max-classes-per-file
 import humanize from "@jsdevtools/humanize-anything";
-import { Address } from "./address";
+import { AddressWithContactInfo } from "./address";
 import { App } from "./app";
 import { assert } from "./assert";
 import { NewShipmentConfig, PackageConfig, ShipmentConfig, ShipmentIdentifierConfig } from "./config";
@@ -97,17 +97,17 @@ function newShipmentMixin(base: Constructor = Object) {
     /**
      * The sender's contact info and address
      */
-    public readonly shipFrom: Address;
+    public readonly shipFrom: AddressWithContactInfo;
 
     /**
      * The recipient's contact info and address
      */
-    public readonly shipTo: Address;
+    public readonly shipTo: AddressWithContactInfo;
 
     /**
      * The return address. Defautls to the `shipFrom` address
      */
-    public readonly returnTo: Address;
+    public readonly returnTo: AddressWithContactInfo;
 
     /**
      * The date/time that the package is expected to ship.
@@ -193,9 +193,11 @@ function newShipmentMixin(base: Constructor = Object) {
       assert.type.object(config, "shipment");
       this.deliveryService = app._references.lookup(config.deliveryServiceID, DeliveryService, "delivery service");
       this.deliveryConfirmation = app._references.get(config.deliveryConfirmationID, DeliveryConfirmation, "delivery confirmation");
-      this.shipFrom = new Address(config.shipFrom);
-      this.shipTo = new Address(config.shipTo);
-      this.returnTo = config.returnTo ? new Address(config.returnTo) : new Address(config.shipFrom);
+      this.shipFrom = new AddressWithContactInfo(config.shipFrom);
+      this.shipTo = new AddressWithContactInfo(config.shipTo);
+      this.returnTo = config.returnTo
+        ? new AddressWithContactInfo(config.returnTo)
+        : new AddressWithContactInfo(config.shipFrom);
       this.shipDateTime = assert.type.date(config.shipDateTime, "shipment date/time");
       this.nonDeliveryAction = assert.string.enum(config.nonDeliveryAction, NonDeliveryAction, "non-delivery action");
       this.insuranceProvider = assert.string.enum(

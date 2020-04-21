@@ -1,7 +1,8 @@
-import { Address, ContactInfo } from "../../address";
+import { Address } from "../../address";
 import { App } from "../../app";
 import { assert } from "../../assert";
 import { PickupCancellationConfig } from "../../config";
+import { ContactInfo } from "../../contact-info";
 import { PickupCancellationReason } from "../../enums";
 import { Shipment } from "../../shipment";
 import { CustomData, Identifier } from "../../types";

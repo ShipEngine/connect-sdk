@@ -1,6 +1,7 @@
 import { PickupCancellationReason } from "../enums";
 import { CustomData, Identifier, UUID } from "../types";
-import { AddressConfig, ContactInfoConfig } from "./address-config";
+import { AddressConfig } from "./address-config";
+import { ContactInfoConfig } from "./contact-info-config";
 import { ShipmentConfig } from "./shipment-config";
 import { TimeRangeConfig } from "./time-range-config";
 

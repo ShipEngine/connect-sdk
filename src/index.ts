@@ -1,6 +1,7 @@
 export * from "./address";
 export * from "./app-manifest";
 export * from "./config";
+export { ContactInfo, PersonName } from "./contact-info";
 export * from "./countries";
 export * from "./dimensions";
 export * from "./enums";
@@ -9,7 +10,6 @@ export * from "./form";
 export * from "./monetary-value";
 export * from "./package";
 export * from "./package-item";
-export * from "./parsed-name";
 export * from "./quantity";
 export * from "./sales-order";
 export * from "./shipment";

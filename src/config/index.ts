@@ -1,5 +1,6 @@
 export * from "./address-config";
 export * from "./carrier-config";
+export * from "./contact-info-config";
 export * from "./delivery-confirmation-config";
 export * from "./delivery-service-config";
 export * from "./form-config";

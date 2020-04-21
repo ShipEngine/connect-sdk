@@ -1,7 +1,8 @@
-import { Address, ContactInfo } from "../../address";
+import { Address } from "../../address";
 import { App } from "../../app";
 import { assert } from "../../assert";
 import { PickupRequestConfig, ShipmentConfig } from "../../config";
+import { ContactInfo } from "../../contact-info";
 import { Shipment } from "../../shipment";
 import { PickupService } from "../pickup-service";
 import { TimeRange } from "./time-range";

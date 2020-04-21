@@ -54,7 +54,7 @@ export interface NewShipmentConfig {
   shipTo: AddressWithContactInfoConfig;
 
   /**
-   * The return address. Defautls to the `shipFrom` address
+   * The return address. Defaults to the `shipFrom` address
    */
   returnTo?: AddressWithContactInfoConfig;
 

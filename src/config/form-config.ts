@@ -7,7 +7,7 @@ import { InlineOrReference } from "../types";
  */
 export interface FormConfig {
   /**
-   * A JSON Schema that defines the data collected by the form, including its constratints.
+   * A JSON Schema that defines the data collected by the form, including its constraints.
    */
   dataSchema: InlineOrReference<JSONSchema6>;
 

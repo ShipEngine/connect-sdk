@@ -24,7 +24,6 @@ export interface PickupCancellationConfirmationConfig {
 
   /**
    * Arbitrary data for that will be persisted by ShipEngine IPaaS.
-   * If the pickup is later canceled, this data will be included.
    */
   customData?: CustomData;
 }

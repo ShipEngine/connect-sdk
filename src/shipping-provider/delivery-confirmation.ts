@@ -1,6 +1,7 @@
 import { App } from "../app";
 import { assert } from "../assert";
 import { DeliveryConfirmationConfig } from "../config";
+import { DeliveryConfirmationClass } from "../enums";
 import { UUID } from "../types";
 
 /**
@@ -24,6 +25,11 @@ export class DeliveryConfirmation {
   public readonly description: string;
 
   /**
+   * The class of confirmation
+   */
+  public class: DeliveryConfirmationClass;
+
+  /**
    * Creates a DeliveryConfirmation object from a fully-resolved config object
    */
   public constructor(app: App, config: DeliveryConfirmationConfig) {
@@ -31,6 +37,7 @@ export class DeliveryConfirmation {
     this.id = app._references.add(this, config, "delivery confirmation");
     this.name = assert.string.nonWhitespace(config.name, "delivery confirmation name");
     this.description = assert.string(config.description, "delivery confirmation description", "");
+    this.class = assert.string.enum(config.class, DeliveryConfirmationClass, "delivery confirmation class");
 
     // Prevent modifications after validation
     Object.freeze(this);

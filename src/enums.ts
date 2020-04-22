@@ -16,6 +16,16 @@ export enum LabelSize {
 }
 
 /**
+ * A class of delivery confirmation
+ */
+export enum DeliveryConfirmationClass {
+  Delivery = "delivery",
+  Signature = "signature",
+  AdultSignature = "adult_signature",
+  DirectSignature = "direct_signature",
+}
+
+/**
  * A class of delivery service
  */
 export enum DeliveryServiceClass {

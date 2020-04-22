@@ -1,3 +1,4 @@
+import { DeliveryConfirmationClass } from "../enums";
 import { UUID } from "../types";
 
 /**
@@ -19,4 +20,9 @@ export interface DeliveryConfirmationConfig {
    * A short, user-friendly description of the delivery confirmation type
    */
   description?: string;
+
+  /**
+   * The class of confirmation
+   */
+  class: DeliveryConfirmationClass;
 }

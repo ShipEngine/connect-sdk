@@ -1,4 +1,4 @@
-import { UUID } from "../types";
+import { CustomData, UUID } from "../types";
 
 /**
  * ShpEngine IPaaS passes this object to every method call. It provides information about the
@@ -33,12 +33,5 @@ export interface TransactionConfig {
    * Arbitrary session data that was established upon logging in.
    * This object matches the structure defined by the shipping provider's login form.
    */
-  session?: SessionState;
-}
-
-/**
- * Arbitrary Session data
- */
-export interface SessionState {
-  [key: string]: unknown;
+  session?: CustomData;
 }

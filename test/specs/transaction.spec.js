@@ -25,13 +25,7 @@ describe("Transaction", () => {
       useSandbox: false,
       session: {
         foo: "bar",
-        timestamp: new Date("2005-05-05T05:05:05.005Z"),
-        deep: {
-          object: {
-            biz: true,
-            baz: false,
-          }
-        }
+        biz: "baz",
       }
     });
 
@@ -41,20 +35,18 @@ describe("Transaction", () => {
       useSandbox: false,
       session: {
         foo: "bar",
-        timestamp: new Date("2005-05-05T05:05:05.005Z"),
-        deep: {
-          object: {
-            biz: true,
-            baz: false,
-          }
-        }
+        biz: "baz",
       }
     });
   });
 
-  it("should serialize the session property to JSON correctly", () => {
+  it("should serialize to JSON correctly", () => {
     let transaction = new Transaction({
       id: "12345678-1234-1234-1234-123456789012",
+      session: {
+        foo: "bar",
+        biz: "baz",
+      }
     });
 
     let json = JSON.stringify(transaction);
@@ -64,7 +56,10 @@ describe("Transaction", () => {
       id: "12345678-1234-1234-1234-123456789012",
       isRetry: false,
       useSandbox: false,
-      session: {},
+      session: {
+        foo: "bar",
+        biz: "baz",
+      }
     });
   });
 
@@ -124,6 +119,19 @@ describe("Transaction", () => {
       ).to.throw(
         TypeError,
         "Invalid session data: 12345. Expected an object."
+      );
+    });
+
+    it("should throw an error if the session object contains non-string values", () => {
+      expect(() => new Transaction({
+        id: "12345678-1234-1234-1234-123456789012",
+        session: {
+          foo: true
+        },
+      })
+      ).to.throw(
+        TypeError,
+        "Invalid session data value: true. Expected a string."
       );
     });
 

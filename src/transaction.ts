@@ -1,13 +1,13 @@
 import { assert } from "./assert";
-import { SessionState, TransactionConfig } from "./config";
-import { UUID } from "./types";
+import { TransactionConfig } from "./config";
+import { CustomData, UUID } from "./types";
 
 /**
  * ShpEngine IPaaS passes this object to every method call. It provides information about the
  * transaction being performed, including authentication, metadata, etc.
  */
 export class Transaction {
-  private readonly _session: SessionState;
+  private readonly _session: CustomData = {};
 
   /**
    * Uniquely identifies the current transaction. If the transaction is retried, then this ID will
@@ -40,7 +40,7 @@ export class Transaction {
    * The properties of the session object are mutable. Any method may update the session data,
    * such as renewing a session token or updating a timestamp.
    */
-  public get session(): SessionState {
+  public get session(): CustomData {
     return this._session;
   }
 
@@ -48,8 +48,8 @@ export class Transaction {
    * Updates the session data, creating new keys, updating existing keys, and/or deleting keys
    * that are no longer present.
    */
-  public set session(value: SessionState) {
-    assert.type.object(value, "session state");
+  public set session(value: CustomData) {
+    assert.type.customData(value, "session data");
     let keys = Object.keys(this._session).concat(Object.keys(value));
     for (let key of keys) {
       if (key in value) {
@@ -70,7 +70,7 @@ export class Transaction {
     this.id = assert.string.uuid(config.id, "transaction ID");
     this.isRetry = assert.type.boolean(config.isRetry, "isRetry flag", false);
     this.useSandbox = assert.type.boolean(config.useSandbox, "useSandbox flag", false);
-    this._session = assert.type.object<SessionState>(config.session, "session data", {});
+    this.session = assert.type.object<CustomData>(config.session, "session data", {});
 
     // Hide the internal _session field
     Object.defineProperty(this, "_session", {

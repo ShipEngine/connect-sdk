@@ -14,7 +14,7 @@ declare module "@jsdevtools/assert/lib/type" {
     /**
      * Assets that the given value is an object of key/value pairs
      */
-    customData(value: unknown): CustomData | undefined;
+    customData(value: unknown, fieldName?: string): CustomData | undefined;
   }
 }
 
@@ -59,16 +59,16 @@ function assertDate(value: unknown, fieldName: string): Date {
 }
 
 
-function assertCustomData(value: unknown): CustomData | undefined {
+function assertCustomData(value: unknown, fieldName = "custom data"): CustomData | undefined {
   if (value === undefined) {
     return undefined;
   }
 
-  let data = assert.type.object(value, "custom data") as CustomData;
+  let data = assert.type.object(value, fieldName) as CustomData;
 
   for (let key of Object.keys(data)) {
-    assert.string.nonWhitespace(key, "custom data key");
-    data[key] = assert.string(data[key], "custom data value", "");
+    assert.string.nonWhitespace(key, `${fieldName} key`);
+    data[key] = assert.string(data[key], `${fieldName} value`, "");
   }
 
   return data;

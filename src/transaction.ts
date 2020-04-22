@@ -1,4 +1,3 @@
-import { inspect } from "util";
 import { assert } from "./assert";
 import { SessionState, TransactionConfig } from "./config";
 import { UUID } from "./types";
@@ -17,10 +16,19 @@ export class Transaction {
   public readonly id: UUID;
 
   /**
+   * Indicates whether this transaction is a retry, in which case the `id` will be the same as the
+   * original attempt.
+   *
+   * If `isRetry` is `true`, then the operation should try to continue the original transaction
+   * where it left-off. Efforts should be made to prevent duplicate data or double charges.
+   */
+  public readonly isRetry: boolean;
+
+  /**
    * Indicates whether the operation should use the carrier's sandbox/development API rather than
    * the normal/production API.
    *
-   * If the `useSandbox` is `true`, then the operation MUST NOT incur any actual costs or affect
+   * If `useSandbox` is `true`, then the operation MUST NOT incur any actual costs or affect
    * production data.
    */
   public readonly useSandbox: boolean;
@@ -60,28 +68,24 @@ export class Transaction {
   public constructor(config: TransactionConfig) {
     assert.type.object(config, "transaction");
     this.id = assert.string.uuid(config.id, "transaction ID");
+    this.isRetry = assert.type.boolean(config.isRetry, "isRetry flag", false);
     this.useSandbox = assert.type.boolean(config.useSandbox, "useSandbox flag", false);
     this._session = assert.type.object<SessionState>(config.session, "session data", {});
+
+    // Hide the internal _session field
+    Object.defineProperty(this, "_session", {
+      ...Object.getOwnPropertyDescriptor(this, "_session"),
+      enumerable: false
+    });
+
+    // Make the session getter/setter look like a normal property
+    Object.defineProperty(this, "session", {
+      ...Object.getOwnPropertyDescriptor(Object.getPrototypeOf(this), "session"),
+      enumerable: true,
+    });
 
     // Prevent modifications after validation
     // NOTE: The session object is NOT frozen. It can be mutated by user code.
     Object.freeze(this);
-  }
-
-  /**
-   * Returns the transaction data as a POJO
-   */
-  public toJSON() {
-    return {
-      id: this.id,
-      session: this.session,
-    };
-  }
-
-  /**
-   * Returns the transaction data for the Node.js console
-   */
-  public [inspect.custom]() {
-    return this.toJSON();
   }
 }

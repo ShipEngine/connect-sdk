@@ -1,9 +1,8 @@
-import { ono } from "@jsdevtools/ono";
 import { assert } from "../../assert";
 import { Country } from "../../countries";
 import { ServiceArea } from "../../enums";
-import { ErrorCode } from "../../errors";
-import { AppManifestPOJO, LabelSpecPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, ShippingProviderPOJO, TrackingCriteriaPOJO, TransactionPOJO } from "../../pojos";
+import { ErrorCode, ipaasError } from "../../errors";
+import { LabelSpecPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, ShippingProviderPOJO, TrackingCriteriaPOJO, TransactionPOJO } from "../../pojos";
 import { UrlString, UUID } from "../../types";
 import { App } from "../app";
 import { Form } from "../form";
@@ -27,7 +26,7 @@ import { getMaxServiceArea } from "./utils";
 /**
  * A ShipEngine IPaaS shipping provider app.
  */
-export class ShippingProviderApp extends App {
+export class ShippingProvider {
   //#region Fields
 
   // Store the user-defined methods as private fields.
@@ -170,10 +169,9 @@ export class ShippingProviderApp extends App {
 
   //#endregion
 
-  public constructor(manifest: AppManifestPOJO, pojo: ShippingProviderPOJO) {
-    super(manifest);
-
-    this.id = this._references.add(this, pojo, "shipping provider");
+  public constructor(app: App, pojo: ShippingProviderPOJO) {
+    assert.type.object(pojo, "shipping provider");
+    this.id = app._references.add(this, pojo, "carrier");
     this.name = assert.string.nonWhitespace(pojo.name, "shipping provider name");
     this.description = assert.string(pojo.description, "shipping provider description", "");
     this.websiteURL = new URL(assert.string.nonWhitespace(pojo.websiteURL, "websiteURL"));
@@ -181,7 +179,7 @@ export class ShippingProviderApp extends App {
     this.loginForm = new Form(pojo.loginForm);
     this.settingsForm = pojo.settingsForm ? new Form(pojo.settingsForm) : undefined;
     this.carriers = assert.array.nonEmpty(pojo.carriers, "carriers")
-      .map((carrier) => new Carrier(this, carrier));
+      .map((carrier) => new Carrier(app, carrier));
 
     // Store any user-defined methods as private fields.
     // For any methods that aren't implemented, set the corresponding class method to undefined.
@@ -221,10 +219,6 @@ export class ShippingProviderApp extends App {
       ? (this._createManifest = assert.type.function(pojo.createManifest, "createManifest method"))
       : (this.createManifest = undefined);
 
-    // Now that we're done configuring this entire app,
-    // we no longer need to keep all the Config objects in memory
-    this._references.finishedLoading();
-
     // Prevent modifications after validation
     Object.freeze(this);
     Object.freeze(this.websiteURL);
@@ -244,15 +238,16 @@ export class ShippingProviderApp extends App {
     try {
       _transaction = new Transaction(transaction);
     }
-    catch (error) {
-      throw ono(error, { code: ErrorCode.InvalidInput });
+    catch (originalError) {
+      throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the login method.", { originalError });
     }
 
     try {
       await this._login!(_transaction);
     }
-    catch (error) {
-      throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in login method.`);
+    catch (originalError) {
+      let transactionID = _transaction.id;
+      throw ipaasError(ErrorCode.AppError, `Error in login method.`, { originalError, transactionID });
     }
   }
 
@@ -267,8 +262,8 @@ export class ShippingProviderApp extends App {
       _transaction = new Transaction(transaction);
       _request = new PickupRequest(this, request);
     }
-    catch (error) {
-      throw ono(error, { code: ErrorCode.InvalidInput });
+    catch (originalError) {
+      throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the requestPickup method.", { originalError });
     }
 
     try {
@@ -276,8 +271,9 @@ export class ShippingProviderApp extends App {
       confirmation.shipments = confirmation.shipments || request.shipments;
       return new PickupConfirmation(confirmation);
     }
-    catch (error) {
-      throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in requestPickup method.`);
+    catch (originalError) {
+      let transactionID = _transaction.id;
+      throw ipaasError(ErrorCode.AppError, `Error in requestPickup method.`, { originalError, transactionID });
     }
   }
 
@@ -292,8 +288,8 @@ export class ShippingProviderApp extends App {
       _transaction = new Transaction(transaction);
       _cancellation = new PickupCancellation(this, cancellation);
     }
-    catch (error) {
-      throw ono(error, { code: ErrorCode.InvalidInput });
+    catch (originalError) {
+      throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the cancelPickup method.", { originalError });
     }
 
     try {
@@ -301,8 +297,9 @@ export class ShippingProviderApp extends App {
       confirmation = confirmation || { successful: true };
       return new PickupCancellationConfirmation(confirmation);
     }
-    catch (error) {
-      throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in cancelPickup method.`);
+    catch (originalError) {
+      let transactionID = _transaction.id;
+      throw ipaasError(ErrorCode.AppError, `Error in cancelPickup method.`, { originalError, transactionID });
     }
   }
 
@@ -316,16 +313,17 @@ export class ShippingProviderApp extends App {
       _transaction = new Transaction(transaction);
       _label = new LabelSpec(this, label);
     }
-    catch (error) {
-      throw ono(error, { code: ErrorCode.InvalidInput });
+    catch (originalError) {
+      throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the createLabel method.", { originalError });
     }
 
     try {
       let confirmation = await this._createLabel!(_transaction, _label);
       return new LabelConfirmation(confirmation);
     }
-    catch (error) {
-      throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in createLabel method.`);
+    catch (originalError) {
+      let transactionID = _transaction.id;
+      throw ipaasError(ErrorCode.AppError, `Error in createLabel method.`, { originalError, transactionID });
     }
   }
 
@@ -338,16 +336,17 @@ export class ShippingProviderApp extends App {
     try {
       _transaction = new Transaction(transaction);
     }
-    catch (error) {
-      throw ono(error, { code: ErrorCode.InvalidInput });
+    catch (originalError) {
+      throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the voidLabel method.", { originalError });
     }
 
     try {
       // TODO: NOT IMPLEMENTED YET
       return await Promise.resolve(undefined);
     }
-    catch (error) {
-      throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in voidLabel method.`);
+    catch (originalError) {
+      let transactionID = _transaction.id;
+      throw ipaasError(ErrorCode.AppError, `Error in voidLabel method.`, { originalError, transactionID });
     }
   }
 
@@ -361,16 +360,17 @@ export class ShippingProviderApp extends App {
       _transaction = new Transaction(transaction);
       _criteria = new RateCriteria(this, criteria);
     }
-    catch (error) {
-      throw ono(error, { code: ErrorCode.InvalidInput });
+    catch (originalError) {
+      throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the getRates method.", { originalError });
     }
 
     try {
       let quote = await this._getRates!(_transaction, _criteria);
       return new RateQuote(this, quote);
     }
-    catch (error) {
-      throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in getRates method.`);
+    catch (originalError) {
+      let transactionID = _transaction.id;
+      throw ipaasError(ErrorCode.AppError, `Error in getRates method.`, { originalError, transactionID });
     }
   }
 
@@ -384,16 +384,17 @@ export class ShippingProviderApp extends App {
       _transaction = new Transaction(transaction);
       _criteria = new TrackingCriteria(this, criteria);
     }
-    catch (error) {
-      throw ono(error, { code: ErrorCode.InvalidInput });
+    catch (originalError) {
+      throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the getTrackingURL method.", { originalError });
     }
 
     try {
       let url = this._getTrackingURL!(_transaction, _criteria);
       return url ? new URL(url as UrlString) : undefined;
     }
-    catch (error) {
-      throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in getTrackingURL method.`);
+    catch (originalError) {
+      let transactionID = _transaction.id;
+      throw ipaasError(ErrorCode.AppError, `Error in getTrackingURL method.`, { originalError, transactionID });
     }
   }
 
@@ -406,16 +407,17 @@ export class ShippingProviderApp extends App {
     try {
       _transaction = new Transaction(transaction);
     }
-    catch (error) {
-      throw ono(error, { code: ErrorCode.InvalidInput });
+    catch (originalError) {
+      throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the track method.", { originalError });
     }
 
     try {
       // TODO: NOT IMPLEMENTED YET
       return await Promise.resolve(undefined);
     }
-    catch (error) {
-      throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in track method.`);
+    catch (originalError) {
+      let transactionID = _transaction.id;
+      throw ipaasError(ErrorCode.AppError, `Error in track method.`, { originalError, transactionID });
     }
   }
 
@@ -428,16 +430,17 @@ export class ShippingProviderApp extends App {
     try {
       _transaction = new Transaction(transaction);
     }
-    catch (error) {
-      throw ono(error, { code: ErrorCode.InvalidInput });
+    catch (originalError) {
+      throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the createManifest method.", { originalError });
     }
 
     try {
       // TODO: NOT IMPLEMENTED YET
       return await Promise.resolve(undefined);
     }
-    catch (error) {
-      throw ono(error, { code: ErrorCode.AppError, transactionID: _transaction.id }, `Error in createManifest method.`);
+    catch (originalError) {
+      let transactionID = _transaction.id;
+      throw ipaasError(ErrorCode.AppError, `Error in createManifest method.`, { originalError, transactionID });
     }
   }
 

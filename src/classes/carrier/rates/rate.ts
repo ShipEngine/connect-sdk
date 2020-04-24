@@ -5,6 +5,7 @@ import { MonetaryValue } from "../../monetary-value";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
 import { ShippingCharge } from "../labels/shipping-charge";
+import { calculateTotalCharges } from "../utils";
 
 /**
  * A quoted shipping rate based on the specified rate criteria
@@ -61,7 +62,7 @@ export class Rate {
       && assert.type.date(pojo.estimatedDeliveryDateTime, "estimated delivery date/time");
     this.charges = assert.array.nonEmpty(pojo.charges, "rate charges")
       .map((charge) => new ShippingCharge(charge));
-    this.totalAmount = MonetaryValue.sum(this.charges.map((charge) => charge.amount));
+    this.totalAmount = calculateTotalCharges(this.charges);
     this.isNegotiatedRate = assert.type.boolean(pojo.isNegotiatedRate, "isNegotiatedRate flag", false);
     this.notes = assert.array(typeof pojo.notes === "string" ? [pojo.notes] : pojo.notes, "notes", [])
       .map((note) => assert.string.nonWhitespace(note, "notes"));

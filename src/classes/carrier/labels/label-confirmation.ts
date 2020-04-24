@@ -1,6 +1,7 @@
 import { assert } from "../../../assert";
 import { LabelConfirmationPOJO } from "../../../pojos";
 import { MonetaryValue } from "../../monetary-value";
+import { calculateTotalCharges } from "../utils";
 import { Label } from "./label";
 import { ShippingCharge } from "./shipping-charge";
 
@@ -53,7 +54,7 @@ export class LabelConfirmation {
       && assert.type.date(pojo.estimatedDeliveryDateTime, "estimated delivery date/time");
     this.charges = assert.array.nonEmpty(pojo.charges, "shipping charges")
       .map((charge) => new ShippingCharge(charge));
-    this.totalAmount = MonetaryValue.sum(this.charges.map((charge) => charge.amount));
+    this.totalAmount = calculateTotalCharges(this.charges);
     this.labels = assert.array.nonEmpty(pojo.labels, "labels").map((label) => new Label(label));
 
     // Prevent modifications after validation

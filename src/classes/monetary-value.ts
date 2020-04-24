@@ -1,10 +1,8 @@
 // tslint:disable: max-classes-per-file
-import { humanize } from "@jsdevtools/humanize-anything";
-import { ono } from "@jsdevtools/ono";
 import * as currency from "currency.js";
 import { assert } from "../assert";
 import { Currency } from "../enums";
-import { ErrorCode } from "../errors";
+import { ErrorCode, ipaasError } from "../errors";
 import { MonetaryValuePOJO } from "../pojos";
 
 const moneyValue = /^\d+(\.\d+)?$/;
@@ -59,9 +57,10 @@ export class MonetaryValue {
 
     if (uniqueCurrencies.size > 1) {
       let currencies = [...uniqueCurrencies];
-      throw ono(
-        { code: ErrorCode.CurrencyMismatch, currencies },
-        `All charges must be in the same currency. These charges include ${humanize.list(currencies)}`
+      throw ipaasError(
+        ErrorCode.CurrencyMismatch,
+        `Currency mistmatch: (${currencies.join(", ")}). All charges must be in the same currency.`,
+        { currencies }
       );
     }
 

@@ -1,9 +1,8 @@
 // tslint:disable: max-classes-per-file
-import humanize from "@jsdevtools/humanize-anything";
 import { assert } from "../assert";
 import { Country } from "../countries";
-import { BilledParty, Currency, InsuranceProvider, NonDeliveryAction } from "../enums";
-import { ErrorCode, IpaasError } from "../errors";
+import { BilledParty, InsuranceProvider, NonDeliveryAction } from "../enums";
+import { ErrorCode, IpaasError, ipaasError } from "../errors";
 import { Constructor } from "../internal-types";
 import { NewShipmentPOJO, PackagePOJO, ShipmentIdentifierPOJO, ShipmentPOJO } from "../pojos";
 import { Identifier } from "../types";
@@ -244,25 +243,20 @@ function newShipmentMixin(base: Constructor = Object) {
  * which is the sum of the insured value of all packages.
  */
 function calculateTotalInsuranceAmount(packages: ReadonlyArray<NewPackage>): MonetaryValue {
-  let insuredValues: MonetaryValue[] = [];
-  for (let parcel of packages) {
-    insuredValues.push(parcel.insuredValue);
-  }
-
   try {
+    let insuredValues = packages.map((parcel) => parcel.insuredValue);
     return MonetaryValue.sum(insuredValues);
   }
-  catch (e) {
-    let error = e as IpaasError & { currencies: Currency[] };
-
+  catch (originalError) {
     // Check for a currency mismatch, and throw a more specific error message
-    if (error.code === ErrorCode.CurrencyMismatch) {
-      throw new Error(
-        `All packages in a shipment must be insured in the same currency. ` +
-        `This shipment includes ${humanize.list(error.currencies)}`
+    if ((originalError as IpaasError).code === ErrorCode.CurrencyMismatch) {
+      throw ipaasError(
+        ErrorCode.CurrencyMismatch,
+        "All packages in a shipment must be insured in the same currency.",
+        { originalError }
       );
     }
 
-    throw error;
+    throw originalError;
   }
 }

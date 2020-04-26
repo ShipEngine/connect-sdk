@@ -1,5 +1,4 @@
-// tslint:disable: max-classes-per-file
-import { CustomDataPOJO, IdentifierPOJO } from "../../pojos/common";
+import { CustomDataPOJO } from "../../pojos/common";
 import { Joi } from "../../validation";
 
 /**
@@ -29,37 +28,6 @@ export class CustomData {
         this[key] = pojo[key];
       }
     }
-
-    // Prevent modifications after validation
-    Object.freeze(this);
-  }
-}
-
-/**
- * A value that identifies a resource
- */
-export class Identifier {
-  //#region Class Fields
-
-  public static readonly label = "identifier";
-
-  /** @internal */
-  public static readonly schema = Joi.object({
-    id: Joi.string().trim().singleLine().min(1).max(100).required(),
-    name: Joi.string().trim().singleLine().min(1).max(100).required(),
-  });
-
-  //#endregion
-  //#region Instance Fields
-
-  public readonly id: string;
-  public readonly name: string;
-
-  //#endregion
-
-  public constructor(pojo: IdentifierPOJO) {
-    this.id = pojo.id;
-    this.name = pojo.name;
 
     // Prevent modifications after validation
     Object.freeze(this);

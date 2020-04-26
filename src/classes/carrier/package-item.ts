@@ -2,9 +2,7 @@ import * as currency from "currency.js";
 import { Country } from "../../countries";
 import { PackageItemPOJO } from "../../pojos/carrier";
 import { Joi } from "../../validation";
-import { Identifier } from "../common/custom-data";
-import { MonetaryValue } from "../common/monetary-value";
-import { Quantity } from "../common/quantity";
+import { Identifier, MonetaryValue, Quantity } from "../common";
 import { SalesOrderIdentifier } from "../order/sales-order";
 
 /**

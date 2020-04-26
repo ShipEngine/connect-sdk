@@ -6,10 +6,7 @@ import { error, ErrorCode, ShipEngineError } from "../../errors";
 import { Constructor } from "../../internal-types";
 import { NewShipmentPOJO, PackagePOJO, ShipmentIdentifierPOJO, ShipmentPOJO } from "../../pojos/carrier";
 import { Joi } from "../../validation";
-import { AddressWithContactInfo } from "../common/address";
-import { App } from "../common/app";
-import { Identifier } from "../common/custom-data";
-import { MonetaryValue } from "../common/monetary-value";
+import { AddressWithContactInfo, App, Identifier, MonetaryValue } from "../common";
 import { NewPackage, Package } from "./package";
 
 /**

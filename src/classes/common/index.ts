@@ -3,6 +3,7 @@ export * from "./app";
 export { ContactInfo, PersonName } from "./contact-info";
 export * from "./custom-data";
 export * from "./dimensions";
+export * from "./identifier";
 export * from "./logo";
 export * from "./monetary-value";
 export * from "./quantity";

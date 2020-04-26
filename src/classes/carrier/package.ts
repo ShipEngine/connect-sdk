@@ -4,11 +4,8 @@ import { Currency } from "../../enums";
 import { Constructor } from "../../internal-types";
 import { NewPackagePOJO, PackageIdentifierPOJO, PackagePOJO } from "../../pojos/carrier";
 import { Joi } from "../../validation";
+import { Dimensions, Identifier, MonetaryValue, Weight } from "../common";
 import { App } from "../common/app";
-import { Identifier } from "../common/custom-data";
-import { Dimensions } from "../common/dimensions";
-import { MonetaryValue } from "../common/monetary-value";
-import { Weight } from "../common/weight";
 import { PackageItem } from "./package-item";
 
 /**

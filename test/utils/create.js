@@ -7,6 +7,7 @@ const create = module.exports = {
   app (manifest = {}, merge = true) {
     if (merge) {
       _merge(manifest, {
+        name: "@company-name/app-name",
         version: "1.23.456",
       });
     }

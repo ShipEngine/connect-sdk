@@ -1,4 +1,4 @@
-import { AppManifestPOJO } from "../../pojos/common";
+import { AppPOJO } from "../../pojos/common";
 import { Joi, validate } from "../../validation";
 import { hidePrivateFields } from "../utils";
 import { ReferenceMap } from "./reference-map";
@@ -13,7 +13,9 @@ export class App {
 
   /** @internal */
   public static readonly schema = Joi.object({
+    name: Joi.string().appName().required(),
     version: Joi.string().semver().required(),
+    description: Joi.string().trim().singleLine().allow("").max(1000),
   });
 
   //#endregion
@@ -26,17 +28,30 @@ export class App {
   public readonly _references = new ReferenceMap();
 
   /**
+   * The ShipEngine Integration Platform app name.
+   * This is a scoped NPM package name (e.g. @company-name/app-name)
+   */
+  public readonly name: string;
+
+  /**
    * The ShipEngine Integration Platform app version number.
    * This is a semantic version number (e.g. "1.23.456")
    */
   public readonly version: string;
 
+  /**
+   * A short, user-friendly description of the app
+   */
+  public readonly description: string;
+
   //#endregion
 
-  public constructor(manifest: AppManifestPOJO) {
+  public constructor(manifest: AppPOJO) {
     validate(manifest, App);
 
-    this.version = manifest.version!;
+    this.name = manifest.name;
+    this.version = manifest.version;
+    this.description = manifest.description || "";
 
     // Hide the internal _references field
     hidePrivateFields(this);

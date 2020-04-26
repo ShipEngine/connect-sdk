@@ -72,6 +72,11 @@ export interface StringValidationSchema extends joi.StringSchema {
   isoDateTime(): StringValidationSchema;
 
   /**
+   * Requires a string value to be a scoped NPM package name (e.g. "@company/app-name")
+   */
+  appName(): StringValidationSchema;
+
+  /**
    * Requires a string value to be a valid SemVer version number.
    */
   semver(): StringValidationSchema;
@@ -104,6 +109,7 @@ export const Joi = joi.extend(
     messages: {
       "string.singleLine": "{{#label}} cannot contain newlines or tabs",
       "string.isoDateTime": "{{#label}} must be a complete ISO 8601 date and time, like 2005-09-23T17:30:00.000Z",
+      "string.appName": '{{#label}} must be a scoped NPM package name, like "@company-name/app-name"',
       "string.semver": "{{#label}} must be a version number, like 1.23.456",
       "string.money": "{{#label}} must be a monetary value, like ##.##",
       "string.website": "{{#label}} must be a valid website URL",
@@ -124,6 +130,15 @@ export const Joi = joi.extend(
           const semver = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?([+-]\d{2}:\d{2}|Z)$/;
           if (!semver.test(value) || isNaN(new Date(value).getTime())) {
             return helpers.error("string.isoDateTime");
+          }
+          return value;
+        },
+      },
+      appName: {
+        validate(value: string, helpers: joi.CustomHelpers) {
+          const appName = /^\@[a-z][a-z0-9]*(-[a-z0-9]+)*\/[a-z][a-z0-9]*(-[a-z0-9]+)*$/;
+          if (!appName.test(value)) {
+            return helpers.error("string.appName");
           }
           return value;
         },

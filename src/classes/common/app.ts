@@ -1,5 +1,6 @@
 import { AppManifestPOJO } from "../../pojos/common";
 import { Joi, validate } from "../../validation";
+import { hidePrivateFields } from "../utils";
 import { ReferenceMap } from "./reference-map";
 
 /**
@@ -38,10 +39,7 @@ export class App {
     this.version = manifest.version!;
 
     // Hide the internal _references field
-    Object.defineProperty(this, "_references", {
-      ...Object.getOwnPropertyDescriptor(this, "_references"),
-      enumerable: false
-    });
+    hidePrivateFields(this);
 
     // Prevent modifications after validation
     Object.freeze(this);

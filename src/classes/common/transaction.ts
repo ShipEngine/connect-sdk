@@ -1,6 +1,7 @@
 import { CustomDataPOJO, TransactionPOJO } from "../../pojos/common";
 import { UUID } from "../../types";
 import { Joi, validate } from "../../validation";
+import { hidePrivateFields } from "../utils";
 import { CustomData } from "./custom-data";
 
 /**
@@ -98,10 +99,7 @@ export class Transaction {
     }
 
     // Hide the internal _session field
-    Object.defineProperty(this, "_session", {
-      ...Object.getOwnPropertyDescriptor(this, "_session"),
-      enumerable: false
-    });
+    hidePrivateFields(this);
 
     // Make the session getter/setter look like a normal property
     Object.defineProperty(this, "session", {

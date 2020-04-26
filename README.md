@@ -3,9 +3,9 @@ ShipEngine IPaaS SDK
 ### The official SDK for building [**ShipEngine IPaaS apps**](https://www.shipengine.com/docs/ipaas/)
 
 [![Cross-Platform Compatibility](https://shipengine.github.io/img/badges/os-badges.svg)](https://github.com/ShipEngine/shipengine-ipaas/blob/master/.github/workflows/CI-CD.yaml)
-[![Build Status](https://github.com/ShipEngine/shipengine-ipaas/workflows/CI-CD/badge.svg)](https://github.com/ShipEngine/shipengine-ipaas/blob/master/.github/workflows/CI-CD.yaml)
+[![Build Status](https://github.com/ShipEngine/shipengine-ipaas-sdk/workflows/CI-CD/badge.svg)](https://github.com/ShipEngine/shipengine-ipaas-sdk/blob/master/.github/workflows/CI-CD.yaml)
 
-[![Coverage Status](https://coveralls.io/repos/github/ShipEngine/shipengine-ipaas/badge.svg?branch=master)](https://coveralls.io/github/ShipEngine/shipengine-ipaas)
+[![Coverage Status](https://coveralls.io/repos/github/ShipEngine/shipengine-ipaas-sdk/badge.svg?branch=master)](https://coveralls.io/github/ShipEngine/shipengine-ipaas-sdk)
 [![Dependencies](https://david-dm.org/ShipEngine/shipengine-ipaas.svg)](https://david-dm.org/ShipEngine/shipengine-ipaas)
 
 [![npm](https://img.shields.io/npm/v/@shipengine/ipaas.svg)](https://www.npmjs.com/package/@shipengine/ipaas)

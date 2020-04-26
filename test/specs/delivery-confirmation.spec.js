@@ -6,15 +6,13 @@ const create = require("../utils/create");
 describe("DeliveryConfirmation", () => {
 
   function createDeliveryConfirmation (deliveryConfirmation) {
-    let provider = create.shippingProvider({
-      carriers: [{
-        deliveryServices: [{
-          deliveryConfirmations: [deliveryConfirmation],
-        }]
+    let provider = create.carrier({
+      deliveryServices: [{
+        deliveryConfirmations: [deliveryConfirmation],
       }]
     });
 
-    return provider.carriers[0].deliveryServices[0].deliveryConfirmations[0];
+    return provider.deliveryServices[0].deliveryConfirmations[0];
   }
 
   it("should create a DeliveryConfirmation with the minimum required fields", () => {
@@ -68,8 +66,8 @@ describe("DeliveryConfirmation", () => {
 
     it("should throw an error if called with an invalid pojo", () => {
       expect(() => createDeliveryConfirmation(12345)).to.throw(
-        "Invalid shipping provider: \n" +
-        "  carriers[0].deliveryServices[0].deliveryConfirmations[0] must be of type object"
+        "Invalid carrier: \n" +
+        "  deliveryServices[0].deliveryConfirmations[0] must be of type object"
       );
     });
 
@@ -80,8 +78,8 @@ describe("DeliveryConfirmation", () => {
         class: "signature",
       })
       ).to.throw(
-        "Invalid shipping provider: \n" +
-        "  carriers[0].deliveryServices[0].deliveryConfirmations[0].id must be a valid GUID"
+        "Invalid carrier: \n" +
+        "  deliveryServices[0].deliveryConfirmations[0].id must be a valid GUID"
       );
     });
 
@@ -92,9 +90,9 @@ describe("DeliveryConfirmation", () => {
         class: "signature"
       })
       ).to.throw(
-        "Invalid shipping provider: \n" +
-        "  carriers[0].deliveryServices[0].deliveryConfirmations[0].name must not have leading or trailing whitespace \n" +
-        "  carriers[0].deliveryServices[0].deliveryConfirmations[0].name cannot contain newlines or tabs"
+        "Invalid carrier: \n" +
+        "  deliveryServices[0].deliveryConfirmations[0].name must not have leading or trailing whitespace \n" +
+        "  deliveryServices[0].deliveryConfirmations[0].name cannot contain newlines or tabs"
       );
     });
 
@@ -106,8 +104,8 @@ describe("DeliveryConfirmation", () => {
         description: 12345,
       })
       ).to.throw(
-        "Invalid shipping provider: \n" +
-        "  carriers[0].deliveryServices[0].deliveryConfirmations[0].description must be a string"
+        "Invalid carrier: \n" +
+        "  deliveryServices[0].deliveryConfirmations[0].description must be a string"
       );
     });
 
@@ -118,8 +116,8 @@ describe("DeliveryConfirmation", () => {
         class: "handshake"
       })
       ).to.throw(
-        "Invalid shipping provider: \n" +
-        "  carriers[0].deliveryServices[0].deliveryConfirmations[0].class must be one of delivery, signature, adult_signature, direct_signature"
+        "Invalid carrier: \n" +
+        "  deliveryServices[0].deliveryConfirmations[0].class must be one of delivery, signature, adult_signature, direct_signature"
       );
     });
 

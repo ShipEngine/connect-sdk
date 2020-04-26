@@ -2,7 +2,7 @@ import { DeliveryConfirmationClass } from "../../enums";
 import { UUID } from "../../types";
 
 /**
- * Delivery confirmation options offered by a shipping provider
+ * Delivery confirmation options offered by a carrier
  */
 export interface DeliveryConfirmationDefinition {
   /**

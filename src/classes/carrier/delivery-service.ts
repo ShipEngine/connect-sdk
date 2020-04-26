@@ -9,7 +9,7 @@ import { DeliveryConfirmation } from "./delivery-confirmation";
 import { Packaging } from "./packaging";
 
 /**
- * A delivery service that is offered by a shipping provider
+ * A delivery service that is offered by a carrier
  */
 export class DeliveryService {
   //#region Class Fields

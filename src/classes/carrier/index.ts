@@ -19,5 +19,4 @@ export * from "./rates/rate";
 export * from "./rates/rate-criteria";
 export * from "./rates/rate-quote";
 export * from "./shipment";
-export * from "./shipping-provider";
 export * from "./tracking/tracking-criteria";

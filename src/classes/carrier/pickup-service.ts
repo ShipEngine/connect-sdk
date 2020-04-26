@@ -5,7 +5,7 @@ import { App } from "../common";
 import { Carrier } from "./carrier";
 
 /**
- * A package pickup service that is offered by a shipping provider
+ * A package pickup service that is offered by a carrier
  */
 export class PickupService {
   //#region Class Fields

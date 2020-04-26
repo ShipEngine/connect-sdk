@@ -1,3 +1,4 @@
+import { CancelPickup, CreateLabel, CreateManifest, GetRates, GetTrackingURL, RequestPickup, Track, VoidLabel } from "../../classes/carrier/methods";
 import { InlineOrReference, InlineOrReferenceArray, UrlString, UUID } from "../../types";
 import { LogoDefinition } from "../common/logo-definition";
 import { DeliveryServiceDefinition } from "./delivery-service-definition";
@@ -42,4 +43,44 @@ export interface CarrierDefinition {
    * The package pickup services that are offered by the carrier
    */
   pickupServices?: InlineOrReferenceArray<PickupServiceDefinition>;
+
+  /**
+   * Requests a package pickup at a time and place
+   */
+  requestPickup?: InlineOrReference<RequestPickup>;
+
+  /**
+   * Cancels a previously-requested package pickup
+   */
+  cancelPickup?: InlineOrReference<CancelPickup>;
+
+  /**
+   * Creates a shipping label
+   */
+  createLabel?: InlineOrReference<CreateLabel>;
+
+  /**
+   * Voids a previously-created shipping label
+   */
+  voidLabel?: InlineOrReference<VoidLabel>;
+
+  /**
+   * Gets shipping rates for a shipment
+   */
+  getRates?: InlineOrReference<GetRates>;
+
+  /**
+   * Returns the tracking URL for a shipment
+   */
+  getTrackingURL?: InlineOrReference<GetTrackingURL>;
+
+  /**
+   * Returns tracking details for a shipment
+   */
+  track?: InlineOrReference<Track>;
+
+  /**
+   * Creates a manifest for multiple shipments
+   */
+  createManifest?: InlineOrReference<CreateManifest>;
 }

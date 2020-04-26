@@ -5,7 +5,7 @@ import { DeliveryConfirmationDefinition } from "./delivery-confirmation-definiti
 import { PackagingDefinition } from "./packaging-definition";
 
 /**
- * A delivery service that is offered by a shipping provider
+ * A delivery service that is offered by a carrier
  */
 export interface DeliveryServiceDefinition {
   /**

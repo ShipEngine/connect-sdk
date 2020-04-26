@@ -5,7 +5,7 @@ import { Joi } from "../../validation";
 import { App } from "../common";
 
 /**
- * Delivery confirmation options offered by a shipping provider
+ * Delivery confirmation options offered by a carrier
  */
 export class DeliveryConfirmation {
   //#region Class Fields

@@ -1,7 +1,7 @@
 import { UUID } from "../../types";
 
 /**
- * A package pickup service that is offered by a shipping provider
+ * A package pickup service that is offered by a carrier
  */
 export interface PickupServiceDefinition {
   /**

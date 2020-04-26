@@ -1,14 +1,24 @@
 "use strict";
 
 const { expect } = require("chai");
-const { DeliveryConfirmation } = require("../../");
-const MockApp = require("../utils/mock-app");
+const create = require("../utils/create");
 
 describe("DeliveryConfirmation", () => {
 
+  function createDeliveryConfirmation (deliveryConfirmation) {
+    let provider = create.shippingProvider({
+      carriers: [{
+        deliveryServices: [{
+          deliveryConfirmations: [deliveryConfirmation],
+        }]
+      }]
+    });
+
+    return provider.carriers[0].deliveryServices[0].deliveryConfirmations[0];
+  }
+
   it("should create a DeliveryConfirmation with the minimum required fields", () => {
-    let app = new MockApp();
-    let confirmation = new DeliveryConfirmation(app, {
+    let confirmation = createDeliveryConfirmation({
       id: "12345678-1234-1234-1234-123456789012",
       name: "Handshake",
       class: "signature",
@@ -23,8 +33,7 @@ describe("DeliveryConfirmation", () => {
   });
 
   it("should create a DeliveryConfirmation with all possible fields", () => {
-    let app = new MockApp();
-    let confirmation = new DeliveryConfirmation(app, {
+    let confirmation = createDeliveryConfirmation({
       id: "12345678-1234-1234-1234-123456789012",
       name: "Handshake",
       class: "signature",
@@ -39,70 +48,78 @@ describe("DeliveryConfirmation", () => {
     });
   });
 
-  describe("Failure tests", () => {
-
-    it("should throw an error if called without any arguments", () => {
-      expect(() => new DeliveryConfirmation()).to.throw(
-        TypeError,
-        "Invalid delivery confirmation: undefined. A value is required."
-      );
+  it("should allow an empty description", () => {
+    let confirmation = createDeliveryConfirmation({
+      id: "12345678-1234-1234-1234-123456789012",
+      name: "Handshake",
+      class: "signature",
+      description: "",
     });
 
+    expect(confirmation).to.deep.equal({
+      id: "12345678-1234-1234-1234-123456789012",
+      name: "Handshake",
+      class: "signature",
+      description: "",
+    });
+  });
+
+  describe("Failure tests", () => {
+
     it("should throw an error if called with an invalid config", () => {
-      let app = new MockApp();
-      expect(() => new DeliveryConfirmation(app, 12345)).to.throw(
-        TypeError,
-        "Invalid delivery confirmation: 12345. Expected an object."
+      expect(() => createDeliveryConfirmation(12345)).to.throw(
+        "Invalid shipping provider: \n" +
+        "  carriers[0].deliveryServices[0].deliveryConfirmations[0] must be of type object"
       );
     });
 
     it("should throw an error if called with an invalid ID", () => {
-      let app = new MockApp();
-      expect(() => new DeliveryConfirmation(app, {
+      expect(() => createDeliveryConfirmation({
         id: "12345",
+        name: "test",
+        class: "signature",
       })
       ).to.throw(
-        TypeError,
-        'Invalid delivery confirmation ID: "12345". Expected a UUID string.'
+        "Invalid shipping provider: \n" +
+        "  carriers[0].deliveryServices[0].deliveryConfirmations[0].id must be a valid GUID"
       );
     });
 
     it("should throw an error if called with an invalid name", () => {
-      let app = new MockApp();
-      expect(() => new DeliveryConfirmation(app, {
+      expect(() => createDeliveryConfirmation({
         id: "12345678-1234-1234-1234-123456789012",
-        name: "   ",
+        name: "  My \nConfirmation  ",
+        class: "signature"
       })
       ).to.throw(
-        Error,
-        'Invalid delivery confirmation name: "   ". It cannot be all whitespace.'
+        "Invalid shipping provider: \n" +
+        "  carriers[0].deliveryServices[0].deliveryConfirmations[0].name must not have leading or trailing whitespace \n" +
+        "  carriers[0].deliveryServices[0].deliveryConfirmations[0].name cannot contain newlines or tabs"
       );
     });
 
     it("should throw an error if called with an invalid description", () => {
-      let app = new MockApp();
-      expect(() => new DeliveryConfirmation(app, {
+      expect(() => createDeliveryConfirmation({
         id: "12345678-1234-1234-1234-123456789012",
         name: "My Confirmation",
+        class: "signature",
         description: 12345,
       })
       ).to.throw(
-        TypeError,
-        "Invalid delivery confirmation description: 12345. Expected a string."
+        "Invalid shipping provider: \n" +
+        "  carriers[0].deliveryServices[0].deliveryConfirmations[0].description must be a string"
       );
     });
 
     it("should throw an error if called with an invalid class", () => {
-      let app = new MockApp();
-      expect(() => new DeliveryConfirmation(app, {
+      expect(() => createDeliveryConfirmation({
         id: "12345678-1234-1234-1234-123456789012",
         name: "My Confirmation",
         class: "handshake"
       })
       ).to.throw(
-        TypeError,
-        'Invalid delivery confirmation class: "handshake". ' +
-        "Expected delivery, signature, adult_signature, or direct_signature."
+        "Invalid shipping provider: \n" +
+        "  carriers[0].deliveryServices[0].deliveryConfirmations[0].class must be one of delivery, signature, adult_signature, direct_signature"
       );
     });
 

@@ -67,15 +67,15 @@ describe("Transaction", () => {
 
     it("should throw an error if called without any arguments", () => {
       expect(() => new Transaction()).to.throw(
-        TypeError,
-        "Invalid transaction: undefined. A value is required."
+        "Invalid transaction: \n" +
+        "  A value is required"
       );
     });
 
     it("should throw an error if called with an invalid config", () => {
       expect(() => new Transaction(12345)).to.throw(
-        TypeError,
-        "Invalid transaction: 12345. Expected an object."
+        "Invalid transaction: \n" +
+        "  value must be of type object"
       );
     });
 
@@ -84,8 +84,8 @@ describe("Transaction", () => {
         id: "12345",
       })
       ).to.throw(
-        TypeError,
-        'Invalid transaction ID: "12345". Expected a UUID string.'
+        "Invalid transaction: \n" +
+        "  id must be a valid GUID"
       );
     });
 
@@ -95,8 +95,8 @@ describe("Transaction", () => {
         isRetry: "yes"
       })
       ).to.throw(
-        Error,
-        'Invalid isRetry flag: "yes". Expected a boolean.'
+        "Invalid transaction: \n" +
+        "  isRetry must be a boolean"
       );
     });
 
@@ -106,8 +106,8 @@ describe("Transaction", () => {
         useSandbox: "no"
       })
       ).to.throw(
-        Error,
-        'Invalid useSandbox flag: "no". Expected a boolean.'
+        "Invalid transaction: \n" +
+        "  useSandbox must be a boolean"
       );
     });
 
@@ -117,21 +117,21 @@ describe("Transaction", () => {
         session: 12345,
       })
       ).to.throw(
-        TypeError,
-        "Invalid session data: 12345. Expected an object."
+        "Invalid transaction: \n" +
+        "  session must be of type object"
       );
     });
 
-    it("should throw an error if the session object contains non-string values", () => {
+    it("should throw an error if the session object contains non-strings", () => {
       expect(() => new Transaction({
         id: "12345678-1234-1234-1234-123456789012",
         session: {
-          foo: true
+          foo: true,
         },
       })
       ).to.throw(
-        TypeError,
-        "Invalid session data value: true. Expected a string."
+        "Invalid transaction: \n" +
+        "  session.foo must be a string"
       );
     });
 

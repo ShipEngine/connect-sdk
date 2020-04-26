@@ -2,7 +2,7 @@
 import { DeliveryConfirmation, DeliveryService } from ".";
 import { Country } from "../../countries";
 import { BilledParty, InsuranceProvider, NonDeliveryAction } from "../../enums";
-import { ErrorCode, IpaasError, ipaasError } from "../../errors";
+import { error, ErrorCode, ShipEngineError } from "../../errors";
 import { Constructor } from "../../internal-types";
 import { NewShipmentPOJO, PackagePOJO, ShipmentIdentifierPOJO, ShipmentPOJO } from "../../pojos/carrier";
 import { Joi } from "../../validation";
@@ -308,8 +308,8 @@ function calculateTotalInsuranceAmount(packages: ReadonlyArray<NewPackage>): Mon
   }
   catch (originalError) {
     // Check for a currency mismatch, and throw a more specific error message
-    if ((originalError as IpaasError).code === ErrorCode.CurrencyMismatch) {
-      throw ipaasError(
+    if ((originalError as ShipEngineError).code === ErrorCode.CurrencyMismatch) {
+      throw error(
         ErrorCode.CurrencyMismatch,
         "All packages in a shipment must be insured in the same currency.",
         { originalError }

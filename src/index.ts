@@ -5,7 +5,7 @@ export * from "./classes/order";
 export * from "./countries";
 export * from "./definitions";
 export * from "./enums";
-export { ErrorCode, IpaasError } from "./errors";
+export { ErrorCode, ShipEngineError } from "./errors";
 export * from "./pojos/carrier";
 export * from "./pojos/common";
 export * from "./pojos/connection";

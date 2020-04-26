@@ -9,8 +9,7 @@ const uuidSchema = Joi.string().uuid();
 const pojoSchema = Joi.object({ id: Joi.string().uuid() }).unknown(true);
 
 /**
- * Maps ShipEngine IPaaS classes by their UUIDs and the POJO object instances.
- *
+ * Maps ShipEngine Integration Platform classes by their UUIDs and the POJO object instances.
  * @internal
  */
 export class ReferenceMap {

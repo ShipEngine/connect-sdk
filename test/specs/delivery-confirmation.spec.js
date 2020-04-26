@@ -66,7 +66,7 @@ describe("DeliveryConfirmation", () => {
 
   describe("Failure tests", () => {
 
-    it("should throw an error if called with an invalid config", () => {
+    it("should throw an error if called with an invalid pojo", () => {
       expect(() => createDeliveryConfirmation(12345)).to.throw(
         "Invalid shipping provider: \n" +
         "  carriers[0].deliveryServices[0].deliveryConfirmations[0] must be of type object"

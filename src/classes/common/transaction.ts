@@ -4,7 +4,7 @@ import { Joi, validate } from "../../validation";
 import { CustomData } from "./custom-data";
 
 /**
- * ShpEngine IPaaS passes this object to every method call. It provides information about the
+ * The ShpEngine Integration Platform passes this object to every method call. It provides information about the
  * transaction being performed, including authentication, metadata, etc.
  */
 export class Transaction {

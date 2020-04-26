@@ -40,7 +40,7 @@ export interface PackagingPOJO extends PackagingDefinition {}
 export interface PickupServicePOJO extends PickupServiceDefinition {}
 
 /**
- * A ShipEngine IPaaS shipping provider app.
+ * A shipping provider provides delivery services for one or more carriers
  */
 export interface ShippingProviderPOJO extends ShippingProviderDefinition {
   logo: LogoPOJO;

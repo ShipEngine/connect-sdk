@@ -40,7 +40,7 @@ export class PickupCancellationConfirmation {
   public readonly notes: string;
 
   /**
-   * Arbitrary data for that will be persisted by ShipEngine IPaaS.
+   * Arbitrary data that will be persisted by the ShipEngine Integration Platform.
    * If the pickup is later canceled, this data will be included.
    */
   public readonly customData?: CustomData;

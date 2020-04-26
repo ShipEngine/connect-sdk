@@ -72,7 +72,7 @@ describe("Transaction", () => {
       );
     });
 
-    it("should throw an error if called with an invalid config", () => {
+    it("should throw an error if called with an invalid pojo", () => {
       expect(() => new Transaction(12345)).to.throw(
         "Invalid transaction: \n" +
         "  value must be of type object"

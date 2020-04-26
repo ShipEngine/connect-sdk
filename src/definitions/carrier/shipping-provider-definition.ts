@@ -5,7 +5,7 @@ import { FormDefinition } from "../connection/form-definition";
 import { CarrierDefinition } from "./carrier-definition";
 
 /**
- * A ShipEngine IPaaS shipping provider app.
+ * A shipping provider provides delivery services for one or more carriers
  */
 export interface ShippingProviderDefinition {
   /**

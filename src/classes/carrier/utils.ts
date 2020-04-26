@@ -1,5 +1,5 @@
 import { ServiceArea } from "../../enums";
-import { ErrorCode, IpaasError, ipaasError } from "../../errors";
+import { error, ErrorCode, ShipEngineError } from "../../errors";
 import { MonetaryValue } from "../common";
 import { ShippingCharge } from "./labels/shipping-charge";
 
@@ -43,8 +43,8 @@ export function calculateTotalCharges(charges: ReadonlyArray<ShippingCharge>): M
   }
   catch (originalError) {
     // Check for a currency mismatch, and throw a more specific error message
-    if ((originalError as IpaasError).code === ErrorCode.CurrencyMismatch) {
-      throw ipaasError(
+    if ((originalError as ShipEngineError).code === ErrorCode.CurrencyMismatch) {
+      throw error(
         ErrorCode.CurrencyMismatch, "All charges must be in the same currency.", { originalError }
       );
     }

@@ -1,5 +1,5 @@
 /**
- * A ShipEngine IPaaS app manifest (package.json file)
+ * A ShipEngine Integration Platform app manifest (package.json file)
  */
 export interface AppManifestPOJO {
   name?: string;

@@ -1,10 +1,13 @@
 {
-  "name": "@shipengine/ipaas",
+  "name": "@shipengine/integration-platform-sdk",
   "version": "0.0.15",
-  "description": "The official SDK for building ShipEngine IPaaS apps",
+  "description": "The official SDK for building ShipEngine Integration Platform apps",
   "keywords": [
     "shipengine",
+    "integration",
+    "platform",
     "ipaas",
+    "app",
     "sdk",
     "typescript",
     "types",
@@ -16,10 +19,10 @@
     "url": "https://www.shipengine.com"
   },
   "license": "Apache-2.0",
-  "homepage": "https://www.shipengine.com/docs/ipaas/",
+  "homepage": "https://www.shipengine.com/docs/integration-platform/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ShipEngine/shipengine-ipaas.git"
+    "url": "https://github.com/ShipEngine/shipengine-integration-platform-sdk.git"
   },
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

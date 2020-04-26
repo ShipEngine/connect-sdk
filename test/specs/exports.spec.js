@@ -7,7 +7,7 @@ const { default: defaultExport } = require("../../");
 const { expect } = require("chai");
 const { readdirSync } = require("@jsdevtools/readdir-enhanced");
 
-describe("@shipengine/ipaas package exports", () => {
+describe("package exports", () => {
 
   it("should not have a default ESM export", () => {
     expect(defaultExport).to.equal(undefined);

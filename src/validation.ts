@@ -1,5 +1,5 @@
 import * as joi from "@hapi/joi";
-import { ErrorCode, ipaasError } from "./errors";
+import { error, ErrorCode } from "./errors";
 import { ShipEngineConstructor } from "./internal-types";
 
 const joiOptions = {
@@ -26,15 +26,15 @@ export function validate(value: unknown, arg2: ShipEngineConstructor | string, a
   let schema = arg3 || (arg2 as ShipEngineConstructor).schema;
 
   if (value === undefined || value === null) {
-    throw ipaasError(ErrorCode.Validation, `Invalid ${label}: \n  A value is required`);
+    throw error(ErrorCode.Validation, `Invalid ${label}: \n  A value is required`);
   }
 
-  let { error } = schema.validate(value, joiOptions as joi.ValidationOptions);
+  let result = schema.validate(value, joiOptions as joi.ValidationOptions);
 
-  if (error) {
-    throw ipaasError(
+  if (result.error) {
+    throw error(
       ErrorCode.Validation,
-      `Invalid ${label}: \n  ` + error.details.map((detail) => detail.message).join(" \n  "),
+      `Invalid ${label}: \n  ` + result.error.details.map((detail) => detail.message).join(" \n  "),
     );
   }
 }
@@ -111,37 +111,37 @@ export const Joi = joi.extend(
     },
     rules: {
       singleLine: {
-        validate(value: string, { error }: joi.CustomHelpers) {
+        validate(value: string, helpers: joi.CustomHelpers) {
           const multiline =  /\n|\r|\t/;
           if (multiline.test(value)) {
-            return error("string.singleLine");
+            return helpers.error("string.singleLine");
           }
           return value;
         },
       },
       isoDateTime: {
-        validate(value: string, { error }: joi.CustomHelpers) {
+        validate(value: string, helpers: joi.CustomHelpers) {
           const semver = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?([+-]\d{2}:\d{2}|Z)$/;
           if (!semver.test(value) || isNaN(new Date(value).getTime())) {
-            return error("string.isoDateTime");
+            return helpers.error("string.isoDateTime");
           }
           return value;
         },
       },
       semver: {
-        validate(value: string, { error }: joi.CustomHelpers) {
+        validate(value: string, helpers: joi.CustomHelpers) {
           const semver = /^\d+\.\d+\.\d+/;
           if (!semver.test(value)) {
-            return error("string.semver");
+            return helpers.error("string.semver");
           }
           return value;
         },
       },
       money: {
-        validate(value: string, { error }: joi.CustomHelpers) {
+        validate(value: string, helpers: joi.CustomHelpers) {
           const money = /^\d+(\.\d+)?$/;
           if (!money.test(value)) {
-            return error("string.money");
+            return helpers.error("string.money");
           }
           return value;
         },
@@ -151,25 +151,25 @@ export const Joi = joi.extend(
           let valids = Object.values(enumeration);
           return this.$_addRule({ name: "enum", args: { valids }});
         },
-        validate(value: string, { error }: joi.CustomHelpers, { valids }: { valids: string[] }) {
+        validate(value: string, helpers: joi.CustomHelpers, { valids }: { valids: string[] }) {
           if (!valids.includes(value)) {
-            return error("any.only", { valids });
+            return helpers.error("any.only", { valids });
           }
           return value;
         },
       },
       website: {
-        validate(value: string, { error }: joi.CustomHelpers) {
+        validate(value: string, helpers: joi.CustomHelpers) {
           const protocol = /^https?:\/\//;
           if (!protocol.test(value)) {
-            return error("string.websiteIncomplete");
+            return helpers.error("string.websiteIncomplete");
           }
 
           try {
             return new URL(value).href;
           }
           catch {
-            return error("string.website");
+            return helpers.error("string.website");
           }
         },
       },

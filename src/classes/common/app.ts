@@ -3,7 +3,7 @@ import { Joi, validate } from "../../validation";
 import { ReferenceMap } from "./reference-map";
 
 /**
- * A ShipEngine IPaaS app
+ * A ShipEngine Integration Platform app
  */
 export class App {
   //#region Class Fields
@@ -25,7 +25,7 @@ export class App {
   public readonly _references = new ReferenceMap();
 
   /**
-   * The ShipEngine IPaaS shipping provider app version number.
+   * The ShipEngine Integration Platform app version number.
    * This is a semantic version number (e.g. "1.23.456")
    */
   public readonly version: string;

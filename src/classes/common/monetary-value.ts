@@ -1,7 +1,7 @@
 // tslint:disable: max-classes-per-file
 import * as currency from "currency.js";
 import { Currency } from "../../enums";
-import { ErrorCode, ipaasError } from "../../errors";
+import { error, ErrorCode } from "../../errors";
 import { MonetaryValuePOJO } from "../../pojos/common";
 import { Joi } from "../../validation";
 
@@ -62,7 +62,7 @@ export class MonetaryValue {
 
     if (uniqueCurrencies.size > 1) {
       let currencies = [...uniqueCurrencies];
-      throw ipaasError(
+      throw error(
         ErrorCode.CurrencyMismatch,
         `Currency mistmatch: (${currencies.join(", ")}). All charges must be in the same currency.`,
         { currencies }

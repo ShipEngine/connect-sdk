@@ -93,6 +93,7 @@ export class ContactInfo extends contactInfoMixin() {
 
 /**
  * Extends a base class with contact information
+ * @internal
  */
 export function contactInfoMixin(base: Constructor = Object) {
   return class ContactInfoMixin extends base {

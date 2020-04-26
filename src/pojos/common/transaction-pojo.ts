@@ -2,8 +2,8 @@ import { UUID } from "../../types";
 import { CustomDataPOJO } from "./custom-data-pojo";
 
 /**
- * ShpEngine IPaaS passes this object to every method call. It provides information about the
- * transaction being performed, including authentication, metadata, etc.
+ * The ShpEngine Integration Platform passes this object to every method call.
+ * It provides information about the transaction being performed, including authentication, metadata, etc.
  */
 export interface TransactionPOJO {
   /**

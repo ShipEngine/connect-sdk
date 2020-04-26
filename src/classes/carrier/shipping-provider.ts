@@ -1,6 +1,6 @@
 import { Country } from "../../countries";
 import { ServiceArea } from "../../enums";
-import { ErrorCode, ipaasError } from "../../errors";
+import { error, ErrorCode } from "../../errors";
 import { LabelSpecPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, ShippingProviderPOJO, TrackingCriteriaPOJO } from "../../pojos/carrier";
 import { TransactionPOJO } from "../../pojos/common";
 import { UrlString, UUID } from "../../types";
@@ -23,7 +23,7 @@ import { TrackingCriteria } from "./tracking/tracking-criteria";
 import { getMaxServiceArea } from "./utils";
 
 /**
- * A ShipEngine IPaaS shipping provider app.
+ * A shipping provider provides delivery services for one or more carriers
  */
 export class ShippingProvider {
   //#region Class Fields
@@ -243,7 +243,7 @@ export class ShippingProvider {
       _transaction = new Transaction(transaction);
     }
     catch (originalError) {
-      throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the login method.", { originalError });
+      throw error(ErrorCode.InvalidInput, "Invalid input to the login method.", { originalError });
     }
 
     try {
@@ -251,7 +251,7 @@ export class ShippingProvider {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw ipaasError(ErrorCode.AppError, `Error in login method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in login method.`, { originalError, transactionID });
     }
   }
 
@@ -267,7 +267,7 @@ export class ShippingProvider {
       _request = new PickupRequest(request, this.app);
     }
     catch (originalError) {
-      throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the requestPickup method.", { originalError });
+      throw error(ErrorCode.InvalidInput, "Invalid input to the requestPickup method.", { originalError });
     }
 
     try {
@@ -277,7 +277,7 @@ export class ShippingProvider {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw ipaasError(ErrorCode.AppError, `Error in requestPickup method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in requestPickup method.`, { originalError, transactionID });
     }
   }
 
@@ -293,7 +293,7 @@ export class ShippingProvider {
       _cancellation = new PickupCancellation(cancellation, this.app);
     }
     catch (originalError) {
-      throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the cancelPickup method.", { originalError });
+      throw error(ErrorCode.InvalidInput, "Invalid input to the cancelPickup method.", { originalError });
     }
 
     try {
@@ -303,7 +303,7 @@ export class ShippingProvider {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw ipaasError(ErrorCode.AppError, `Error in cancelPickup method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in cancelPickup method.`, { originalError, transactionID });
     }
   }
 
@@ -318,7 +318,7 @@ export class ShippingProvider {
       _label = new LabelSpec(label, this.app);
     }
     catch (originalError) {
-      throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the createLabel method.", { originalError });
+      throw error(ErrorCode.InvalidInput, "Invalid input to the createLabel method.", { originalError });
     }
 
     try {
@@ -327,7 +327,7 @@ export class ShippingProvider {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw ipaasError(ErrorCode.AppError, `Error in createLabel method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in createLabel method.`, { originalError, transactionID });
     }
   }
 
@@ -341,7 +341,7 @@ export class ShippingProvider {
       _transaction = new Transaction(transaction);
     }
     catch (originalError) {
-      throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the voidLabel method.", { originalError });
+      throw error(ErrorCode.InvalidInput, "Invalid input to the voidLabel method.", { originalError });
     }
 
     try {
@@ -350,7 +350,7 @@ export class ShippingProvider {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw ipaasError(ErrorCode.AppError, `Error in voidLabel method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in voidLabel method.`, { originalError, transactionID });
     }
   }
 
@@ -365,7 +365,7 @@ export class ShippingProvider {
       _criteria = new RateCriteria(criteria, this.app);
     }
     catch (originalError) {
-      throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the getRates method.", { originalError });
+      throw error(ErrorCode.InvalidInput, "Invalid input to the getRates method.", { originalError });
     }
 
     try {
@@ -374,7 +374,7 @@ export class ShippingProvider {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw ipaasError(ErrorCode.AppError, `Error in getRates method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in getRates method.`, { originalError, transactionID });
     }
   }
 
@@ -389,7 +389,7 @@ export class ShippingProvider {
       _criteria = new TrackingCriteria(criteria, this.app);
     }
     catch (originalError) {
-      throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the getTrackingURL method.", { originalError });
+      throw error(ErrorCode.InvalidInput, "Invalid input to the getTrackingURL method.", { originalError });
     }
 
     try {
@@ -398,7 +398,7 @@ export class ShippingProvider {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw ipaasError(ErrorCode.AppError, `Error in getTrackingURL method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in getTrackingURL method.`, { originalError, transactionID });
     }
   }
 
@@ -412,7 +412,7 @@ export class ShippingProvider {
       _transaction = new Transaction(transaction);
     }
     catch (originalError) {
-      throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the track method.", { originalError });
+      throw error(ErrorCode.InvalidInput, "Invalid input to the track method.", { originalError });
     }
 
     try {
@@ -421,7 +421,7 @@ export class ShippingProvider {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw ipaasError(ErrorCode.AppError, `Error in track method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in track method.`, { originalError, transactionID });
     }
   }
 
@@ -435,7 +435,7 @@ export class ShippingProvider {
       _transaction = new Transaction(transaction);
     }
     catch (originalError) {
-      throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the createManifest method.", { originalError });
+      throw error(ErrorCode.InvalidInput, "Invalid input to the createManifest method.", { originalError });
     }
 
     try {
@@ -444,7 +444,7 @@ export class ShippingProvider {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw ipaasError(ErrorCode.AppError, `Error in createManifest method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in createManifest method.`, { originalError, transactionID });
     }
   }
 

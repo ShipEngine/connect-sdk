@@ -1,15 +1,15 @@
 import { ono } from "@jsdevtools/ono";
 
 /**
- * An error thrown by the ShipEngine IPaaS SDK
+ * An error thrown by the ShipEngine Integration Platform SDK
  */
-export interface IpaasError {
+export interface ShipEngineError {
   code: ErrorCode;
   transactionID?: string;
 }
 
 /**
- * Error codes for ShipEngine IPaaS runtime errors
+ * Error codes for ShipEngine Integration Platform SDK runtime errors
  */
 export enum ErrorCode {
   Validation = "ERR_INVALID",
@@ -19,7 +19,8 @@ export enum ErrorCode {
 }
 
 /**
- * Additional properties to add to a ShipEngine IPaaS error
+ * Additional properties to add to a an error
+ * @internal
  */
 export interface ErrorProps {
   originalError?: unknown;
@@ -28,9 +29,10 @@ export interface ErrorProps {
 }
 
 /**
- * Creates a ShipEngine IPaaS error
+ * Creates a ShipEngine Integration Platform SDK error
+ * @internal
  */
-export function ipaasError(code: ErrorCode, message: string, { originalError, ...props }: ErrorProps = {}): IpaasError {
-  let error =  ono(originalError as Error, { ...props, code }, message);
-  return error;
+export function error(code: ErrorCode, message: string, { originalError, ...props }: ErrorProps = {}): ShipEngineError {
+  let err =  ono(originalError as Error, { ...props, code }, message);
+  return err;
 }

@@ -1,5 +1,5 @@
 /**
- * Arbitrary data that will be persisted by ShipEngine IPaaS.
+ * Arbitrary data that will be persisted by the ShipEngine Integration Platform.
  */
 export interface CustomDataPOJO {
   [key: string]: string;

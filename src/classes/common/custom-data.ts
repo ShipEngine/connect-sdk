@@ -3,7 +3,7 @@ import { CustomDataPOJO, IdentifierPOJO } from "../../pojos/common";
 import { Joi } from "../../validation";
 
 /**
- * Arbitrary data that will be persisted by ShipEngine IPaaS.
+ * Arbitrary data that will be persisted by the ShipEngine Integration Platform.
  */
 export class CustomData {
   //#region Class Fields

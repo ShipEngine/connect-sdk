@@ -9,7 +9,7 @@ export type UUID = string;
 export type UrlString = string;
 
 /**
- * Path to JSON or YAML file containing configuration data for a ShipEngine IPaaS app
+ * Path to JSON or YAML file containing the definition of a ShipEngine Integration Platform app
  */
 export type FilePath = string;
 

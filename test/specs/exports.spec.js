@@ -35,18 +35,44 @@ describe("@shipengine/ipaas package exports", () => {
     }
   });
 
-  it("should export all root files", () => {
-    let exceptions = ["app.ts", "assert.ts", "reference-map.ts"];
-    assertFileExports("src", false, exceptions);
+  it("should export root files", () => {
+    assertFileExports("src", false, ["internal-types.ts", "validation.ts"]);
   });
 
-  it("should export all config files", () => {
-    assertFileExports("src/config");
+  it("should export carrier classes", () => {
+    assertFileExports("src/classes/carrier", true, ["utils.ts"]);
   });
 
-  it("should export all shipping-provider files", () => {
-    let exceptions = ["utils.ts"];
-    assertFileExports("src/shipping-provider", true, exceptions);
+  it("should export common classes", () => {
+    assertFileExports("src/classes/common", true, ["reference-map.ts"]);
+  });
+
+  it("should export connection classes", () => {
+    assertFileExports("src/classes/connection", true);
+  });
+
+  it("should export order classes", () => {
+    assertFileExports("src/classes/order", true);
+  });
+
+  it("should export definition interfaces", () => {
+    assertFileExports("src/definitions", true);
+  });
+
+  it("should export carrier pojos", () => {
+    assertFileExports("src/pojos/carrier", true);
+  });
+
+  it("should export common pojos", () => {
+    assertFileExports("src/pojos/common", true);
+  });
+
+  it("should export connection pojos", () => {
+    assertFileExports("src/pojos/connection", true);
+  });
+
+  it("should export order pojos", () => {
+    assertFileExports("src/pojos/order", true);
   });
 
 });

@@ -52,10 +52,7 @@ export class Transaction {
   public readonly useSandbox: boolean;
 
   /**
-   * Arbitrary session data that was established upon logging in.
-   * This object initially matches the structure defined by the shipping provider's login form.
-   *
-   * The properties of the session object are mutable. Any method may update the session data,
+   * Arbitrary session data. Any method may update the session data,
    * such as renewing a session token or updating a timestamp.
    */
   public get session(): CustomDataPOJO {

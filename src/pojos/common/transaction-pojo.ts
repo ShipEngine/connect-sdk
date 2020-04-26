@@ -31,8 +31,8 @@ export interface TransactionPOJO {
   useSandbox?: boolean;
 
   /**
-   * Arbitrary session data that was established upon logging in.
-   * This object matches the structure defined by the shipping provider's login form.
+   * Arbitrary session data. Any method may update the session data,
+   * such as renewing a session token or updating a timestamp.
    */
   session?: CustomDataPOJO;
 }

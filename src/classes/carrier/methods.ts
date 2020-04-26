@@ -8,13 +8,6 @@ import { RateCriteria } from "./rates/rate-criteria";
 import { TrackingCriteria } from "./tracking/tracking-criteria";
 
 /**
- * Verifies a user's credentials and establishes or renews a session.
- *
- * NOTE: This function does not return a value. It updates the `transaction.session` property.
- */
-export type Login = (transaction: Transaction) => void | Promise<void>;
-
-/**
  * Requests a package pickup at a time and place
  */
 export type RequestPickup = (transaction: Transaction, request: PickupRequest)

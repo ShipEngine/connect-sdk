@@ -1,7 +1,6 @@
 import { Country } from "../../countries";
-import { Identifier } from "../../types";
-import { MonetaryValuePOJO, QuantityPOJO } from "../measures-pojo";
-import { SalesOrderIdentifierPOJO } from "../orders/sales-order-pojo";
+import { IdentifierPOJO, MonetaryValuePOJO, QuantityPOJO } from "../common";
+import { SalesOrderIdentifierPOJO } from "../order";
 
 /**
  * An item inside a package
@@ -15,7 +14,7 @@ export interface PackageItemPOJO {
   /**
    * Alternative identifiers associated with this item
    */
-  identifiers?: Identifier[];
+  identifiers?: IdentifierPOJO[];
 
   /**
    * A description of the item. Often used for customs declarations.

@@ -1,14 +1,25 @@
 import { zonedTimeToUtc } from "date-fns-tz";
-import { assert } from "../../../assert";
-import { TimeRangePOJO } from "../../../pojos";
-
-const iso8601 = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?/;
-iso8601.examples = ["yyyy-mm-dd", "yyyy-mm-ddThh:mm"];
+import { TimeRangePOJO } from "../../../pojos/carrier";
+import { Joi } from "../../../validation";
 
 /**
  * A range of time
  */
 export class TimeRange {
+  //#region Class Fields
+
+  public static readonly label = "time range";
+
+  /** @internal */
+  public static readonly schema = Joi.object({
+    startDateTime: Joi.alternatives(Joi.date(), Joi.string().isoDate()).required(),
+    endDateTime: Joi.alternatives(Joi.date(), Joi.string().isoDate()).required(),
+    timeZone: Joi.string().trim().singleLine().min(1).max(50),
+  });
+
+  //#endregion
+  //#region Instance Fields
+
   /**
    * The start date/time of the range
    */
@@ -27,11 +38,12 @@ export class TimeRange {
    */
   public readonly timeZone: string;
 
+  //#endregion
+
   public constructor(pojo: TimeRangePOJO) {
-    assert.type.object(pojo, "time range");
-    this.timeZone = assert.string.nonWhitespace(pojo.timeZone, "IANA time zone");
-    this.startDateTime = validateDate(pojo.startDateTime, "start date/time", this.timeZone);
-    this.endDateTime = validateDate(pojo.startDateTime, "end date/time", this.timeZone);
+    this.timeZone = pojo.timeZone;
+    this.startDateTime = validateDate(pojo.startDateTime, this.timeZone);
+    this.endDateTime = validateDate(pojo.endDateTime, this.timeZone);
 
     if (this.endDateTime.getTime() < this.startDateTime.getTime()) {
       throw new RangeError(
@@ -48,18 +60,13 @@ export class TimeRange {
 }
 
 /**
- * Validates a Date or ISO 8601 string
+ * Parses a ISO 8601 string in the specified time zone
  */
-function validateDate(value: Date | string, fieldName: string, timeZone: string): Date {
-  let date: Date;
-
+function validateDate(value: Date | string, timeZone: string): Date {
   if (value instanceof Date) {
-    date = value;
+    return value;
   }
   else {
-    assert.string.pattern(value, iso8601, fieldName);
-    date = zonedTimeToUtc(value, timeZone);
+    return zonedTimeToUtc(value, timeZone);
   }
-
-  return assert.type.date(date, fieldName);
 }

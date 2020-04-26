@@ -1,11 +1,26 @@
-import { assert } from "../../../assert";
-import { PickupCancellationConfirmationPOJO } from "../../../pojos";
-import { CustomData } from "../../../types";
+import { PickupCancellationConfirmationPOJO } from "../../../pojos/carrier";
+import { Joi, validate } from "../../../validation";
+import { CustomData } from "../../common";
 
 /**
  * Confirmation that a package pickup has been canceled
  */
 export class PickupCancellationConfirmation {
+  //#region Class Fields
+
+  public static readonly label = "pickup cancellation confirmation";
+
+  /** @internal */
+  public static readonly schema = Joi.object({
+    successful: Joi.boolean().required(),
+    cancellationID: Joi.string().trim().singleLine().allow("").max(100),
+    notes: Joi.string().allow("").max(5000),
+    customData: CustomData.schema,
+  });
+
+  //#endregion
+  //#region Instance Fields
+
   /**
    * Indicates whether the pickup was successfully canceled.
    * If the pickup was _not_ canceled, then the `notes` field should contain
@@ -16,7 +31,7 @@ export class PickupCancellationConfirmation {
   /**
    * The carrier's cancellation ID, if any
    */
-  public readonly cancellationID?: string;
+  public readonly cancellationID: string;
 
   /**
    * Additional information/instructions regarding the cancellation
@@ -30,16 +45,17 @@ export class PickupCancellationConfirmation {
    */
   public readonly customData?: CustomData;
 
+  //#endregion
+
   public constructor(pojo: PickupCancellationConfirmationPOJO) {
-    assert.type.object(pojo, "pickup confirmation");
-    this.successful = assert.type.boolean(pojo.successful, "successful indicator");
-    this.cancellationID =
-      pojo.cancellationID && assert.string.nonWhitespace(pojo.cancellationID, "cancellation ID");
-    this.notes = assert.string(pojo.notes, "pickup confirmation notes", "");
-    this.customData = assert.type.customData(pojo.customData);
+    validate(pojo, PickupCancellationConfirmation);
+
+    this.successful = pojo.successful;
+    this.cancellationID = pojo.cancellationID || "";
+    this.notes = pojo.notes || "";
+    this.customData = pojo.customData && new CustomData(pojo.customData);
 
     // Prevent modifications after validation
     Object.freeze(this);
-    Object.freeze(this.customData);
   }
 }

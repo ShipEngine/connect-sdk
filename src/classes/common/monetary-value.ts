@@ -1,18 +1,27 @@
 // tslint:disable: max-classes-per-file
 import * as currency from "currency.js";
-import { assert } from "../assert";
-import { Currency } from "../enums";
-import { ErrorCode, ipaasError } from "../errors";
-import { MonetaryValuePOJO } from "../pojos";
-
-const moneyValue = /^\d+(\.\d+)?$/;
-moneyValue.example = "##.##";
-
+import { Currency } from "../../enums";
+import { ErrorCode, ipaasError } from "../../errors";
+import { MonetaryValuePOJO } from "../../pojos/common";
+import { Joi } from "../../validation";
 
 /**
  * A monetary value in a supported currency
  */
 export class MonetaryValue {
+  //#region Class Fields
+
+  public static readonly label = "monetary value";
+
+  /** @internal */
+  public static readonly schema = Joi.object({
+    value: Joi.alternatives(Joi.number().min(0), Joi.string().money()).required(),
+    currency: Joi.string().enum(Currency).required(),
+  });
+
+  //#endregion
+  //#region Instance Fields
+
   /**
    * The amount of this value. Represented as a string to avoid floating
    * point rounding issues. You must parse this string into a type
@@ -25,15 +34,11 @@ export class MonetaryValue {
    */
   public readonly currency: Currency;
 
+  //#endregion
+
   public constructor(pojo: MonetaryValuePOJO) {
-    assert.type.object(pojo, "monetary value");
-
-    let value = typeof pojo.value === "number"
-      ? assert.number.nonNegative(pojo.value, "monetary value")
-      : assert.string.pattern(pojo.value, moneyValue, "monetary value");
-
-    this.value = currency(value).toString();
-    this.currency = assert.string.enum(pojo.currency, Currency, "currency");
+    this.value = currency(pojo.value).toString();
+    this.currency = pojo.currency;
 
     // Prevent modifications after validation
     Object.freeze(this);

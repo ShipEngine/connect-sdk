@@ -37,16 +37,16 @@ export interface RatePOJO {
   estimatedDeliveryDateTime?: Date;
 
   /**
+   * Indicates whether this rate is based on pre-negotiated terms
+   */
+  isNegotiatedRate?: boolean;
+
+  /**
    * The breakdown of charges for this rate.
    * If the carrier does not provide a detailed breakdown, then just use a single
    * charge of type "shipping".
    */
   charges: ShippingChargePOJO[];
-
-  /**
-   * Indicates whether this rate is based on pre-negotiated terms
-   */
-  isNegotiatedRate?: boolean;
 
   /**
    * Human-readable information regarding this rate quote, such as limitations or restrictions

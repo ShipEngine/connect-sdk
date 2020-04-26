@@ -1,20 +1,40 @@
 import * as currency from "currency.js";
-import { assert } from "../assert";
-import { Country } from "../countries";
-import { PackageItemPOJO } from "../pojos";
-import { Identifier } from "../types";
-import { MonetaryValue } from "./monetary-value";
-import { Quantity } from "./quantity";
-import { SalesOrderIdentifier } from "./sales-order";
+import { Country } from "../../countries";
+import { PackageItemPOJO } from "../../pojos/carrier";
+import { Joi } from "../../validation";
+import { Identifier } from "../common/custom-data";
+import { MonetaryValue } from "../common/monetary-value";
+import { Quantity } from "../common/quantity";
+import { SalesOrderIdentifier } from "../order/sales-order";
 
 /**
  * An item inside a package
  */
 export class PackageItem {
+  //#region Class Fields
+
+  public static readonly label = "package item";
+
+  /** @internal */
+  public static readonly schema = Joi.object({
+    sku: Joi.string().trim().singleLine().allow("").max(100),
+    identifiers: Joi.array().items(Identifier.schema),
+    description: Joi.string().trim().singleLine().allow("").max(1000),
+    salesOrder: SalesOrderIdentifier.schema,
+    quantity: Quantity.schema.required(),
+    unitValue: MonetaryValue.schema.required(),
+    countryOfOrigin: Joi.string().enum(Country),
+    countryOfManufacture: Joi.string().enum(Country),
+    harmonizedTariffCode: Joi.string().trim().singleLine().allow("").max(30),
+  });
+
+  //#endregion
+  //#region Instance Fields
+
   /**
    * The Stock Keeping Unit code
    */
-  public readonly sku?: string;
+  public readonly sku: string;
 
   /**
    * Alternative identifiers associated with this item
@@ -66,22 +86,20 @@ export class PackageItem {
    *
    * @see https://hts.usitc.gov/
    */
-  public readonly harmonizedTariffCode?: string;
+  public readonly harmonizedTariffCode: string;
+
+  //#endregion
 
   public constructor(pojo: PackageItemPOJO) {
-    assert.type.object(pojo, "package item");
-    this.sku = pojo.sku && assert.string.nonWhitespace(pojo.sku, "SKU");
-    this.identifiers = assert.array.ofIdentifiers(pojo.identifiers, "identifiers", []);
-    this.description = assert.string(pojo.description, "item description", "");
+    this.sku = pojo.sku || "";
+    this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];
+    this.description = pojo.description || "";
     this.salesOrder = pojo.salesOrder && new SalesOrderIdentifier(pojo.salesOrder);
     this.quantity = new Quantity(pojo.quantity);
     this.unitValue = new MonetaryValue(pojo.unitValue);
-    this.countryOfOrigin = pojo.countryOfOrigin
-      && assert.string.enum(pojo.countryOfOrigin, Country, "origin country");
-    this.countryOfManufacture = pojo.countryOfManufacture
-      && assert.string.enum(pojo.countryOfManufacture, Country, "country of manufacture");
-    this.harmonizedTariffCode = pojo.harmonizedTariffCode
-      && assert.string.nonWhitespace(pojo.harmonizedTariffCode, "harmonized tariff code");
+    this.countryOfOrigin = pojo.countryOfOrigin;
+    this.countryOfManufacture = pojo.countryOfManufacture;
+    this.harmonizedTariffCode = pojo.harmonizedTariffCode || "";
 
     // Prevent modifications after validation
     Object.freeze(this);

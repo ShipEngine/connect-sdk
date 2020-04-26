@@ -1,7 +1,7 @@
 import { Country } from "../../countries";
 import { BilledParty, InsuranceProvider, NonDeliveryAction } from "../../enums";
-import { Identifier, UUID } from "../../types";
-import { AddressWithContactInfoPOJO } from "../address-pojo";
+import { UUID } from "../../types";
+import { AddressWithContactInfoPOJO, IdentifierPOJO } from "../common";
 import { NewPackagePOJO, PackagePOJO } from "./package-pojo";
 
 /**
@@ -26,7 +26,7 @@ export interface ShipmentIdentifierPOJO {
   /**
    * Alternative identifiers associated with this shipment
    */
-  identifiers?: Identifier[];
+  identifiers?: IdentifierPOJO[];
 }
 
 /**
@@ -68,11 +68,6 @@ export interface NewShipmentPOJO {
    * Indicates how a non-deliverable package should be handled
    */
   nonDeliveryAction: NonDeliveryAction;
-
-  /**
-   * TODO: What about Sunday delivery? Wouldn't Saturday/Sunday delivery be determined by the service used?
-   */
-  // allowSaturdayDelivery?: boolean;
 
   /**
    * Which party will be insuring the shipment. Defaults to carrier-provided insurance.

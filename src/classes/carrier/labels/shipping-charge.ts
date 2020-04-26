@@ -1,21 +1,36 @@
-import { assert } from "../../../assert";
 import { ShippingChargeType } from "../../../enums";
-import { ShippingChargePOJO } from "../../../pojos";
-import { MonetaryValue } from "../../monetary-value";
+import { ShippingChargePOJO } from "../../../pojos/carrier";
+import { Joi } from "../../../validation";
+import { MonetaryValue } from "../../common";
 
 /**
  * An itemized shipping charge in the total cost of a shipment
  */
 export class ShippingCharge {
+  //#region Class Fields
+
+  public static readonly label = "shipping charge";
+
+  /** @internal */
+  public static readonly schema = Joi.object({
+    name: Joi.string().trim().singleLine().min(1).max(100),
+    type: Joi.string().enum(ShippingChargeType).required(),
+    amount: MonetaryValue.schema.required(),
+  });
+
+  //#endregion
+  //#region Instance Fields
+
+  public readonly name: string;
   public readonly type: ShippingChargeType;
   public readonly amount: MonetaryValue;
-  public readonly description: string;
+
+  //#endregion
 
   public constructor(pojo: ShippingChargePOJO) {
-    assert.type.object(pojo, "shipping charge");
-    this.type = assert.string.enum(pojo.type, ShippingChargeType, "shipping charge type");
+    this.name = pojo.name;
+    this.type = pojo.type;
     this.amount = new MonetaryValue(pojo.amount);
-    this.description = assert.string(pojo.description, "shipping charge description", "");
 
     // Prevent modifications after validation
     Object.freeze(this);

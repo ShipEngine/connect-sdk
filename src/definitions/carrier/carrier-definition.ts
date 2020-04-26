@@ -1,6 +1,6 @@
 import { InlineOrReference, InlineOrReferenceArray, UrlString, UUID } from "../../types";
+import { LogoDefinition } from "../common/logo-definition";
 import { DeliveryServiceDefinition } from "./delivery-service-definition";
-import { LogoDefinition } from "./logo-definition";
 import { PickupServiceDefinition } from "./pickup-service-definition";
 
 /**

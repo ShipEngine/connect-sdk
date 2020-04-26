@@ -1,4 +1,5 @@
-import { CustomData, UUID } from "../types";
+import { UUID } from "../../types";
+import { CustomDataPOJO } from "./custom-data-pojo";
 
 /**
  * ShpEngine IPaaS passes this object to every method call. It provides information about the
@@ -33,5 +34,5 @@ export interface TransactionPOJO {
    * Arbitrary session data that was established upon logging in.
    * This object matches the structure defined by the shipping provider's login form.
    */
-  session?: CustomData;
+  session?: CustomDataPOJO;
 }

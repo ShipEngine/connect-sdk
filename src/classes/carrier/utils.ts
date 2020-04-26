@@ -1,6 +1,6 @@
 import { ServiceArea } from "../../enums";
 import { ErrorCode, IpaasError, ipaasError } from "../../errors";
-import { MonetaryValue } from "../monetary-value";
+import { MonetaryValue } from "../common";
 import { ShippingCharge } from "./labels/shipping-charge";
 
 /**

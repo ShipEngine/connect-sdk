@@ -1,12 +1,11 @@
-import { assert } from "../../assert";
 import { Country } from "../../countries";
 import { LabelFormat, LabelSize, ManifestType, ServiceArea } from "../../enums";
-import { CarrierPOJO } from "../../pojos";
+import { CarrierPOJO } from "../../pojos/carrier";
 import { UUID } from "../../types";
-import { App } from "../app";
+import { Joi } from "../../validation";
+import { App, Logo } from "../common";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
-import { Logo } from "./logo";
 import { Packaging } from "./packaging";
 import { PickupService } from "./pickup-service";
 import { getMaxServiceArea } from "./utils";
@@ -15,7 +14,23 @@ import { getMaxServiceArea } from "./utils";
  * A carrier that provides delivery services
  */
 export class Carrier {
-  //#region Fields
+  //#region Class Fields
+
+  public static readonly label = "carrier";
+
+  /** @internal */
+  public static readonly schema = Joi.object({
+    id: Joi.string().uuid().required(),
+    name: Joi.string().trim().singleLine().min(1).max(100).required(),
+    description: Joi.string().trim().singleLine().allow("").max(1000),
+    websiteURL: Joi.string().website().required(),
+    logo: Joi.object().required(),
+    deliveryServices: Joi.array().min(1).items(DeliveryService.schema).required(),
+    pickupServices: Joi.array().items(PickupService.schema),
+  });
+
+  //#endregion
+  //#region Instance Fields
 
   /**
    * A UUID that uniquely identifies the carrier.
@@ -54,7 +69,6 @@ export class Carrier {
   public readonly pickupServices: ReadonlyArray<PickupService>;
 
   //#endregion
-
   //#region Helper Properties
 
   /**
@@ -70,7 +84,7 @@ export class Carrier {
    * This property is `true` if any of the carrier's delivery services are consolidation services.
    */
   public get isConsolidator(): boolean {
-    return this.deliveryServices.some((svc) => svc.isConsolidator);
+    return this.deliveryServices.some((svc) => svc.isConsolidationService);
   }
 
   /**
@@ -200,16 +214,15 @@ export class Carrier {
 
   //#endregion
 
-  public constructor(app: App, pojo: CarrierPOJO) {
-    this.id = app._references.add(this, pojo, "carrier");
-    this.name = assert.string.nonWhitespace(pojo.name, "carrier name");
-    this.description = assert.string(pojo.description, "carrier description", "");
-    this.websiteURL = new URL(assert.string.nonWhitespace(pojo.websiteURL, "websiteURL"));
+  public constructor(pojo: CarrierPOJO, app: App) {
+    this.id = app._references.add(this, pojo);
+    this.name = pojo.name;
+    this.description = pojo.description || "";
+    this.websiteURL = new URL(pojo.websiteURL);
     this.logo =  new Logo(pojo.logo);
-    this.deliveryServices = assert.array.nonEmpty(pojo.deliveryServices, "delivery services")
-      .map((svc) => new DeliveryService(app, this, svc));
-    this.pickupServices = assert.array(pojo.pickupServices, "pickup services", [])
-      .map((svc) => new PickupService(app, this, svc));
+    this.deliveryServices = pojo.deliveryServices.map((svc) => new DeliveryService(svc, app, this));
+    this.pickupServices = pojo.pickupServices
+      ? pojo.pickupServices.map((svc) => new PickupService(svc, app, this)) : [];
 
     // Prevent modifications after validation
     Object.freeze(this);

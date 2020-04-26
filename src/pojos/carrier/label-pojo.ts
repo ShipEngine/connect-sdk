@@ -22,6 +22,6 @@ export interface LabelPOJO {
  * A form that relates to a label, such as a customs form.
  */
 export interface LabelFormPOJO {
+  name: string;
   data: Buffer;
-  description: string;
 }

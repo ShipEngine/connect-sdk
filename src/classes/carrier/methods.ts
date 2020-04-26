@@ -1,6 +1,6 @@
-import { LabelConfirmationPOJO, PickupCancellationConfirmationPOJO, PickupConfirmationPOJO, RateQuotePOJO } from "../../pojos";
+import { LabelConfirmationPOJO, PickupCancellationConfirmationPOJO, PickupConfirmationPOJO, RateQuotePOJO } from "../../pojos/carrier";
 import { UrlString } from "../../types";
-import { Transaction } from "../transaction";
+import { Transaction } from "../common";
 import { LabelSpec } from "./labels/label-spec";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
 import { PickupRequest } from "./pickups/pickup-request";

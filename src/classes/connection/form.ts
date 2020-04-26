@@ -1,12 +1,25 @@
 import { JSONSchema6 } from "json-schema";
 import { UiSchema } from "react-jsonschema-form";
-import { assert } from "../assert";
-import { FormPOJO } from "../pojos";
+import { FormPOJO } from "../../pojos/connection";
+import { Joi } from "../../validation";
 
 /**
  * Defines a user-interface form that collects data from the user.
  */
 export class Form {
+  //#region Class Fields
+
+  public static readonly label = "form";
+
+  /** @internal */
+  public static readonly schema = Joi.object({
+    dataSchema: Joi.object().required(),
+    uiSchema: Joi.object().required(),
+  });
+
+  //#endregion
+  //#region Instance Fields
+
   /**
    * A JSON Schema that defines the data collected by the form, including its constratints.
    */
@@ -17,10 +30,11 @@ export class Form {
    */
   public readonly uiSchema: UiSchema;
 
+  //#endregion
+
   public constructor(pojo: FormPOJO) {
-    assert.type.object(pojo, "form");
-    this.dataSchema = assert.type.object(pojo.dataSchema, "form dataSchema");
-    this.uiSchema = assert.type.object(pojo.uiSchema, "form uiSchema");
+    this.dataSchema = pojo.dataSchema;
+    this.uiSchema = pojo.uiSchema;
 
     // Prevent modifications after validation
     Object.freeze(this);

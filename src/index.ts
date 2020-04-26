@@ -1,7 +1,13 @@
-export * from "./classes";
+export * from "./classes/carrier";
+export * from "./classes/common";
+export * from "./classes/connection";
+export * from "./classes/order";
 export * from "./countries";
 export * from "./definitions";
 export * from "./enums";
 export { ErrorCode, IpaasError } from "./errors";
-export * from "./pojos";
+export * from "./pojos/carrier";
+export * from "./pojos/common";
+export * from "./pojos/connection";
+export * from "./pojos/order";
 export * from "./types";

@@ -1,18 +1,36 @@
-import { assert } from "../../../assert";
 import { PickupCancellationReason } from "../../../enums";
-import { PickupCancellationPOJO } from "../../../pojos";
-import { CustomData, Identifier } from "../../../types";
-import { Address } from "../../address";
-import { App } from "../../app";
-import { ContactInfo } from "../../contact-info";
-import { Shipment } from "../../shipment";
+import { PickupCancellationPOJO } from "../../../pojos/carrier";
+import { Joi, validate } from "../../../validation";
+import { Address, App, ContactInfo, CustomData, Identifier } from "../../common";
 import { PickupService } from "../pickup-service";
+import { Shipment } from "../shipment";
 import { TimeRange } from "./time-range";
 
 /**
  * Cancellation of a previously-requested package pickup
  */
 export class PickupCancellation {
+  //#region Class Fields
+
+  public static readonly label = "pickup cancellation";
+
+  /** @internal */
+  public static readonly schema = Joi.object({
+    cancellationID: Joi.string().trim().singleLine().min(1).max(100).required(),
+    pickupServiceID: Joi.string().uuid().required(),
+    identifiers: Joi.array().items(Identifier.schema),
+    reason: Joi.string().enum(PickupCancellationReason).required(),
+    notes: Joi.string().allow("").max(5000),
+    address: Address.schema.required(),
+    contact: ContactInfo.schema.required(),
+    timeWindows: Joi.array().min(1).items(TimeRange.schema).required(),
+    shipments: Joi.array().min(1).items(Shipment.schema).required(),
+    customData: CustomData.schema,
+  });
+
+  //#endregion
+  //#region Instance Fields
+
   /**
    * The confirmation ID of the pickup request to be canceled
    */
@@ -63,26 +81,26 @@ export class PickupCancellation {
    */
   public readonly customData?: CustomData;
 
-  public constructor(app: App, pojo: PickupCancellationPOJO) {
-    assert.type.object(pojo, "pickup cancellation");
-    this.confirmationID = assert.string.nonWhitespace(pojo.confirmationID);
-    this.pickupService = app._references.lookup(pojo.pickupServiceID, PickupService, "pickup service");
-    this.identifiers = assert.array.ofIdentifiers(pojo.identifiers, "identifiers", []);
-    this.reason = assert.string.enum(pojo.reason, PickupCancellationReason, "pickup cancellation reason");
-    this.notes = assert.string(pojo.notes, "pickup cancellation notes", "");
+  //#endregion
+
+  public constructor(pojo: PickupCancellationPOJO, app: App) {
+    validate(pojo, PickupCancellation);
+
+    this.confirmationID = pojo.confirmationID;
+    this.pickupService = app._references.lookup(pojo.pickupServiceID, PickupService);
+    this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];
+    this.reason = pojo.reason;
+    this.notes = pojo.notes || "";
     this.address = new Address(pojo.address);
     this.contact = new ContactInfo(pojo.contact);
-    this.timeWindows = assert.array.nonEmpty(pojo.timeWindows, "timeWindows")
-      .map((window) => new TimeRange(window));
-    this.shipments = assert.array.nonEmpty(pojo.shipments, "shipments")
-      .map((shipment) => new Shipment(app, shipment));
-    this.customData = assert.type.customData(pojo.customData);
+    this.timeWindows = pojo.timeWindows.map((window) => new TimeRange(window));
+    this.shipments = pojo.shipments.map((shipment) => new Shipment(shipment, app));
+    this.customData = pojo.customData && new CustomData(pojo.customData);
 
     // Prevent modifications after validation
     Object.freeze(this);
     Object.freeze(this.identifiers);
     Object.freeze(this.timeWindows);
     Object.freeze(this.shipments);
-    Object.freeze(this.customData);
   }
 }

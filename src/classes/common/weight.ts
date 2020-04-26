@@ -1,19 +1,33 @@
-import { assert } from "../assert";
-import { WeightUnit } from "../enums";
-import { WeightPOJO } from "../pojos";
+import { WeightUnit } from "../../enums";
+import { WeightPOJO } from "../../pojos/common";
+import { Joi } from "../../validation";
 
 
 /**
  * The weight of a package
  */
 export class Weight {
+  //#region Class Fields
+
+  public static readonly label = "weight";
+
+  /** @internal */
+  public static readonly schema = Joi.object({
+    value: Joi.number().integer().min(1).required(),
+    unit: Joi.string().enum(WeightUnit).required(),
+  });
+
+  //#endregion
+  //#region Instance Fields
+
   public readonly value: number;
   public readonly unit: WeightUnit;
 
+  //#endregion
+
   public constructor(pojo: WeightPOJO) {
-    assert.type.object(pojo, "weight");
-    this.value = assert.number.positive(pojo.value, "weight");
-    this.unit = assert.string.enum(pojo.unit, WeightUnit, "weight unit");
+    this.value = pojo.value;
+    this.unit = pojo.unit;
 
     // Prevent modifications after validation
     Object.freeze(this);

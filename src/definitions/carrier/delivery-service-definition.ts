@@ -94,7 +94,7 @@ export interface DeliveryServiceDefinition {
   /**
    * The types of packaging that are provided/allowed for this service
    */
-  packaging: InlineOrReferenceArray<PackagingDefinition>;
+  packaging?: InlineOrReferenceArray<PackagingDefinition>;
 
   /**
    * The types of package delivery confirmations offered for this service

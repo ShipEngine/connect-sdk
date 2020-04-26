@@ -41,18 +41,3 @@ export type InlineOrReference<T> = T | FilePath | DynamicImport<T>;
  *    - dynamically imported via `require()` or `import()`
  */
 export type InlineOrReferenceArray<T> = Array<InlineOrReference<T>> | FilePath | DynamicImport<Array<InlineOrReference<T>>>;
-
-/**
- * A value that identifies a resource
- */
-export interface Identifier {
-  id: string;
-  description: string;
-}
-
-/**
- * Arbitrary data that will be persisted by ShipEngine IPaaS.
- */
-export interface CustomData {
-  [key: string]: string;
-}

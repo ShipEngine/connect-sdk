@@ -1,13 +1,30 @@
-import { assert } from "../../../assert";
-import { PickupConfirmationPOJO } from "../../../pojos";
-import { CustomData, Identifier } from "../../../types";
-import { ShipmentIdentifier } from "../../shipment";
+import { PickupConfirmationPOJO } from "../../../pojos/carrier";
+import { Joi, validate } from "../../../validation";
+import { CustomData, Identifier } from "../../common";
+import { Shipment, ShipmentIdentifier } from "../shipment";
 import { TimeRange } from "./time-range";
 
 /**
  * Confirmation that a package pickup has been scheduled
  */
 export class PickupConfirmation {
+  //#region Class Fields
+
+  public static readonly label = "pickup confirmation";
+
+  /** @internal */
+  public static readonly schema = Joi.object({
+    cancellationID: Joi.string().trim().singleLine().allow("").max(100),
+    identifiers: Joi.array().items(Identifier.schema),
+    shipments: Joi.array().min(1).items(Shipment.schema),
+    timeWindows: Joi.array().min(1).items(TimeRange.schema).required(),
+    notes: Joi.string().allow("").max(5000),
+    customData: CustomData.schema,
+  });
+
+  //#endregion
+  //#region Instance Fields
+
   /**
    * The carrier's confirmation ID
    */
@@ -39,22 +56,22 @@ export class PickupConfirmation {
    */
   public readonly customData?: CustomData;
 
+  //#endregion
+
   public constructor(pojo: PickupConfirmationPOJO) {
-    assert.type.object(pojo, "pickup confirmation");
-    this.confirmationID = assert.string.nonWhitespace(pojo.confirmationID, "pickup confirmation ID");
-    this.identifiers = assert.array.ofIdentifiers(pojo.identifiers, "identifiers", []);
-    this.shipments = assert.array.nonEmpty(pojo.shipments, "shipments")
-      .map((shipment) => new ShipmentIdentifier(shipment));
-    this.timeWindows = assert.array.nonEmpty(pojo.timeWindows, "time windows")
-      .map((time) => new TimeRange(time));
-    this.notes = assert.string(pojo.notes, "pickup confirmation notes", "");
-    this.customData = assert.type.customData(pojo.customData);
+    validate(pojo, PickupConfirmation);
+
+    this.confirmationID = pojo.confirmationID;
+    this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];
+    this.shipments = pojo.shipments ? pojo.shipments.map((shipment) => new ShipmentIdentifier(shipment)) : [];
+    this.timeWindows = pojo.timeWindows.map((window) => new TimeRange(window));
+    this.notes = pojo.notes || "";
+    this.customData = pojo.customData && new CustomData(pojo.customData);
 
     // Prevent modifications after validation
     Object.freeze(this);
     Object.freeze(this.identifiers);
     Object.freeze(this.shipments);
     Object.freeze(this.timeWindows);
-    Object.freeze(this.customData);
   }
 }

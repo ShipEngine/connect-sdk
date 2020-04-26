@@ -1,8 +1,7 @@
 import { UUID } from "../../types";
-import { AddressPOJO } from "../address-pojo";
-import { ContactInfoPOJO } from "../contact-info-pojo";
-import { TimeRangePOJO } from "../time-range-pojo";
+import { AddressPOJO, ContactInfoPOJO } from "../common";
 import { ShipmentPOJO } from "./shipment-pojo";
+import { TimeRangePOJO } from "./time-range-pojo";
 
 /**
  * A request for a carrier to pickup package(s) at a time and place
@@ -24,14 +23,14 @@ export interface PickupRequestPOJO {
   address: AddressPOJO;
 
   /**
-   * Human-readable information about the pickup
-   */
-  notes?: string;
-
-  /**
    * Contact information about the person there to meet the driver
    */
   contact: ContactInfoPOJO;
+
+  /**
+   * Human-readable information about the pickup
+   */
+  notes?: string;
 
   /**
    * The shipments to be picked up

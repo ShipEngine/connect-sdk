@@ -1,13 +1,27 @@
-import { assert } from "../../../assert";
 import { LabelFormat, LabelSize } from "../../../enums";
-import { LabelSpecPOJO } from "../../../pojos";
-import { App } from "../../app";
-import { NewShipment } from "../../shipment";
+import { LabelSpecPOJO } from "../../../pojos/carrier";
+import { Joi, validate } from "../../../validation";
+import { App } from "../../common";
+import { NewShipment, Shipment } from "../shipment";
 
 /**
  * Specifies the information needed to create a shipping label for a shipment.
  */
 export class LabelSpec {
+  //#region Class Fields
+
+  public static readonly label = "label specification";
+
+  /** @internal */
+  public static readonly schema = Joi.object({
+    format: Joi.string().enum(LabelFormat).required(),
+    size: Joi.string().enum(LabelSize).required(),
+    shipment: Shipment.schema.required(),
+  });
+
+  //#endregion
+  //#region Instance Fields
+
   /**
    * The expected file format of the label
    */
@@ -23,11 +37,14 @@ export class LabelSpec {
    */
   public readonly shipment: NewShipment;
 
-  public constructor(app: App, pojo: LabelSpecPOJO) {
-    assert.type.object(pojo, "pickup request");
-    this.format = assert.string.enum(pojo.format, LabelFormat, "label format");
-    this.size = assert.string.enum(pojo.size, LabelSize, "label size");
-    this.shipment = new NewShipment(app, pojo.shipment);
+  //#endregion
+
+  public constructor(pojo: LabelSpecPOJO, app: App) {
+    validate(pojo, LabelSpec);
+
+    this.format = pojo.format;
+    this.size = pojo.size;
+    this.shipment = new NewShipment(pojo.shipment, app);
 
     // Prevent modifications after validation
     Object.freeze(this);

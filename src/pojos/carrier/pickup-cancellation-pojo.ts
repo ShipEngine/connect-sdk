@@ -1,9 +1,8 @@
 import { PickupCancellationReason } from "../../enums";
-import { CustomData, Identifier, UUID } from "../../types";
-import { AddressPOJO } from "../address-pojo";
-import { ContactInfoPOJO } from "../contact-info-pojo";
-import { TimeRangePOJO } from "../time-range-pojo";
+import { UUID } from "../../types";
+import { AddressPOJO, ContactInfoPOJO, CustomDataPOJO, IdentifierPOJO } from "../common";
 import { ShipmentPOJO } from "./shipment-pojo";
+import { TimeRangePOJO } from "./time-range-pojo";
 
 /**
  * Cancellation of a previously-requested package pickup
@@ -22,7 +21,7 @@ export interface PickupCancellationPOJO {
   /**
    * Alternative identifiers associated with this confirmation
    */
-  identifiers?: Identifier[];
+  identifiers?: IdentifierPOJO[];
 
   /**
    * The reason for the cancellation
@@ -57,5 +56,5 @@ export interface PickupCancellationPOJO {
   /**
    * Arbitrary data that was returned when the pickup was originally confirmed.
    */
-  customData?: CustomData;
+  customData?: CustomDataPOJO;
 }

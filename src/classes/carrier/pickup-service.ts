@@ -1,13 +1,28 @@
-import { assert } from "../../assert";
-import { PickupServicePOJO } from "../../pojos";
+import { PickupServicePOJO } from "../../pojos/carrier";
 import { UUID } from "../../types";
-import { App } from "../app";
+import { Joi } from "../../validation";
+import { App } from "../common";
 import { Carrier } from "./carrier";
 
 /**
  * A package pickup service that is offered by a shipping provider
  */
 export class PickupService {
+  //#region Class Fields
+
+  public static readonly label = "pickup service";
+
+  /** @internal */
+  public static readonly schema = Joi.object({
+    id: Joi.string().uuid().required(),
+    name: Joi.string().trim().singleLine().min(1).max(100).required(),
+    description: Joi.string().trim().singleLine().allow("").max(1000),
+    hasSandbox: Joi.boolean(),
+  });
+
+  //#endregion
+  //#region Instance Fields
+
   /**
    * A UUID that uniquely identifies the pickup service.
    * This ID should never change, even if the service name changes.
@@ -36,12 +51,14 @@ export class PickupService {
    */
   public readonly  carrier: Carrier;
 
-  public constructor(app: App, parent: Carrier, pojo: PickupServicePOJO) {
+  //#endregion
+
+  public constructor(pojo: PickupServicePOJO, app: App, parent: Carrier) {
     this.carrier = parent;
-    this.id = app._references.add(this, pojo, "pickup service");
-    this.name = assert.string.nonWhitespace(pojo.name, "pickup service name");
-    this.description = assert.string(pojo.description, "pickup service description", "");
-    this.hasSandbox = assert.type.boolean(pojo.hasSandbox, "hasSandbox flag", false);
+    this.id = app._references.add(this, pojo);
+    this.name = pojo.name;
+    this.description = pojo.description || "";
+    this.hasSandbox = pojo.hasSandbox || false;
 
     // Prevent modifications after validation
     Object.freeze(this);

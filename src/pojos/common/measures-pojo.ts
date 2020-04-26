@@ -1,4 +1,4 @@
-import { Currency, LengthUnit, QuantityUnit, WeightUnit } from "../enums";
+import { Currency, LengthUnit, QuantityUnit, WeightUnit } from "../../enums";
 
 /**
  * The dimensions of a package

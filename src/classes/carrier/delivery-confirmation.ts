@@ -1,13 +1,28 @@
-import { assert } from "../../assert";
 import { DeliveryConfirmationClass } from "../../enums";
-import { DeliveryConfirmationPOJO } from "../../pojos";
+import { DeliveryConfirmationPOJO } from "../../pojos/carrier";
 import { UUID } from "../../types";
-import { App } from "../app";
+import { Joi } from "../../validation";
+import { App } from "../common";
 
 /**
  * Delivery confirmation options offered by a shipping provider
  */
 export class DeliveryConfirmation {
+  //#region Class Fields
+
+  public static readonly label = "delivery confirmation";
+
+  /** @internal */
+  public static readonly schema = Joi.object({
+    id: Joi.string().uuid().required(),
+    name: Joi.string().trim().singleLine().min(1).max(100).required(),
+    description: Joi.string().trim().singleLine().allow("").max(1000),
+    class: Joi.string().enum(DeliveryConfirmationClass).required(),
+  });
+
+  //#endregion
+  //#region Instance Fields
+
   /**
    * A UUID that uniquely identifies the delivery confirmation type.
    * This ID should never change, even if the name changes.
@@ -29,12 +44,13 @@ export class DeliveryConfirmation {
    */
   public class: DeliveryConfirmationClass;
 
-  public constructor(app: App, pojo: DeliveryConfirmationPOJO) {
-    assert.type.object(pojo, "delivery confirmation");
-    this.id = app._references.add(this, pojo, "delivery confirmation");
-    this.name = assert.string.nonWhitespace(pojo.name, "delivery confirmation name");
-    this.description = assert.string(pojo.description, "delivery confirmation description", "");
-    this.class = assert.string.enum(pojo.class, DeliveryConfirmationClass, "delivery confirmation class");
+  //#endregion
+
+  public constructor(pojo: DeliveryConfirmationPOJO, app: App) {
+    this.id = app._references.add(this, pojo);
+    this.name = pojo.name;
+    this.description = pojo.description || "";
+    this.class = pojo.class;
 
     // Prevent modifications after validation
     Object.freeze(this);

@@ -1,17 +1,16 @@
-import { assert } from "../../assert";
 import { Country } from "../../countries";
 import { ServiceArea } from "../../enums";
 import { ErrorCode, ipaasError } from "../../errors";
-import { LabelSpecPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, ShippingProviderPOJO, TrackingCriteriaPOJO, TransactionPOJO } from "../../pojos";
+import { LabelSpecPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, ShippingProviderPOJO, TrackingCriteriaPOJO } from "../../pojos/carrier";
+import { TransactionPOJO } from "../../pojos/common";
 import { UrlString, UUID } from "../../types";
-import { App } from "../app";
-import { Form } from "../form";
-import { Transaction } from "../transaction";
+import { Joi, validate } from "../../validation";
+import { App, Logo, Transaction } from "../common";
+import { Form } from "../connection";
 import { Carrier } from "./carrier";
 import { DeliveryService } from "./delivery-service";
 import { LabelConfirmation } from "./labels/label-confirmation";
 import { LabelSpec } from "./labels/label-spec";
-import { Logo } from "./logo";
 import { CancelPickup, CreateLabel, CreateManifest, GetRates, GetTrackingURL, Login, RequestPickup, Track, VoidLabel } from "./methods";
 import { PickupService } from "./pickup-service";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
@@ -27,7 +26,33 @@ import { getMaxServiceArea } from "./utils";
  * A ShipEngine IPaaS shipping provider app.
  */
 export class ShippingProvider {
-  //#region Fields
+  //#region Class Fields
+
+  public static readonly label = "shipping provider";
+
+  /** @internal */
+  public static readonly schema = Joi.object({
+    id: Joi.string().uuid().required(),
+    name: Joi.string().trim().singleLine().min(1).max(100).required(),
+    description: Joi.string().trim().singleLine().allow("").max(1000),
+    websiteURL: Joi.string().website().required(),
+    logo: Logo.schema.required(),
+    loginForm: Form.schema.required(),
+    settingsForm: Form.schema,
+    carriers: Joi.array().min(1).items(Carrier.schema).required(),
+    login: Joi.function(),
+    requestPickup: Joi.function(),
+    cancelPickup: Joi.function(),
+    createLabel: Joi.function(),
+    voidLabel: Joi.function(),
+    getRates: Joi.function(),
+    getTrackingURL: Joi.function(),
+    track: Joi.function(),
+    createManifest: Joi.function(),
+  });
+
+  //#endregion
+  //#region Instance Fields
 
   // Store the user-defined methods as private fields.
   // We wrap these methods with our own signatures below
@@ -40,6 +65,11 @@ export class ShippingProvider {
   private readonly _getTrackingURL: GetTrackingURL | undefined;
   private readonly _track: Track | undefined;
   private readonly _createManifest: CreateManifest | undefined;
+
+  /**
+   * The ShipEngine Integration Platform app that this shipping provider is part of.
+   */
+  public readonly app: App;
 
   /**
    * A UUID that uniquely identifies the shipping provider.
@@ -83,7 +113,6 @@ export class ShippingProvider {
   public readonly carriers: ReadonlyArray<Carrier>;
 
   //#endregion
-
   //#region Helper Properties
 
   /**
@@ -99,7 +128,7 @@ export class ShippingProvider {
    * This property is `true` if any of the provider's delivery services are consolidation services.
    */
   public get isConsolidator(): boolean {
-    return this.deliveryServices.some((svc) => svc.isConsolidator);
+    return this.deliveryServices.some((svc) => svc.isConsolidationService);
   }
 
   /**
@@ -169,55 +198,30 @@ export class ShippingProvider {
 
   //#endregion
 
-  public constructor(app: App, pojo: ShippingProviderPOJO) {
-    assert.type.object(pojo, "shipping provider");
-    this.id = app._references.add(this, pojo, "carrier");
-    this.name = assert.string.nonWhitespace(pojo.name, "shipping provider name");
-    this.description = assert.string(pojo.description, "shipping provider description", "");
-    this.websiteURL = new URL(assert.string.nonWhitespace(pojo.websiteURL, "websiteURL"));
+  public constructor(pojo: ShippingProviderPOJO, app: App) {
+    validate(pojo, ShippingProvider);
+
+    this.app = app;
+    this.id = app._references.add(this, pojo);
+    this.name = pojo.name;
+    this.description = pojo.description || "";
+    this.websiteURL = new URL(pojo.websiteURL);
     this.logo = new Logo(pojo.logo);
     this.loginForm = new Form(pojo.loginForm);
-    this.settingsForm = pojo.settingsForm ? new Form(pojo.settingsForm) : undefined;
-    this.carriers = assert.array.nonEmpty(pojo.carriers, "carriers")
-      .map((carrier) => new Carrier(app, carrier));
+    this.settingsForm = pojo.settingsForm && new Form(pojo.settingsForm);
+    this.carriers = pojo.carriers.map((carrier) => new Carrier(carrier, app));
 
     // Store any user-defined methods as private fields.
     // For any methods that aren't implemented, set the corresponding class method to undefined.
-    pojo.login
-      ? (this._login = assert.type.function(pojo.login, "login method"))
-      : (this.login = undefined);
-
-    pojo.requestPickup
-      ? (this._requestPickup = assert.type.function(pojo.requestPickup, "requestPickup method"))
-      : (this.requestPickup = undefined);
-
-    pojo.cancelPickup
-      ? (this._cancelPickup = assert.type.function(pojo.cancelPickup, "cancelPickup method"))
-      : (this.cancelPickup = undefined);
-
-    pojo.createLabel
-      ? (this._createLabel = assert.type.function(pojo.createLabel, "createLabel method"))
-      : (this.createLabel = undefined);
-
-    pojo.voidLabel
-      ? (this._voidLabel = assert.type.function(pojo.voidLabel, "voidLabel method"))
-      : (this.voidLabel = undefined);
-
-    pojo.getRates
-      ? (this._getRates = assert.type.function(pojo.getRates, "getRates method"))
-      : (this.getRates = undefined);
-
-    pojo.getTrackingURL
-      ? (this._getTrackingURL = assert.type.function(pojo.getTrackingURL, "getTrackingUrl method"))
-      : (this.getTrackingURL = undefined);
-
-    pojo.track
-      ? (this._track = assert.type.function(pojo.track, "track method"))
-      : (this.track = undefined);
-
-    pojo.createManifest
-      ? (this._createManifest = assert.type.function(pojo.createManifest, "createManifest method"))
-      : (this.createManifest = undefined);
+    pojo.login ? (this._login = pojo.login) : (this.login = undefined);
+    pojo.requestPickup ? (this._requestPickup = pojo.requestPickup) : (this.requestPickup = undefined);
+    pojo.cancelPickup ? (this._cancelPickup = pojo.cancelPickup) : (this.cancelPickup = undefined);
+    pojo.createLabel ? (this._createLabel = pojo.createLabel) : (this.createLabel = undefined);
+    pojo.voidLabel ? (this._voidLabel = pojo.voidLabel) : (this.voidLabel = undefined);
+    pojo.getRates ? (this._getRates = pojo.getRates) : (this.getRates = undefined);
+    pojo.getTrackingURL ? (this._getTrackingURL = pojo.getTrackingURL) : (this.getTrackingURL = undefined);
+    pojo.track ? (this._track = pojo.track) : (this.track = undefined);
+    pojo.createManifest ? (this._createManifest = pojo.createManifest) : (this.createManifest = undefined);
 
     // Prevent modifications after validation
     Object.freeze(this);
@@ -260,7 +264,7 @@ export class ShippingProvider {
 
     try {
       _transaction = new Transaction(transaction);
-      _request = new PickupRequest(this, request);
+      _request = new PickupRequest(request, this.app);
     }
     catch (originalError) {
       throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the requestPickup method.", { originalError });
@@ -286,7 +290,7 @@ export class ShippingProvider {
 
     try {
       _transaction = new Transaction(transaction);
-      _cancellation = new PickupCancellation(this, cancellation);
+      _cancellation = new PickupCancellation(cancellation, this.app);
     }
     catch (originalError) {
       throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the cancelPickup method.", { originalError });
@@ -311,7 +315,7 @@ export class ShippingProvider {
 
     try {
       _transaction = new Transaction(transaction);
-      _label = new LabelSpec(this, label);
+      _label = new LabelSpec(label, this.app);
     }
     catch (originalError) {
       throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the createLabel method.", { originalError });
@@ -358,7 +362,7 @@ export class ShippingProvider {
 
     try {
       _transaction = new Transaction(transaction);
-      _criteria = new RateCriteria(this, criteria);
+      _criteria = new RateCriteria(criteria, this.app);
     }
     catch (originalError) {
       throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the getRates method.", { originalError });
@@ -366,7 +370,7 @@ export class ShippingProvider {
 
     try {
       let quote = await this._getRates!(_transaction, _criteria);
-      return new RateQuote(this, quote);
+      return new RateQuote(quote, this.app);
     }
     catch (originalError) {
       let transactionID = _transaction.id;
@@ -382,7 +386,7 @@ export class ShippingProvider {
 
     try {
       _transaction = new Transaction(transaction);
-      _criteria = new TrackingCriteria(this, criteria);
+      _criteria = new TrackingCriteria(criteria, this.app);
     }
     catch (originalError) {
       throw ipaasError(ErrorCode.InvalidInput, "Invalid input to the getTrackingURL method.", { originalError });

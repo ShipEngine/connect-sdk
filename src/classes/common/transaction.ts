@@ -1,16 +1,30 @@
-import { assert } from "../assert";
-import { TransactionPOJO } from "../pojos";
-import { CustomData, UUID } from "../types";
+import { CustomDataPOJO, TransactionPOJO } from "../../pojos/common";
+import { UUID } from "../../types";
+import { Joi, validate } from "../../validation";
+import { CustomData } from "./custom-data";
 
 /**
  * ShpEngine IPaaS passes this object to every method call. It provides information about the
  * transaction being performed, including authentication, metadata, etc.
  */
 export class Transaction {
-  /**
-   * @internal
-   */
-  private readonly _session: CustomData = {};
+  //#region Class Fields
+
+  public static readonly label = "transaction";
+
+  /** @internal */
+  public static readonly schema = Joi.object({
+    id: Joi.string().uuid().required(),
+    isRetry: Joi.boolean(),
+    useSandbox: Joi.boolean(),
+    session: CustomData.schema,
+  });
+
+  //#endregion
+  //#region Instance Fields
+
+  /** @internal */
+  private readonly _session: CustomDataPOJO = {};
 
   /**
    * Uniquely identifies the current transaction. If the transaction is retried, then this ID will
@@ -43,7 +57,7 @@ export class Transaction {
    * The properties of the session object are mutable. Any method may update the session data,
    * such as renewing a session token or updating a timestamp.
    */
-  public get session(): CustomData {
+  public get session(): CustomDataPOJO {
     return this._session;
   }
 
@@ -51,9 +65,14 @@ export class Transaction {
    * Updates the session data, creating new keys, updating existing keys, and/or deleting keys
    * that are no longer present.
    */
-  public set session(value: CustomData) {
-    assert.type.customData(value, "session data");
-    let keys = Object.keys(this._session).concat(Object.keys(value));
+  public set session(value: CustomDataPOJO) {
+    if (value === undefined) {
+      value = {};
+    }
+
+    validate(value, "session data", CustomData.schema);
+
+    let keys = Object.getOwnPropertyNames(this._session).concat(Object.getOwnPropertyNames(value));
     for (let key of keys) {
       if (key in value) {
         this._session[key] = value[key];
@@ -65,12 +84,18 @@ export class Transaction {
     }
   }
 
+  //#endregion
+
   public constructor(pojo: TransactionPOJO) {
-    assert.type.object(pojo, "transaction");
-    this.id = assert.string.uuid(pojo.id, "transaction ID");
-    this.isRetry = assert.type.boolean(pojo.isRetry, "isRetry flag", false);
-    this.useSandbox = assert.type.boolean(pojo.useSandbox, "useSandbox flag", false);
-    this.session = assert.type.object<CustomData>(pojo.session, "session data", {});
+    validate(pojo, Transaction);
+
+    this.id = pojo.id;
+    this.isRetry = pojo.isRetry || false;
+    this.useSandbox = pojo.useSandbox || false;
+
+    if (pojo.session) {
+      this.session = new CustomData(pojo.session);
+    }
 
     // Hide the internal _session field
     Object.defineProperty(this, "_session", {

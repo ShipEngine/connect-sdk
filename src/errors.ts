@@ -12,10 +12,10 @@ export interface IpaasError {
  * Error codes for ShipEngine IPaaS runtime errors
  */
 export enum ErrorCode {
-  InvalidConfig = "E_INVALID_CONFIG",
-  InvalidInput = "E_INVALID_INPUT",
-  AppError = "E_APP_ERROR",
-  CurrencyMismatch = "E_CURRENCY_MISMATCH",
+  Validation = "ERR_INVALID",
+  InvalidInput = "ERR_INVALID_INPUT",
+  AppError = "ERR_APP_ERROR",
+  CurrencyMismatch = "ERR_CURRENCY_MISMATCH",
 }
 
 /**
@@ -30,7 +30,7 @@ export interface ErrorProps {
 /**
  * Creates a ShipEngine IPaaS error
  */
-export function ipaasError(code: ErrorCode, message: string, { originalError, ...props }: ErrorProps): IpaasError {
+export function ipaasError(code: ErrorCode, message: string, { originalError, ...props }: ErrorProps = {}): IpaasError {
   let error =  ono(originalError as Error, { ...props, code }, message);
   return error;
 }

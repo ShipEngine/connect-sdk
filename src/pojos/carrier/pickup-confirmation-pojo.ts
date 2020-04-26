@@ -1,6 +1,6 @@
-import { CustomData, Identifier } from "../../types";
-import { TimeRangePOJO } from "../time-range-pojo";
+import { CustomDataPOJO, IdentifierPOJO } from "../common";
 import { ShipmentIdentifierPOJO } from "./shipment-pojo";
+import { TimeRangePOJO } from "./time-range-pojo";
 
 /**
  * Confirmation that a package pickup has been scheduled
@@ -14,7 +14,7 @@ export interface PickupConfirmationPOJO {
   /**
    * Alternative identifiers associated with this confirmation
    */
-  identifiers?: Identifier[];
+  identifiers?: IdentifierPOJO[];
 
   /**
    * The shipments to be picked-up
@@ -34,5 +34,5 @@ export interface PickupConfirmationPOJO {
   /**
    * Arbitrary data for that will be persisted by ShipEngine IPaaS.
    */
-  customData?: CustomData;
+  customData?: CustomDataPOJO;
 }

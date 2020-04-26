@@ -1,7 +1,6 @@
-import { assert } from "../../../assert";
-import { RatePOJO } from "../../../pojos";
-import { App } from "../../app";
-import { MonetaryValue } from "../../monetary-value";
+import { RatePOJO } from "../../../pojos/carrier";
+import { Joi } from "../../../validation";
+import { App, MonetaryValue } from "../../common";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
 import { ShippingCharge } from "../labels/shipping-charge";
@@ -11,6 +10,27 @@ import { calculateTotalCharges } from "../utils";
  * A quoted shipping rate based on the specified rate criteria
  */
 export class Rate {
+  //#region Class Fields
+
+  public static readonly label = "rate";
+
+  /** @internal */
+  public static readonly schema = Joi.object({
+    deliveryServiceID: Joi.string().uuid().required(),
+    deliveryConfirmationID: Joi.string().uuid(),
+    shipDateTime: Joi.date(),
+    estimatedDeliveryDateTime: Joi.date(),
+    isNegotiatedRate: Joi.boolean(),
+    charges: Joi.array().min(1).items(ShippingCharge.schema).required(),
+    notes: Joi.alternatives(
+      Joi.string().allow("").max(5000),
+      Joi.array().items(Joi.string().allow("").max(5000)),
+    )
+  });
+
+  //#endregion
+  //#region Instance Fields
+
   /**
    * The ID of the delivery service this rate is for
    */
@@ -33,6 +53,11 @@ export class Rate {
   public readonly estimatedDeliveryDateTime?: Date;
 
   /**
+   * Indicates whether this rate is based on pre-negotiated terms
+   */
+  public readonly isNegotiatedRate: boolean;
+
+  /**
    * The breakdown of charges for this rate.
    * If the carrier does not provide a detailed breakdown, then just use a single
    * charge of type "shipping".
@@ -45,27 +70,21 @@ export class Rate {
   public readonly totalAmount: MonetaryValue;
 
   /**
-   * Indicates whether this rate is based on pre-negotiated terms
-   */
-  public readonly isNegotiatedRate: boolean;
-
-  /**
    * Additional information regarding this rate quote, such as limitations or restrictions
    */
   public readonly notes: ReadonlyArray<string>;
 
-  public constructor(app: App, pojo: RatePOJO) {
-    assert.type.object(pojo, "rate");
-    this.deliveryService = app._references.lookup(pojo.deliveryServiceID, DeliveryService, "delivery service");
-    this.deliveryConfirmation = app._references.get(pojo.deliveryConfirmationID, DeliveryConfirmation, "delivery confirmation");
-    this.estimatedDeliveryDateTime = pojo.estimatedDeliveryDateTime
-      && assert.type.date(pojo.estimatedDeliveryDateTime, "estimated delivery date/time");
-    this.charges = assert.array.nonEmpty(pojo.charges, "rate charges")
-      .map((charge) => new ShippingCharge(charge));
+  //#endregion
+
+  public constructor(pojo: RatePOJO, app: App) {
+    this.deliveryService = app._references.lookup(pojo.deliveryServiceID, DeliveryService);
+    this.deliveryConfirmation = app._references.get(pojo.deliveryConfirmationID, DeliveryConfirmation);
+    this.shipDateTime = pojo.shipDateTime;
+    this.estimatedDeliveryDateTime = pojo.estimatedDeliveryDateTime;
+    this.isNegotiatedRate = pojo.isNegotiatedRate || false;
+    this.charges = pojo.charges.map((charge) => new ShippingCharge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);
-    this.isNegotiatedRate = assert.type.boolean(pojo.isNegotiatedRate, "isNegotiatedRate flag", false);
-    this.notes = assert.array(typeof pojo.notes === "string" ? [pojo.notes] : pojo.notes, "notes", [])
-      .map((note) => assert.string.nonWhitespace(note, "notes"));
+    this.notes = pojo.notes ? typeof pojo.notes === "string" ? [pojo.notes] : pojo.notes : [];
 
     // Prevent modifications after validation
     Object.freeze(this);

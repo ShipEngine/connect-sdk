@@ -1,9 +1,9 @@
 // tslint:disable: no-empty-interface
-import { JSONSchema6 } from "json-schema";
-import { UiSchema } from "react-jsonschema-form";
 import { CancelPickup, CreateLabel, CreateManifest, GetRates, GetTrackingURL, Login, RequestPickup, Track, VoidLabel } from "../../classes/carrier/methods";
 import { Country } from "../../countries";
-import { CarrierDefinition, DeliveryConfirmationDefinition, DeliveryServiceDefinition, FormDefinition, LogoDefinition, PackagingDefinition, PickupServiceDefinition, ShippingProviderDefinition } from "../../definitions";
+import { CarrierDefinition, DeliveryConfirmationDefinition, DeliveryServiceDefinition, PackagingDefinition, PickupServiceDefinition, ShippingProviderDefinition } from "../../definitions";
+import { LogoPOJO } from "../common";
+import { FormPOJO } from "../connection";
 
 /**
  * A carrier that provides delivery services
@@ -25,24 +25,8 @@ export interface DeliveryConfirmationPOJO extends DeliveryConfirmationDefinition
 export interface DeliveryServicePOJO extends DeliveryServiceDefinition {
   originCountries: Country[];
   destinationCountries: Country[];
-  packaging: PackagingPOJO[];
+  packaging?: PackagingPOJO[];
   deliveryConfirmations?: DeliveryConfirmationPOJO[];
-}
-
-/**
- * Defines a user-interface form that collects data from the user.
- */
-export interface FormPOJO extends FormDefinition {
-  dataSchema: JSONSchema6;
-  uiSchema: UiSchema;
-}
-
-/**
- * Logo images
- */
-export interface LogoPOJO extends LogoDefinition {
-  colorSVG: string;   // SVG contents
-  blackAndWhiteSVG: string;   // SVG contents
 }
 
 /**

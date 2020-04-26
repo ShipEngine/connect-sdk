@@ -1,9 +1,9 @@
-import { assert } from "../../assert";
 import { Country } from "../../countries";
 import { DeliveryServiceClass, DeliveryServiceGrade, LabelFormat, LabelSize, ManifestType, ServiceArea } from "../../enums";
-import { DeliveryServicePOJO } from "../../pojos";
+import { DeliveryServicePOJO } from "../../pojos/carrier";
 import { UUID } from "../../types";
-import { App } from "../app";
+import { Joi } from "../../validation";
+import { App } from "../common";
 import { Carrier } from "./carrier";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { Packaging } from "./packaging";
@@ -12,7 +12,34 @@ import { Packaging } from "./packaging";
  * A delivery service that is offered by a shipping provider
  */
 export class DeliveryService {
-  //#region Fields
+  //#region Class Fields
+
+  public static readonly label = "delivery service";
+
+  /** @internal */
+  public static readonly schema = Joi.object({
+    id: Joi.string().uuid().required(),
+    name: Joi.string().trim().singleLine().min(1).max(100).required(),
+    description: Joi.string().trim().singleLine().allow("").max(1000),
+    class: Joi.string().enum(DeliveryServiceClass).required(),
+    grade: Joi.string().enum(DeliveryServiceGrade).required(),
+    serviceArea: Joi.string().enum(ServiceArea),
+    isConsolidationService: Joi.boolean(),
+    isReturnService: Joi.boolean(),
+    allowsMultiplePackages: Joi.boolean(),
+    hasTracking: Joi.boolean(),
+    hasSandbox: Joi.boolean(),
+    requiresManifest: Joi.alternatives(Joi.allow(false), Joi.string().enum(ManifestType)),
+    labelFormats: Joi.array().items(Joi.string().enum(LabelFormat)),
+    labelSizes: Joi.array().items(Joi.string().enum(LabelSize)),
+    originCountries: Joi.array().min(1).items(Joi.string().enum(Country)).required(),
+    destinationCountries: Joi.array().min(1).items(Joi.string().enum(Country)).required(),
+    packaging: Joi.array().items(Packaging.schema),
+    deliveryConfirmations: Joi.array().items(DeliveryConfirmation.schema),
+  });
+
+  //#endregion
+  //#region Instance Fields
 
   /**
    * A UUID that uniquely identifies the delivery service.
@@ -48,7 +75,7 @@ export class DeliveryService {
   /**
    * Indicates whether this service is a consolidation of multiple carrier services
    */
-  public readonly isConsolidator: boolean;
+  public readonly isConsolidationService: boolean;
 
   /**
    * TODO: Does this mean that the service is ONLY for return shipping? Or that it ALSO supports return shipping?
@@ -113,7 +140,6 @@ export class DeliveryService {
   public readonly deliveryConfirmations: ReadonlyArray<DeliveryConfirmation>;
 
   //#endregion
-
   //#region Helper properties
 
   /**
@@ -143,31 +169,29 @@ export class DeliveryService {
 
   //#endregion
 
-  public constructor(app: App, parent: Carrier, pojo: DeliveryServicePOJO) {
+  public constructor(pojo: DeliveryServicePOJO, app: App, parent: Carrier) {
     this.carrier = parent;
-    this.id = app._references.add(this, pojo, "delivery service");
-    this.name = assert.string.nonWhitespace(pojo.name, "delivery service name");
-    this.description = assert.string(pojo.description, "delivery service description", "");
-    this.class = assert.string.enum(pojo.class, DeliveryServiceClass, "delivery service class");
-    this.grade = assert.string.enum(pojo.grade, DeliveryServiceGrade, "delivery service grade");
-    this.serviceArea = pojo.serviceArea && assert.string.enum(pojo.serviceArea, ServiceArea, "service area");
-    this.isConsolidator = assert.type.boolean(pojo.isConsolidator, "isConsolidator flag", false);
-    this.isReturnService = assert.type.boolean(pojo.isReturnService, "isReturnService flag", false);
-    this.allowsMultiplePackages =
-      assert.type.boolean(pojo.allowsMultiplePackages, "allowsMultiplePackages flag", false);
-    this.hasTracking = assert.type.boolean(pojo.hasTracking, "hasTracking flag", false);
-    this.hasSandbox = assert.type.boolean(pojo.hasSandbox, "hasSandbox flag", false);
-    this.requiresManifest = pojo.requiresManifest
-      ? assert.string.enum(pojo.requiresManifest, ManifestType, "requiresManifest value")
-      : false;
-    this.labelFormats = assert.array.ofEnum(pojo.labelFormats, LabelFormat, "labelFormats", []);
-    this.labelSizes = assert.array.ofEnum(pojo.labelSizes, LabelSize, "labelSizes", []);
-    this.originCountries = assert.array.ofEnum(pojo.originCountries, Country, "originCountries");
-    this.destinationCountries = assert.array.ofEnum(pojo.destinationCountries, Country, "destinationCountries");
-    this.packaging = assert.array.nonEmpty(pojo.packaging, "packaging")
-      .map((svc) => app._references.get(svc, Packaging) || new Packaging(app, svc));
-    this.deliveryConfirmations = assert.array(pojo.deliveryConfirmations, "deliveryConfirmations", [])
-      .map((svc) => app._references.get(svc, DeliveryConfirmation) || new DeliveryConfirmation(app, svc));
+    this.id = app._references.add(this, pojo);
+    this.name = pojo.name;
+    this.description = pojo.description || "";
+    this.class = pojo.class;
+    this.grade = pojo.grade;
+    this.serviceArea = pojo.serviceArea;
+    this.isConsolidationService = pojo.isConsolidator || false;
+    this.isReturnService = pojo.isReturnService || false;
+    this.allowsMultiplePackages = pojo.allowsMultiplePackages || false;
+    this.hasTracking = pojo.hasTracking || false;
+    this.hasSandbox = pojo.hasSandbox || false;
+    this.requiresManifest = pojo.requiresManifest || false;
+    this.labelFormats = pojo.labelFormats || [];
+    this.labelSizes = pojo.labelSizes || [];
+    this.originCountries = pojo.originCountries;
+    this.destinationCountries = pojo.destinationCountries;
+    this.packaging = pojo.packaging
+      ? pojo.packaging.map((svc) => app._references.get(svc, Packaging) || new Packaging(svc, app)) : [];
+    this.deliveryConfirmations = pojo.deliveryConfirmations
+      ? pojo.deliveryConfirmations.map(
+        (svc) => app._references.get(svc, DeliveryConfirmation) || new DeliveryConfirmation(svc, app)) : [];
 
     // Prevent modifications after validation
     Object.freeze(this);

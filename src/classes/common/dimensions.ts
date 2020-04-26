@@ -1,22 +1,38 @@
-import { assert } from "../assert";
-import { LengthUnit } from "../enums";
-import { DimensionsPOJO } from "../pojos";
+import { LengthUnit } from "../../enums";
+import { DimensionsPOJO } from "../../pojos/common";
+import { Joi } from "../../validation";
 
 /**
  * The dimensions of a package
  */
 export class Dimensions {
+  //#region Class Fields
+
+  public static readonly label = "dimensions";
+
+  /** @internal */
+  public static readonly schema = Joi.object({
+    length: Joi.number().integer().min(1).required(),
+    width: Joi.number().integer().min(1).required(),
+    height: Joi.number().integer().min(1).required(),
+    unit: Joi.string().enum(LengthUnit).required(),
+  });
+
+  //#endregion
+  //#region Instance Fields
+
   public readonly length: number;
   public readonly width: number;
   public readonly height: number;
   public readonly unit: LengthUnit;
 
+  //#endregion
+
   public constructor(pojo: DimensionsPOJO) {
-    assert.type.object(pojo, "dimensions");
-    this.length = assert.number.positive(pojo.length, "package length");
-    this.width = assert.number.positive(pojo.width, "package width");
-    this.height = assert.number.positive(pojo.height, "package height");
-    this.unit = assert.string.enum(pojo.unit, LengthUnit, "dimension unit");
+    this.length = pojo.length;
+    this.width = pojo.width;
+    this.height = pojo.height;
+    this.unit = pojo.unit;
 
     // Prevent modifications after validation
     Object.freeze(this);

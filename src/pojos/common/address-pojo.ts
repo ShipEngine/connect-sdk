@@ -1,4 +1,4 @@
-import { Country } from "../countries";
+import { Country } from "../../countries";
 import { ContactInfoPOJO } from "./contact-info-pojo";
 
 /**

@@ -1,6 +1,6 @@
-import { assert } from "../../../assert";
-import { LabelConfirmationPOJO } from "../../../pojos";
-import { MonetaryValue } from "../../monetary-value";
+import { LabelConfirmationPOJO } from "../../../pojos/carrier";
+import { Joi, validate } from "../../../validation";
+import { MonetaryValue } from "../../common";
 import { calculateTotalCharges } from "../utils";
 import { Label } from "./label";
 import { ShippingCharge } from "./shipping-charge";
@@ -9,10 +9,26 @@ import { ShippingCharge } from "./shipping-charge";
  * Confirms the successful creation of a shipping label
  */
 export class LabelConfirmation {
+  //#region Class Fields
+
+  public static readonly label = "label confirmation";
+
+  /** @internal */
+  public static readonly schema = Joi.object({
+    confirmationID: Joi.string().trim().singleLine().allow("").max(100),
+    shipmentTrackingNumber: Joi.string().trim().singleLine().allow("").max(100),
+    estimatedDeliveryDateTime: Joi.date(),
+    charges: Joi.array().min(1).items(ShippingCharge.schema).required(),
+    labels: Joi.array().min(1).items(Label.schema).required(),
+  });
+
+  //#endregion
+  //#region Instance Fields
+
   /**
    * The carrier's confirmation ID for this transaction
    */
-  public readonly confirmationID?: string;
+  public readonly confirmationID: string;
 
   /**
    * The master tracking number for the entire shipment.
@@ -20,7 +36,7 @@ export class LabelConfirmation {
    * For multi-piece shipments, this may be a separate tracking number, or the same
    * tracking number as one of the packages.
    */
-  public readonly shipmentTrackingNumber?: string;
+  public readonly shipmentTrackingNumber: string;
 
   /**
    * The estimated date and time for when the shipment will be delivered.
@@ -44,18 +60,17 @@ export class LabelConfirmation {
    */
   public readonly labels: ReadonlyArray<Label>;
 
+  //#endregion
+
   public constructor(pojo: LabelConfirmationPOJO) {
-    assert.type.object(pojo, "label confirmation");
-    this.confirmationID = pojo.confirmationID
-      && assert.string.nonWhitespace(pojo.confirmationID, "confirmation ID");
-    this.shipmentTrackingNumber = pojo.shipmentTrackingNumber
-      && assert.string.nonWhitespace(pojo.shipmentTrackingNumber, "shipment tracking number");
-    this.estimatedDeliveryDateTime = pojo.estimatedDeliveryDateTime
-      && assert.type.date(pojo.estimatedDeliveryDateTime, "estimated delivery date/time");
-    this.charges = assert.array.nonEmpty(pojo.charges, "shipping charges")
-      .map((charge) => new ShippingCharge(charge));
+    validate(pojo, LabelConfirmation);
+
+    this.confirmationID = pojo.confirmationID || "";
+    this.shipmentTrackingNumber = pojo.shipmentTrackingNumber || "";
+    this.estimatedDeliveryDateTime = pojo.estimatedDeliveryDateTime;
+    this.charges = pojo.charges.map((charge) => new ShippingCharge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);
-    this.labels = assert.array.nonEmpty(pojo.labels, "labels").map((label) => new Label(label));
+    this.labels = pojo.labels.map((label) => new Label(label));
 
     // Prevent modifications after validation
     Object.freeze(this);

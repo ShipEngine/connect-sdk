@@ -1,4 +1,4 @@
-import { CustomData } from "../../types";
+import { CustomDataPOJO } from "../common";
 
 /**
  * Confirmation that a package pickup has been canceled
@@ -25,5 +25,5 @@ export interface PickupCancellationConfirmationPOJO {
   /**
    * Arbitrary data for that will be persisted by ShipEngine IPaaS.
    */
-  customData?: CustomData;
+  customData?: CustomDataPOJO;
 }

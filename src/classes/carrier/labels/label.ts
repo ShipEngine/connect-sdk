@@ -1,10 +1,31 @@
-import { assert } from "../../../assert";
-import { LabelPOJO } from "../../../pojos";
+import { LabelPOJO } from "../../../pojos/carrier";
+import { Joi } from "../../../validation";
 
 /**
  * A shipping label
  */
 export class Label {
+  //#region Class Fields
+
+  public static readonly label = "label";
+
+  /** @internal */
+  public static readonly schema = Joi.object({
+    trackingNumber: Joi.string().trim().singleLine().min(1).max(100).required(),
+    image: Joi.object().instance(Buffer).required().keys({
+      length: Joi.number().integer().min(1),
+    }),
+    forms: Joi.array().items(Joi.object({
+      name: Joi.string().trim().singleLine().min(1).max(100).required(),
+      data: Joi.object().instance(Buffer).required().keys({
+        length: Joi.number().integer().min(1),
+      }),
+    }))
+  });
+
+  //#endregion
+  //#region Instance Fields
+
   /**
    * The carrier tracking number for this label
    */
@@ -19,35 +40,19 @@ export class Label {
    * Any additional forms that relate to the label, such as customs forms.
    */
   public readonly forms?: Array<{
+    name: string;
     data: Buffer;
-    description: string;
   }>;
 
+  //#endregion
+
   public constructor(pojo: LabelPOJO) {
-    assert.type.object(pojo, "label confirmation");
-    this.trackingNumber = assert.string.nonWhitespace(pojo.trackingNumber, "tracking number");
-    this.image = validateBuffer(pojo.image, "label image");
-    this.forms = assert.array(pojo.forms, "forms", [])
-      .map((form) => {
-        assert.type.object(form, "form");
-        return Object.freeze({
-          data: validateBuffer(form.data, "form data"),
-          description: assert.string.nonWhitespace(form.description, "form description"),
-        });
-      });
+    this.trackingNumber = pojo.trackingNumber;
+    this.image = pojo.image;
+    this.forms = pojo.forms ? pojo.forms.map((form) => Object.freeze(form)) : [];
 
     // Prevent modifications after validation
     Object.freeze(this);
     Object.freeze(this.forms);
   }
-}
-
-function validateBuffer(buffer: Buffer, fieldName: string): Buffer {
-  assert.type(buffer, Buffer, fieldName);
-
-  if (buffer.length === 0) {
-    throw new RangeError(`Invalid ${fieldName}. It cannot be zero-length.`);
-  }
-
-  return buffer;
 }

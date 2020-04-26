@@ -1,5 +1,5 @@
-import { Identifier, UUID } from "../../types";
-import { DimensionsPOJO, MonetaryValuePOJO, WeightPOJO } from "../measures-pojo";
+import { UUID } from "../../types";
+import { DimensionsPOJO, IdentifierPOJO, MonetaryValuePOJO, WeightPOJO } from "../common";
 import { PackageItemPOJO } from "./package-item-pojo";
 
 /**
@@ -19,7 +19,7 @@ export interface PackageIdentifierPOJO {
   /**
    * Alternative identifiers associated with this package
    */
-  identifiers?: Identifier[];
+  identifiers?: IdentifierPOJO[];
 }
 
 /**

@@ -1,4 +1,4 @@
-import { Identifier } from "../../types";
+import { IdentifierPOJO } from "../common";
 
 /**
  * Identifies a sales order
@@ -12,5 +12,5 @@ export interface SalesOrderIdentifierPOJO {
   /**
    * Alternative identifiers associated with this shipment
    */
-  identifiers?: Identifier[];
+  identifiers?: IdentifierPOJO[];
 }

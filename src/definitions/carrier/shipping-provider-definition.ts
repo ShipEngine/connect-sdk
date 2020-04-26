@@ -1,18 +1,13 @@
 import { CancelPickup, CreateLabel, CreateManifest, GetRates, GetTrackingURL, Login, RequestPickup, Track, VoidLabel } from "../../classes/carrier/methods";
 import { InlineOrReference, InlineOrReferenceArray, UrlString, UUID } from "../../types";
+import { LogoDefinition } from "../common/logo-definition";
+import { FormDefinition } from "../connection/form-definition";
 import { CarrierDefinition } from "./carrier-definition";
-import { FormDefinition } from "./form-definition";
-import { LogoDefinition } from "./logo-definition";
 
 /**
  * A ShipEngine IPaaS shipping provider app.
  */
 export interface ShippingProviderDefinition {
-  /**
-   * Indicates that this is a ShipEngine IPaaS shipping provider app.
-   */
-  type: "shipping_provider";
-
   /**
    * A UUID that uniquely identifies the shipping provider.
    * This ID should never change, even if the provider name changes.

@@ -1,19 +1,20 @@
 "use strict";
 
 const { CarrierApp } = require("../../");
-const create = require("../utils/create");
+const pojo = require("../utils/pojo");
 const { expect } = require("chai");
 
 describe("DeliveryConfirmation", () => {
 
   function createDeliveryConfirmation (deliveryConfirmation) {
-    let app = create.app();
-    let carrier = create.carrier({
-      deliveryServices: [{
-        deliveryConfirmations: [deliveryConfirmation],
-      }],
-    });
-    return new CarrierApp(app, carrier).carrier.deliveryServices[0].deliveryConfirmations[0];
+    let app = new CarrierApp(pojo.carrierApp({
+      carrier: {
+        deliveryServices: [{
+          deliveryConfirmations: [deliveryConfirmation],
+        }],
+      },
+    }));
+    return app.carrier.deliveryServices[0].deliveryConfirmations[0];
   }
 
   it("should create a DeliveryConfirmation with the minimum required fields", () => {
@@ -67,8 +68,8 @@ describe("DeliveryConfirmation", () => {
 
     it("should throw an error the pojo is the wrong type", () => {
       expect(() => createDeliveryConfirmation(12345)).to.throw(
-        "Invalid carrier: \n" +
-        "  deliveryServices[0].deliveryConfirmations[0] must be of type object"
+        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "  carrier.deliveryServices[0].deliveryConfirmations[0] must be of type object"
       );
     });
 
@@ -79,8 +80,8 @@ describe("DeliveryConfirmation", () => {
         class: "signature",
       })
       ).to.throw(
-        "Invalid carrier: \n" +
-        "  deliveryServices[0].deliveryConfirmations[0].id must be a valid GUID"
+        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "  carrier.deliveryServices[0].deliveryConfirmations[0].id must be a valid GUID"
       );
     });
 
@@ -91,9 +92,9 @@ describe("DeliveryConfirmation", () => {
         class: "signature"
       })
       ).to.throw(
-        "Invalid carrier: \n" +
-        "  deliveryServices[0].deliveryConfirmations[0].name must not have leading or trailing whitespace \n" +
-        "  deliveryServices[0].deliveryConfirmations[0].name cannot contain newlines or tabs"
+        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "  carrier.deliveryServices[0].deliveryConfirmations[0].name must not have leading or trailing whitespace \n" +
+        "  carrier.deliveryServices[0].deliveryConfirmations[0].name cannot contain newlines or tabs"
       );
     });
 
@@ -105,8 +106,8 @@ describe("DeliveryConfirmation", () => {
         description: 12345,
       })
       ).to.throw(
-        "Invalid carrier: \n" +
-        "  deliveryServices[0].deliveryConfirmations[0].description must be a string"
+        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "  carrier.deliveryServices[0].deliveryConfirmations[0].description must be a string"
       );
     });
 
@@ -117,8 +118,8 @@ describe("DeliveryConfirmation", () => {
         class: "handshake"
       })
       ).to.throw(
-        "Invalid carrier: \n" +
-        "  deliveryServices[0].deliveryConfirmations[0].class must be one of delivery, signature, adult_signature, direct_signature"
+        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "  carrier.deliveryServices[0].deliveryConfirmations[0].class must be one of delivery, signature, adult_signature, direct_signature"
       );
     });
 

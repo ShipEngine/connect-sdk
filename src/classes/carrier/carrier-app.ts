@@ -1,5 +1,5 @@
-import { CarrierPOJO } from "../../pojos/carrier";
-import { AppPOJO } from "../../pojos/common";
+import { CarrierAppPOJO } from "../../pojos/carrier";
+import { validate } from "../../validation";
 import { App } from "../common/app";
 import { Carrier } from "./carrier";
 
@@ -12,7 +12,9 @@ export class CarrierApp extends App {
   public static readonly label = "ShipEngine Integration Platform carrier app";
 
   /** @internal */
-  public static readonly schema = App.schema;
+  public static readonly schema = App.schema.keys({
+    carrier: Carrier.schema.required(),
+  });
 
   //#endregion
   //#region Instance Fields
@@ -29,10 +31,12 @@ export class CarrierApp extends App {
 
   //#endregion
 
-  public constructor(pojo: AppPOJO, carrier: CarrierPOJO) {
+  public constructor(pojo: CarrierAppPOJO) {
     super(pojo);
 
-    this.carrier = new Carrier(carrier, this);
+    validate(pojo, CarrierApp);
+
+    this.carrier = new Carrier(pojo.carrier, this);
 
     // The app is now finished loading, so free-up memory that's no longer needed
     this._references.finishedLoading();

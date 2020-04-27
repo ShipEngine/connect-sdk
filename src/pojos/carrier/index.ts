@@ -1,3 +1,4 @@
+export * from "./carrier-app-pojo";
 export * from "./definitions";
 export * from "./label-confirmation-pojo";
 export * from "./label-pojo";

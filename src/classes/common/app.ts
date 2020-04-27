@@ -1,6 +1,5 @@
-import { ShipEngineConstructor } from "../../internal-types";
 import { AppPOJO } from "../../pojos/common";
-import { Joi, validate } from "../../validation";
+import { Joi } from "../../validation";
 import { hidePrivateFields } from "../utils";
 import { ReferenceMap } from "./reference-map";
 
@@ -48,9 +47,6 @@ export abstract class App {
   //#endregion
 
   public constructor(pojo: AppPOJO) {
-    // tslint:disable-next-line: no-unsafe-any
-    validate(pojo, new.target as unknown as ShipEngineConstructor);
-
     this.name = pojo.name;
     this.version = pojo.version;
     this.description = pojo.description || "";

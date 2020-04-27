@@ -1,19 +1,16 @@
 "use strict";
 
 const { ConnectionApp } = require("../../");
-const create = require("../utils/create");
+const pojo = require("../utils/pojo");
 const { expect } = require("chai");
 
 describe("App", () => {
 
-  function createApp (pojo) {
-    return new ConnectionApp(pojo, create.connection());
-  }
-
   it("should create an app with the minimum required fields", () => {
-    let app = createApp({
+    let app = new ConnectionApp({
       name: "@company-name/app-name",
       version: "1.23.456",
+      connection: pojo.connection(),
     });
 
     expect(app).to.deep.equal({
@@ -26,10 +23,11 @@ describe("App", () => {
   });
 
   it("should create an app with all possible fields", () => {
-    let app = createApp({
+    let app = new ConnectionApp({
       name: "@company-name/app-name",
       version: "1.23.456",
-      description: "My ShipEngine app"
+      description: "My ShipEngine app",
+      connection: pojo.connection(),
     });
 
     expect(app).to.deep.equal({
@@ -42,10 +40,11 @@ describe("App", () => {
   });
 
   it("should allow an empty description", () => {
-    let app = createApp({
+    let app = new ConnectionApp({
       name: "@company-name/app-name",
       version: "1.23.456",
       description: "",
+      connection: pojo.connection(),
     });
 
     expect(app).to.deep.equal({
@@ -60,14 +59,14 @@ describe("App", () => {
   describe("Failure tests", () => {
 
     it("should throw an error if the pojo is the wrong type", () => {
-      expect(() => createApp(12345)).to.throw(
+      expect(() => new ConnectionApp(12345)).to.throw(
         "Invalid ShipEngine Integration Platform connection app: \n" +
         "  value must be of type object"
       );
     });
 
     it("should throw an error if the name contains illegal characters", () => {
-      expect(() => createApp({
+      expect(() => new ConnectionApp({
         name: "My app",
         version: "1.23.456",
       })
@@ -78,7 +77,7 @@ describe("App", () => {
     });
 
     it("should throw an error if the name is non-scoped", () => {
-      expect(() => createApp({
+      expect(() => new ConnectionApp({
         name: "my-app",
         version: "1.23.456",
       })
@@ -89,7 +88,7 @@ describe("App", () => {
     });
 
     it("should throw an error if the name contains capital letters", () => {
-      expect(() => createApp({
+      expect(() => new ConnectionApp({
         name: "My-App",
         version: "1.23.456",
       })
@@ -100,7 +99,7 @@ describe("App", () => {
     });
 
     it("should throw an error if the description is the wrong type", () => {
-      expect(() => createApp({
+      expect(() => new ConnectionApp({
         name: "@company-name/app-name",
         version: "1.23.456",
         description: 12345,

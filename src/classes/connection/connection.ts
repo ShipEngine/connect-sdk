@@ -2,7 +2,7 @@ import { error, ErrorCode } from "../../errors";
 import { TransactionPOJO } from "../../pojos/common";
 import { ConnectionPOJO } from "../../pojos/connection";
 import { UUID } from "../../types";
-import { Joi, validate } from "../../validation";
+import { Joi } from "../../validation";
 import { Logo, Transaction } from "../common";
 import { App } from "../common/app";
 import { hidePrivateFields } from "../utils";
@@ -65,24 +65,22 @@ export class Connection {
   /**
    * The ShipEngine Integration Platform app that this connection is part of.
    */
-  public readonly app: App;
+  public readonly settingsForm?: Form;
 
   //#endregion
 
   public constructor(pojo: ConnectionPOJO, app: App) {
-    validate(pojo, Connection);
-
     this.id = app._references.add(this, pojo);
     this.name = pojo.name;
     this.description = pojo.description || "";
     this.websiteURL = new URL(pojo.websiteURL);
     this.logo =  new Logo(pojo.logo);
-    this.app = app;
+    this.connectForm = new Form(pojo.connectForm);
 
     // Store any user-defined methods as private fields.
     this._connect = pojo.connect;
 
-    // Hide the private use-defined method
+    // Hide private fields
     hidePrivateFields(this);
 
     // Prevent modifications after validation

@@ -4,8 +4,9 @@ import { error, ErrorCode } from "../../errors";
 import { CarrierPOJO, LabelSpecPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, TrackingCriteriaPOJO } from "../../pojos/carrier";
 import { TransactionPOJO } from "../../pojos/common";
 import { UrlString, UUID } from "../../types";
-import { Joi, validate } from "../../validation";
-import { App, Logo, Transaction } from "../common";
+import { Joi } from "../../validation";
+import { Logo, Transaction } from "../common";
+import { App } from "../common/app";
 import { hidePrivateFields } from "../utils";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
@@ -53,16 +54,35 @@ export class Carrier {
   //#endregion
   //#region Instance Fields
 
-  // Store the user-defined methods as private fields.
-  // We wrap these methods with our own signatures below
+  /** @internal */
   private readonly _requestPickup: RequestPickup | undefined;
+
+  /** @internal */
   private readonly _cancelPickup: CancelPickup | undefined;
+
+  /** @internal */
   private readonly _createLabel: CreateLabel | undefined;
+
+  /** @internal */
   private readonly _voidLabel: VoidLabel | undefined;
+
+  /** @internal */
   private readonly _getRates: GetRates | undefined;
+
+  /** @internal */
   private readonly _getTrackingURL: GetTrackingURL | undefined;
+
+  /** @internal */
   private readonly _track: Track | undefined;
+
+  /** @internal */
   private readonly _createManifest: CreateManifest | undefined;
+
+  /** @internal */
+  private readonly _localization: Localization<LocalizedBrandingPOJO>;
+
+  /** @internal */
+  private readonly _app: App;
 
   /**
    * A UUID that uniquely identifies the carrier.
@@ -99,11 +119,6 @@ export class Carrier {
    * The package pickup services that are offered by this carrier
    */
   public readonly pickupServices: ReadonlyArray<PickupService>;
-
-  /**
-   * The ShipEngine Integration Platform app that this carrier is part of.
-   */
-  public readonly app: App;
 
   //#endregion
   //#region Helper Properties
@@ -252,8 +267,6 @@ export class Carrier {
   //#endregion
 
   public constructor(pojo: CarrierPOJO, app: App) {
-    validate(pojo, Carrier);
-
     this.id = app._references.add(this, pojo);
     this.name = pojo.name;
     this.description = pojo.description || "";
@@ -263,6 +276,7 @@ export class Carrier {
     this.pickupServices = pojo.pickupServices
       ? pojo.pickupServices.map((svc) => new PickupService(svc, app, this)) : [];
     this.app = app;
+    this._app = app;
 
     // Store any user-defined methods as private fields.
     // For any methods that aren't implemented, set the corresponding class method to undefined.
@@ -275,7 +289,7 @@ export class Carrier {
     pojo.track ? (this._track = pojo.track) : (this.track = undefined);
     pojo.createManifest ? (this._createManifest = pojo.createManifest) : (this.createManifest = undefined);
 
-    // Hide the private use-defined method
+    // Hide private fields
     hidePrivateFields(this);
 
     // Prevent modifications after validation
@@ -301,7 +315,7 @@ export class Carrier {
 
     try {
       _transaction = new Transaction(transaction);
-      _request = new PickupRequest(request, this.app);
+      _request = new PickupRequest(request, this._app);
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the requestPickup method.", { originalError });
@@ -327,7 +341,7 @@ export class Carrier {
 
     try {
       _transaction = new Transaction(transaction);
-      _cancellation = new PickupCancellation(cancellation, this.app);
+      _cancellation = new PickupCancellation(cancellation, this._app);
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the cancelPickup method.", { originalError });
@@ -352,7 +366,7 @@ export class Carrier {
 
     try {
       _transaction = new Transaction(transaction);
-      _label = new LabelSpec(label, this.app);
+      _label = new LabelSpec(label, this._app);
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the createLabel method.", { originalError });
@@ -399,7 +413,7 @@ export class Carrier {
 
     try {
       _transaction = new Transaction(transaction);
-      _criteria = new RateCriteria(criteria, this.app);
+      _criteria = new RateCriteria(criteria, this._app);
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the getRates method.", { originalError });
@@ -407,7 +421,7 @@ export class Carrier {
 
     try {
       let quote = await this._getRates!(_transaction, _criteria);
-      return new RateQuote(quote, this.app);
+      return new RateQuote(quote, this._app);
     }
     catch (originalError) {
       let transactionID = _transaction.id;
@@ -423,7 +437,7 @@ export class Carrier {
 
     try {
       _transaction = new Transaction(transaction);
-      _criteria = new TrackingCriteria(criteria, this.app);
+      _criteria = new TrackingCriteria(criteria, this._app);
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the getTrackingURL method.", { originalError });

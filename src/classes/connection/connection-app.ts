@@ -1,5 +1,5 @@
-import { AppPOJO } from "../../pojos/common";
-import { ConnectionPOJO } from "../../pojos/connection";
+import { ConnectionAppPOJO } from "../../pojos/connection";
+import { validate } from "../../validation";
 import { App } from "../common/app";
 import { Connection } from "./connection";
 
@@ -12,7 +12,9 @@ export class ConnectionApp extends App {
   public static readonly label = "ShipEngine Integration Platform connection app";
 
   /** @internal */
-  public static readonly schema = App.schema;
+  public static readonly schema = App.schema.keys({
+    connection: Connection.schema.required(),
+  });
 
   //#endregion
   //#region Instance Fields
@@ -29,10 +31,12 @@ export class ConnectionApp extends App {
 
   //#endregion
 
-  public constructor(pojo: AppPOJO, connection: ConnectionPOJO) {
+  public constructor(pojo: ConnectionAppPOJO) {
     super(pojo);
 
-    this.connection = new Connection(connection, this);
+    validate(pojo, ConnectionApp);
+
+    this.connection = new Connection(pojo.connection, this);
 
     // The app is now finished loading, so free-up memory that's no longer needed
     this._references.finishedLoading();

@@ -1,6 +1,7 @@
 import { RatePOJO } from "../../../pojos/carrier";
 import { Joi } from "../../../validation";
-import { App, MonetaryValue } from "../../common";
+import { MonetaryValue } from "../../common";
+import { App } from "../../common/app";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
 import { ShippingCharge } from "../labels/shipping-charge";

@@ -1,6 +1,6 @@
 import { RateCriteriaPOJO } from "../../../pojos/carrier";
 import { Joi, validate } from "../../../validation";
-import { App } from "../../common";
+import { App } from "../../common/app";
 import { NewShipment, Shipment } from "../shipment";
 
 /**

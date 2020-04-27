@@ -1,18 +1,19 @@
 "use strict";
 
-const { expect } = require("chai");
+const { CarrierApp } = require("../../");
 const create = require("../utils/create");
+const { expect } = require("chai");
 
 describe("DeliveryConfirmation", () => {
 
   function createDeliveryConfirmation (deliveryConfirmation) {
-    let provider = create.carrier({
+    let app = create.app();
+    let carrier = create.carrier({
       deliveryServices: [{
         deliveryConfirmations: [deliveryConfirmation],
-      }]
+      }],
     });
-
-    return provider.deliveryServices[0].deliveryConfirmations[0];
+    return new CarrierApp(app, carrier).carrier.deliveryServices[0].deliveryConfirmations[0];
   }
 
   it("should create a DeliveryConfirmation with the minimum required fields", () => {

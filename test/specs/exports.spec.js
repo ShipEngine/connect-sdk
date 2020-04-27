@@ -44,7 +44,9 @@ describe("package exports", () => {
   });
 
   it("should export common classes", () => {
-    assertFileExports("src/classes/common", true, ["reference-map.ts"]);
+    assertFileExports("src/classes/common", true, [
+      "app.ts", "localization.ts", "reference-map.ts"
+    ]);
   });
 
   it("should export connection classes", () => {

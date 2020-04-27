@@ -1,3 +1,4 @@
+import { ShipEngineConstructor } from "../../internal-types";
 import { AppPOJO } from "../../pojos/common";
 import { Joi, validate } from "../../validation";
 import { hidePrivateFields } from "../utils";
@@ -6,10 +7,10 @@ import { ReferenceMap } from "./reference-map";
 /**
  * A ShipEngine Integration Platform app
  */
-export class App {
+export abstract class App {
   //#region Class Fields
 
-  public static readonly label = "ShipEngine Integration Platform app";
+  public static readonly label: string = "ShipEngine Integration Platform app";
 
   /** @internal */
   public static readonly schema = Joi.object({
@@ -46,24 +47,15 @@ export class App {
 
   //#endregion
 
-  public constructor(manifest: AppPOJO) {
-    validate(manifest, App);
+  public constructor(pojo: AppPOJO) {
+    // tslint:disable-next-line: no-unsafe-any
+    validate(pojo, new.target as unknown as ShipEngineConstructor);
 
-    this.name = manifest.name;
-    this.version = manifest.version;
-    this.description = manifest.description || "";
+    this.name = pojo.name;
+    this.version = pojo.version;
+    this.description = pojo.description || "";
 
-    // Hide the internal _references field
+    // Hide private fields
     hidePrivateFields(this);
-
-    // Prevent modifications after validation
-    Object.freeze(this);
-  }
-
-  /**
-   * Frees-up memory that is that only needed while the app is being loaded.
-   */
-  public finishedLoading() {
-    this._references.finishedLoading();
   }
 }

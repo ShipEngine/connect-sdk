@@ -1,7 +1,7 @@
 import { PackagingPOJO } from "../../pojos/carrier";
 import { UUID } from "../../types";
 import { Joi } from "../../validation";
-import { App } from "../common";
+import { App } from "../common/app";
 
 /**
  * Describes a type of packaging

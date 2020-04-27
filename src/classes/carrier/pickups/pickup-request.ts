@@ -1,6 +1,7 @@
 import { PickupRequestPOJO } from "../../../pojos/carrier";
 import { Joi, validate } from "../../../validation";
-import { Address, App, ContactInfo } from "../../common";
+import { Address, ContactInfo } from "../../common";
+import { App } from "../../common/app";
 import { PickupService } from "../pickup-service";
 import { Shipment } from "../shipment";
 import { TimeRange } from "./time-range";

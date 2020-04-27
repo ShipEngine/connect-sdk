@@ -3,7 +3,7 @@ import { DeliveryServiceClass, DeliveryServiceGrade, LabelFormat, LabelSize, Man
 import { DeliveryServicePOJO } from "../../pojos/carrier";
 import { UUID } from "../../types";
 import { Joi } from "../../validation";
-import { App } from "../common";
+import { App } from "../common/app";
 import { Carrier } from "./carrier";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { Packaging } from "./packaging";

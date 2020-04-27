@@ -1,5 +1,4 @@
 export * from "./address";
-export * from "./app";
 export { ContactInfo, PersonName } from "./contact-info";
 export * from "./custom-data";
 export * from "./dimensions";

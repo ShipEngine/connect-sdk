@@ -1,4 +1,5 @@
 export * from "./carrier";
+export * from "./carrier-app";
 export * from "./delivery-confirmation";
 export * from "./delivery-service";
 export * from "./labels/label";

@@ -1,7 +1,8 @@
 import { PickupCancellationReason } from "../../../enums";
 import { PickupCancellationPOJO } from "../../../pojos/carrier";
 import { Joi, validate } from "../../../validation";
-import { Address, App, ContactInfo, CustomData, Identifier } from "../../common";
+import { Address, ContactInfo, CustomData, Identifier } from "../../common";
+import { App } from "../../common/app";
 import { PickupService } from "../pickup-service";
 import { Shipment } from "../shipment";
 import { TimeRange } from "./time-range";

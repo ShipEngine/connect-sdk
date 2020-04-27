@@ -2,7 +2,7 @@ import { DeliveryConfirmationClass } from "../../enums";
 import { DeliveryConfirmationPOJO } from "../../pojos/carrier";
 import { UUID } from "../../types";
 import { Joi } from "../../validation";
-import { App } from "../common";
+import { App } from "../common/app";
 
 /**
  * Delivery confirmation options offered by a carrier

@@ -2,23 +2,26 @@
 import { Constructor } from "../../internal-types";
 import { ContactInfoPOJO, PersonNamePOJO } from "../../pojos/common";
 import { Joi } from "../../validation";
+import { hideAndFreeze, _internal } from "../utils";
 
 /**
  * A person's name that has been parsed into separate fields.
  */
 export class PersonName {
-  //#region Class Fields
-
-  public static readonly label = "name";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    first: Joi.string().trim().singleLine().min(1).max(100).required(),
-    last: Joi.string().trim().singleLine().min(1).max(100).required(),
-  });
+  public static readonly [_internal] = {
+    label: "name",
+    schema: Joi.object({
+      first: Joi.string().trim().singleLine().min(1).max(100).required(),
+      last: Joi.string().trim().singleLine().min(1).max(100).required(),
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+
+  //#region Public Fields
 
   public readonly first: string;
   public readonly last: string;
@@ -33,8 +36,8 @@ export class PersonName {
     this.first = pojo.first;
     this.last = pojo.last;
 
-    // Prevent modifications after validation
-    Object.freeze(this);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 
   /**
@@ -65,31 +68,38 @@ export class PersonName {
   }
 }
 
+// Prevent modifications to the class
+hideAndFreeze(PersonName);
+
 /**
  * A person's contact information
  */
 export class ContactInfo extends contactInfoMixin() {
-  //#region Class Fields
-
-  public static readonly label = "contact info";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    name: Joi.alternatives(Joi.string().trim().singleLine().min(1).max(100), PersonName.schema).required(),
-    email: Joi.string().email().allow(""),
-    phoneNumber: Joi.string().trim().singleLine().allow("").max(30),
-    phoneNumberExtension: Joi.string().trim().singleLine().allow("").max(30),
-  });
+  public static readonly [_internal] = {
+    label: "contact info",
+    schema: Joi.object({
+      name: Joi.alternatives(Joi.string().trim().singleLine().min(1).max(100), PersonName[_internal].schema).required(),
+      email: Joi.string().email().allow(""),
+      phoneNumber: Joi.string().trim().singleLine().allow("").max(30),
+      phoneNumberExtension: Joi.string().trim().singleLine().allow("").max(30),
+    }),
+  };
 
   //#endregion
 
   public constructor(pojo: ContactInfoPOJO) {
     super(pojo);
 
-    // Prevent modifications after validation
-    Object.freeze(this);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(ContactInfo);
 
 /**
  * Extends a base class with contact information
@@ -97,7 +107,7 @@ export class ContactInfo extends contactInfoMixin() {
  */
 export function contactInfoMixin(base: Constructor = Object) {
   return class ContactInfoMixin extends base {
-    //#region Instance Fields
+    //#region Public Fields
 
     public readonly name: PersonNamePOJO;
     public readonly email: string;

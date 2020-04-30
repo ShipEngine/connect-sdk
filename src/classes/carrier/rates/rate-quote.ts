@@ -1,23 +1,25 @@
 import { RateQuotePOJO } from "../../../pojos/carrier";
 import { Joi, validate } from "../../../validation";
 import { App } from "../../common/app";
+import { hideAndFreeze, _internal } from "../../utils";
 import { Rate } from "./rate";
 
 /**
  * Quoted shipping rates for the specified rate criteria
  */
 export class RateQuote {
-  //#region Class Fields
-
-  public static readonly label = "rate quote";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    rates: Joi.array().items(Rate.schema).required(),
-  });
+  public static readonly [_internal] = {
+    label: "rate quote",
+    schema: Joi.object({
+      rates: Joi.array().items(Rate[_internal].schema).required(),
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * A list of rates that match the specified rate criteria
@@ -31,8 +33,10 @@ export class RateQuote {
 
     this.rates = pojo.rates.map((rate) => new Rate(rate, app));
 
-    // Prevent modifications after validation
-    Object.freeze(this);
-    Object.freeze(this.rates);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(RateQuote);

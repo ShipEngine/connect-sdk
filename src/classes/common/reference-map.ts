@@ -1,93 +1,87 @@
 import { ShipEngineConstructor } from "../../internal-types";
 import { UUID } from "../../types";
 import { Joi, validate } from "../../validation";
+import { _internal } from "../utils";
 
-interface POJO { id: UUID; }
 interface ClassInstance { id: UUID; }
 
+interface Reference {
+  type: ShipEngineConstructor;
+  instance: ClassInstance;
+}
+
 const uuidSchema = Joi.string().uuid();
-const pojoSchema = Joi.object({ id: Joi.string().uuid() }).unknown(true);
+const _private = Symbol("private fields");
 
 /**
- * Maps ShipEngine Integration Platform classes by their UUIDs and the POJO object instances.
+ * Maps ShipEngine Integration Platform classes by their UUIDs
  * @internal
  */
 export class ReferenceMap {
-  private readonly _byID = new Map<UUID, ClassInstance>();
-  private readonly _byPOJO = new Map<POJO, ClassInstance>();
+  private readonly [_private] = {
+    map: new Map<UUID, Reference>(),
+    isFinishedLoading: false,
+  };
 
   /**
    * Adds the given object to the map
    */
-  public add(obj: ClassInstance, pojo: POJO): UUID {
-    validate(pojo, obj.constructor as ShipEngineConstructor, pojoSchema);
+  public add(instance: ClassInstance): void {
+    let type = instance.constructor as ShipEngineConstructor;
+    validate(instance.id, `${type[_internal].label} ID`, uuidSchema);
 
-    if (this._byPOJO.has(pojo) || this._byID.has(pojo.id)) {
-      throw new ReferenceError(`Duplicate UUID: ${pojo.id}`);
+    let { map, isFinishedLoading } = this[_private];
+    let existing = map.get(instance.id);
+
+    if (existing) {
+      // We already have a reference to this instance. Just make sure the types match.
+      if (existing.type !== type) {
+        // There are two different objects with the same UUID
+        throw new ReferenceError(`Duplicate UUID: ${instance.id}`);
+      }
     }
+    else {
+      if (isFinishedLoading) {
+        // The app has already finished loading, so no new objects can be added.
+        throw new ReferenceError(`Cannot add new ${type[_internal].label} after the app has loaded`);
+      }
 
-    this._byID.set(pojo.id, obj);
-    this._byPOJO.set(pojo, obj);
-    return pojo.id;
+      // Add this new reference
+      map.set(instance.id, { type, instance });
+    }
   }
-
-  /**
-   * Determines whether a class instance has been created for the given POJO object instance
-   */
-  public has(pojo: POJO, type: ShipEngineConstructor): boolean {
-    return Boolean(this.get(pojo, type));
-  }
-
-  /**
-   * Returns the class instance that corresponds to the specified POJO object instance, if any
-   */
-  public get<T extends ClassInstance>(pojo: POJO, type: ShipEngineConstructor): T | undefined;
 
   /**
    * Returns the class instance with the specified ID, if any
    */
-  public get<T extends ClassInstance>(id: UUID | undefined, type: ShipEngineConstructor): T | undefined;
+  public get<T extends ClassInstance>(id: UUID | undefined, type: ShipEngineConstructor): T | undefined {
+    // This is for optional ID fields
+    if (!id) return undefined;
 
-  public get<T extends ClassInstance>(key: POJO | UUID | undefined, type: ShipEngineConstructor)
-  : T | undefined {
-    let obj: T | undefined;
+    validate(id, `${type[_internal].label} ID`, uuidSchema);
 
-    if (typeof key === "string") {
-      validate(key, `${type.label} ID`, uuidSchema);
-      obj = this._byID.get(key) as T | undefined;
-    }
-    else if (key) {
-      obj = this._byPOJO.get(key) as T | undefined;
-    }
-
-    if (obj && !(obj instanceof type)) {
-      // We found a matching class instance, but it's of the wrong type,
-      // which means there are two different types that have the same UUID
-      throw new ReferenceError(`Duplicate UUID: ${(key as POJO).id || key}`);
-    }
-
-    return obj;
+    let { map } = this[_private];
+    let reference = map.get(id);
+    return reference && reference.instance as T;
   }
 
   /**
    * Returns the class instance that corresponds to the specified UUID, or throws an error if not found
    */
   public lookup<T extends ClassInstance>(id: UUID, type: ShipEngineConstructor): T {
-    validate(id, `${type.label} ID`, uuidSchema);
     let value = this.get<T>(id, type);
 
     if (!value) {
-      throw new ReferenceError(`Unable to find ${type.label} ID: ${id}`);
+      throw new ReferenceError(`Unable to find ${type[_internal].label} ID: ${id}`);
     }
 
     return value;
   }
 
   /**
-   * Clears the internal map of POJO objects to free-up memory after app is loaded
+   * Once the app has loaded, no new references can be added
    */
   public finishedLoading() {
-    // @ts-ignore
-    delete this._byPOJO;
+    this[_private].isFinishedLoading = true;
   }
 }

@@ -1,23 +1,25 @@
 import { ConnectionAppPOJO } from "../../pojos/connection";
 import { validate } from "../../validation";
 import { App } from "../common/app";
+import { hideAndFreeze, _internal } from "../utils";
 import { Connection } from "./connection";
 
 /**
  * A ShipEngine Integration Platform connection app
  */
 export class ConnectionApp extends App {
-  //#region Class Fields
-
-  public static readonly label = "ShipEngine Integration Platform connection app";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = App.schema.keys({
-    connection: Connection.schema.required(),
-  });
+  public static readonly [_internal] = {
+    label: "ShipEngine Integration Platform connection app",
+    schema: App[_internal].schema.keys({
+      connection: Connection[_internal].schema.required(),
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * Indicates that this is a connection app
@@ -39,9 +41,12 @@ export class ConnectionApp extends App {
     this.connection = new Connection(pojo.connection, this);
 
     // The app is now finished loading, so free-up memory that's no longer needed
-    this._references.finishedLoading();
+    this[_internal].references.finishedLoading();
 
-    // Prevent modifications after validation
-    Object.freeze(this);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(ConnectionApp);

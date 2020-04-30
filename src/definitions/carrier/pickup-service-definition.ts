@@ -1,4 +1,5 @@
-import { UUID } from "../../types";
+import { LocalizationDefinition } from "..";
+import { InlineOrReference, UUID } from "../../types";
 
 /**
  * A package pickup service that is offered by a carrier
@@ -26,4 +27,12 @@ export interface PickupServiceDefinition {
    * costs or affect production data.
    */
   hasSandbox?: boolean;
+
+  /**
+   * Localizaed values for fields that allow localization
+   */
+  localization?: InlineOrReference<LocalizationDefinition<{
+    name?: string;
+    description?: string;
+  }>>;
 }

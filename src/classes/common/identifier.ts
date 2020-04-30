@@ -1,22 +1,24 @@
 import { IdentifierPOJO } from "../../pojos/common";
 import { Joi } from "../../validation";
+import { hideAndFreeze, _internal } from "../utils";
 
 /**
  * A value that identifies a resource
  */
 export class Identifier {
-  //#region Class Fields
-
-  public static readonly label = "identifier";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    id: Joi.string().trim().singleLine().min(1).max(100).required(),
-    name: Joi.string().trim().singleLine().min(1).max(100).required(),
-  });
+  public static readonly [_internal] = {
+    label: "identifier",
+    schema: Joi.object({
+      id: Joi.string().trim().singleLine().min(1).max(100).required(),
+      name: Joi.string().trim().singleLine().min(1).max(100).required(),
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   public readonly id: string;
   public readonly name: string;
@@ -27,7 +29,10 @@ export class Identifier {
     this.id = pojo.id;
     this.name = pojo.name;
 
-    // Prevent modifications after validation
-    Object.freeze(this);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(Identifier);

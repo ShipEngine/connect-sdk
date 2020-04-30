@@ -1,27 +1,42 @@
 import { PickupServicePOJO } from "../../pojos/carrier";
+import { LocalizedInfoPOJO } from "../../pojos/common";
 import { UUID } from "../../types";
 import { Joi } from "../../validation";
 import { App } from "../common/app";
-import { Carrier } from "./carrier";
+import { Localization, localize } from "../common/localization";
+import { hideAndFreeze, _internal } from "../utils";
+
+const _private = Symbol("private fields");
 
 /**
  * A package pickup service that is offered by a carrier
  */
 export class PickupService {
-  //#region Class Fields
-
-  public static readonly label = "pickup service";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    id: Joi.string().uuid().required(),
-    name: Joi.string().trim().singleLine().min(1).max(100).required(),
-    description: Joi.string().trim().singleLine().allow("").max(1000),
-    hasSandbox: Joi.boolean(),
-  });
+  public static readonly [_internal] = {
+    label: "pickup service",
+    schema: Joi.object({
+      id: Joi.string().uuid().required(),
+      name: Joi.string().trim().singleLine().min(1).max(100).required(),
+      description: Joi.string().trim().singleLine().allow("").max(1000),
+      hasSandbox: Joi.boolean(),
+      localization: Joi.object().localization({
+        name: Joi.string().trim().singleLine().min(1).max(100),
+        description: Joi.string().trim().singleLine().allow("").max(1000),
+      }),
+    }),
+  };
+
+  /** @internal */
+  private readonly [_private]: {
+    readonly app: App;
+    readonly localization: Localization<LocalizedInfoPOJO>;
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * A UUID that uniquely identifies the pickup service.
@@ -46,21 +61,48 @@ export class PickupService {
    */
   public readonly hasSandbox: boolean;
 
-  /**
-   * The carrier that provides this service
-   */
-  public readonly  carrier: Carrier;
-
   //#endregion
 
-  public constructor(pojo: PickupServicePOJO, app: App, parent: Carrier) {
-    this.carrier = parent;
-    this.id = app._references.add(this, pojo);
+  public constructor(pojo: PickupServicePOJO, app: App) {
+    this.id = pojo.id;
     this.name = pojo.name;
     this.description = pojo.description || "";
     this.hasSandbox = pojo.hasSandbox || false;
 
-    // Prevent modifications after validation
-    Object.freeze(this);
+    this[_private] = {
+      app,
+      localization: new Localization(pojo.localization || {}),
+    };
+
+    // Make this object immutable
+    hideAndFreeze(this);
+
+    app[_internal].references.add(this);
+  }
+
+  /**
+   * Creates a copy of the pickup service, localized for the specified locale if possible.
+   */
+  public localize(locale: string): PickupService {
+    let pojo = localize(this, locale);
+    return new PickupService(pojo, this[_private].app);
+  }
+
+  /**
+   * Returns the pickup service as a POJO that can be safely serialized as JSON.
+   * Optionally returns the POJO localized to the specifeid language and region.
+   */
+  public toJSON(locale?: string): PickupServicePOJO {
+    let { localization } = this[_private];
+    let localizedValues = locale ? localization.lookup(locale) : {};
+
+    return {
+      ...this,
+      localization: localization.toJSON(),
+      ...localizedValues,
+    };
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(PickupService);

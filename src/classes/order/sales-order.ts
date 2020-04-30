@@ -2,23 +2,25 @@
 import { SalesOrderIdentifierPOJO } from "../../pojos/order";
 import { Joi } from "../../validation";
 import { Identifier } from "../common";
+import { hideAndFreeze, _internal } from "../utils";
 
 /**
  * Identifies a sales order
  */
 export class SalesOrderIdentifier {
-  //#region Class Fields
-
-  public static readonly label = "sales order";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    salesOrderID: Joi.string().trim().singleLine().min(1).max(100).required(),
-    identifiers: Joi.array().items(Identifier.schema),
-  });
+  public static readonly [_internal] = {
+    label: "sales order",
+    schema: Joi.object({
+      salesOrderID: Joi.string().trim().singleLine().min(1).max(100).required(),
+      identifiers: Joi.array().items(Identifier[_internal].schema),
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * The vendor's unique ID for the order
@@ -36,8 +38,10 @@ export class SalesOrderIdentifier {
     this.salesOrderID = pojo.salesOrderID;
     this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];
 
-    // Prevent modifications after validation
-    Object.freeze(this);
-    Object.freeze(this.identifiers);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(SalesOrderIdentifier);

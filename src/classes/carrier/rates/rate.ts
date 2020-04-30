@@ -2,6 +2,7 @@ import { RatePOJO } from "../../../pojos/carrier";
 import { Joi } from "../../../validation";
 import { MonetaryValue } from "../../common";
 import { App } from "../../common/app";
+import { hideAndFreeze, _internal } from "../../utils";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
 import { ShippingCharge } from "../labels/shipping-charge";
@@ -11,26 +12,27 @@ import { calculateTotalCharges } from "../utils";
  * A quoted shipping rate based on the specified rate criteria
  */
 export class Rate {
-  //#region Class Fields
-
-  public static readonly label = "rate";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    deliveryServiceID: Joi.string().uuid().required(),
-    deliveryConfirmationID: Joi.string().uuid(),
-    shipDateTime: Joi.date(),
-    estimatedDeliveryDateTime: Joi.date(),
-    isNegotiatedRate: Joi.boolean(),
-    charges: Joi.array().min(1).items(ShippingCharge.schema).required(),
-    notes: Joi.alternatives(
-      Joi.string().allow("").max(5000),
-      Joi.array().items(Joi.string().allow("").max(5000)),
-    )
-  });
+  public static readonly [_internal] = {
+    label: "rate",
+    schema: Joi.object({
+      deliveryServiceID: Joi.string().uuid().required(),
+      deliveryConfirmationID: Joi.string().uuid(),
+      shipDateTime: Joi.date(),
+      estimatedDeliveryDateTime: Joi.date(),
+      isNegotiatedRate: Joi.boolean(),
+      charges: Joi.array().min(1).items(ShippingCharge[_internal].schema).required(),
+      notes: Joi.alternatives(
+        Joi.string().allow("").max(5000),
+        Joi.array().items(Joi.string().allow("").max(5000)),
+      )
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * The ID of the delivery service this rate is for
@@ -78,8 +80,8 @@ export class Rate {
   //#endregion
 
   public constructor(pojo: RatePOJO, app: App) {
-    this.deliveryService = app._references.lookup(pojo.deliveryServiceID, DeliveryService);
-    this.deliveryConfirmation = app._references.get(pojo.deliveryConfirmationID, DeliveryConfirmation);
+    this.deliveryService = app[_internal].references.lookup(pojo.deliveryServiceID, DeliveryService);
+    this.deliveryConfirmation = app[_internal].references.get(pojo.deliveryConfirmationID, DeliveryConfirmation);
     this.shipDateTime = pojo.shipDateTime;
     this.estimatedDeliveryDateTime = pojo.estimatedDeliveryDateTime;
     this.isNegotiatedRate = pojo.isNegotiatedRate || false;
@@ -87,9 +89,10 @@ export class Rate {
     this.totalAmount = calculateTotalCharges(this.charges);
     this.notes = pojo.notes ? typeof pojo.notes === "string" ? [pojo.notes] : pojo.notes : [];
 
-    // Prevent modifications after validation
-    Object.freeze(this);
-    Object.freeze(this.charges);
-    Object.freeze(this.notes);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(Rate);

@@ -1,6 +1,7 @@
 import { JSONSchema6 } from "json-schema";
 import { UiSchema } from "react-jsonschema-form";
 import { InlineOrReference } from "../../types";
+import { LocalizationDefinition } from "../common/localization-definition";
 
 /**
  * Defines a user-interface form that collects data from the user.
@@ -15,4 +16,11 @@ export interface FormDefinition {
    * A UI Schema that defines the appearance of the form.
    */
   uiSchema: InlineOrReference<UiSchema>;
+
+  /**
+   * Localizaed values for form fields
+   */
+  localization?: InlineOrReference<LocalizationDefinition<{
+    [key: string]: unknown;
+  }>>;
 }

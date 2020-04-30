@@ -1,25 +1,27 @@
 import { PickupCancellationConfirmationPOJO } from "../../../pojos/carrier";
 import { Joi, validate } from "../../../validation";
 import { CustomData } from "../../common";
+import { hideAndFreeze, _internal } from "../../utils";
 
 /**
  * Confirmation that a package pickup has been canceled
  */
 export class PickupCancellationConfirmation {
-  //#region Class Fields
-
-  public static readonly label = "pickup cancellation confirmation";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    successful: Joi.boolean().required(),
-    cancellationID: Joi.string().trim().singleLine().allow("").max(100),
-    notes: Joi.string().allow("").max(5000),
-    customData: CustomData.schema,
-  });
+  public static readonly [_internal] = {
+    label: "pickup cancellation confirmation",
+    schema: Joi.object({
+      successful: Joi.boolean().required(),
+      cancellationID: Joi.string().trim().singleLine().allow("").max(100),
+      notes: Joi.string().allow("").max(5000),
+      customData: CustomData[_internal].schema,
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * Indicates whether the pickup was successfully canceled.
@@ -55,7 +57,10 @@ export class PickupCancellationConfirmation {
     this.notes = pojo.notes || "";
     this.customData = pojo.customData && new CustomData(pojo.customData);
 
-    // Prevent modifications after validation
-    Object.freeze(this);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(PickupCancellationConfirmation);

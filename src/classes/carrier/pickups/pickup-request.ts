@@ -2,6 +2,7 @@ import { PickupRequestPOJO } from "../../../pojos/carrier";
 import { Joi, validate } from "../../../validation";
 import { Address, ContactInfo } from "../../common";
 import { App } from "../../common/app";
+import { hideAndFreeze, _internal } from "../../utils";
 import { PickupService } from "../pickup-service";
 import { Shipment } from "../shipment";
 import { TimeRange } from "./time-range";
@@ -10,22 +11,23 @@ import { TimeRange } from "./time-range";
  * A request for a carrier to pickup package(s) at a time and place
  */
 export class PickupRequest {
-  //#region Class Fields
-
-  public static readonly label = "pickup request";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    pickupServiceID: Joi.string().uuid().required(),
-    timeWindow: TimeRange.schema.required(),
-    address: Address.schema.required(),
-    contact: ContactInfo.schema.required(),
-    notes: Joi.string().allow("").max(5000),
-    shipments: Joi.array().min(1).items(Shipment.schema).required(),
-  });
+  public static readonly [_internal] = {
+    label: "pickup request",
+    schema: Joi.object({
+      pickupServiceID: Joi.string().uuid().required(),
+      timeWindow: TimeRange[_internal].schema.required(),
+      address: Address[_internal].schema.required(),
+      contact: ContactInfo[_internal].schema.required(),
+      notes: Joi.string().allow("").max(5000),
+      shipments: Joi.array().min(1).items(Shipment[_internal].schema).required(),
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * The requested pickup service
@@ -62,15 +64,17 @@ export class PickupRequest {
   public constructor(pojo: PickupRequestPOJO, app: App) {
     validate(pojo, PickupRequest);
 
-    this.pickupService = app._references.lookup(pojo.pickupServiceID, PickupService);
+    this.pickupService = app[_internal].references.lookup(pojo.pickupServiceID, PickupService);
     this.timeWindow = new TimeRange(pojo.timeWindow);
     this.address = new Address(pojo.address);
     this.contact = new ContactInfo(pojo.contact);
     this.notes = pojo.notes || "";
     this.shipments = pojo.shipments.map((shipment) => new Shipment(shipment, app));
 
-    // Prevent modifications after validation
-    Object.freeze(this);
-    Object.freeze(this.shipments);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(PickupRequest);

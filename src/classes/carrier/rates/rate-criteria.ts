@@ -1,23 +1,25 @@
 import { RateCriteriaPOJO } from "../../../pojos/carrier";
 import { Joi, validate } from "../../../validation";
 import { App } from "../../common/app";
+import { hideAndFreeze, _internal } from "../../utils";
 import { NewShipment, Shipment } from "../shipment";
 
 /**
  * Specifies the criteria for rate quotes
  */
 export class RateCriteria {
-  //#region Class Fields
-
-  public static readonly label = "rate criteria";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    shipment: Shipment.schema.required(),
-  });
+  public static readonly [_internal] = {
+    label: "rate criteria",
+    schema: Joi.object({
+      shipment: Shipment[_internal].schema.required(),
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * The shipment information used to get rate quotes
@@ -31,7 +33,10 @@ export class RateCriteria {
 
     this.shipment = new NewShipment(pojo.shipment, app);
 
-    // Prevent modifications after validation
-    Object.freeze(this);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(RateCriteria);

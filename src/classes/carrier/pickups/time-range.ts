@@ -1,24 +1,26 @@
 import { zonedTimeToUtc } from "date-fns-tz";
 import { TimeRangePOJO } from "../../../pojos/carrier";
 import { Joi } from "../../../validation";
+import { hideAndFreeze, _internal } from "../../utils";
 
 /**
  * A range of time
  */
 export class TimeRange {
-  //#region Class Fields
-
-  public static readonly label = "time range";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    startDateTime: Joi.alternatives(Joi.date(), Joi.string().isoDate()).required(),
-    endDateTime: Joi.alternatives(Joi.date(), Joi.string().isoDate()).required(),
-    timeZone: Joi.string().trim().singleLine().min(1).max(50),
-  });
+  public static readonly [_internal] = {
+    label: "time range",
+    schema: Joi.object({
+      startDateTime: Joi.alternatives(Joi.date(), Joi.string().isoDate()).required(),
+      endDateTime: Joi.alternatives(Joi.date(), Joi.string().isoDate()).required(),
+      timeZone: Joi.string().trim().singleLine().min(1).max(50),
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * The start date/time of the range
@@ -52,12 +54,13 @@ export class TimeRange {
       );
     }
 
-    // Prevent modifications after validation
-    Object.freeze(this);
-    Object.freeze(this.startDateTime);
-    Object.freeze(this.endDateTime);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(TimeRange);
 
 /**
  * Parses a ISO 8601 string in the specified time zone

@@ -1,6 +1,7 @@
 import { LabelConfirmationPOJO } from "../../../pojos/carrier";
 import { Joi, validate } from "../../../validation";
 import { MonetaryValue } from "../../common";
+import { hideAndFreeze, _internal } from "../../utils";
 import { calculateTotalCharges } from "../utils";
 import { Label } from "./label";
 import { ShippingCharge } from "./shipping-charge";
@@ -9,21 +10,22 @@ import { ShippingCharge } from "./shipping-charge";
  * Confirms the successful creation of a shipping label
  */
 export class LabelConfirmation {
-  //#region Class Fields
-
-  public static readonly label = "label confirmation";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    confirmationID: Joi.string().trim().singleLine().allow("").max(100),
-    shipmentTrackingNumber: Joi.string().trim().singleLine().allow("").max(100),
-    estimatedDeliveryDateTime: Joi.date(),
-    charges: Joi.array().min(1).items(ShippingCharge.schema).required(),
-    labels: Joi.array().min(1).items(Label.schema).required(),
-  });
+  public static readonly [_internal] = {
+    label: "label confirmation",
+    schema: Joi.object({
+      confirmationID: Joi.string().trim().singleLine().allow("").max(100),
+      shipmentTrackingNumber: Joi.string().trim().singleLine().allow("").max(100),
+      estimatedDeliveryDateTime: Joi.date(),
+      charges: Joi.array().min(1).items(ShippingCharge[_internal].schema).required(),
+      labels: Joi.array().min(1).items(Label[_internal].schema).required(),
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * The carrier's confirmation ID for this transaction
@@ -72,7 +74,10 @@ export class LabelConfirmation {
     this.totalAmount = calculateTotalCharges(this.charges);
     this.labels = pojo.labels.map((label) => new Label(label));
 
-    // Prevent modifications after validation
-    Object.freeze(this);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(LabelConfirmation);

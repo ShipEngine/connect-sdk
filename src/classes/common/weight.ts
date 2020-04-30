@@ -1,24 +1,26 @@
 import { WeightUnit } from "../../enums";
 import { WeightPOJO } from "../../pojos/common";
 import { Joi } from "../../validation";
+import { hideAndFreeze, _internal } from "../utils";
 
 
 /**
  * The weight of a package
  */
 export class Weight {
-  //#region Class Fields
-
-  public static readonly label = "weight";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    value: Joi.number().integer().min(1).required(),
-    unit: Joi.string().enum(WeightUnit).required(),
-  });
+  public static readonly [_internal] = {
+    label: "weight",
+    schema: Joi.object({
+      value: Joi.number().integer().min(1).required(),
+      unit: Joi.string().enum(WeightUnit).required(),
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   public readonly value: number;
   public readonly unit: WeightUnit;
@@ -29,8 +31,8 @@ export class Weight {
     this.value = pojo.value;
     this.unit = pojo.unit;
 
-    // Prevent modifications after validation
-    Object.freeze(this);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 
   /**
@@ -89,3 +91,6 @@ export class Weight {
     }
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(Weight);

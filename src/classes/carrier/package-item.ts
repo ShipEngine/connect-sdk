@@ -4,30 +4,32 @@ import { PackageItemPOJO } from "../../pojos/carrier";
 import { Joi } from "../../validation";
 import { Identifier, MonetaryValue, Quantity } from "../common";
 import { SalesOrderIdentifier } from "../order/sales-order";
+import { hideAndFreeze, _internal } from "../utils";
 
 /**
  * An item inside a package
  */
 export class PackageItem {
-  //#region Class Fields
-
-  public static readonly label = "package item";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    sku: Joi.string().trim().singleLine().allow("").max(100),
-    identifiers: Joi.array().items(Identifier.schema),
-    description: Joi.string().trim().singleLine().allow("").max(1000),
-    salesOrder: SalesOrderIdentifier.schema,
-    quantity: Quantity.schema.required(),
-    unitValue: MonetaryValue.schema.required(),
-    countryOfOrigin: Joi.string().enum(Country),
-    countryOfManufacture: Joi.string().enum(Country),
-    harmonizedTariffCode: Joi.string().trim().singleLine().allow("").max(30),
-  });
+  public static readonly [_internal] = {
+    label: "package item",
+    schema: Joi.object({
+      sku: Joi.string().trim().singleLine().allow("").max(100),
+      identifiers: Joi.array().items(Identifier[_internal].schema),
+      description: Joi.string().trim().singleLine().allow("").max(1000),
+      salesOrder: SalesOrderIdentifier[_internal].schema,
+      quantity: Quantity[_internal].schema.required(),
+      unitValue: MonetaryValue[_internal].schema.required(),
+      countryOfOrigin: Joi.string().enum(Country),
+      countryOfManufacture: Joi.string().enum(Country),
+      harmonizedTariffCode: Joi.string().trim().singleLine().allow("").max(30),
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * The Stock Keeping Unit code
@@ -99,8 +101,10 @@ export class PackageItem {
     this.countryOfManufacture = pojo.countryOfManufacture;
     this.harmonizedTariffCode = pojo.harmonizedTariffCode || "";
 
-    // Prevent modifications after validation
-    Object.freeze(this);
-    Object.freeze(this.identifiers);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(PackageItem);

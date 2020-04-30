@@ -1,3 +1,4 @@
+import { _internal } from "./classes/utils";
 import { ValidationSchema } from "./validation";
 
 /**
@@ -5,15 +6,20 @@ import { ValidationSchema } from "./validation";
  * @internal
  */
 export interface ShipEngineClass {
-  label: string;
-  schema: ValidationSchema;
+  [_internal]: {
+    readonly label: string;
+    readonly schema: ValidationSchema;
+  };
 }
 
 /**
  * A constructor function for a ShipEngine Integration Platform SDK class.
  * @internal
  */
-export interface ShipEngineConstructor extends Function, ShipEngineClass {}
+export interface ShipEngineConstructor<T extends object = object> extends ShipEngineClass {
+  readonly name: string;
+  new(...args: unknown[]): T;
+}
 
 /**
  * A constructor function. This can be any constructor, but is usually used to refer to a
@@ -21,6 +27,6 @@ export interface ShipEngineConstructor extends Function, ShipEngineClass {}
  * @internal
  */
 export interface Constructor<T extends object = object> extends Partial<ShipEngineClass> {
-  name: string;
+  readonly name: string;
   new(...args: unknown[]): T;
 }

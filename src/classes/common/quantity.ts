@@ -1,23 +1,25 @@
 import { QuantityUnit } from "../../enums";
 import { QuantityPOJO } from "../../pojos/common";
 import { Joi } from "../../validation";
+import { hideAndFreeze, _internal } from "../utils";
 
 /**
  * The quantity of items in a package
  */
 export class Quantity {
-  //#region Class Fields
-
-  public static readonly label = "quantity";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    value: Joi.number().integer().min(1).required(),
-    unit: Joi.string().enum(QuantityUnit).required(),
-  });
+  public static readonly [_internal] = {
+    label: "quantity",
+    schema: Joi.object({
+      value: Joi.number().integer().min(1).required(),
+      unit: Joi.string().enum(QuantityUnit).required(),
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   public readonly value: number;
   public readonly unit: QuantityUnit;
@@ -28,7 +30,10 @@ export class Quantity {
     this.value = pojo.value;
     this.unit = pojo.unit;
 
-    // Prevent modifications after validation
-    Object.freeze(this);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(Quantity);

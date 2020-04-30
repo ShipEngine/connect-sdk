@@ -1,5 +1,6 @@
 import { CancelPickup, CreateLabel, CreateManifest, GetRates, GetTrackingURL, RequestPickup, Track, VoidLabel } from "../../classes/carrier/methods";
 import { InlineOrReference, InlineOrReferenceArray, UrlString, UUID } from "../../types";
+import { LocalizationDefinition } from "../common/localization-definition";
 import { LogoDefinition } from "../common/logo-definition";
 import { DeliveryServiceDefinition } from "./delivery-service-definition";
 import { PickupServiceDefinition } from "./pickup-service-definition";
@@ -43,6 +44,15 @@ export interface CarrierDefinition {
    * The package pickup services that are offered by the carrier
    */
   pickupServices?: InlineOrReferenceArray<PickupServiceDefinition>;
+
+  /**
+   * Localizaed values for fields that allow localization
+   */
+  localization?: InlineOrReference<LocalizationDefinition<{
+    name?: string;
+    description?: string;
+    websiteURL?: UrlString;
+  }>>;
 
   /**
    * Requests a package pickup at a time and place

@@ -1,31 +1,36 @@
 import { CustomDataPOJO, TransactionPOJO } from "../../pojos/common";
 import { UUID } from "../../types";
 import { Joi, validate } from "../../validation";
-import { hidePrivateFields } from "../utils";
+import { hideAndFreeze, _internal } from "../utils";
 import { CustomData } from "./custom-data";
+
+const _private = Symbol("private fields");
 
 /**
  * The ShpEngine Integration Platform passes this object to every method call. It provides information about the
  * transaction being performed, including authentication, metadata, etc.
  */
 export class Transaction {
-  //#region Class Fields
-
-  public static readonly label = "transaction";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    id: Joi.string().uuid().required(),
-    isRetry: Joi.boolean(),
-    useSandbox: Joi.boolean(),
-    session: CustomData.schema,
-  });
+  public static readonly [_internal] = {
+    label: "transaction",
+    schema: Joi.object({
+      id: Joi.string().uuid().required(),
+      isRetry: Joi.boolean(),
+      useSandbox: Joi.boolean(),
+      session: CustomData[_internal].schema,
+    }),
+  };
+
+  /** @internal */
+  private readonly [_private]: {
+    session: CustomDataPOJO;
+  };
 
   //#endregion
-  //#region Instance Fields
-
-  /** @internal */
-  private readonly _session: CustomDataPOJO = {};
+  //#region Public Fields
 
   /**
    * Uniquely identifies the current transaction. If the transaction is retried, then this ID will
@@ -56,7 +61,7 @@ export class Transaction {
    * such as renewing a session token or updating a timestamp.
    */
   public get session(): CustomDataPOJO {
-    return this._session;
+    return this[_private].session;
   }
 
   /**
@@ -68,16 +73,18 @@ export class Transaction {
       value = {};
     }
 
-    validate(value, "session data", CustomData.schema);
+    validate(value, "session data", CustomData[_internal].schema);
 
-    let keys = Object.getOwnPropertyNames(this._session).concat(Object.getOwnPropertyNames(value));
+    let { session } = this[_private];
+    let keys = Object.getOwnPropertyNames(session).concat(Object.getOwnPropertyNames(value));
+
     for (let key of keys) {
       if (key in value) {
-        this._session[key] = value[key];
+        session[key] = value[key];
       }
       else {
         // tslint:disable-next-line: no-dynamic-delete
-        delete this._session[key];
+        delete session[key];
       }
     }
   }
@@ -91,12 +98,9 @@ export class Transaction {
     this.isRetry = pojo.isRetry || false;
     this.useSandbox = pojo.useSandbox || false;
 
-    if (pojo.session) {
-      this.session = new CustomData(pojo.session);
-    }
-
-    // Hide the internal _session field
-    hidePrivateFields(this);
+    this[_private] = {
+      session: { ...pojo.session },
+    };
 
     // Make the session getter/setter look like a normal property
     Object.defineProperty(this, "session", {
@@ -104,8 +108,10 @@ export class Transaction {
       enumerable: true,
     });
 
-    // Prevent modifications after validation
-    // NOTE: The session object is NOT frozen. It can be mutated by user code.
-    Object.freeze(this);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(Transaction);

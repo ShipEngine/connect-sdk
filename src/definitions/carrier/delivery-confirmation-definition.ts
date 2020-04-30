@@ -1,5 +1,6 @@
 import { DeliveryConfirmationClass } from "../../enums";
-import { UUID } from "../../types";
+import { InlineOrReference, UUID } from "../../types";
+import { LocalizationDefinition } from "../common/localization-definition";
 
 /**
  * Delivery confirmation options offered by a carrier
@@ -25,4 +26,12 @@ export interface DeliveryConfirmationDefinition {
    * The class of confirmation
    */
   class: DeliveryConfirmationClass;
+
+  /**
+   * Localizaed values for fields that allow localization
+   */
+  localization?: InlineOrReference<LocalizationDefinition<{
+    name?: string;
+    description?: string;
+  }>>;
 }

@@ -1,23 +1,25 @@
 import { CarrierAppPOJO } from "../../pojos/carrier";
 import { validate } from "../../validation";
 import { App } from "../common/app";
+import { hideAndFreeze, _internal } from "../utils";
 import { Carrier } from "./carrier";
 
 /**
  * A ShipEngine Integration Platform carrier app
  */
 export class CarrierApp extends App {
-  //#region Class Fields
-
-  public static readonly label = "ShipEngine Integration Platform carrier app";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = App.schema.keys({
-    carrier: Carrier.schema.required(),
-  });
+  public static readonly [_internal] = {
+    label: "ShipEngine Integration Platform carrier app",
+    schema: App[_internal].schema.keys({
+      carrier: Carrier[_internal].schema.required(),
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * Indicates that this is a carrier app
@@ -38,10 +40,13 @@ export class CarrierApp extends App {
 
     this.carrier = new Carrier(pojo.carrier, this);
 
-    // The app is now finished loading, so free-up memory that's no longer needed
-    this._references.finishedLoading();
+    // The app is now finished loading, so no new references can be added
+    this[_internal].references.finishedLoading();
 
-    // Prevent modifications after validation
-    Object.freeze(this);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(CarrierApp);

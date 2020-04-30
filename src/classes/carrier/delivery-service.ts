@@ -1,45 +1,60 @@
 import { Country } from "../../countries";
 import { DeliveryServiceClass, DeliveryServiceGrade, LabelFormat, LabelSize, ManifestType, ServiceArea } from "../../enums";
 import { DeliveryServicePOJO } from "../../pojos/carrier";
+import { LocalizedInfoPOJO } from "../../pojos/common";
 import { UUID } from "../../types";
 import { Joi } from "../../validation";
 import { App } from "../common/app";
-import { Carrier } from "./carrier";
+import { Localization, localize } from "../common/localization";
+import { hideAndFreeze, _internal } from "../utils";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { Packaging } from "./packaging";
+
+const _private = Symbol("private fields");
 
 /**
  * A delivery service that is offered by a carrier
  */
 export class DeliveryService {
-  //#region Class Fields
-
-  public static readonly label = "delivery service";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    id: Joi.string().uuid().required(),
-    name: Joi.string().trim().singleLine().min(1).max(100).required(),
-    description: Joi.string().trim().singleLine().allow("").max(1000),
-    class: Joi.string().enum(DeliveryServiceClass).required(),
-    grade: Joi.string().enum(DeliveryServiceGrade).required(),
-    serviceArea: Joi.string().enum(ServiceArea),
-    isConsolidationService: Joi.boolean(),
-    isReturnService: Joi.boolean(),
-    allowsMultiplePackages: Joi.boolean(),
-    hasTracking: Joi.boolean(),
-    hasSandbox: Joi.boolean(),
-    requiresManifest: Joi.alternatives(Joi.allow(false), Joi.string().enum(ManifestType)),
-    labelFormats: Joi.array().items(Joi.string().enum(LabelFormat)),
-    labelSizes: Joi.array().items(Joi.string().enum(LabelSize)),
-    originCountries: Joi.array().min(1).items(Joi.string().enum(Country)).required(),
-    destinationCountries: Joi.array().min(1).items(Joi.string().enum(Country)).required(),
-    packaging: Joi.array().items(Packaging.schema),
-    deliveryConfirmations: Joi.array().items(DeliveryConfirmation.schema),
-  });
+  public static readonly [_internal] = {
+    label: "delivery service",
+    schema: Joi.object({
+      id: Joi.string().uuid().required(),
+      name: Joi.string().trim().singleLine().min(1).max(100).required(),
+      description: Joi.string().trim().singleLine().allow("").max(1000),
+      class: Joi.string().enum(DeliveryServiceClass).required(),
+      grade: Joi.string().enum(DeliveryServiceGrade).required(),
+      serviceArea: Joi.string().enum(ServiceArea),
+      isConsolidationService: Joi.boolean(),
+      isReturnService: Joi.boolean(),
+      allowsMultiplePackages: Joi.boolean(),
+      hasTracking: Joi.boolean(),
+      hasSandbox: Joi.boolean(),
+      requiresManifest: Joi.alternatives(Joi.allow(false), Joi.string().enum(ManifestType)),
+      labelFormats: Joi.array().items(Joi.string().enum(LabelFormat)),
+      labelSizes: Joi.array().items(Joi.string().enum(LabelSize)),
+      originCountries: Joi.array().min(1).items(Joi.string().enum(Country)).required(),
+      destinationCountries: Joi.array().min(1).items(Joi.string().enum(Country)).required(),
+      packaging: Joi.array().items(Packaging[_internal].schema),
+      deliveryConfirmations: Joi.array().items(DeliveryConfirmation[_internal].schema),
+      localization: Joi.object().localization({
+        name: Joi.string().trim().singleLine().min(1).max(100),
+        description: Joi.string().trim().singleLine().allow("").max(1000),
+      }),
+    }),
+  };
+
+  /** @internal */
+  private readonly [_private]: {
+    readonly app: App;
+    readonly localization: Localization<LocalizedInfoPOJO>;
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * A UUID that uniquely identifies the delivery service.
@@ -125,11 +140,6 @@ export class DeliveryService {
   public readonly destinationCountries: ReadonlyArray<Country>;
 
   /**
-   * The carrier that provides this service
-   */
-  public readonly  carrier: Carrier;
-
-  /**
    * The types of packaging that are provided/allowed for this service
    */
   public readonly packaging: ReadonlyArray<Packaging>;
@@ -169,9 +179,8 @@ export class DeliveryService {
 
   //#endregion
 
-  public constructor(pojo: DeliveryServicePOJO, app: App, parent: Carrier) {
-    this.carrier = parent;
-    this.id = app._references.add(this, pojo);
+  public constructor(pojo: DeliveryServicePOJO, app: App) {
+    this.id = pojo.id;
     this.name = pojo.name;
     this.description = pojo.description || "";
     this.class = pojo.class;
@@ -187,20 +196,50 @@ export class DeliveryService {
     this.labelSizes = pojo.labelSizes || [];
     this.originCountries = pojo.originCountries;
     this.destinationCountries = pojo.destinationCountries;
-    this.packaging = pojo.packaging
-      ? pojo.packaging.map((svc) => app._references.get(svc, Packaging) || new Packaging(svc, app)) : [];
+    this.packaging = pojo.packaging ? pojo.packaging.map((svc) => new Packaging(svc, app)) : [];
     this.deliveryConfirmations = pojo.deliveryConfirmations
-      ? pojo.deliveryConfirmations.map(
-        (svc) => app._references.get(svc, DeliveryConfirmation) || new DeliveryConfirmation(svc, app)) : [];
+      ? pojo.deliveryConfirmations.map((svc) => new DeliveryConfirmation(svc, app)) : [];
 
-    // Prevent modifications after validation
-    Object.freeze(this);
-    Object.freeze(this.labelFormats);
-    Object.freeze(this.labelSizes);
-    Object.freeze(this.originCountries);
-    Object.freeze(this.destinationCountries);
-    Object.freeze(this.packaging);
-    Object.freeze(this.deliveryConfirmations);
+    this[_private] = {
+      app,
+      localization: new Localization(pojo.localization || {}),
+    };
+
+    // Make this object immutable
+    hideAndFreeze(this);
+
+    app[_internal].references.add(this);
   }
 
+  /**
+   * Creates a copy of the delivery service, localized for the specified locale if possible.
+   */
+  public localize(locale: string): DeliveryService {
+    let pojo = localize(this, locale);
+    return new DeliveryService(pojo, this[_private].app);
+  }
+
+  /**
+   * Returns the delivery service as a POJO that can be safely serialized as JSON.
+   * Optionally returns the POJO localized to the specifeid language and region.
+   */
+  public toJSON(locale?: string): DeliveryServicePOJO {
+    let { localization } = this[_private];
+    let localizedValues = locale ? localization.lookup(locale) : {};
+
+    return {
+      ...this,
+      labelFormats: this.labelFormats as LabelFormat[],
+      labelSizes: this.labelSizes as LabelSize[],
+      originCountries: this.originCountries as Country[],
+      destinationCountries: this.destinationCountries as Country[],
+      packaging: this.packaging.map((o) => o.toJSON(locale)),
+      deliveryConfirmations: this.deliveryConfirmations.map((o) => o.toJSON(locale)),
+      localization: localization.toJSON(),
+      ...localizedValues,
+    };
+  }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(DeliveryService);

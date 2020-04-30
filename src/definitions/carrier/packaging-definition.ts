@@ -1,4 +1,5 @@
-import { UUID } from "../../types";
+import { LocalizationDefinition } from "..";
+import { InlineOrReference, UUID } from "../../types";
 
 /**
  * Describes a type of packaging
@@ -29,4 +30,12 @@ export interface PackagingDefinition {
    * Indicates whether the dimensions must be specified when using this packaging
    */
   requiresDimensions?: boolean;
+
+  /**
+   * Localizaed values for fields that allow localization
+   */
+  localization?: InlineOrReference<LocalizationDefinition<{
+    name?: string;
+    description?: string;
+  }>>;
 }

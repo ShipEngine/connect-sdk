@@ -1,30 +1,32 @@
 import { LabelPOJO } from "../../../pojos/carrier";
 import { Joi } from "../../../validation";
+import { hideAndFreeze, _internal } from "../../utils";
 
 /**
  * A shipping label
  */
 export class Label {
-  //#region Class Fields
-
-  public static readonly label = "label";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    trackingNumber: Joi.string().trim().singleLine().min(1).max(100).required(),
-    image: Joi.object().instance(Buffer).required().keys({
-      length: Joi.number().integer().min(1),
-    }),
-    forms: Joi.array().items(Joi.object({
-      name: Joi.string().trim().singleLine().min(1).max(100).required(),
-      data: Joi.object().instance(Buffer).required().keys({
+  public static readonly [_internal] = {
+    label: "label",
+    schema: Joi.object({
+      trackingNumber: Joi.string().trim().singleLine().min(1).max(100).required(),
+      image: Joi.object().instance(Buffer).required().keys({
         length: Joi.number().integer().min(1),
       }),
-    }))
-  });
+      forms: Joi.array().items(Joi.object({
+        name: Joi.string().trim().singleLine().min(1).max(100).required(),
+        data: Joi.object().instance(Buffer).required().keys({
+          length: Joi.number().integer().min(1),
+        }),
+      }))
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * The carrier tracking number for this label
@@ -51,8 +53,10 @@ export class Label {
     this.image = pojo.image;
     this.forms = pojo.forms ? pojo.forms.map((form) => Object.freeze(form)) : [];
 
-    // Prevent modifications after validation
-    Object.freeze(this);
-    Object.freeze(this.forms);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(Label);

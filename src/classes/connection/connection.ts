@@ -1,40 +1,52 @@
 import { error, ErrorCode } from "../../errors";
-import { TransactionPOJO } from "../../pojos/common";
+import { LocalizedBrandingPOJO, TransactionPOJO } from "../../pojos/common";
 import { ConnectionPOJO } from "../../pojos/connection";
 import { UUID } from "../../types";
 import { Joi } from "../../validation";
 import { Logo, Transaction } from "../common";
 import { App } from "../common/app";
-import { hidePrivateFields } from "../utils";
+import { Localization, localize } from "../common/localization";
+import { hideAndFreeze, _internal } from "../utils";
 import { Form } from "./form";
 import { Connect } from "./methods";
+
+const _private = Symbol("private fields");
 
 /**
  * A connection to a third-party service, such as a carrier or marketplace
  */
 export class Connection {
-  //#region Class Fields
-
-  public static readonly label = "connection";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    id: Joi.string().uuid().required(),
-    name: Joi.string().trim().singleLine().min(1).max(100).required(),
-    description: Joi.string().trim().singleLine().allow("").max(1000),
-    websiteURL: Joi.string().website().required(),
-    logo: Joi.object().required(),
-    connectForm: Form.schema.required(),
-    settingsForm: Form.schema,
-    connect: Joi.function().required(),
-  });
+  public static readonly [_internal] = {
+    label: "connection",
+    schema: Joi.object({
+      id: Joi.string().uuid().required(),
+      name: Joi.string().trim().singleLine().min(1).max(100).required(),
+      description: Joi.string().trim().singleLine().allow("").max(1000),
+      websiteURL: Joi.string().website().required(),
+      logo: Joi.object().required(),
+      connectForm: Form[_internal].schema.required(),
+      settingsForm: Form[_internal].schema,
+      localization: Joi.object().localization({
+        name: Joi.string().trim().singleLine().min(1).max(100),
+        description: Joi.string().trim().singleLine().allow("").max(1000),
+        websiteURL: Joi.string().website(),
+      }),
+      connect: Joi.function().required(),
+    }),
+  };
+
+  /** @internal */
+  private readonly [_private]: {
+    readonly app: App;
+    readonly localization: Localization<LocalizedBrandingPOJO>;
+    readonly connect: Connect;
+  };
 
   //#endregion
-  //#region Instance Fields
-
-  // Store the user-defined methods as private fields.
-  // We wrap these methods with our own signatures below
-  private readonly _connect: Connect;
+  //#region Public Fields
 
   /**
    * A UUID that uniquely identifies the connection.
@@ -63,30 +75,62 @@ export class Connection {
   public readonly logo: Logo;
 
   /**
-   * The ShipEngine Integration Platform app that this connection is part of.
+   * A form that allows the user to connect to the third-party service.
+   * This form will usually prompt for an account number and login credentials.
+   */
+  public readonly connectForm: Form;
+
+  /**
+   * A form that allows the user to configure connection settings
    */
   public readonly settingsForm?: Form;
 
   //#endregion
 
   public constructor(pojo: ConnectionPOJO, app: App) {
-    this.id = app._references.add(this, pojo);
+    this.id = pojo.id;
     this.name = pojo.name;
     this.description = pojo.description || "";
     this.websiteURL = new URL(pojo.websiteURL);
     this.logo =  new Logo(pojo.logo);
     this.connectForm = new Form(pojo.connectForm);
+    this.settingsForm = pojo.settingsForm && new Form(pojo.settingsForm);
 
-    // Store any user-defined methods as private fields.
-    this._connect = pojo.connect;
+    this[_private] = {
+      app,
+      localization: new Localization(pojo.localization || {}),
+      connect: pojo.connect,
+    };
 
-    // Hide private fields
-    hidePrivateFields(this);
+    // Make this object immutable
+    hideAndFreeze(this);
 
-    // Prevent modifications after validation
-    Object.freeze(this);
-    Object.freeze(this.websiteURL);
-    Object.freeze(this.connect);
+    app[_internal].references.add(this);
+  }
+
+  /**
+   * Creates a copy of the connection, localized for the specified locale if possible.
+   */
+  public localize(locale: string): Connection {
+    let pojo = localize(this, locale);
+    return new Connection(pojo, this[_private].app);
+  }
+
+  /**
+   * Returns the connection as a POJO that can be safely serialized as JSON.
+   * Optionally returns the POJO localized to the specifeid language and region.
+   */
+  public toJSON(locale?: string): ConnectionPOJO {
+    let { localization, connect } = this[_private];
+    let localizedValues = locale ? localization.lookup(locale) : {};
+
+    return {
+      ...this,
+      websiteURL: this.websiteURL.href,
+      connect,
+      localization: localization.toJSON(),
+      ...localizedValues,
+    };
   }
 
   //#region Wrappers around user-defined methdos
@@ -97,6 +141,7 @@ export class Connection {
    */
   public async connect(transaction: TransactionPOJO, connectionData: object): Promise<void> {
     let _transaction, _connectionData;
+    let { connect } = this[_private];
 
     try {
       _transaction = new Transaction(transaction);
@@ -107,7 +152,7 @@ export class Connection {
     }
 
     try {
-      await this._connect(_transaction, _connectionData);
+      await connect(_transaction, _connectionData);
     }
     catch (originalError) {
       let transactionID = _transaction.id;
@@ -117,3 +162,6 @@ export class Connection {
 
   //#endregion
 }
+
+// Prevent modifications to the class
+hideAndFreeze(Connection);

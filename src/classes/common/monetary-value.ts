@@ -4,23 +4,25 @@ import { Currency } from "../../enums";
 import { error, ErrorCode } from "../../errors";
 import { MonetaryValuePOJO } from "../../pojos/common";
 import { Joi } from "../../validation";
+import { hideAndFreeze, _internal } from "../utils";
 
 /**
  * A monetary value in a supported currency
  */
 export class MonetaryValue {
-  //#region Class Fields
-
-  public static readonly label = "monetary value";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    value: Joi.alternatives(Joi.number().min(0), Joi.string().money()).required(),
-    currency: Joi.string().enum(Currency).required(),
-  });
+  public static readonly [_internal] = {
+    label: "monetary value",
+    schema: Joi.object({
+      value: Joi.alternatives(Joi.number().min(0), Joi.string().money()).required(),
+      currency: Joi.string().enum(Currency).required(),
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * The amount of this value. Represented as a string to avoid floating
@@ -40,8 +42,8 @@ export class MonetaryValue {
     this.value = currency(pojo.value).toString();
     this.currency = pojo.currency;
 
-    // Prevent modifications after validation
-    Object.freeze(this);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 
   /**
@@ -75,3 +77,6 @@ export class MonetaryValue {
     });
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(MonetaryValue);

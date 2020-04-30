@@ -1,6 +1,7 @@
 import { Country } from "../../countries";
 import { DeliveryServiceClass, DeliveryServiceGrade, LabelFormat, LabelSize, ManifestType, ServiceArea } from "../../enums";
 import { InlineOrReference, InlineOrReferenceArray, UUID } from "../../types";
+import { LocalizationDefinition } from "../common/localization-definition";
 import { DeliveryConfirmationDefinition } from "./delivery-confirmation-definition";
 import { PackagingDefinition } from "./packaging-definition";
 
@@ -100,4 +101,12 @@ export interface DeliveryServiceDefinition {
    * The types of package delivery confirmations offered for this service
    */
   deliveryConfirmations?: InlineOrReferenceArray<DeliveryConfirmationDefinition>;
+
+  /**
+   * Localizaed values for fields that allow localization
+   */
+  localization?: InlineOrReference<LocalizationDefinition<{
+    name?: string;
+    description?: string;
+  }>>;
 }

@@ -2,25 +2,27 @@ import { LabelFormat, LabelSize } from "../../../enums";
 import { LabelSpecPOJO } from "../../../pojos/carrier";
 import { Joi, validate } from "../../../validation";
 import { App } from "../../common/app";
+import { hideAndFreeze, _internal } from "../../utils";
 import { NewShipment, Shipment } from "../shipment";
 
 /**
  * Specifies the information needed to create a shipping label for a shipment.
  */
 export class LabelSpec {
-  //#region Class Fields
-
-  public static readonly label = "label specification";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    format: Joi.string().enum(LabelFormat).required(),
-    size: Joi.string().enum(LabelSize).required(),
-    shipment: Shipment.schema.required(),
-  });
+  public static readonly [_internal] = {
+    label: "label specification",
+    schema: Joi.object({
+      format: Joi.string().enum(LabelFormat).required(),
+      size: Joi.string().enum(LabelSize).required(),
+      shipment: Shipment[_internal].schema.required(),
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * The expected file format of the label
@@ -46,7 +48,10 @@ export class LabelSpec {
     this.size = pojo.size;
     this.shipment = new NewShipment(pojo.shipment, app);
 
-    // Prevent modifications after validation
-    Object.freeze(this);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(LabelSpec);

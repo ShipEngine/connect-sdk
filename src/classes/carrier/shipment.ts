@@ -1,5 +1,4 @@
 // tslint:disable: max-classes-per-file
-import { DeliveryConfirmation, DeliveryService } from ".";
 import { Country } from "../../countries";
 import { BilledParty, InsuranceProvider, NonDeliveryAction } from "../../enums";
 import { error, ErrorCode, ShipEngineError } from "../../errors";
@@ -8,36 +7,43 @@ import { NewShipmentPOJO, PackagePOJO, ShipmentIdentifierPOJO, ShipmentPOJO } fr
 import { Joi } from "../../validation";
 import { AddressWithContactInfo, Identifier, MonetaryValue } from "../common";
 import { App } from "../common/app";
+import { hideAndFreeze, _internal } from "../utils";
+import { DeliveryConfirmation } from "./delivery-confirmation";
+import { DeliveryService } from "./delivery-service";
 import { NewPackage, Package } from "./package";
 
 /**
  * Identifies a shipment
  */
 export class ShipmentIdentifier extends shipmentIdentifierMixin() {
-  //#region Class Fields
-
-  public static readonly label = "shipment";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    trackingNumber: Joi.string().trim().singleLine().min(1).max(100).required(),
-    identifiers: Joi.array().items(Identifier.schema),
-  });
+  public static readonly [_internal] = {
+    label: "shipment",
+    schema: Joi.object({
+      trackingNumber: Joi.string().trim().singleLine().min(1).max(100).required(),
+      identifiers: Joi.array().items(Identifier[_internal].schema),
+    }),
+  };
 
   //#endregion
 
   public constructor(pojo: ShipmentIdentifierPOJO) {
     super(pojo);
 
-    // Prevent modifications after validation
-    Object.freeze(this);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(ShipmentIdentifier);
 
 
 function shipmentIdentifierMixin(base: Constructor = Object) {
   return class ShipmentIdentifierMixin extends base {
-    //#region Instance Fields
+    //#region Public Fields
 
     /**
      * The carrier tracking number
@@ -56,9 +62,6 @@ function shipmentIdentifierMixin(base: Constructor = Object) {
 
       this.trackingNumber = pojo.trackingNumber;
       this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];
-
-      // Prevent modifications after validation
-      Object.freeze(this.identifiers);
     }
   };
 }
@@ -68,51 +71,55 @@ function shipmentIdentifierMixin(base: Constructor = Object) {
  * A shipment that has not yet been created and has no identifiers yet
  */
 export class NewShipment extends newShipmentMixin() {
-  //#region Class Fields
-
-  public static readonly label = "shipment";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    deliveryServiceID: Joi.string().uuid().required(),
-    deliveryConfirmationID: Joi.string().uuid().required(),
-    shipFrom: AddressWithContactInfo.schema.required(),
-    shipTo: AddressWithContactInfo.schema.required(),
-    returnTo: AddressWithContactInfo.schema,
-    shipDateTime: Joi.date().required(),
-    nonDeliveryAction: Joi.string().enum(NonDeliveryAction).required(),
-    insuranceProvider: Joi.string().enum(InsuranceProvider),
-    outboundShipment: ShipmentIdentifier.schema,
-    isReturn: Joi.boolean(),
-    billing: Joi.object({
-      dutiesPaidBy: Joi.string().enum(BilledParty),
-      deliveryPaidBy: Joi.string().enum(BilledParty),
-      account: Joi.string().trim().singleLine().allow("").max(100)
-        .when("dutiesPaidBy", { is: BilledParty.ThirdParty, then: Joi.string().min(1).required() })
-        .when("deliveryPaidBy", { is: BilledParty.ThirdParty, then: Joi.string().min(1).required() }),
-      postalCode: Joi.string().trim().singleLine().allow("").max(100)
-        .when("dutiesPaidBy", { is: BilledParty.ThirdParty, then: Joi.string().min(1).required() })
-        .when("deliveryPaidBy", { is: BilledParty.ThirdParty, then: Joi.string().min(1).required() }),
-      country: Joi.string().enum(Country)
-        .when("dutiesPaidBy", { is: BilledParty.ThirdParty, then: Joi.required() })
-        .when("deliveryPaidBy", { is: BilledParty.ThirdParty, then: Joi.required() }),
+  public static readonly [_internal] = {
+    label: "shipment",
+    schema: Joi.object({
+      deliveryServiceID: Joi.string().uuid().required(),
+      deliveryConfirmationID: Joi.string().uuid().required(),
+      shipFrom: AddressWithContactInfo[_internal].schema.required(),
+      shipTo: AddressWithContactInfo[_internal].schema.required(),
+      returnTo: AddressWithContactInfo[_internal].schema,
+      shipDateTime: Joi.date().required(),
+      nonDeliveryAction: Joi.string().enum(NonDeliveryAction).required(),
+      insuranceProvider: Joi.string().enum(InsuranceProvider),
+      outboundShipment: ShipmentIdentifier[_internal].schema,
+      isReturn: Joi.boolean(),
+      billing: Joi.object({
+        dutiesPaidBy: Joi.string().enum(BilledParty),
+        deliveryPaidBy: Joi.string().enum(BilledParty),
+        account: Joi.string().trim().singleLine().allow("").max(100)
+          .when("dutiesPaidBy", { is: BilledParty.ThirdParty, then: Joi.string().min(1).required() })
+          .when("deliveryPaidBy", { is: BilledParty.ThirdParty, then: Joi.string().min(1).required() }),
+        postalCode: Joi.string().trim().singleLine().allow("").max(100)
+          .when("dutiesPaidBy", { is: BilledParty.ThirdParty, then: Joi.string().min(1).required() })
+          .when("deliveryPaidBy", { is: BilledParty.ThirdParty, then: Joi.string().min(1).required() }),
+        country: Joi.string().enum(Country)
+          .when("dutiesPaidBy", { is: BilledParty.ThirdParty, then: Joi.required() })
+          .when("deliveryPaidBy", { is: BilledParty.ThirdParty, then: Joi.required() }),
+      }),
+      packages: Joi.array().min(1).items(NewPackage[_internal].schema).required(),
     }),
-    packages: Joi.array().min(1).items(NewPackage.schema).required(),
-  });
+  };
 
   //#endregion
 
   public constructor(pojo: NewShipmentPOJO, app: App) {
     super(pojo, app);
 
-    // Prevent modifications after validation
-    Object.freeze(this);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
 
+// Prevent modifications to the class
+hideAndFreeze(NewShipment);
+
 function newShipmentMixin(base: Constructor = Object) {
   return class NewShipmentMixin extends base {
-    //#region Instance Fields
+    //#region Public Fields
 
     /**
      * The delivery service to use
@@ -223,8 +230,8 @@ function newShipmentMixin(base: Constructor = Object) {
     public constructor(pojo: NewShipmentPOJO, app: App) {
       base === Object ? super() : super(pojo);
 
-      this.deliveryService = app._references.lookup(pojo.deliveryServiceID, DeliveryService);
-      this.deliveryConfirmation = app._references.get(pojo.deliveryConfirmationID, DeliveryConfirmation);
+      this.deliveryService = app[_internal].references.lookup(pojo.deliveryServiceID, DeliveryService);
+      this.deliveryConfirmation = app[_internal].references.get(pojo.deliveryConfirmationID, DeliveryConfirmation);
       this.shipFrom = new AddressWithContactInfo(pojo.shipFrom);
       this.shipTo = new AddressWithContactInfo(pojo.shipTo);
       this.returnTo = pojo.returnTo
@@ -248,10 +255,6 @@ function newShipmentMixin(base: Constructor = Object) {
 
       this.packages = pojo.packages.map((parcel) => new NewPackage(parcel, app));
       this.totalInsuredValue = calculateTotalInsuranceAmount(this.packages);
-
-      // Prevent modifications after validation
-      Object.freeze(this.billing);
-      Object.freeze(this.packages);
     }
   };
 }
@@ -266,17 +269,18 @@ export interface Shipment extends ShipmentIdentifier, NewShipment {}
  * A shipment that has already been created and assigned identifiers
  */
 export class Shipment extends newShipmentMixin(shipmentIdentifierMixin()) {
-  //#region Class Fields
-
-  public static readonly label = "shipment";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = ShipmentIdentifier.schema.concat(NewShipment.schema).keys({
-    packages: Joi.array().min(1).items(Package.schema).required(),
-  });
+  public static readonly [_internal] = {
+    label: "shipment",
+    schema: ShipmentIdentifier[_internal].schema.concat(NewShipment[_internal].schema).keys({
+      packages: Joi.array().min(1).items(Package[_internal].schema).required(),
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * The list of packages in the shipment
@@ -290,10 +294,13 @@ export class Shipment extends newShipmentMixin(shipmentIdentifierMixin()) {
 
     this.packages = pojo.packages.map((parcel: PackagePOJO) => new Package(parcel, app));
 
-    // Prevent modifications after validation
-    Object.freeze(this);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(Shipment);
 
 /**
  * Calculates the total insurance amount for the shipment,

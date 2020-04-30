@@ -1,6 +1,7 @@
 import { PickupConfirmationPOJO } from "../../../pojos/carrier";
 import { Joi, validate } from "../../../validation";
 import { CustomData, Identifier } from "../../common";
+import { hideAndFreeze, _internal } from "../../utils";
 import { Shipment, ShipmentIdentifier } from "../shipment";
 import { TimeRange } from "./time-range";
 
@@ -8,22 +9,23 @@ import { TimeRange } from "./time-range";
  * Confirmation that a package pickup has been scheduled
  */
 export class PickupConfirmation {
-  //#region Class Fields
-
-  public static readonly label = "pickup confirmation";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    cancellationID: Joi.string().trim().singleLine().allow("").max(100),
-    identifiers: Joi.array().items(Identifier.schema),
-    shipments: Joi.array().min(1).items(Shipment.schema),
-    timeWindows: Joi.array().min(1).items(TimeRange.schema).required(),
-    notes: Joi.string().allow("").max(5000),
-    customData: CustomData.schema,
-  });
+  public static readonly [_internal] = {
+    label: "pickup confirmation",
+    schema: Joi.object({
+      cancellationID: Joi.string().trim().singleLine().allow("").max(100),
+      identifiers: Joi.array().items(Identifier[_internal].schema),
+      shipments: Joi.array().min(1).items(Shipment[_internal].schema),
+      timeWindows: Joi.array().min(1).items(TimeRange[_internal].schema).required(),
+      notes: Joi.string().allow("").max(5000),
+      customData: CustomData[_internal].schema,
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * The carrier's confirmation ID
@@ -68,10 +70,10 @@ export class PickupConfirmation {
     this.notes = pojo.notes || "";
     this.customData = pojo.customData && new CustomData(pojo.customData);
 
-    // Prevent modifications after validation
-    Object.freeze(this);
-    Object.freeze(this.identifiers);
-    Object.freeze(this.shipments);
-    Object.freeze(this.timeWindows);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(PickupConfirmation);

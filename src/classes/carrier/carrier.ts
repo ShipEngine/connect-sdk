@@ -2,12 +2,13 @@ import { Country } from "../../countries";
 import { LabelFormat, LabelSize, ManifestType, ServiceArea } from "../../enums";
 import { error, ErrorCode } from "../../errors";
 import { CarrierPOJO, LabelSpecPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, TrackingCriteriaPOJO } from "../../pojos/carrier";
-import { TransactionPOJO } from "../../pojos/common";
+import { LocalizedBrandingPOJO, TransactionPOJO } from "../../pojos/common";
 import { UrlString, UUID } from "../../types";
 import { Joi } from "../../validation";
 import { Logo, Transaction } from "../common";
 import { App } from "../common/app";
-import { hidePrivateFields } from "../utils";
+import { Localization, localize } from "../common/localization";
+import { hideAndFreeze, _internal } from "../utils";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
 import { LabelConfirmation } from "./labels/label-confirmation";
@@ -24,65 +25,57 @@ import { RateQuote } from "./rates/rate-quote";
 import { TrackingCriteria } from "./tracking/tracking-criteria";
 import { getMaxServiceArea } from "./utils";
 
+const _private = Symbol("private fields");
+
 /**
  * A carrier that provides delivery services
  */
 export class Carrier {
-  //#region Class Fields
-
-  public static readonly label = "carrier";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    id: Joi.string().uuid().required(),
-    name: Joi.string().trim().singleLine().min(1).max(100).required(),
-    description: Joi.string().trim().singleLine().allow("").max(1000),
-    websiteURL: Joi.string().website().required(),
-    logo: Joi.object().required(),
-    deliveryServices: Joi.array().min(1).items(DeliveryService.schema).required(),
-    pickupServices: Joi.array().items(PickupService.schema),
-    requestPickup: Joi.function(),
-    cancelPickup: Joi.function(),
-    createLabel: Joi.function(),
-    voidLabel: Joi.function(),
-    getRates: Joi.function(),
-    getTrackingURL: Joi.function(),
-    track: Joi.function(),
-    createManifest: Joi.function(),
-  });
+  public static readonly [_internal] = {
+    label: "carrier",
+    schema: Joi.object({
+      id: Joi.string().uuid().required(),
+      name: Joi.string().trim().singleLine().min(1).max(100).required(),
+      description: Joi.string().trim().singleLine().allow("").max(1000),
+      websiteURL: Joi.string().website().required(),
+      logo: Joi.object().required(),
+      deliveryServices: Joi.array().min(1).items(DeliveryService[_internal].schema).required(),
+      pickupServices: Joi.array().items(PickupService[_internal].schema),
+      localization: Joi.object().localization({
+        name: Joi.string().trim().singleLine().min(1).max(100),
+        description: Joi.string().trim().singleLine().allow("").max(1000),
+        websiteURL: Joi.string().website(),
+      }),
+      requestPickup: Joi.function(),
+      cancelPickup: Joi.function(),
+      createLabel: Joi.function(),
+      voidLabel: Joi.function(),
+      getRates: Joi.function(),
+      getTrackingURL: Joi.function(),
+      track: Joi.function(),
+      createManifest: Joi.function(),
+    }),
+  };
+
+  /** @internal */
+  private readonly [_private]: {
+    readonly app: App;
+    readonly localization: Localization<LocalizedBrandingPOJO>;
+    readonly requestPickup: RequestPickup | undefined;
+    readonly cancelPickup: CancelPickup | undefined;
+    readonly createLabel: CreateLabel | undefined;
+    readonly voidLabel: VoidLabel | undefined;
+    readonly getRates: GetRates | undefined;
+    readonly getTrackingURL: GetTrackingURL | undefined;
+    readonly track: Track | undefined;
+    readonly createManifest: CreateManifest | undefined;
+  };
 
   //#endregion
-  //#region Instance Fields
-
-  /** @internal */
-  private readonly _requestPickup: RequestPickup | undefined;
-
-  /** @internal */
-  private readonly _cancelPickup: CancelPickup | undefined;
-
-  /** @internal */
-  private readonly _createLabel: CreateLabel | undefined;
-
-  /** @internal */
-  private readonly _voidLabel: VoidLabel | undefined;
-
-  /** @internal */
-  private readonly _getRates: GetRates | undefined;
-
-  /** @internal */
-  private readonly _getTrackingURL: GetTrackingURL | undefined;
-
-  /** @internal */
-  private readonly _track: Track | undefined;
-
-  /** @internal */
-  private readonly _createManifest: CreateManifest | undefined;
-
-  /** @internal */
-  private readonly _localization: Localization<LocalizedBrandingPOJO>;
-
-  /** @internal */
-  private readonly _app: App;
+  //#region Public Fields
 
   /**
    * A UUID that uniquely identifies the carrier.
@@ -267,42 +260,69 @@ export class Carrier {
   //#endregion
 
   public constructor(pojo: CarrierPOJO, app: App) {
-    this.id = app._references.add(this, pojo);
+    this.id = pojo.id;
     this.name = pojo.name;
     this.description = pojo.description || "";
     this.websiteURL = new URL(pojo.websiteURL);
     this.logo =  new Logo(pojo.logo);
-    this.deliveryServices = pojo.deliveryServices.map((svc) => new DeliveryService(svc, app, this));
+    this.deliveryServices = pojo.deliveryServices.map((svc) => new DeliveryService(svc, app));
     this.pickupServices = pojo.pickupServices
-      ? pojo.pickupServices.map((svc) => new PickupService(svc, app, this)) : [];
-    this.app = app;
-    this._app = app;
+      ? pojo.pickupServices.map((svc) => new PickupService(svc, app)) : [];
 
-    // Store any user-defined methods as private fields.
-    // For any methods that aren't implemented, set the corresponding class method to undefined.
-    pojo.requestPickup ? (this._requestPickup = pojo.requestPickup) : (this.requestPickup = undefined);
-    pojo.cancelPickup ? (this._cancelPickup = pojo.cancelPickup) : (this.cancelPickup = undefined);
-    pojo.createLabel ? (this._createLabel = pojo.createLabel) : (this.createLabel = undefined);
-    pojo.voidLabel ? (this._voidLabel = pojo.voidLabel) : (this.voidLabel = undefined);
-    pojo.getRates ? (this._getRates = pojo.getRates) : (this.getRates = undefined);
-    pojo.getTrackingURL ? (this._getTrackingURL = pojo.getTrackingURL) : (this.getTrackingURL = undefined);
-    pojo.track ? (this._track = pojo.track) : (this.track = undefined);
-    pojo.createManifest ? (this._createManifest = pojo.createManifest) : (this.createManifest = undefined);
+    this[_private] = {
+      app,
+      localization: new Localization(pojo.localization || {}),
 
-    // Hide private fields
-    hidePrivateFields(this);
+      // Store any user-defined methods as private fields.
+      // For any methods that aren't implemented, set the corresponding class method to undefined.
+      requestPickup: pojo.requestPickup ? pojo.requestPickup : (this.requestPickup = undefined),
+      cancelPickup: pojo.cancelPickup ? pojo.cancelPickup : (this.cancelPickup = undefined),
+      createLabel: pojo.createLabel ? pojo.createLabel : (this.createLabel = undefined),
+      voidLabel: pojo.voidLabel ? pojo.voidLabel : (this.voidLabel = undefined),
+      getRates: pojo.getRates ? pojo.getRates : (this.getRates = undefined),
+      getTrackingURL: pojo.getTrackingURL ? pojo.getTrackingURL : (this.getTrackingURL = undefined),
+      track: pojo.track ? pojo.track : (this.track = undefined),
+      createManifest: pojo.createManifest ? pojo.createManifest : (this.createManifest = undefined),
+    };
 
-    // Prevent modifications after validation
-    Object.freeze(this);
-    Object.freeze(this.websiteURL);
-    this.requestPickup && Object.freeze(this.requestPickup);
-    this.cancelPickup && Object.freeze(this.cancelPickup);
-    this.createLabel && Object.freeze(this.createLabel);
-    this.voidLabel && Object.freeze(this.voidLabel);
-    this.getRates && Object.freeze(this.getRates);
-    this.getTrackingURL && Object.freeze(this.getTrackingURL);
-    this.track && Object.freeze(this.track);
-    this.createManifest && Object.freeze(this.createManifest);
+    // Make this object immutable
+    hideAndFreeze(this);
+
+    app[_internal].references.add(this);
+  }
+
+  /**
+   * Creates a copy of the carrier, localized for the specified locale if possible.
+   */
+  public localize(locale: string): Carrier {
+    let pojo = localize(this, locale);
+    return new Carrier(pojo, this[_private].app);
+  }
+
+  /**
+   * Returns the carrier as a POJO that can be safely serialized as JSON.
+   * Optionally returns the POJO localized to the specifeid language and region.
+   */
+  public toJSON(locale?: string): CarrierPOJO {
+    let { localization } = this[_private];
+    let methods = this[_private];
+    let localizedValues = locale ? localization.lookup(locale) : {};
+
+    return {
+      ...this,
+      deliveryServices: this.deliveryServices.map((o) => o.toJSON(locale)),
+      pickupServices: this.pickupServices.map((o) => o.toJSON(locale)),
+      requestPickup: methods.requestPickup,
+      cancelPickup: methods.cancelPickup,
+      createLabel: methods.createLabel,
+      voidLabel: methods.voidLabel,
+      getRates: methods.getRates,
+      getTrackingURL: methods.getTrackingURL,
+      track: methods.track,
+      createManifest: methods.createManifest,
+      localization: localization.toJSON(),
+      ...localizedValues,
+    };
   }
 
   //#region Wrappers around user-defined methdos
@@ -312,17 +332,18 @@ export class Carrier {
    */
   public async requestPickup?(transaction: TransactionPOJO, request: PickupRequestPOJO): Promise<PickupConfirmation> {
     let _transaction, _request;
+    let { app, requestPickup } = this[_private];
 
     try {
       _transaction = new Transaction(transaction);
-      _request = new PickupRequest(request, this._app);
+      _request = new PickupRequest(request, app);
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the requestPickup method.", { originalError });
     }
 
     try {
-      let confirmation = await this._requestPickup!(_transaction, _request);
+      let confirmation = await requestPickup!(_transaction, _request);
       confirmation.shipments = confirmation.shipments || request.shipments;
       return new PickupConfirmation(confirmation);
     }
@@ -338,17 +359,18 @@ export class Carrier {
   public async cancelPickup?(transaction: TransactionPOJO, cancellation: PickupCancellationPOJO)
   : Promise<PickupCancellationConfirmation> {
     let _transaction, _cancellation;
+    let { app, cancelPickup } = this[_private];
 
     try {
       _transaction = new Transaction(transaction);
-      _cancellation = new PickupCancellation(cancellation, this._app);
+      _cancellation = new PickupCancellation(cancellation, app);
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the cancelPickup method.", { originalError });
     }
 
     try {
-      let confirmation = await this._cancelPickup!(_transaction, _cancellation);
+      let confirmation = await cancelPickup!(_transaction, _cancellation);
       confirmation = confirmation || { successful: true };
       return new PickupCancellationConfirmation(confirmation);
     }
@@ -363,17 +385,18 @@ export class Carrier {
    */
   public async createLabel?(transaction: TransactionPOJO, label: LabelSpecPOJO): Promise<LabelConfirmation> {
     let _transaction, _label;
+    let { app, createLabel } = this[_private];
 
     try {
       _transaction = new Transaction(transaction);
-      _label = new LabelSpec(label, this._app);
+      _label = new LabelSpec(label, app);
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the createLabel method.", { originalError });
     }
 
     try {
-      let confirmation = await this._createLabel!(_transaction, _label);
+      let confirmation = await createLabel!(_transaction, _label);
       return new LabelConfirmation(confirmation);
     }
     catch (originalError) {
@@ -410,18 +433,19 @@ export class Carrier {
    */
   public async getRates?(transaction: TransactionPOJO, criteria: RateCriteriaPOJO): Promise<RateQuote> {
     let _transaction, _criteria;
+    let { app, getRates } = this[_private];
 
     try {
       _transaction = new Transaction(transaction);
-      _criteria = new RateCriteria(criteria, this._app);
+      _criteria = new RateCriteria(criteria, app);
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the getRates method.", { originalError });
     }
 
     try {
-      let quote = await this._getRates!(_transaction, _criteria);
-      return new RateQuote(quote, this._app);
+      let quote = await getRates!(_transaction, _criteria);
+      return new RateQuote(quote, app);
     }
     catch (originalError) {
       let transactionID = _transaction.id;
@@ -434,17 +458,18 @@ export class Carrier {
    */
   public getTrackingURL?(transaction: TransactionPOJO, criteria: TrackingCriteriaPOJO): URL | undefined {
     let _transaction, _criteria;
+    let { app, getTrackingURL } = this[_private];
 
     try {
       _transaction = new Transaction(transaction);
-      _criteria = new TrackingCriteria(criteria, this._app);
+      _criteria = new TrackingCriteria(criteria, app);
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the getTrackingURL method.", { originalError });
     }
 
     try {
-      let url = this._getTrackingURL!(_transaction, _criteria);
+      let url = getTrackingURL!(_transaction, _criteria);
       return url ? new URL(url as UrlString) : undefined;
     }
     catch (originalError) {
@@ -501,3 +526,6 @@ export class Carrier {
 
   //#endregion
 }
+
+// Prevent modifications to the class
+hideAndFreeze(Carrier);

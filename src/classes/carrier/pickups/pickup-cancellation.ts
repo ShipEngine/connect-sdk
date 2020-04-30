@@ -3,6 +3,7 @@ import { PickupCancellationPOJO } from "../../../pojos/carrier";
 import { Joi, validate } from "../../../validation";
 import { Address, ContactInfo, CustomData, Identifier } from "../../common";
 import { App } from "../../common/app";
+import { hideAndFreeze, _internal } from "../../utils";
 import { PickupService } from "../pickup-service";
 import { Shipment } from "../shipment";
 import { TimeRange } from "./time-range";
@@ -11,26 +12,27 @@ import { TimeRange } from "./time-range";
  * Cancellation of a previously-requested package pickup
  */
 export class PickupCancellation {
-  //#region Class Fields
-
-  public static readonly label = "pickup cancellation";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    cancellationID: Joi.string().trim().singleLine().min(1).max(100).required(),
-    pickupServiceID: Joi.string().uuid().required(),
-    identifiers: Joi.array().items(Identifier.schema),
-    reason: Joi.string().enum(PickupCancellationReason).required(),
-    notes: Joi.string().allow("").max(5000),
-    address: Address.schema.required(),
-    contact: ContactInfo.schema.required(),
-    timeWindows: Joi.array().min(1).items(TimeRange.schema).required(),
-    shipments: Joi.array().min(1).items(Shipment.schema).required(),
-    customData: CustomData.schema,
-  });
+  public static readonly [_internal] = {
+    label: "pickup cancellation",
+    schema: Joi.object({
+      cancellationID: Joi.string().trim().singleLine().min(1).max(100).required(),
+      pickupServiceID: Joi.string().uuid().required(),
+      identifiers: Joi.array().items(Identifier[_internal].schema),
+      reason: Joi.string().enum(PickupCancellationReason).required(),
+      notes: Joi.string().allow("").max(5000),
+      address: Address[_internal].schema.required(),
+      contact: ContactInfo[_internal].schema.required(),
+      timeWindows: Joi.array().min(1).items(TimeRange[_internal].schema).required(),
+      shipments: Joi.array().min(1).items(Shipment[_internal].schema).required(),
+      customData: CustomData[_internal].schema,
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * The confirmation ID of the pickup request to be canceled
@@ -88,7 +90,7 @@ export class PickupCancellation {
     validate(pojo, PickupCancellation);
 
     this.confirmationID = pojo.confirmationID;
-    this.pickupService = app._references.lookup(pojo.pickupServiceID, PickupService);
+    this.pickupService = app[_internal].references.lookup(pojo.pickupServiceID, PickupService);
     this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];
     this.reason = pojo.reason;
     this.notes = pojo.notes || "";
@@ -98,10 +100,10 @@ export class PickupCancellation {
     this.shipments = pojo.shipments.map((shipment) => new Shipment(shipment, app));
     this.customData = pojo.customData && new CustomData(pojo.customData);
 
-    // Prevent modifications after validation
-    Object.freeze(this);
-    Object.freeze(this.identifiers);
-    Object.freeze(this.timeWindows);
-    Object.freeze(this.shipments);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(PickupCancellation);

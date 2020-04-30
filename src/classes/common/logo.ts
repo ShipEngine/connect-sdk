@@ -1,5 +1,6 @@
 import { LogoPOJO } from "../../pojos/common";
 import { Joi } from "../../validation";
+import { hideAndFreeze, _internal } from "../utils";
 
 const svgPattern = /\<svg.*\<\/svg\>/;
 
@@ -7,20 +8,21 @@ const svgPattern = /\<svg.*\<\/svg\>/;
  * Logo images
  */
 export class Logo {
-  //#region Class Fields
-
-  public static readonly label = "logo";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    colorSVG: Joi.string().pattern(svgPattern).required(),
+  public static readonly [_internal] = {
+    label: "logo",
+    schema: Joi.object({
+      colorSVG: Joi.string().pattern(svgPattern).required(),
 
-    // TODO: Confirm that the image does not have any colors other than black and white
-    blackAndWhiteSVG: Joi.string().pattern(svgPattern).required(),
-  });
+      // TODO: Confirm that the image does not have any colors other than black and white
+      blackAndWhiteSVG: Joi.string().pattern(svgPattern).required(),
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * The SVG full-color logo image
@@ -38,7 +40,10 @@ export class Logo {
     this.colorSVG = pojo.colorSVG;
     this.blackAndWhiteSVG = pojo.blackAndWhiteSVG;
 
-    // Prevent modifications after validation
-    Object.freeze(this);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(Logo);

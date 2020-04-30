@@ -1,4 +1,5 @@
 import * as joi from "@hapi/joi";
+import { _internal } from "./classes/utils";
 import { error, ErrorCode } from "./errors";
 import { ShipEngineConstructor } from "./internal-types";
 
@@ -14,6 +15,13 @@ const joiOptions = {
   }
 };
 
+const isoDateTime = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?([+-]\d{2}:\d{2}|Z)$/;
+const appName = /^\@[a-z][a-z0-9]*(-[a-z0-9]+)*\/[a-z][a-z0-9]*(-[a-z0-9]+)*$/;
+const semver = /^\d+\.\d+\.\d+/;
+const money = /^\d+(\.\d+)?$/;
+const protocol = /^https?:\/\//;
+const locale = /^[a-z]{2}(-[A-Z]{2})?$/;
+
 /**
  * Validates a value against a Joi schema. If validation fails, an error is thrown.
  * @internal
@@ -22,8 +30,8 @@ export function validate(value: unknown, type: ShipEngineConstructor, schema?: V
 export function validate(value: unknown, type: string, schema: ValidationSchema): void;
 
 export function validate(value: unknown, arg2: ShipEngineConstructor | string, arg3?: ValidationSchema): void {
-  let label = typeof arg2 === "string" ? arg2 : arg2.label || arg2.name;
-  let schema = arg3 || (arg2 as ShipEngineConstructor).schema;
+  let label = typeof arg2 === "string" ? arg2 : arg2[_internal].label;
+  let schema = arg3 || (arg2 as ShipEngineConstructor)[_internal].schema;
 
   if (value === undefined || value === null) {
     throw error(ErrorCode.Validation, `Invalid ${label}: \n  A value is required`);
@@ -54,6 +62,11 @@ export interface JoiExtended extends joi.Root {
    * Requires a string value
    */
   string(): StringValidationSchema;
+
+  /**
+   * Requires an object value
+   */
+  object(keys?: object): ObjectValidationSchema;
 }
 
 /**
@@ -95,6 +108,22 @@ export interface StringValidationSchema extends joi.StringSchema {
    * Requires a string value to be a valid HTTP or HTTPS URL
    */
   website(): StringValidationSchema;
+
+  /**
+   * Requires a string value to be a valid BCP 47 language tag
+   */
+  locale(): StringValidationSchema;
+}
+
+/**
+ * Extended Joi object validation schema
+ * @internal
+ */
+export interface ObjectValidationSchema extends joi.ObjectSchema {
+  /**
+   * Requires the object to be a map of BCP 47 language tags and localized values
+   */
+  localization(keys?: Record<string, joi.Schema>): ObjectValidationSchema;
 }
 
 /**
@@ -114,6 +143,7 @@ export const Joi = joi.extend(
       "string.money": "{{#label}} must be a monetary value, like ##.##",
       "string.website": "{{#label}} must be a valid website URL",
       "string.websiteIncomplete": '{{#label}} must be a complete website URL, including "http://" or "https://"',
+      "string.locale": '{{#label}} must be a valid language code, like "en" or "en-US"',
     },
     rules: {
       singleLine: {
@@ -127,8 +157,7 @@ export const Joi = joi.extend(
       },
       isoDateTime: {
         validate(value: string, helpers: joi.CustomHelpers) {
-          const semver = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?([+-]\d{2}:\d{2}|Z)$/;
-          if (!semver.test(value) || isNaN(new Date(value).getTime())) {
+          if (!isoDateTime.test(value) || isNaN(new Date(value).getTime())) {
             return helpers.error("string.isoDateTime");
           }
           return value;
@@ -136,7 +165,6 @@ export const Joi = joi.extend(
       },
       appName: {
         validate(value: string, helpers: joi.CustomHelpers) {
-          const appName = /^\@[a-z][a-z0-9]*(-[a-z0-9]+)*\/[a-z][a-z0-9]*(-[a-z0-9]+)*$/;
           if (!appName.test(value)) {
             return helpers.error("string.appName");
           }
@@ -145,7 +173,6 @@ export const Joi = joi.extend(
       },
       semver: {
         validate(value: string, helpers: joi.CustomHelpers) {
-          const semver = /^\d+\.\d+\.\d+/;
           if (!semver.test(value)) {
             return helpers.error("string.semver");
           }
@@ -154,7 +181,6 @@ export const Joi = joi.extend(
       },
       money: {
         validate(value: string, helpers: joi.CustomHelpers) {
-          const money = /^\d+(\.\d+)?$/;
           if (!money.test(value)) {
             return helpers.error("string.money");
           }
@@ -175,7 +201,6 @@ export const Joi = joi.extend(
       },
       website: {
         validate(value: string, helpers: joi.CustomHelpers) {
-          const protocol = /^https?:\/\//;
           if (!protocol.test(value)) {
             return helpers.error("string.websiteIncomplete");
           }
@@ -188,6 +213,37 @@ export const Joi = joi.extend(
           }
         },
       },
+      locale: {
+        validate(value: string, helpers: joi.CustomHelpers) {
+          if (!locale.test(value)) {
+            return helpers.error("string.locale");
+          }
+          return value;
+        },
+      },
     }
-  }
+  },
+  {
+    type: "object",
+    base: joi.object(),
+    messages: {
+      "object.localization": '{{#label}} can only contain language codes, like "en" or "en-US"',
+    },
+    rules: {
+      localization: {
+        method(keys?: Record<string, joi.Schema>) {
+          let schema = (this as ObjectValidationSchema).pattern(joi.string(), joi.object(keys));
+          return schema.$_addRule("localization");
+        },
+        validate(value: object, helpers: joi.CustomHelpers) {
+          for (let lang of Object.keys(value)) {
+            if (!locale.test(lang)) {
+              return helpers.error("object.localization", { lang });
+            }
+          }
+          return value;
+        },
+      },
+    }
+  },
 ) as JoiExtended;

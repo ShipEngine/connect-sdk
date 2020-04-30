@@ -1,19 +1,21 @@
 import { CustomDataPOJO } from "../../pojos/common";
 import { Joi } from "../../validation";
+import { hideAndFreeze, _internal } from "../utils";
 
 /**
  * Arbitrary data that will be persisted by the ShipEngine Integration Platform.
  */
 export class CustomData {
-  //#region Class Fields
-
-  public static readonly label = "custom data";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object().pattern(Joi.string(), Joi.string().allow(""));
+  public static readonly [_internal] = {
+    label: "custom data",
+    schema: Joi.object().pattern(Joi.string(), Joi.string().allow("")),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   [key: string]: string;
 
@@ -22,14 +24,17 @@ export class CustomData {
   public constructor(pojo: CustomDataPOJO) {
     // Copy all keys & values to this object
     // NOTE: DO NOT use Object.assign() here because it copies Symbol keys. We only want string keys.
-    for (let key of Object.getOwnPropertyNames(pojo)) {
+    for (let key of Object.keys(pojo)) {
       let value = pojo[key];
       if (value !== undefined) {
         this[key] = pojo[key];
       }
     }
 
-    // Prevent modifications after validation
-    Object.freeze(this);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(CustomData);

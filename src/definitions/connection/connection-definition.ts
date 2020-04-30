@@ -1,5 +1,6 @@
 import { Connect } from "../../classes/connection/methods";
 import { InlineOrReference, UrlString, UUID } from "../../types";
+import { LocalizationDefinition } from "../common/localization-definition";
 import { LogoDefinition } from "../common/logo-definition";
 import { FormDefinition } from "./form-definition";
 
@@ -43,6 +44,15 @@ export interface ConnectionDefinition {
    * A form that allows the user to configure connection settings
    */
   settingsForm?: InlineOrReference<FormDefinition>;
+
+  /**
+   * Localizaed values for fields that allow localization
+   */
+  localization?: InlineOrReference<LocalizationDefinition<{
+    name?: string;
+    description?: string;
+    websiteURL?: UrlString;
+  }>>;
 
   /**
    * Connects to an existing account using the data that was gathered in the `connectForm`.

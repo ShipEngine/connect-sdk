@@ -1,23 +1,25 @@
 import { TrackingCriteriaPOJO } from "../../../pojos/carrier";
 import { Joi, validate } from "../../../validation";
 import { App } from "../../common/app";
+import { hideAndFreeze, _internal } from "../../utils";
 import { Shipment } from "../shipment";
 
 /**
  * Specifies the criteria for tracking details
  */
 export class TrackingCriteria {
-  //#region Class Fields
-
-  public static readonly label = "tracking criteria";
+  //#region Private/Internal Fields
 
   /** @internal */
-  public static readonly schema = Joi.object({
-    shipment: Shipment.schema.required(),
-  });
+  public static readonly [_internal] = {
+    label: "tracking criteria",
+    schema: Joi.object({
+      shipment: Shipment[_internal].schema.required(),
+    }),
+  };
 
   //#endregion
-  //#region Instance Fields
+  //#region Public Fields
 
   /**
    * The shipment to get tracking details for
@@ -31,7 +33,10 @@ export class TrackingCriteria {
 
     this.shipment = new Shipment(pojo.shipment, app);
 
-    // Prevent modifications after validation
-    Object.freeze(this);
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
+
+// Prevent modifications to the class
+hideAndFreeze(TrackingCriteria);

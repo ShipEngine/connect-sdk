@@ -1,5 +1,5 @@
 import * as currency from "currency.js";
-import { Country } from "../../countries";
+import { Country } from "../../enums";
 import { PackageItemPOJO } from "../../pojos/carrier";
 import { Joi } from "../../validation";
 import { Identifier, MonetaryValue, Quantity } from "../common";

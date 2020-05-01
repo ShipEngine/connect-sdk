@@ -1,6 +1,5 @@
 // tslint:disable: max-classes-per-file
-import { Country } from "../../countries";
-import { BilledParty, InsuranceProvider, NonDeliveryAction } from "../../enums";
+import { BilledParty, Country, InsuranceProvider, NonDeliveryAction } from "../../enums";
 import { error, ErrorCode, ShipEngineError } from "../../errors";
 import { Constructor } from "../../internal-types";
 import { NewShipmentPOJO, PackagePOJO, ShipmentIdentifierPOJO, ShipmentPOJO } from "../../pojos/carrier";

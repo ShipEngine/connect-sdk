@@ -1,7 +1,7 @@
 // tslint:disable: no-empty-interface
 import { CancelPickup, CreateLabel, CreateManifest, GetRates, GetTrackingURL, RequestPickup, Track, VoidLabel } from "../../classes/carrier/methods";
-import { Country } from "../../countries";
 import { CarrierDefinition, DeliveryConfirmationDefinition, DeliveryServiceDefinition, PackagingDefinition, PickupServiceDefinition } from "../../definitions";
+import { Country } from "../../enums";
 import { LocalizationPOJO, LocalizedBrandingPOJO, LocalizedInfoPOJO, LogoPOJO } from "../common";
 
 /**

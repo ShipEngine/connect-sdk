@@ -1,5 +1,4 @@
-import { Country } from "../../countries";
-import { BilledParty, InsuranceProvider, NonDeliveryAction } from "../../enums";
+import { BilledParty, Country, InsuranceProvider, NonDeliveryAction } from "../../enums";
 import { UUID } from "../../types";
 import { AddressWithContactInfoPOJO, IdentifierPOJO } from "../common";
 import { NewPackagePOJO, PackagePOJO } from "./package-pojo";

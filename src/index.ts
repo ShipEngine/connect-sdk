@@ -1,9 +1,7 @@
-export * from "./canonical-delivery-service";
 export * from "./classes/carrier";
 export * from "./classes/common";
 export * from "./classes/connection";
 export * from "./classes/order";
-export * from "./countries";
 export * from "./definitions";
 export * from "./enums";
 export { ErrorCode, ShipEngineError } from "./errors";

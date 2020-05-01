@@ -1,4 +1,4 @@
-import { Country } from "../../countries";
+import { Country } from "../../enums";
 import { ContactInfoPOJO } from "./contact-info-pojo";
 
 /**

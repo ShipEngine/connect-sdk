@@ -1,5 +1,5 @@
 // tslint:disable: max-classes-per-file
-import { Country } from "../../countries";
+import { Country } from "../../enums";
 import { Constructor } from "../../internal-types";
 import { AddressPOJO, AddressWithContactInfoPOJO, GeoCoordinatePOJO } from "../../pojos/common";
 import { Joi } from "../../validation";

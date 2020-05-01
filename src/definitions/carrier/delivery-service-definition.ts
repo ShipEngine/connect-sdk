@@ -1,6 +1,4 @@
-import { CanonicalDeliveryService } from "../../canonical-delivery-service";
-import { Country } from "../../countries";
-import { DeliveryServiceClass, DeliveryServiceGrade, LabelFormat, LabelSize, ManifestType, ServiceArea } from "../../enums";
+import { CanonicalDeliveryService, Country, DeliveryServiceClass, DeliveryServiceGrade, LabelFormat, LabelSize, ManifestType, ServiceArea } from "../../enums";
 import { InlineOrReference, InlineOrReferenceArray, UUID } from "../../types";
 import { LocalizationDefinition } from "../common/localization-definition";
 import { DeliveryConfirmationDefinition } from "./delivery-confirmation-definition";

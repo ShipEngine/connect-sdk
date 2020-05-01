@@ -1,4 +1,4 @@
-import { Country } from "../../countries";
+import { Country } from "../../enums";
 import { IdentifierPOJO, MonetaryValuePOJO, QuantityPOJO } from "../common";
 import { SalesOrderIdentifierPOJO } from "../order";
 

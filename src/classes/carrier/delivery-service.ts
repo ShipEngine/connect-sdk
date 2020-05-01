@@ -1,6 +1,4 @@
-import { CanonicalDeliveryService } from "../../canonical-delivery-service";
-import { Country } from "../../countries";
-import { DeliveryServiceClass, DeliveryServiceGrade, LabelFormat, LabelSize, ManifestType, ServiceArea } from "../../enums";
+import { CanonicalDeliveryService, Country, DeliveryServiceClass, DeliveryServiceGrade, LabelFormat, LabelSize, ManifestType, ServiceArea } from "../../enums";
 import { DeliveryServicePOJO } from "../../pojos/carrier";
 import { LocalizedInfoPOJO } from "../../pojos/common";
 import { UUID } from "../../types";

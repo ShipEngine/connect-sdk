@@ -1,5 +1,4 @@
-import { Country } from "../../countries";
-import { LabelFormat, LabelSize, ManifestType, ServiceArea } from "../../enums";
+import { Country, LabelFormat, LabelSize, ManifestType, ServiceArea } from "../../enums";
 import { error, ErrorCode } from "../../errors";
 import { CarrierPOJO, LabelSpecPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, TrackingCriteriaPOJO } from "../../pojos/carrier";
 import { LocalizedBrandingPOJO, TransactionPOJO } from "../../pojos/common";

@@ -1,9 +1,9 @@
 import { error, ErrorCode } from "../../errors";
 import { LocalizedBrandingPOJO, TransactionPOJO } from "../../pojos/common";
 import { ConnectionPOJO } from "../../pojos/connection";
-import { UUID } from "../../types";
+import { FilePath, UUID } from "../../types";
 import { Joi } from "../../validation";
-import { Logo, Transaction } from "../common";
+import { Transaction } from "../common";
 import { App } from "../common/app";
 import { Localization, localize } from "../common/localization";
 import { hideAndFreeze, _internal } from "../utils";
@@ -26,7 +26,7 @@ export class Connection {
       name: Joi.string().trim().singleLine().min(1).max(100).required(),
       description: Joi.string().trim().singleLine().allow("").max(1000),
       websiteURL: Joi.string().website().required(),
-      logo: Joi.object().required(),
+      logo: Joi.string().filePath({ ext: ".svg" }).required(),
       connectForm: Form[_internal].schema.required(),
       settingsForm: Form[_internal].schema,
       localization: Joi.object().localization({
@@ -72,7 +72,7 @@ export class Connection {
   /**
    * The third party service's logo image
    */
-  public readonly logo: Logo;
+  public readonly logo: FilePath;
 
   /**
    * A form that allows the user to connect to the third-party service.
@@ -92,7 +92,7 @@ export class Connection {
     this.name = pojo.name;
     this.description = pojo.description || "";
     this.websiteURL = new URL(pojo.websiteURL);
-    this.logo =  new Logo(pojo.logo);
+    this.logo =  pojo.logo;
     this.connectForm = new Form(pojo.connectForm);
     this.settingsForm = pojo.settingsForm && new Form(pojo.settingsForm);
 

@@ -66,14 +66,14 @@ describe("DeliveryConfirmation", () => {
 
   describe("Failure tests", () => {
 
-    it("should throw an error the pojo is the wrong type", () => {
+    it("should throw an error if the pojo is the wrong type", () => {
       expect(() => createDeliveryConfirmation(12345)).to.throw(
         "Invalid ShipEngine Integration Platform carrier app: \n" +
         "  carrier.deliveryServices[0].deliveryConfirmations[0] must be of type object"
       );
     });
 
-    it("should throw an error the ID is not a UUID", () => {
+    it("should throw an error if the ID is not a UUID", () => {
       expect(() => createDeliveryConfirmation({
         id: "12345",
         name: "test",
@@ -85,7 +85,7 @@ describe("DeliveryConfirmation", () => {
       );
     });
 
-    it("should throw an error the name contains illegal characters", () => {
+    it("should throw an error if the name contains illegal characters", () => {
       expect(() => createDeliveryConfirmation({
         id: "12345678-1234-1234-1234-123456789012",
         name: "  My \nConfirmation  ",
@@ -98,7 +98,7 @@ describe("DeliveryConfirmation", () => {
       );
     });
 
-    it("should throw an error the description is the wrong type", () => {
+    it("should throw an error if the description is the wrong type", () => {
       expect(() => createDeliveryConfirmation({
         id: "12345678-1234-1234-1234-123456789012",
         name: "My Confirmation",
@@ -111,7 +111,7 @@ describe("DeliveryConfirmation", () => {
       );
     });
 
-    it("should throw an error the class is invalid", () => {
+    it("should throw an error if the class is invalid", () => {
       expect(() => createDeliveryConfirmation({
         id: "12345678-1234-1234-1234-123456789012",
         name: "My Confirmation",

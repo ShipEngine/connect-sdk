@@ -1,6 +1,7 @@
 "use strict";
 
 const _merge = require("lodash.merge");
+const path = require("path");
 
 const pojo = module.exports = {
   app (props = {}) {
@@ -24,19 +25,12 @@ const pojo = module.exports = {
     }, props);
   },
 
-  logo (props = {}) {
-    return _merge({
-      colorSVG: "<svg></svg>",
-      blackAndWhiteSVG: "<svg></svg>",
-    }, props);
-  },
-
   carrier (props = {}) {
     return _merge({
       id: "11111111-1111-1111-1111-111111111111",
       name: "Dummy Carrier",
       websiteURL: "https://example.com/",
-      logo: pojo.logo(),
+      logo: path.resolve("logo.svg"),
       deliveryServices: props.deliveryServices || [pojo.deliveryService()],
     }, props);
   },
@@ -79,7 +73,7 @@ const pojo = module.exports = {
       id: "66666666-6666-6666-6666-666666666666",
       name: "Dummy Connection",
       websiteURL: "https://example.com/",
-      logo: pojo.logo(),
+      logo: path.resolve("logo.svg"),
       connectForm: pojo.form(),
       connect () {},
     }, props);

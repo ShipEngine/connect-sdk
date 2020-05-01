@@ -1,7 +1,6 @@
 import { Connect } from "../../classes/connection/methods";
-import { InlineOrReference, UrlString, UUID } from "../../types";
+import { FilePath, InlineOrReference, UrlString, UUID } from "../../types";
 import { LocalizationDefinition } from "../common/localization-definition";
-import { LogoDefinition } from "../common/logo-definition";
 import { FormDefinition } from "./form-definition";
 
 /**
@@ -32,7 +31,7 @@ export interface ConnectionDefinition {
   /**
    * The third party service's logo image
    */
-  logo: InlineOrReference<LogoDefinition>;
+  logo: FilePath;
 
   /**
    * A form that allows the user to connect to the third-party service.

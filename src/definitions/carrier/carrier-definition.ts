@@ -1,7 +1,6 @@
 import { CancelPickup, CreateLabel, CreateManifest, GetRates, GetTrackingURL, RequestPickup, Track, VoidLabel } from "../../classes/carrier/methods";
-import { InlineOrReference, InlineOrReferenceArray, UrlString, UUID } from "../../types";
+import { FilePath, InlineOrReference, InlineOrReferenceArray, UrlString, UUID } from "../../types";
 import { LocalizationDefinition } from "../common/localization-definition";
-import { LogoDefinition } from "../common/logo-definition";
 import { DeliveryServiceDefinition } from "./delivery-service-definition";
 import { PickupServiceDefinition } from "./pickup-service-definition";
 
@@ -33,7 +32,7 @@ export interface CarrierDefinition {
   /**
    * The carrier's logo image
    */
-  logo: InlineOrReference<LogoDefinition>;
+  logo: FilePath;
 
   /**
    * The delivery services that are offered by the carrier

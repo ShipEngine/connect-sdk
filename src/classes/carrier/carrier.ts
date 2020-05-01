@@ -2,9 +2,9 @@ import { Country, LabelFormat, LabelSize, ManifestType, ServiceArea } from "../.
 import { error, ErrorCode } from "../../errors";
 import { CarrierPOJO, LabelSpecPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, TrackingCriteriaPOJO } from "../../pojos/carrier";
 import { LocalizedBrandingPOJO, TransactionPOJO } from "../../pojos/common";
-import { UrlString, UUID } from "../../types";
+import { FilePath, UrlString, UUID } from "../../types";
 import { Joi } from "../../validation";
-import { Logo, Transaction } from "../common";
+import { Transaction } from "../common";
 import { App } from "../common/app";
 import { Localization, localize } from "../common/localization";
 import { hideAndFreeze, _internal } from "../utils";
@@ -40,7 +40,7 @@ export class Carrier {
       name: Joi.string().trim().singleLine().min(1).max(100).required(),
       description: Joi.string().trim().singleLine().allow("").max(1000),
       websiteURL: Joi.string().website().required(),
-      logo: Joi.object().required(),
+      logo: Joi.string().filePath({ ext: ".svg" }).required(),
       deliveryServices: Joi.array().min(1).items(DeliveryService[_internal].schema).required(),
       pickupServices: Joi.array().items(PickupService[_internal].schema),
       localization: Joi.object().localization({
@@ -100,7 +100,7 @@ export class Carrier {
   /**
    * The carrier's logo image
    */
-  public readonly logo: Logo;
+  public readonly logo: FilePath;
 
   /**
    * The delivery services that are offered by this carrier
@@ -263,7 +263,7 @@ export class Carrier {
     this.name = pojo.name;
     this.description = pojo.description || "";
     this.websiteURL = new URL(pojo.websiteURL);
-    this.logo =  new Logo(pojo.logo);
+    this.logo =  pojo.logo;
     this.deliveryServices = pojo.deliveryServices.map((svc) => new DeliveryService(svc, app));
     this.pickupServices = pojo.pickupServices
       ? pojo.pickupServices.map((svc) => new PickupService(svc, app)) : [];

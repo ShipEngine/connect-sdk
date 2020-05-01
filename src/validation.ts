@@ -1,4 +1,6 @@
 import * as joi from "@hapi/joi";
+import * as path from "path";
+import { ParsedPath } from "path"; // tslint:disable-line: no-duplicate-imports
 import { _internal } from "./classes/utils";
 import { error, ErrorCode } from "./errors";
 import { ShipEngineConstructor } from "./internal-types";
@@ -113,6 +115,11 @@ export interface StringValidationSchema extends joi.StringSchema {
    * Requires a string value to be a valid BCP 47 language tag
    */
   locale(): StringValidationSchema;
+
+  /**
+   * Requires a string value to be a valid filesystem path, optionally with additional criteria
+   */
+  filePath(criteria: Partial<ParsedPath>): StringValidationSchema;
 }
 
 /**
@@ -144,6 +151,8 @@ export const Joi = joi.extend(
       "string.website": "{{#label}} must be a valid website URL",
       "string.websiteIncomplete": '{{#label}} must be a complete website URL, including "http://" or "https://"',
       "string.locale": '{{#label}} must be a valid language code, like "en" or "en-US"',
+      "string.filePathRelative": "{{#label}} must be an absolute file path",
+      "string.filePathExtension": "{{#label}} must be a {{#ext}} file",
     },
     rules: {
       singleLine: {
@@ -218,6 +227,23 @@ export const Joi = joi.extend(
           if (!locale.test(value)) {
             return helpers.error("string.locale");
           }
+          return value;
+        },
+      },
+      filePath: {
+        method(criteria: Partial<ParsedPath>) {
+          return this.$_addRule({ name: "filePath", args: criteria});
+        },
+        validate(value: string, helpers: joi.CustomHelpers, criteria: Partial<ParsedPath>) {
+          if (!path.isAbsolute(value)) {
+            return helpers.error("string.filePathRelative", criteria);
+          }
+
+          let { ext } = path.parse(value);
+          if (criteria.ext && (ext !== criteria.ext)) {
+            return helpers.error("string.filePathExtension", criteria);
+          }
+
           return value;
         },
       },

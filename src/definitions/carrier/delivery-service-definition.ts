@@ -1,3 +1,4 @@
+import { CanonicalDeliveryService } from "../../canonical-delivery-service";
 import { Country } from "../../countries";
 import { DeliveryServiceClass, DeliveryServiceGrade, LabelFormat, LabelSize, ManifestType, ServiceArea } from "../../enums";
 import { InlineOrReference, InlineOrReferenceArray, UUID } from "../../types";
@@ -34,6 +35,12 @@ export interface DeliveryServiceDefinition {
    * The grade of service
    */
   grade: DeliveryServiceGrade;
+
+  /**
+   * If this service is fulfilled by a well-known third-party carrier, such as UPS, FedEx, DHL, etc.
+   * then specify that service here. This will allow more shippers to discover and use your service.
+   */
+  fulfilledBy?: CanonicalDeliveryService;
 
   /**
    * The service area this service covers

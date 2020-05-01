@@ -15,7 +15,7 @@ export function getMaxServiceArea(things: ReadonlyArray<{ serviceArea?: ServiceA
     ServiceArea.Global,
   ];
 
-  // Find the broadest service area supported by this provider
+  // Find the broadest service area supported by this carrier
   for (let thing of things) {
     if (thing.serviceArea === ServiceArea.Global) {
       // This is the widest possible service area, so no need to continue crawling.

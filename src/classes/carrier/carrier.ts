@@ -117,7 +117,7 @@ export class Carrier {
   //#region Helper Properties
 
   /**
-   * The service area that this provider covers.
+   * The service area that this carrier covers.
    * This is the maximum service area of all delivery services offered by the carrier.
    */
   public get serviceArea(): ServiceArea {
@@ -125,7 +125,7 @@ export class Carrier {
   }
 
   /**
-   * Indicates whether this provider consolidates multiple carrier services.
+   * Indicates whether this carrier consolidates multiple carrier services.
    * This property is `true` if any of the carrier's delivery services are consolidation services.
    */
   public get isConsolidator(): boolean {
@@ -193,7 +193,7 @@ export class Carrier {
   }
 
   /**
-   * All countries that this provider ships to or from.
+   * All countries that this carrier ships to or from.
    * This list includes all unique origin and delivery countries for all of the carrier's delivery services.
    */
   public get countries(): ReadonlyArray<Country> {
@@ -202,7 +202,7 @@ export class Carrier {
   }
 
   /**
-   * All origin countries that this provider ships from.
+   * All origin countries that this carrier ships from.
    * This list includes all unique origin countries for all of the carrier's delivery services.
    */
   public get originCountries(): ReadonlyArray<Country> {
@@ -216,7 +216,7 @@ export class Carrier {
   }
 
   /**
-   * All destination countries that this provider ships to.
+   * All destination countries that this carrier ships to.
    * This list includes all unique delivery countries for all of the carrier's delivery services.
    */
   public get destinationCountries(): ReadonlyArray<Country> {

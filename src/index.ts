@@ -1,3 +1,4 @@
+export * from "./canonical-delivery-service";
 export * from "./classes/carrier";
 export * from "./classes/common";
 export * from "./classes/connection";

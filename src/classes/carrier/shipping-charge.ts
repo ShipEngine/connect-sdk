@@ -30,7 +30,7 @@ export class ShippingCharge {
   //#endregion
 
   public constructor(pojo: ShippingChargePOJO) {
-    this.name = pojo.name;
+    this.name = pojo.name || "";
     this.type = pojo.type;
     this.amount = new MonetaryValue(pojo.amount);
 

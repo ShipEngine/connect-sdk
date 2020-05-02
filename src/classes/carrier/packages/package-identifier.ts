@@ -43,7 +43,7 @@ export function packageIdentifierMixin(base: Constructor = Object) {
     /**
      * The carrier tracking number
      */
-    public readonly trackingNumber?: string;
+    public readonly trackingNumber: string;
 
     /**
      * Alternative identifiers associated with this package
@@ -55,7 +55,7 @@ export function packageIdentifierMixin(base: Constructor = Object) {
     public constructor(pojo: PackageIdentifierPOJO) {
       base === Object ? super() : super(pojo);
 
-      this.trackingNumber = pojo.trackingNumber;
+      this.trackingNumber = pojo.trackingNumber || "";
       this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];
     }
   };

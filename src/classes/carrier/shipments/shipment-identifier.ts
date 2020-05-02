@@ -47,7 +47,7 @@ export function shipmentIdentifierMixin(base: Constructor = Object) {
      * For multi-piece shipments, this may be a separate tracking number, or the same
      * tracking number as one of the packages.
      */
-    public readonly trackingNumber?: string;
+    public readonly trackingNumber: string;
 
     /**
      * Alternative identifiers associated with this shipment
@@ -59,7 +59,7 @@ export function shipmentIdentifierMixin(base: Constructor = Object) {
     public constructor(pojo: ShipmentIdentifierPOJO) {
       base === Object ? super() : super(pojo);
 
-      this.trackingNumber = pojo.trackingNumber;
+      this.trackingNumber = pojo.trackingNumber || "";
       this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];
     }
   };

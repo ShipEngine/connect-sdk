@@ -56,7 +56,7 @@ export enum DocumentFormat {
  * such as a shipping label, customs form, or SCAN form.
  */
 export enum DocumentSize {
-  A4 = "a4",
+  A4 = "A4",
   Letter = "letter",
   Inches4x6 = "4x6",
   Inches4x8 = "4x8",

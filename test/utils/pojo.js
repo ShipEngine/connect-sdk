@@ -1,88 +1,104 @@
 "use strict";
 
-const _merge = require("lodash.merge");
 const path = require("path");
 
 const pojo = module.exports = {
   app (props = {}) {
-    return _merge({
+    return {
       name: "@company-name/app-name",
       version: "1.23.456",
-    }, props);
+      ...props,
+    };
   },
 
   carrierApp (props = {}) {
-    return _merge({
+    return {
       ...pojo.app(),
       carrier: pojo.carrier(),
-    }, props);
+      ...props,
+    };
   },
 
   connectionApp (props = {}) {
-    return _merge({
+    return {
       ...pojo.app(),
       connection: pojo.connection(),
-    }, props);
+      ...props,
+    };
   },
 
   carrier (props = {}) {
-    return _merge({
+    return {
       id: "11111111-1111-1111-1111-111111111111",
       name: "Dummy Carrier",
       websiteURL: "https://example.com/",
       logo: path.resolve("logo.svg"),
-      deliveryServices: props.deliveryServices || [pojo.deliveryService()],
-    }, props);
+      deliveryServices: [pojo.deliveryService()],
+      ...props,
+    };
   },
 
   deliveryService (props = {}) {
-    return _merge({
+    return {
       id: "22222222-2222-2222-2222-222222222222",
       name: "Dummy Delivery Service",
       class: "ground",
       grade: "standard",
       originCountries: ["US"],
       destinationCountries: ["US"],
-    }, props);
+      ...props,
+    };
   },
 
   pickupService (props = {}) {
-    return _merge({
+    return {
       id: "33333333-3333-3333-3333-333333333333",
       name: "Dummy Pickup Service",
-    }, props);
+      ...props,
+    };
   },
 
   packaging (props = {}) {
-    return _merge({
+    return {
       id: "44444444-4444-4444-4444-444444444444",
       name: "Dummy Packaging",
-    }, props);
+      ...props,
+    };
   },
 
   deliveryConfirmation (props = {}) {
-    return _merge({
+    return {
       id: "55555555-5555-5555-5555-555555555555",
       name: "Dummy Confirmation",
       class: "signature",
-    }, props);
+      ...props,
+    };
   },
 
   connection (props = {}) {
-    return _merge({
+    return {
       id: "66666666-6666-6666-6666-666666666666",
       name: "Dummy Connection",
       websiteURL: "https://example.com/",
       logo: path.resolve("logo.svg"),
       connectForm: pojo.form(),
       connect () {},
-    }, props);
+      ...props,
+    };
   },
 
   form (props = {}) {
-    return _merge({
+    return {
       dataSchema: {},
       uiSchema: {},
-    }, props);
+      ...props,
+    };
+  },
+
+  transaction (props = {}) {
+    return {
+      id: "12345678-1234-1234-1234-123456789012",
+      ...props,
+    };
   },
 };

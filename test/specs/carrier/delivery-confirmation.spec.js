@@ -8,11 +8,13 @@ describe("DeliveryConfirmation", () => {
 
   function createDeliveryConfirmation (deliveryConfirmation) {
     let app = new CarrierApp(pojo.carrierApp({
-      carrier: {
-        deliveryServices: [{
-          deliveryConfirmations: [deliveryConfirmation],
-        }],
-      },
+      carrier: pojo.carrier({
+        deliveryServices: [
+          pojo.deliveryService({
+            deliveryConfirmations: [deliveryConfirmation],
+          })
+        ],
+      }),
     }));
     return app.carrier.deliveryServices[0].deliveryConfirmations[0];
   }

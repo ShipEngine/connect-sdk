@@ -8,7 +8,7 @@ describe("Localization", () => {
 
   it("should return an identical object if no localization exist", () => {
     let app = new CarrierApp(pojo.carrierApp({
-      carrier: {
+      carrier: pojo.carrier({
         name: "Carrier Name",
         description: "Carrier description",
         websiteURL: "http://example.com/",
@@ -36,7 +36,7 @@ describe("Localization", () => {
             description: "Pickup service description",
           })
         ],
-      },
+      }),
     }));
 
     // There is no localization, so no matter what langauge is specified,
@@ -83,7 +83,7 @@ describe("Localization", () => {
 
   it("should return an identical object if no localization is available for the language", () => {
     let app = new CarrierApp(pojo.carrierApp({
-      carrier: {
+      carrier: pojo.carrier({
         name: "Carrier Name",
         description: "Carrier description",
         websiteURL: "http://example.com/",
@@ -131,7 +131,7 @@ describe("Localization", () => {
             },
           })
         ],
-      },
+      }),
     }));
 
     // There is no German localization, so an identical object will be returned
@@ -177,7 +177,7 @@ describe("Localization", () => {
 
   it("should keep the same values for fields that lack localization", () => {
     let app = new CarrierApp(pojo.carrierApp({
-      carrier: {
+      carrier: pojo.carrier({
         name: "Carrier Name",
         description: "Carrier description",
         websiteURL: "http://example.com/",
@@ -225,7 +225,7 @@ describe("Localization", () => {
             },
           })
         ],
-      },
+      }),
     }));
 
     // Only the names are localized in Chinese, so the descriptions will remain English
@@ -271,7 +271,7 @@ describe("Localization", () => {
 
   it("should use missing values from dialects of a language", () => {
     let app = new CarrierApp(pojo.carrierApp({
-      carrier: {
+      carrier: pojo.carrier({
         name: "XXXXXXX",
         description: "XXXXXX",
         websiteURL: "http://XXXXXX.XXXXXX/",
@@ -355,7 +355,7 @@ describe("Localization", () => {
             },
           })
         ],
-      },
+      }),
     }));
 
     // Sine we're just specifying "en" here, it will first use the "en" values,
@@ -402,7 +402,7 @@ describe("Localization", () => {
 
   it("should use missing values from the generic language localization", () => {
     let app = new CarrierApp(pojo.carrierApp({
-      carrier: {
+      carrier: pojo.carrier({
         name: "XXXXXXX",
         description: "XXXXXX",
         websiteURL: "http://XXXXXX.XXXXXX/",
@@ -491,7 +491,7 @@ describe("Localization", () => {
             },
           })
         ],
-      },
+      }),
     }));
 
     // Since we're specifying "en-GB" here, it will fill-in any missing

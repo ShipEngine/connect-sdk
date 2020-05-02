@@ -35,8 +35,8 @@ export interface DeliveryServiceDefinition {
   grade: DeliveryServiceGrade;
 
   /**
-   * If this service is fulfilled by a well-known third-party carrier, such as UPS, FedEx, DHL, etc.
-   * then specify that service here. This will allow more shippers to discover and use your service.
+   * If this service is fulfilled using a well-known third-party carrier, such as UPS, FedEx, DHL, etc.
+   * then specify the carrier service here. This will allow more shippers to discover and use your service.
    */
   fulfilledBy?: CanonicalDeliveryService;
 
@@ -48,8 +48,7 @@ export interface DeliveryServiceDefinition {
   /**
    * Indicates whether this service is a consolidation of multiple carrier services
    */
-  isConsolidator?: boolean;
-
+  isConsolidationService?: boolean;
   /**
    * TODO: Does this mean that the service is ONLY for return shipping? Or that it ALSO supports return shipping?
    */

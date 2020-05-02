@@ -83,8 +83,8 @@ export class DeliveryService {
   public readonly grade: DeliveryServiceGrade;
 
   /**
-   * If this service is fulfilled by a well-known third-party carrier, such as UPS, FedEx, DHL, etc.
-   * then specify that service here. This will allow more shippers to discover and use your service.
+   * If this service is fulfilled using a well-known third-party carrier, such as UPS, FedEx, DHL, etc.
+   * then specify the carrier service here. This will allow more shippers to discover and use your service.
    */
   public readonly fulfilledBy?: CanonicalDeliveryService;
 
@@ -193,7 +193,7 @@ export class DeliveryService {
     this.grade = pojo.grade;
     this.fulfilledBy = pojo.fulfilledBy;
     this.serviceArea = pojo.serviceArea;
-    this.isConsolidationService = pojo.isConsolidator || false;
+    this.isConsolidationService = pojo.isConsolidationService || false;
     this.isReturnService = pojo.isReturnService || false;
     this.allowsMultiplePackages = pojo.allowsMultiplePackages || false;
     this.hasTracking = pojo.hasTracking || false;

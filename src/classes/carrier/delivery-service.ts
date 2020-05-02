@@ -29,7 +29,6 @@ export class DeliveryService {
       fulfilledBy: Joi.string().enum(CanonicalDeliveryService),
       serviceArea: Joi.string().enum(ServiceArea),
       isConsolidationService: Joi.boolean(),
-      isReturnService: Joi.boolean(),
       allowsMultiplePackages: Joi.boolean(),
       hasTracking: Joi.boolean(),
       hasSandbox: Joi.boolean(),
@@ -97,11 +96,6 @@ export class DeliveryService {
    * Indicates whether this service is a consolidation of multiple carrier services
    */
   public readonly isConsolidationService: boolean;
-
-  /**
-   * TODO: Does this mean that the service is ONLY for return shipping? Or that it ALSO supports return shipping?
-   */
-  public readonly isReturnService: boolean;
 
   /**
    * Indicates whether the service allows multiple packages in a single shipment
@@ -194,7 +188,6 @@ export class DeliveryService {
     this.fulfilledBy = pojo.fulfilledBy;
     this.serviceArea = pojo.serviceArea;
     this.isConsolidationService = pojo.isConsolidationService || false;
-    this.isReturnService = pojo.isReturnService || false;
     this.allowsMultiplePackages = pojo.allowsMultiplePackages || false;
     this.hasTracking = pojo.hasTracking || false;
     this.hasSandbox = pojo.hasSandbox || false;

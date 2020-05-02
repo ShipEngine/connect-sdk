@@ -49,10 +49,6 @@ export interface DeliveryServiceDefinition {
    * Indicates whether this service is a consolidation of multiple carrier services
    */
   isConsolidationService?: boolean;
-  /**
-   * TODO: Does this mean that the service is ONLY for return shipping? Or that it ALSO supports return shipping?
-   */
-  isReturnService?: boolean;
 
   /**
    * Indicates whether the service allows multiple packages in a single shipment

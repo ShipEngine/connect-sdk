@@ -1,4 +1,4 @@
-import { CanonicalDeliveryService, Country, DeliveryServiceClass, DeliveryServiceGrade, LabelFormat, LabelSize, ManifestType, ServiceArea } from "../../enums";
+import { CanonicalDeliveryService, Country, DeliveryServiceClass, DeliveryServiceGrade, LabelFormat, LabelSize, ServiceArea } from "../../enums";
 import { DeliveryServicePOJO } from "../../pojos/carrier";
 import { LocalizedInfoPOJO } from "../../pojos/common";
 import { UUID } from "../../types";
@@ -32,7 +32,6 @@ export class DeliveryService {
       allowsMultiplePackages: Joi.boolean(),
       hasTracking: Joi.boolean(),
       hasSandbox: Joi.boolean(),
-      requiresManifest: Joi.alternatives(Joi.allow(false), Joi.string().enum(ManifestType)),
       labelFormats: Joi.array().items(Joi.string().enum(LabelFormat)),
       labelSizes: Joi.array().items(Joi.string().enum(LabelSize)),
       originCountries: Joi.array().min(1).items(Joi.string().enum(Country)).required(),
@@ -115,11 +114,6 @@ export class DeliveryService {
   public readonly hasSandbox: boolean;
 
   /**
-   * Indicates whether this service requires a manifest, and if so, what type
-   */
-  public readonly requiresManifest: false | ManifestType;
-
-  /**
    * The label formats that are offered for this service
    */
   public readonly labelFormats: ReadonlyArray<LabelFormat>;
@@ -191,7 +185,6 @@ export class DeliveryService {
     this.allowsMultiplePackages = pojo.allowsMultiplePackages || false;
     this.hasTracking = pojo.hasTracking || false;
     this.hasSandbox = pojo.hasSandbox || false;
-    this.requiresManifest = pojo.requiresManifest || false;
     this.labelFormats = pojo.labelFormats || [];
     this.labelSizes = pojo.labelSizes || [];
     this.originCountries = pojo.originCountries;

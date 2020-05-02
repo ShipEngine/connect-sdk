@@ -101,14 +101,6 @@ export enum ServiceArea {
 }
 
 /**
- * A manifest type
- */
-export enum ManifestType {
-  Physical = "physical",
-  Digital = "digital"
-}
-
-/**
  * Indicates which party is insuring a shipment
  */
 export enum InsuranceProvider {

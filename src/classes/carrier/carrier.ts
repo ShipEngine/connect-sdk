@@ -1,4 +1,4 @@
-import { Country, LabelFormat, LabelSize, ManifestType, ServiceArea } from "../../enums";
+import { Country, LabelFormat, LabelSize, ServiceArea } from "../../enums";
 import { error, ErrorCode } from "../../errors";
 import { CarrierPOJO, LabelSpecPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, TrackingCriteriaPOJO } from "../../pojos/carrier";
 import { LocalizedBrandingPOJO, TransactionPOJO } from "../../pojos/common";
@@ -148,19 +148,6 @@ export class Carrier {
     let found = this.deliveryServices.some(hasSandbox);
     found || (found = this.pickupServices.some(hasSandbox));
     return found;
-  }
-
-  /**
-   * Indicates whether this service requires a manifest, and if so, what type.
-   * This property is `false` if none of the carrier's delivery services require a manifest.
-   */
-  public get requiresManifest(): false | ManifestType {
-    for (let service of this.deliveryServices) {
-      if (service.requiresManifest) {
-        return service.requiresManifest;
-      }
-    }
-    return false;
   }
 
   /**

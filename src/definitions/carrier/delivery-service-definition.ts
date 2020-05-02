@@ -1,4 +1,4 @@
-import { CanonicalDeliveryService, Country, DeliveryServiceClass, DeliveryServiceGrade, LabelFormat, LabelSize, ManifestType, ServiceArea } from "../../enums";
+import { CanonicalDeliveryService, Country, DeliveryServiceClass, DeliveryServiceGrade, LabelFormat, LabelSize, ServiceArea } from "../../enums";
 import { InlineOrReference, InlineOrReferenceArray, UUID } from "../../types";
 import { LocalizationDefinition } from "../common/localization-definition";
 import { DeliveryConfirmationDefinition } from "./delivery-confirmation-definition";
@@ -66,11 +66,6 @@ export interface DeliveryServiceDefinition {
    * costs or affect production data.
    */
   hasSandbox?: boolean;
-
-  /**
-   * Indicates whether this service requires a manifest, and if so, what type
-   */
-  requiresManifest?: false | ManifestType;
 
   /**
    * The label formats that are offered for this service

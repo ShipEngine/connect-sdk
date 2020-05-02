@@ -15,7 +15,11 @@ export function hideAndFreeze(obj: object): void {
   for (let value of Object.values(obj)) {
     let type = typeof value;
     if (type === "object" || type === "function") {
-      Object.freeze(value);
+      // It's not currently possible to make buffers read-only
+      // https://github.com/nodejs/node/issues/27080
+      if (!(value instanceof Buffer)) {
+        Object.freeze(value);
+      }
     }
   }
 

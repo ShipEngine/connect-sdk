@@ -51,6 +51,10 @@ export class Document {
     this.format = pojo.format;
     this.data = pojo.data;
 
+    if (this.data.length === 0) {
+      throw new Error(`${this.name} data cannot be empty`);
+    }
+
     // Make this object immutable
     hideAndFreeze(this);
   }

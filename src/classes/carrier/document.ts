@@ -13,6 +13,7 @@ export class Document {
   public static readonly [_internal] = {
     label: "document",
     schema: Joi.object({
+      name: Joi.string().trim().singleLine().min(1).max(100),
       size: Joi.string().enum(DocumentSize).required(),
       format: Joi.string().enum(DocumentFormat).required(),
       data: Joi.object().instance(Buffer).required(),
@@ -21,6 +22,11 @@ export class Document {
 
   //#endregion
   //#region Public Fields
+
+  /**
+   * The user-friendly name of the document (e.g. "Label", "Customs Form")
+   */
+  public readonly name: string;
 
   /**
    * The dimensions of the document
@@ -39,7 +45,8 @@ export class Document {
 
   //#endregion
 
-  public constructor(pojo: DocumentPOJO) {
+  public constructor(pojo: DocumentPOJO & { name: string }) {
+    this.name = pojo.name;
     this.size = pojo.size;
     this.format = pojo.format;
     this.data = pojo.data;

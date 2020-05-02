@@ -5,7 +5,7 @@ import { MonetaryValuePOJO } from "../common";
  * An itemized shipping charge in the total cost of a shipment
  */
 export interface ShippingChargePOJO {
-  name: string;
+  name?: string;
   type: ShippingChargeType;
   amount: MonetaryValuePOJO;
 }

@@ -43,8 +43,14 @@ export class PackageConfirmation extends packageIdentifierMixin() {
   public constructor(pojo: PackageConfirmationPOJO) {
     super(pojo);
 
-    this.label = new Document(pojo.label);
-    this.customsForm = pojo.customsForm && new Document(pojo.customsForm);
+    this.label = new Document({
+      ...pojo.label,
+      name: pojo.label.name || "Label"
+    });
+    this.customsForm = pojo.customsForm && new Document({
+      ...pojo.customsForm,
+      name: pojo.customsForm.name || "Customs Form",
+    });
     this.customData = pojo.customData && new CustomData(pojo.customData);
 
     // Make this object immutable

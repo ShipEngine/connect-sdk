@@ -71,6 +71,11 @@ export interface PackageConfirmationPOJO extends PackageIdentifierPOJO {
  */
 export interface DocumentPOJO {
   /**
+   * The user-friendly name of the document (e.g. "Label", "Customs Form")
+   */
+  name?: string;
+
+  /**
    * The dimensions of the document
    */
   size: DocumentSize;

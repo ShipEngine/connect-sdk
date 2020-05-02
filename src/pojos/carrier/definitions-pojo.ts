@@ -34,7 +34,7 @@ export interface DeliveryConfirmationPOJO extends DeliveryConfirmationDefinition
 export interface DeliveryServicePOJO extends DeliveryServiceDefinition {
   originCountries: Country[];
   destinationCountries: Country[];
-  packaging?: PackagingPOJO[];
+  packaging: PackagingPOJO[];
   deliveryConfirmations?: DeliveryConfirmationPOJO[];
   localization?: LocalizationPOJO<LocalizedInfoPOJO>;
 }

@@ -36,7 +36,7 @@ export class DeliveryService {
       labelSizes: Joi.array().items(Joi.string().enum(DocumentSize)),
       originCountries: Joi.array().min(1).items(Joi.string().enum(Country)).required(),
       destinationCountries: Joi.array().min(1).items(Joi.string().enum(Country)).required(),
-      packaging: Joi.array().items(Packaging[_internal].schema),
+      packaging: Joi.array().items(Packaging[_internal].schema).required(),
       deliveryConfirmations: Joi.array().items(DeliveryConfirmation[_internal].schema),
       localization: Joi.object().localization({
         name: Joi.string().trim().singleLine().min(1).max(100),
@@ -189,7 +189,7 @@ export class DeliveryService {
     this.labelSizes = pojo.labelSizes || [];
     this.originCountries = pojo.originCountries;
     this.destinationCountries = pojo.destinationCountries;
-    this.packaging = pojo.packaging ? pojo.packaging.map((svc) => new Packaging(svc, app)) : [];
+    this.packaging = pojo.packaging.map((svc) => new Packaging(svc, app));
     this.deliveryConfirmations = pojo.deliveryConfirmations
       ? pojo.deliveryConfirmations.map((svc) => new DeliveryConfirmation(svc, app)) : [];
 

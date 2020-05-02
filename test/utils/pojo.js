@@ -46,6 +46,7 @@ const pojo = module.exports = {
       grade: "standard",
       originCountries: ["US"],
       destinationCountries: ["US"],
+      packaging: [pojo.packaging()],
       ...props,
     };
   },

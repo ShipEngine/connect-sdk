@@ -23,7 +23,7 @@ export class NewShipment extends newShipmentMixin() {
     label: "shipment",
     schema: Joi.object({
       deliveryServiceID: Joi.string().uuid().required(),
-      deliveryConfirmationID: Joi.string().uuid().required(),
+      deliveryConfirmationID: Joi.string().uuid(),
       shipFrom: AddressWithContactInfo[_internal].schema.required(),
       shipTo: AddressWithContactInfo[_internal].schema.required(),
       returnTo: AddressWithContactInfo[_internal].schema,

@@ -14,7 +14,7 @@ export interface PackageIdentifierPOJO {
   /**
    * The carrier tracking number
    */
-  trackingNumber: string;
+  trackingNumber?: string;
 
   /**
    * Alternative identifiers associated with this package

@@ -19,7 +19,7 @@ export class PackageIdentifier extends packageIdentifierMixin() {
   public static readonly [_internal] = {
     label: "package",
     schema: Joi.object({
-      trackingNumber: Joi.string().trim().singleLine().min(1).max(100).required(),
+      trackingNumber: Joi.string().trim().singleLine().min(1).max(100),
       identifiers: Joi.array().items(Identifier[_internal].schema),
     }),
   };
@@ -44,7 +44,7 @@ function packageIdentifierMixin(base: Constructor = Object) {
     /**
      * The carrier tracking number
      */
-    public readonly trackingNumber: string;
+    public readonly trackingNumber?: string;
 
     /**
      * Alternative identifiers associated with this package

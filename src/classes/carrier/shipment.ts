@@ -21,7 +21,7 @@ export class ShipmentIdentifier extends shipmentIdentifierMixin() {
   public static readonly [_internal] = {
     label: "shipment",
     schema: Joi.object({
-      trackingNumber: Joi.string().trim().singleLine().min(1).max(100).required(),
+      trackingNumber: Joi.string().trim().singleLine().min(1).max(100),
       identifiers: Joi.array().items(Identifier[_internal].schema),
     }),
   };
@@ -45,9 +45,12 @@ function shipmentIdentifierMixin(base: Constructor = Object) {
     //#region Public Fields
 
     /**
-     * The carrier tracking number
+     * The master tracking number for the entire shipment.
+     * For single-piece shipments, this will be the same as the package tracking number.
+     * For multi-piece shipments, this may be a separate tracking number, or the same
+     * tracking number as one of the packages.
      */
-    public readonly trackingNumber: string;
+    public readonly trackingNumber?: string;
 
     /**
      * Alternative identifiers associated with this shipment

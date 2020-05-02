@@ -3,7 +3,7 @@ import { CustomDataPOJO, DimensionsPOJO, IdentifierPOJO, MonetaryValuePOJO, Weig
 import { PackageItemPOJO } from "./package-item-pojo";
 
 /**
- * A package that has already been created and assigned identifiers
+ * A complete package that already exists and has identifiers
  */
 export interface PackagePOJO extends PackageIdentifierPOJO, NewPackagePOJO {
   /**

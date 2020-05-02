@@ -2,9 +2,9 @@ import { LabelConfirmationPOJO } from "../../../pojos/carrier";
 import { Joi, validate } from "../../../validation";
 import { MonetaryValue } from "../../common";
 import { hideAndFreeze, _internal } from "../../utils";
+import { ShipmentConfirmation } from "../shipments/shipment-confirmation";
 import { ShippingCharge } from "../shipping-charge";
 import { calculateTotalCharges } from "../utils";
-import { Label } from "./label";
 
 /**
  * Confirms the successful creation of a shipping label
@@ -17,10 +17,8 @@ export class LabelConfirmation {
     label: "label confirmation",
     schema: Joi.object({
       confirmationID: Joi.string().trim().singleLine().allow("").max(100),
-      shipmentTrackingNumber: Joi.string().trim().singleLine().allow("").max(100),
-      estimatedDeliveryDateTime: Joi.date(),
       charges: Joi.array().min(1).items(ShippingCharge[_internal].schema).required(),
-      labels: Joi.array().min(1).items(Label[_internal].schema).required(),
+      shipment: ShipmentConfirmation[_internal].schema.required(),
     }),
   };
 
@@ -31,19 +29,6 @@ export class LabelConfirmation {
    * The carrier's confirmation ID for this transaction
    */
   public readonly confirmationID: string;
-
-  /**
-   * The master tracking number for the entire shipment.
-   * For single-piece shipments, this will be the same as the label tracking number.
-   * For multi-piece shipments, this may be a separate tracking number, or the same
-   * tracking number as one of the packages.
-   */
-  public readonly shipmentTrackingNumber: string;
-
-  /**
-   * The estimated date and time for when the shipment will be delivered.
-   */
-  public readonly estimatedDeliveryDateTime?: Date;
 
   /**
    * The breakdown of charges in the total shipping cost for this label.
@@ -58,9 +43,9 @@ export class LabelConfirmation {
   public readonly totalAmount: MonetaryValue;
 
   /**
-   * The shipping labels that were created
+   * Confirmation details about the shipment and its packages
    */
-  public readonly labels: ReadonlyArray<Label>;
+  public readonly shipment: ShipmentConfirmation;
 
   //#endregion
 
@@ -68,11 +53,9 @@ export class LabelConfirmation {
     validate(pojo, LabelConfirmation);
 
     this.confirmationID = pojo.confirmationID || "";
-    this.shipmentTrackingNumber = pojo.shipmentTrackingNumber || "";
-    this.estimatedDeliveryDateTime = pojo.estimatedDeliveryDateTime;
     this.charges = pojo.charges.map((charge) => new ShippingCharge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);
-    this.labels = pojo.labels.map((label) => new Label(label));
+    this.shipment = new ShipmentConfirmation(pojo.shipment);
 
     // Make this object immutable
     hideAndFreeze(this);

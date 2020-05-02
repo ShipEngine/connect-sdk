@@ -4,7 +4,7 @@ import { AddressWithContactInfoPOJO, CustomDataPOJO, IdentifierPOJO } from "../c
 import { NewPackagePOJO, PackagePOJO } from "./package-pojo";
 
 /**
- * A shipment that has already been created and assigned identifiers
+ * A complete shipment that already exists and has identifiers
  */
 export interface ShipmentPOJO extends ShipmentIdentifierPOJO, NewShipmentPOJO {
   /**

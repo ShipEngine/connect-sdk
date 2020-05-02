@@ -6,12 +6,12 @@ import { NewPackage, newPackageMixin } from "./new-package";
 import { PackageIdentifier, packageIdentifierMixin } from "./package-identifier";
 
 /**
- * A package that has already been created and assigned identifiers
+ * A complete package that already exists and has identifiers
  */
 export interface Package extends PackageIdentifier, NewPackage {}
 
 /**
- * A package that has already been created and assigned identifiers
+ * A complete package that already exists and has identifiers
  */
 export class Package extends newPackageMixin(packageIdentifierMixin()) {
   //#region Private/Internal Fields

@@ -1,4 +1,7 @@
-import { LabelPOJO } from "./label-pojo";
+import { DocumentFormat, DocumentSize } from "../../enums";
+import { CustomDataPOJO } from "../common";
+import { PackageIdentifierPOJO } from "./package-pojo";
+import { ShipmentIdentifierPOJO } from "./shipment-pojo";
 import { ShippingChargePOJO } from "./shipping-charge-pojo";
 
 /**
@@ -11,19 +14,6 @@ export interface LabelConfirmationPOJO {
   confirmationID?: string;
 
   /**
-   * The master tracking number for the entire shipment.
-   * For single-piece shipments, this will be the same as the label tracking number.
-   * For multi-piece shipments, this may be a separate tracking number, or the same
-   * tracking number as one of the packages.
-   */
-  shipmentTrackingNumber?: string;
-
-  /**
-   * The estimated date and time the shipment will be delivered
-   */
-  estimatedDeliveryDateTime?: Date;
-
-  /**
    * The breakdown of charges in the total shipping cost for this label.
    * If the carrier does not provide a detailed breakdown, then just use a single
    * charge of type "shipping".
@@ -31,7 +21,67 @@ export interface LabelConfirmationPOJO {
   charges: ShippingChargePOJO[];
 
   /**
-   * The shipping labels that were created
+   * Confirmation details about the shipment and its packages
    */
-  labels: LabelPOJO[];
+  shipment: ShipmentConfirmationPOJO;
+}
+
+/**
+ * Confirmation that a shipment has been created
+ */
+export interface ShipmentConfirmationPOJO extends ShipmentIdentifierPOJO {
+  /**
+   * The estimated date and time the shipment will be delivered
+   */
+  estimatedDeliveryDateTime?: Date;
+
+  /**
+   * Confirmation details about each package in the shipment
+   */
+  packages: PackageConfirmationPOJO[];
+
+  /**
+   * Arbitrary data that will be persisted by the ShipEngine Integration Platform.
+   */
+  customData?: CustomDataPOJO;
+}
+
+/**
+ * Confirmation details about a package in a shipment
+ */
+export interface PackageConfirmationPOJO extends PackageIdentifierPOJO {
+  /**
+   * The shipping label for this package
+   */
+  label: DocumentPOJO;
+
+  /**
+   * The customs form for this package
+   */
+  customsForm?: DocumentPOJO;
+
+  /**
+   * Arbitrary data that will be persisted by the ShipEngine Integration Platform.
+   */
+  customData?: CustomDataPOJO;
+}
+
+/**
+ * A document that is associated with a shipment or package, such as a customs form.
+ */
+export interface DocumentPOJO {
+  /**
+   * The dimensions of the document
+   */
+  size: DocumentSize;
+
+  /**
+   * The file format of the document
+   */
+  format: DocumentFormat;
+
+  /**
+   * The document data, in the specified file format
+   */
+  data: Buffer;
 }

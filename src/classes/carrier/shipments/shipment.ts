@@ -1,4 +1,4 @@
-import { PackagePOJO, ShipmentPOJO } from "../../../pojos/carrier";
+import { ShipmentPOJO } from "../../../pojos/carrier";
 import { Joi } from "../../../validation";
 import { CustomData } from "../../common";
 import { App } from "../../common/app";
@@ -8,12 +8,12 @@ import { NewShipment, newShipmentMixin } from "./new-shipment";
 import { ShipmentIdentifier, shipmentIdentifierMixin } from "./shipment-identifier";
 
 /**
- * A shipment that has already been created and assigned identifiers
+ * A complete shipment that already exists and has identifiers
  */
 export interface Shipment extends ShipmentIdentifier, NewShipment {}
 
 /**
- * A shipment that has already been created and assigned identifiers
+ * A complete shipment that already exists and has identifiers
  */
 export class Shipment extends newShipmentMixin(shipmentIdentifierMixin()) {
   //#region Private/Internal Fields
@@ -52,7 +52,7 @@ export class Shipment extends newShipmentMixin(shipmentIdentifierMixin()) {
     super(pojo, app);
 
     this.estimatedDeliveryDateTime = pojo.estimatedDeliveryDateTime;
-    this.packages = pojo.packages.map((parcel: PackagePOJO) => new Package(parcel, app));
+    this.packages = pojo.packages.map((parcel) => new Package(parcel, app));
     this.customData = new CustomData(pojo.customData);
 
     // Make this object immutable

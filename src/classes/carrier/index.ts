@@ -2,7 +2,6 @@ export * from "./carrier";
 export * from "./carrier-app";
 export * from "./delivery-confirmation";
 export * from "./delivery-service";
-export * from "./labels/label";
 export * from "./labels/label-confirmation";
 export * from "./labels/label-spec";
 export * from "./methods";

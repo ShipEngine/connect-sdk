@@ -3,7 +3,7 @@ import { Currency } from "../../enums";
 import { Constructor } from "../../internal-types";
 import { NewPackagePOJO, PackageIdentifierPOJO, PackagePOJO } from "../../pojos/carrier";
 import { Joi } from "../../validation";
-import { Dimensions, Identifier, MonetaryValue, Weight } from "../common";
+import { CustomData, Dimensions, Identifier, MonetaryValue, Weight } from "../common";
 import { App } from "../common/app";
 import { hideAndFreeze, _internal } from "../utils";
 import { PackageItem } from "./package-item";
@@ -177,13 +177,25 @@ export class Package extends newPackageMixin(packageIdentifierMixin()) {
   /** @internal */
   public static readonly [_internal] = {
     label: "package",
-    schema: PackageIdentifier[_internal].schema.concat(NewPackage[_internal].schema)
+    schema: PackageIdentifier[_internal].schema.concat(NewPackage[_internal].schema).keys({
+      customData: CustomData[_internal].schema,
+    }),
   };
+
+  //#endregion
+  //#region Public Fields
+
+  /**
+   * Arbitrary data that was returned for this package when the label was created.
+   */
+  public readonly customData: CustomData;
 
   //#endregion
 
   public constructor(pojo: PackagePOJO, app: App) {
     super(pojo, app);
+
+    this.customData = new CustomData(pojo.customData);
 
     // Make this object immutable
     hideAndFreeze(this);

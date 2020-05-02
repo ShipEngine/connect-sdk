@@ -1,11 +1,16 @@
 import { UUID } from "../../types";
-import { DimensionsPOJO, IdentifierPOJO, MonetaryValuePOJO, WeightPOJO } from "../common";
+import { CustomDataPOJO, DimensionsPOJO, IdentifierPOJO, MonetaryValuePOJO, WeightPOJO } from "../common";
 import { PackageItemPOJO } from "./package-item-pojo";
 
 /**
  * A package that has already been created and assigned identifiers
  */
-export type PackagePOJO = PackageIdentifierPOJO & NewPackagePOJO;
+export interface PackagePOJO extends PackageIdentifierPOJO, NewPackagePOJO {
+  /**
+   * Arbitrary data that was returned for this package when the label was created.
+   */
+  customData?: CustomDataPOJO;
+}
 
 /**
  * Identifies a package

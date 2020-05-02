@@ -17,16 +17,17 @@ export class CustomData {
   //#endregion
   //#region Public Fields
 
-  [key: string]: string;
+  readonly [key: string]: string;
 
   //#endregion
 
-  public constructor(pojo: CustomDataPOJO) {
+  public constructor(pojo: CustomDataPOJO = {}) {
     // Copy all keys & values to this object
     // NOTE: DO NOT use Object.assign() here because it copies Symbol keys. We only want string keys.
     for (let key of Object.keys(pojo)) {
       let value = pojo[key];
       if (value !== undefined) {
+        // @ts-ignore
         this[key] = pojo[key];
       }
     }

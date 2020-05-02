@@ -82,7 +82,7 @@ export class PickupCancellation {
   /**
    * Arbitrary data that was returned when the pickup was originally confirmed.
    */
-  public readonly customData?: CustomData;
+  public readonly customData: CustomData;
 
   //#endregion
 
@@ -98,7 +98,7 @@ export class PickupCancellation {
     this.contact = new ContactInfo(pojo.contact);
     this.timeWindows = pojo.timeWindows.map((window) => new TimeRange(window));
     this.shipments = pojo.shipments.map((shipment) => new Shipment(shipment, app));
-    this.customData = pojo.customData && new CustomData(pojo.customData);
+    this.customData = new CustomData(pojo.customData);
 
     // Make this object immutable
     hideAndFreeze(this);

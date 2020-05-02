@@ -1,17 +1,27 @@
 import { BilledParty, Country, InsuranceProvider, NonDeliveryAction } from "../../enums";
 import { UUID } from "../../types";
-import { AddressWithContactInfoPOJO, IdentifierPOJO } from "../common";
+import { AddressWithContactInfoPOJO, CustomDataPOJO, IdentifierPOJO } from "../common";
 import { NewPackagePOJO, PackagePOJO } from "./package-pojo";
 
 /**
  * A shipment that has already been created and assigned identifiers
  */
-export type ShipmentPOJO = ShipmentIdentifierPOJO & NewShipmentPOJO & {
+export interface ShipmentPOJO extends ShipmentIdentifierPOJO, NewShipmentPOJO {
+  /**
+   * The estimated date and time the shipment will be delivered
+   */
+  estimatedDeliveryDateTime?: Date;
+
   /**
    * The list of packages in the shipment
    */
   packages: PackagePOJO[];
-};
+
+  /**
+   * Arbitrary data that was returned for the shipment when the label was created.
+   */
+  customData?: CustomDataPOJO;
+}
 
 /**
  * Identifies a shipment

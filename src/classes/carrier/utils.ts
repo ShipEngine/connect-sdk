@@ -1,7 +1,7 @@
 import { ServiceArea } from "../../enums";
 import { error, ErrorCode, ShipEngineError } from "../../errors";
 import { MonetaryValue } from "../common";
-import { ShippingCharge } from "./labels/shipping-charge";
+import { ShippingCharge } from "./shipping-charge";
 
 /**
  * Returns the widest service area of the given values

@@ -1,8 +1,8 @@
-import { ShippingChargeType } from "../../../enums";
-import { ShippingChargePOJO } from "../../../pojos/carrier";
-import { Joi } from "../../../validation";
-import { MonetaryValue } from "../../common";
-import { hideAndFreeze, _internal } from "../../utils";
+import { ShippingChargeType } from "../../enums";
+import { ShippingChargePOJO } from "../../pojos/carrier";
+import { Joi } from "../../validation";
+import { MonetaryValue } from "../common";
+import { hideAndFreeze, _internal } from "../utils";
 
 /**
  * An itemized shipping charge in the total cost of a shipment

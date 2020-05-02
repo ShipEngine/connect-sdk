@@ -2,9 +2,9 @@ import { LabelConfirmationPOJO } from "../../../pojos/carrier";
 import { Joi, validate } from "../../../validation";
 import { MonetaryValue } from "../../common";
 import { hideAndFreeze, _internal } from "../../utils";
+import { ShippingCharge } from "../shipping-charge";
 import { calculateTotalCharges } from "../utils";
 import { Label } from "./label";
-import { ShippingCharge } from "./shipping-charge";
 
 /**
  * Confirms the successful creation of a shipping label

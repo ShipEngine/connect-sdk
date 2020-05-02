@@ -5,7 +5,7 @@ import { App } from "../../common/app";
 import { hideAndFreeze, _internal } from "../../utils";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
-import { ShippingCharge } from "../labels/shipping-charge";
+import { ShippingCharge } from "../shipping-charge";
 import { calculateTotalCharges } from "../utils";
 
 /**

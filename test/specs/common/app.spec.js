@@ -1,7 +1,7 @@
 "use strict";
 
-const { ConnectionApp } = require("../../");
-const pojo = require("../utils/pojo");
+const { ConnectionApp } = require("../../..");
+const pojo = require("../../utils/pojo");
 const { expect } = require("chai");
 
 describe("App", () => {

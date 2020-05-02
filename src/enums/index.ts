@@ -45,6 +45,7 @@ export enum Currency {
  */
 export enum LabelFormat {
   PDF = "pdf",
+  HTML = "html",
   ZPL = "zpl",
   PNG = "png"
 }
@@ -53,6 +54,8 @@ export enum LabelFormat {
  * The dimensions of a shipping label
  */
 export enum LabelSize {
+  A4 = "a4",
+  Letter = "letter",
   Inches4x6 = "4x6",
   Inches4x8 = "4x8",
 }

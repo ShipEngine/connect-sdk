@@ -1,72 +1,15 @@
-// tslint:disable: max-classes-per-file
-import { BilledParty, Country, InsuranceProvider, NonDeliveryAction } from "../../enums";
-import { error, ErrorCode, ShipEngineError } from "../../errors";
-import { Constructor } from "../../internal-types";
-import { NewShipmentPOJO, PackagePOJO, ShipmentIdentifierPOJO, ShipmentPOJO } from "../../pojos/carrier";
-import { Joi } from "../../validation";
-import { AddressWithContactInfo, CustomData, Identifier, MonetaryValue } from "../common";
-import { App } from "../common/app";
-import { hideAndFreeze, _internal } from "../utils";
-import { DeliveryConfirmation } from "./delivery-confirmation";
-import { DeliveryService } from "./delivery-service";
-import { NewPackage, Package } from "./package";
-
-/**
- * Identifies a shipment
- */
-export class ShipmentIdentifier extends shipmentIdentifierMixin() {
-  //#region Private/Internal Fields
-
-  /** @internal */
-  public static readonly [_internal] = {
-    label: "shipment",
-    schema: Joi.object({
-      trackingNumber: Joi.string().trim().singleLine().min(1).max(100),
-      identifiers: Joi.array().items(Identifier[_internal].schema),
-    }),
-  };
-
-  //#endregion
-
-  public constructor(pojo: ShipmentIdentifierPOJO) {
-    super(pojo);
-
-    // Make this object immutable
-    hideAndFreeze(this);
-  }
-}
-
-// Prevent modifications to the class
-hideAndFreeze(ShipmentIdentifier);
-
-
-function shipmentIdentifierMixin(base: Constructor = Object) {
-  return class ShipmentIdentifierMixin extends base {
-    //#region Public Fields
-
-    /**
-     * The master tracking number for the entire shipment.
-     * For single-piece shipments, this will be the same as the package tracking number.
-     * For multi-piece shipments, this may be a separate tracking number, or the same
-     * tracking number as one of the packages.
-     */
-    public readonly trackingNumber?: string;
-
-    /**
-     * Alternative identifiers associated with this shipment
-     */
-    public readonly identifiers: ReadonlyArray<Identifier>;
-
-    //#endregion
-
-    public constructor(pojo: ShipmentIdentifierPOJO) {
-      base === Object ? super() : super(pojo);
-
-      this.trackingNumber = pojo.trackingNumber;
-      this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];
-    }
-  };
-}
+import { BilledParty, Country, InsuranceProvider, NonDeliveryAction } from "../../../enums";
+import { error, ErrorCode, ShipEngineError } from "../../../errors";
+import { Constructor } from "../../../internal-types";
+import { NewShipmentPOJO } from "../../../pojos/carrier";
+import { Joi } from "../../../validation";
+import { AddressWithContactInfo, MonetaryValue } from "../../common";
+import { App } from "../../common/app";
+import { hideAndFreeze, _internal } from "../../utils";
+import { DeliveryConfirmation } from "../delivery-confirmation";
+import { DeliveryService } from "../delivery-service";
+import { NewPackage } from "../packages/new-package";
+import { ShipmentIdentifier } from "./shipment-identifier";
 
 
 /**
@@ -119,7 +62,12 @@ export class NewShipment extends newShipmentMixin() {
 // Prevent modifications to the class
 hideAndFreeze(NewShipment);
 
-function newShipmentMixin(base: Constructor = Object) {
+
+/**
+ * Extends a base class with new shipment fields
+ * @internal
+ */
+export function newShipmentMixin(base: Constructor = Object) {
   return class NewShipmentMixin extends base {
     //#region Public Fields
 
@@ -260,63 +208,6 @@ function newShipmentMixin(base: Constructor = Object) {
     }
   };
 }
-
-
-/**
- * A shipment that has already been created and assigned identifiers
- */
-export interface Shipment extends ShipmentIdentifier, NewShipment {}
-
-/**
- * A shipment that has already been created and assigned identifiers
- */
-export class Shipment extends newShipmentMixin(shipmentIdentifierMixin()) {
-  //#region Private/Internal Fields
-
-  /** @internal */
-  public static readonly [_internal] = {
-    label: "shipment",
-    schema: ShipmentIdentifier[_internal].schema.concat(NewShipment[_internal].schema).keys({
-      estimatedDeliveryDateTime: Joi.date(),
-      packages: Joi.array().min(1).items(Package[_internal].schema).required(),
-      customData: CustomData[_internal].schema,
-    }),
-  };
-
-  //#endregion
-  //#region Public Fields
-
-  /**
-   * The estimated date and time the shipment will be delivered
-   */
-  public readonly estimatedDeliveryDateTime?: Date;
-
-  /**
-   * The list of packages in the shipment
-   */
-  public readonly packages: ReadonlyArray<Package>;
-
-  /**
-   * Arbitrary data that was returned for the shipment when the label was created.
-   */
-  public readonly customData: CustomData;
-
-  //#endregion
-
-  public constructor(pojo: ShipmentPOJO, app: App) {
-    super(pojo, app);
-
-    this.estimatedDeliveryDateTime = pojo.estimatedDeliveryDateTime;
-    this.packages = pojo.packages.map((parcel: PackagePOJO) => new Package(parcel, app));
-    this.customData = new CustomData(pojo.customData);
-
-    // Make this object immutable
-    hideAndFreeze(this);
-  }
-}
-
-// Prevent modifications to the class
-hideAndFreeze(Shipment);
 
 /**
  * Calculates the total insurance amount for the shipment,

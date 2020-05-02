@@ -3,7 +3,8 @@ import { LabelSpecPOJO } from "../../../pojos/carrier";
 import { Joi, validate } from "../../../validation";
 import { App } from "../../common/app";
 import { hideAndFreeze, _internal } from "../../utils";
-import { NewShipment, Shipment } from "../shipment";
+import { NewShipment } from "../shipments/new-shipment";
+import { Shipment } from "../shipments/shipment";
 
 /**
  * Specifies the information needed to create a shipping label for a shipment.

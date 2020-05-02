@@ -1,4 +1,3 @@
-// tslint:disable: max-classes-per-file
 import { SalesOrderIdentifierPOJO } from "../../pojos/order";
 import { Joi } from "../../validation";
 import { Identifier } from "../common";

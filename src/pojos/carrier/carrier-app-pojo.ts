@@ -1,5 +1,5 @@
 import { AppPOJO } from "../common";
-import { CarrierPOJO } from "./definitions";
+import { CarrierPOJO } from "./definitions-pojo";
 
 /**
  * A ShipEngine Integration Platform carrier app

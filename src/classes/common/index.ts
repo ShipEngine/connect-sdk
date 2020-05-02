@@ -1,9 +1,12 @@
-export * from "./address";
-export { ContactInfo, PersonName } from "./contact-info";
+export { Address } from "./addresses/address";
+export * from "./addresses/address-with-contact-info";
+export { ContactInfo } from "./addresses/contact-info";
+export * from "./addresses/geo-coordinate";
+export * from "./addresses/person-name";
 export * from "./custom-data";
-export * from "./dimensions";
 export * from "./identifier";
-export * from "./monetary-value";
-export * from "./quantity";
+export * from "./measures/dimensions";
+export * from "./measures/monetary-value";
+export * from "./measures/quantity";
+export * from "./measures/weight";
 export * from "./transaction";
-export * from "./weight";

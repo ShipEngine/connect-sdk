@@ -1,66 +1,12 @@
-// tslint:disable: max-classes-per-file
-import { Currency } from "../../enums";
-import { Constructor } from "../../internal-types";
-import { NewPackagePOJO, PackageIdentifierPOJO, PackagePOJO } from "../../pojos/carrier";
-import { Joi } from "../../validation";
-import { CustomData, Dimensions, Identifier, MonetaryValue, Weight } from "../common";
-import { App } from "../common/app";
-import { hideAndFreeze, _internal } from "../utils";
+import { Currency } from "../../../enums";
+import { Constructor } from "../../../internal-types";
+import { NewPackagePOJO } from "../../../pojos/carrier";
+import { Joi } from "../../../validation";
+import { Dimensions, MonetaryValue, Weight } from "../../common";
+import { App } from "../../common/app";
+import { hideAndFreeze, _internal } from "../../utils";
+import { Packaging } from "../packaging";
 import { PackageItem } from "./package-item";
-import { Packaging } from "./packaging";
-
-/**
- * Identifies a package
- */
-export class PackageIdentifier extends packageIdentifierMixin() {
-  //#region Private/Internal Fields
-
-  /** @internal */
-  public static readonly [_internal] = {
-    label: "package",
-    schema: Joi.object({
-      trackingNumber: Joi.string().trim().singleLine().min(1).max(100),
-      identifiers: Joi.array().items(Identifier[_internal].schema),
-    }),
-  };
-
-  //#endregion
-
-  public constructor(pojo: PackageIdentifierPOJO) {
-    super(pojo);
-
-    // Make this object immutable
-    hideAndFreeze(this);
-  }
-}
-
-// Prevent modifications to the class
-hideAndFreeze(PackageIdentifier);
-
-function packageIdentifierMixin(base: Constructor = Object) {
-  return class PackageIdentifierMixin extends base {
-    //#region Public Fields
-
-    /**
-     * The carrier tracking number
-     */
-    public readonly trackingNumber?: string;
-
-    /**
-     * Alternative identifiers associated with this package
-     */
-    public readonly identifiers: ReadonlyArray<Identifier>;
-
-    //#endregion
-
-    public constructor(pojo: PackageIdentifierPOJO) {
-      base === Object ? super() : super(pojo);
-
-      this.trackingNumber = pojo.trackingNumber;
-      this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];
-    }
-  };
-}
 
 
 /**
@@ -97,8 +43,11 @@ export class NewPackage extends newPackageMixin() {
 // Prevent modifications to the class
 hideAndFreeze(NewPackage);
 
-
-function newPackageMixin(base: Constructor = Object) {
+/**
+ * Extends a base class with the fields of a new package
+ * @internal
+ */
+export function newPackageMixin(base: Constructor = Object) {
   return class NewPackageMixin extends base {
     //#region Public Fields
 
@@ -161,46 +110,3 @@ function newPackageMixin(base: Constructor = Object) {
     }
   };
 }
-
-
-/**
- * A package that has already been created and assigned identifiers
- */
-export interface Package extends PackageIdentifier, NewPackage {}
-
-/**
- * A package that has already been created and assigned identifiers
- */
-export class Package extends newPackageMixin(packageIdentifierMixin()) {
-  //#region Private/Internal Fields
-
-  /** @internal */
-  public static readonly [_internal] = {
-    label: "package",
-    schema: PackageIdentifier[_internal].schema.concat(NewPackage[_internal].schema).keys({
-      customData: CustomData[_internal].schema,
-    }),
-  };
-
-  //#endregion
-  //#region Public Fields
-
-  /**
-   * Arbitrary data that was returned for this package when the label was created.
-   */
-  public readonly customData: CustomData;
-
-  //#endregion
-
-  public constructor(pojo: PackagePOJO, app: App) {
-    super(pojo, app);
-
-    this.customData = new CustomData(pojo.customData);
-
-    // Make this object immutable
-    hideAndFreeze(this);
-  }
-}
-
-// Prevent modifications to the class
-hideAndFreeze(Package);

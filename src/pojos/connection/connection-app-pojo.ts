@@ -1,5 +1,5 @@
 import { AppPOJO } from "../common";
-import { ConnectionPOJO } from "./definitions";
+import { ConnectionPOJO } from "./definitions-pojo";
 
 /**
  * A ShipEngine Integration Platform connection app

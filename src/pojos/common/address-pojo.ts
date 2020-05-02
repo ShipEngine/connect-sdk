@@ -1,5 +1,4 @@
 import { Country } from "../../enums";
-import { ContactInfoPOJO } from "./contact-info-pojo";
 
 /**
  * A mailing address
@@ -37,4 +36,22 @@ export interface GeoCoordinatePOJO {
    * @see http://www.geomidpoint.com/latlon.html
    */
   longitude: number;
+}
+
+/**
+ * A person's contact information
+ */
+export interface ContactInfoPOJO {
+  name: string | PersonNamePOJO;
+  email?: string;
+  phoneNumber?: string;
+  phoneNumberExtension?: string;
+}
+
+/**
+ * A person's name that has been parsed into separate fields.
+ */
+export interface PersonNamePOJO {
+  first: string;
+  last: string;
 }

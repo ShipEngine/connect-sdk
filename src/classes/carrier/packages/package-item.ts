@@ -1,10 +1,10 @@
 import * as currency from "currency.js";
-import { Country } from "../../enums";
-import { PackageItemPOJO } from "../../pojos/carrier";
-import { Joi } from "../../validation";
-import { Identifier, MonetaryValue, Quantity } from "../common";
-import { SalesOrderIdentifier } from "../order/sales-order";
-import { hideAndFreeze, _internal } from "../utils";
+import { Country } from "../../../enums";
+import { PackageItemPOJO } from "../../../pojos/carrier";
+import { Joi } from "../../../validation";
+import { Identifier, MonetaryValue, Quantity } from "../../common";
+import { SalesOrderIdentifier } from "../../order/sales-order";
+import { hideAndFreeze, _internal } from "../../utils";
 
 /**
  * An item inside a package

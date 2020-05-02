@@ -5,7 +5,7 @@ import { Address, ContactInfo, CustomData, Identifier } from "../../common";
 import { App } from "../../common/app";
 import { hideAndFreeze, _internal } from "../../utils";
 import { PickupService } from "../pickup-service";
-import { Shipment } from "../shipment";
+import { Shipment } from "../shipments/shipment";
 import { TimeRange } from "./time-range";
 
 /**

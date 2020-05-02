@@ -1,7 +1,7 @@
-import { LengthUnit } from "../../enums";
-import { DimensionsPOJO } from "../../pojos/common";
-import { Joi } from "../../validation";
-import { hideAndFreeze, _internal } from "../utils";
+import { LengthUnit } from "../../../enums";
+import { DimensionsPOJO } from "../../../pojos/common";
+import { Joi } from "../../../validation";
+import { hideAndFreeze, _internal } from "../../utils";
 
 /**
  * The dimensions of a package

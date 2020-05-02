@@ -1,45 +1,9 @@
-// tslint:disable: max-classes-per-file
-import { Country } from "../../enums";
-import { Constructor } from "../../internal-types";
-import { AddressPOJO, AddressWithContactInfoPOJO, GeoCoordinatePOJO } from "../../pojos/common";
-import { Joi } from "../../validation";
-import { hideAndFreeze, _internal } from "../utils";
-import { ContactInfo, contactInfoMixin } from "./contact-info";
-
-/**
- * The geo coordinates of a location on Earth
- */
-export class GeoCoordinate {
-  //#region Private/Internal Fields
-
-  /** @internal */
-  public static readonly [_internal] = {
-    label: "geo coordinate",
-    schema: Joi.object({
-      latitude: Joi.number().min(-90).max(90).required(),
-      longitude: Joi.number().min(-180).max(180).required(),
-    }),
-  };
-
-  //#endregion
-  //#region Public Fields
-
-  public readonly latitude: number;
-  public readonly longitude: number;
-
-  //#endregion
-
-  public constructor(pojo: GeoCoordinatePOJO) {
-    this.latitude = pojo.latitude;
-    this.longitude = pojo.longitude;
-
-    // Make this object immutable
-    hideAndFreeze(this);
-  }
-}
-
-// Prevent modifications to the class
-hideAndFreeze(GeoCoordinate);
+import { Country } from "../../../enums";
+import { Constructor } from "../../../internal-types";
+import { AddressPOJO } from "../../../pojos/common";
+import { Joi } from "../../../validation";
+import { hideAndFreeze, _internal } from "../../utils";
+import { GeoCoordinate } from "./geo-coordinate";
 
 /**
  * A mailing address
@@ -76,7 +40,11 @@ export class Address extends addressMixin() {
 // Prevent modifications to the class
 hideAndFreeze(Address);
 
-function addressMixin(base: Constructor = Object) {
+/**
+ * Extends a base class with address fields
+ * @internal
+ */
+export function addressMixin(base: Constructor = Object) {
   return class AddressMixin extends base {
     //#region Public Fields
 
@@ -117,34 +85,3 @@ function addressMixin(base: Constructor = Object) {
     }
   };
 }
-
-
-/**
- * A mailing address with a person's contact info
- */
-export interface AddressWithContactInfo extends Address, ContactInfo {}
-
-/**
- * A mailing address with a person's contact info
- */
-export class AddressWithContactInfo extends addressMixin(contactInfoMixin()) {
-  //#region Private/Internal Fields
-
-  /** @internal */
-  public static readonly [_internal] = {
-    label: "address",
-    schema: Address[_internal].schema.concat(ContactInfo[_internal].schema),
-  };
-
-  //#endregion
-
-  public constructor(pojo: AddressWithContactInfoPOJO) {
-    super(pojo);
-
-    // Make this object immutable
-    hideAndFreeze(this);
-  }
-}
-
-// Prevent modifications to the class
-hideAndFreeze(AddressWithContactInfo);

@@ -2,7 +2,8 @@ import { PickupConfirmationPOJO } from "../../../pojos/carrier";
 import { Joi, validate } from "../../../validation";
 import { CustomData, Identifier } from "../../common";
 import { hideAndFreeze, _internal } from "../../utils";
-import { Shipment, ShipmentIdentifier } from "../shipment";
+import { Shipment } from "../shipments/shipment";
+import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 import { TimeRange } from "./time-range";
 
 /**

@@ -1,2 +1,2 @@
 export * from "./connection-app-pojo";
-export * from "./definitions";
+export * from "./definitions-pojo";

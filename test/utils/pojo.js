@@ -102,4 +102,135 @@ const pojo = module.exports = {
       ...props,
     };
   },
+
+  labelSpec (props = {}) {
+    return {
+      format: "pdf",
+      size: "letter",
+      shipment: pojo.newShipment(),
+      ...props,
+    };
+  },
+
+  labelConfirmation (props = {}) {
+    return {
+      charges: [pojo.shippingCharge()],
+      shipment: pojo.shipmentConfirmation(),
+      ...props,
+    };
+  },
+
+  document (props = {}) {
+    return {
+      size: "letter",
+      format: "pdf",
+      data: Buffer.from("data"),
+      ...props,
+    };
+  },
+
+  shipment (props = {}) {
+    return {
+      ...pojo.shipmentIdentifier(),
+      ...pojo.newShipment(),
+      ...props,
+    };
+  },
+
+  shipmentIdentifier (props = {}) {
+    return {
+      ...props,
+    };
+  },
+
+  shipmentConfirmation (props = {}) {
+    return {
+      ...pojo.shipmentIdentifier(),
+      packages: [pojo.packageConfirmation()],
+      ...props,
+    };
+  },
+
+  newShipment (props = {}) {
+    return {
+      deliveryServiceID: "22222222-2222-2222-2222-222222222222",
+      shipFrom: pojo.addressWithContactInfo(),
+      shipTo: pojo.addressWithContactInfo(),
+      shipDateTime: new Date(),
+      nonDeliveryAction: "return_to_sender",
+      packages: [pojo.newPackage()],
+      ...props,
+    };
+  },
+
+  package (props = {}) {
+    return {
+      ...pojo.packageIdentifier(),
+      ...pojo.newPackage(),
+      ...props,
+    };
+  },
+
+  packageIdentifier (props = {}) {
+    return {
+      ...props,
+    };
+  },
+
+  packageConfirmation (props = {}) {
+    return {
+      ...pojo.packageIdentifier(),
+      label: pojo.document(),
+      ...props,
+    };
+  },
+
+  newPackage (props = {}) {
+    return {
+      packagingID: "44444444-4444-4444-4444-444444444444",
+      ...props,
+    };
+  },
+
+  addressWithContactInfo (props = {}) {
+    return {
+      ...pojo.address(),
+      ...pojo.contactInfo(),
+      ...props,
+    };
+  },
+
+  address (props = {}) {
+    return {
+      addressLines: ["123 Main St."],
+      cityLocality: "Austin",
+      stateProvince: "TX",
+      postalCode: "78754",
+      country: "US",
+      ...props,
+    };
+  },
+
+  contactInfo (props = {}) {
+    return {
+      name: "John Doe",
+      ...props,
+    };
+  },
+
+  shippingCharge (props = {}) {
+    return {
+      type: "shipping",
+      amount: pojo.monetaryValue(),
+      ...props,
+    };
+  },
+
+  monetaryValue (props = {}) {
+    return {
+      value: "12.34",
+      currency: "USD",
+      ...props,
+    };
+  },
 };

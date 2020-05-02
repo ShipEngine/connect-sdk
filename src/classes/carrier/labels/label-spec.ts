@@ -1,4 +1,4 @@
-import { LabelFormat, LabelSize } from "../../../enums";
+import { DocumentFormat, DocumentSize } from "../../../enums";
 import { LabelSpecPOJO } from "../../../pojos/carrier";
 import { Joi, validate } from "../../../validation";
 import { App } from "../../common/app";
@@ -15,8 +15,8 @@ export class LabelSpec {
   public static readonly [_internal] = {
     label: "label specification",
     schema: Joi.object({
-      format: Joi.string().enum(LabelFormat).required(),
-      size: Joi.string().enum(LabelSize).required(),
+      format: Joi.string().enum(DocumentFormat).required(),
+      size: Joi.string().enum(DocumentSize).required(),
       shipment: Shipment[_internal].schema.required(),
     }),
   };
@@ -25,14 +25,16 @@ export class LabelSpec {
   //#region Public Fields
 
   /**
-   * The expected file format of the label
+   * The preferred file format of the label.
+   * The carrier should return the label in this format, if possible.
    */
-  public readonly format: LabelFormat;
+  public readonly format: DocumentFormat;
 
   /**
-   * The expected label size
+   * The preferred label size.
+   * The carrier should return the label in this size, if possible.
    */
-  public readonly size: LabelSize;
+  public readonly size: DocumentSize;
 
   /**
    * The shipment information needed to create a label

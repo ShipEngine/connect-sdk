@@ -1,4 +1,4 @@
-import { Country, LabelFormat, LabelSize, ServiceArea } from "../../enums";
+import { Country, DocumentFormat, DocumentSize, ServiceArea } from "../../enums";
 import { error, ErrorCode } from "../../errors";
 import { CarrierPOJO, LabelSpecPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, TrackingCriteriaPOJO } from "../../pojos/carrier";
 import { LocalizedBrandingPOJO, TransactionPOJO } from "../../pojos/common";
@@ -154,8 +154,8 @@ export class Carrier {
    * The label formats that are offered for this service.
    * This list includes all unique label formats that are offered by all of the carrier's delivery services.
    */
-  public get labelFormats(): ReadonlyArray<LabelFormat> {
-    let labelFormats = new Set<LabelFormat>();
+  public get labelFormats(): ReadonlyArray<DocumentFormat> {
+    let labelFormats = new Set<DocumentFormat>();
     for (let service of this.deliveryServices) {
       for (let labelFormat of service.labelFormats) {
         labelFormats.add(labelFormat);
@@ -168,8 +168,8 @@ export class Carrier {
    * The label dimensions that are used for this service.
    * This list includes all unique label sizes that are offered by all of the carrier's delivery services.
    */
-  public get labelSizes(): ReadonlyArray<LabelSize> {
-    let labelSizes = new Set<LabelSize>();
+  public get labelSizes(): ReadonlyArray<DocumentSize> {
+    let labelSizes = new Set<DocumentSize>();
     for (let service of this.deliveryServices) {
       for (let labelSize of service.labelSizes) {
         labelSizes.add(labelSize);

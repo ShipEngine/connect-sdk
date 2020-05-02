@@ -1,4 +1,4 @@
-import { CanonicalDeliveryService, Country, DeliveryServiceClass, DeliveryServiceGrade, LabelFormat, LabelSize, ServiceArea } from "../../enums";
+import { CanonicalDeliveryService, Country, DeliveryServiceClass, DeliveryServiceGrade, DocumentFormat, DocumentSize, ServiceArea } from "../../enums";
 import { InlineOrReference, InlineOrReferenceArray, UUID } from "../../types";
 import { LocalizationDefinition } from "../common/localization-definition";
 import { DeliveryConfirmationDefinition } from "./delivery-confirmation-definition";
@@ -70,12 +70,12 @@ export interface DeliveryServiceDefinition {
   /**
    * The label formats that are offered for this service
    */
-  labelFormats?: LabelFormat[];
+  labelFormats?: DocumentFormat[];
 
   /**
    * The label dimensions that are used for this service
    */
-  labelSizes?: LabelSize[];
+  labelSizes?: DocumentSize[];
 
   /**
    * The countries that can be shipped from using this service

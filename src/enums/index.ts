@@ -41,9 +41,10 @@ export enum Currency {
 }
 
 /**
- * The digital file format of a shipping label
+ * The digital file format of a document,
+ * such as a shipping label, customs form, or SCAN form.
  */
-export enum LabelFormat {
+export enum DocumentFormat {
   PDF = "pdf",
   HTML = "html",
   ZPL = "zpl",
@@ -51,9 +52,10 @@ export enum LabelFormat {
 }
 
 /**
- * The dimensions of a shipping label
+ * The dimensions of a document,
+ * such as a shipping label, customs form, or SCAN form.
  */
-export enum LabelSize {
+export enum DocumentSize {
   A4 = "a4",
   Letter = "letter",
   Inches4x6 = "4x6",

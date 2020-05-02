@@ -1,4 +1,4 @@
-import { LabelFormat, LabelSize } from "../../enums";
+import { DocumentFormat, DocumentSize } from "../../enums";
 import { NewShipmentPOJO } from "./shipment-pojo";
 
 /**
@@ -6,14 +6,16 @@ import { NewShipmentPOJO } from "./shipment-pojo";
  */
 export interface LabelSpecPOJO {
   /**
-   * The expected file format of the label
+   * The preferred file format of the label.
+   * The carrier should return the label in this format, if possible.
    */
-  format: LabelFormat;
+  format: DocumentFormat;
 
   /**
-   * The expected label size
+   * The preferred label size.
+   * The carrier should return the label in this size, if possible.
    */
-  size: LabelSize;
+  size: DocumentSize;
 
   /**
    * The shipment information needed to create a label

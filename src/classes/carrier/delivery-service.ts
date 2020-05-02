@@ -1,4 +1,4 @@
-import { CanonicalDeliveryService, Country, DeliveryServiceClass, DeliveryServiceGrade, LabelFormat, LabelSize, ServiceArea } from "../../enums";
+import { CanonicalDeliveryService, Country, DeliveryServiceClass, DeliveryServiceGrade, DocumentFormat, DocumentSize, ServiceArea } from "../../enums";
 import { DeliveryServicePOJO } from "../../pojos/carrier";
 import { LocalizedInfoPOJO } from "../../pojos/common";
 import { UUID } from "../../types";
@@ -32,8 +32,8 @@ export class DeliveryService {
       allowsMultiplePackages: Joi.boolean(),
       hasTracking: Joi.boolean(),
       hasSandbox: Joi.boolean(),
-      labelFormats: Joi.array().items(Joi.string().enum(LabelFormat)),
-      labelSizes: Joi.array().items(Joi.string().enum(LabelSize)),
+      labelFormats: Joi.array().items(Joi.string().enum(DocumentFormat)),
+      labelSizes: Joi.array().items(Joi.string().enum(DocumentSize)),
       originCountries: Joi.array().min(1).items(Joi.string().enum(Country)).required(),
       destinationCountries: Joi.array().min(1).items(Joi.string().enum(Country)).required(),
       packaging: Joi.array().items(Packaging[_internal].schema),
@@ -116,12 +116,12 @@ export class DeliveryService {
   /**
    * The label formats that are offered for this service
    */
-  public readonly labelFormats: ReadonlyArray<LabelFormat>;
+  public readonly labelFormats: ReadonlyArray<DocumentFormat>;
 
   /**
    * The label dimensions that are used for this service
    */
-  public readonly labelSizes: ReadonlyArray<LabelSize>;
+  public readonly labelSizes: ReadonlyArray<DocumentSize>;
 
   /**
    * The countries that can be shipped from using this service
@@ -222,8 +222,8 @@ export class DeliveryService {
 
     return {
       ...this,
-      labelFormats: this.labelFormats as LabelFormat[],
-      labelSizes: this.labelSizes as LabelSize[],
+      labelFormats: this.labelFormats as DocumentFormat[],
+      labelSizes: this.labelSizes as DocumentSize[],
       originCountries: this.originCountries as Country[],
       destinationCountries: this.destinationCountries as Country[],
       packaging: this.packaging.map((o) => o.toJSON(locale)),

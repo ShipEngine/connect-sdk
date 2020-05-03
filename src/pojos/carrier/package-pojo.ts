@@ -1,4 +1,4 @@
-import { UUID } from "../../types";
+import { URLString, UUID } from "../../types";
 import { CustomDataPOJO, DimensionsPOJO, IdentifierPOJO, MonetaryValuePOJO, WeightPOJO } from "../common";
 import { PackageItemPOJO } from "./package-item-pojo";
 
@@ -6,6 +6,11 @@ import { PackageItemPOJO } from "./package-item-pojo";
  * A complete package that already exists and has identifiers
  */
 export interface PackagePOJO extends PackageIdentifierPOJO, NewPackagePOJO {
+  /**
+   * The URL of a webpage where the customer can track the package
+   */
+  trackingURL?: URLString | URL;
+
   /**
    * Arbitrary data that was returned for this package when the label was created.
    */

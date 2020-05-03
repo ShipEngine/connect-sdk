@@ -48,11 +48,13 @@ describe("createLabel", () => {
       }],
       shipment: {
         trackingNumber: "",
+        trackingURL: undefined,
         identifiers: [],
         estimatedDeliveryDateTime: undefined,
         customData: undefined,
         packages: [{
           trackingNumber: "",
+          trackingURL: undefined,
           identifiers: [],
           customsForm: undefined,
           customData: undefined,
@@ -92,6 +94,7 @@ describe("createLabel", () => {
           ],
           shipment: {
             trackingNumber: "123456-ABCDEF",
+            trackingURL: "http://example.com/",
             identifiers: [{
               name: "Shipment ID",
               id: "123456-ABCDEF",
@@ -103,6 +106,7 @@ describe("createLabel", () => {
             },
             packages: [{
               trackingNumber: "ABCDEF-123456",
+              trackingURL: new URL("https://example.com"),
               identifiers: [{
                 name: "Package ID",
                 id: "123456-ABCDEF-1",
@@ -156,6 +160,7 @@ describe("createLabel", () => {
       },
       shipment: {
         trackingNumber: "123456-ABCDEF",
+        trackingURL: new URL("http://example.com"),
         identifiers: [{
           name: "Shipment ID",
           id: "123456-ABCDEF",
@@ -167,6 +172,7 @@ describe("createLabel", () => {
         },
         packages: [{
           trackingNumber: "ABCDEF-123456",
+          trackingURL: new URL("https://example.com"),
           identifiers: [{
             name: "Package ID",
             id: "123456-ABCDEF-1",

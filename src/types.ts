@@ -6,7 +6,7 @@ export type UUID = string;
 /**
  * A URL string
  */
-export type UrlString = string;
+export type URLString = string;
 
 /**
  * Path to JSON or YAML file containing the definition of a ShipEngine Integration Platform app

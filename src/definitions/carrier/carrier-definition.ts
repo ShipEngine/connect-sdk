@@ -1,5 +1,5 @@
-import { CancelPickup, CreateLabel, CreateManifest, GetRates, GetTrackingURL, RequestPickup, Track, VoidLabel } from "../../classes/carrier/methods";
-import { FilePath, InlineOrReference, InlineOrReferenceArray, UrlString, UUID } from "../../types";
+import { CancelPickup, CreateLabel, CreateManifest, GetRates, RequestPickup, Track, VoidLabel } from "../../classes/carrier/methods";
+import { FilePath, InlineOrReference, InlineOrReferenceArray, URLString, UUID } from "../../types";
 import { LocalizationDefinition } from "../common/localization-definition";
 import { DeliveryServiceDefinition } from "./delivery-service-definition";
 import { PickupServiceDefinition } from "./pickup-service-definition";
@@ -27,7 +27,7 @@ export interface CarrierDefinition {
   /**
    * The URL of the carrier's website
    */
-  websiteURL: UrlString;
+  websiteURL: URLString;
 
   /**
    * The carrier's logo image
@@ -50,18 +50,8 @@ export interface CarrierDefinition {
   localization?: InlineOrReference<LocalizationDefinition<{
     name?: string;
     description?: string;
-    websiteURL?: UrlString;
+    websiteURL?: URLString;
   }>>;
-
-  /**
-   * Requests a package pickup at a time and place
-   */
-  requestPickup?: InlineOrReference<RequestPickup>;
-
-  /**
-   * Cancels a previously-requested package pickup
-   */
-  cancelPickup?: InlineOrReference<CancelPickup>;
 
   /**
    * Creates a shipping label
@@ -79,11 +69,6 @@ export interface CarrierDefinition {
   getRates?: InlineOrReference<GetRates>;
 
   /**
-   * Returns the tracking URL for a shipment
-   */
-  getTrackingURL?: InlineOrReference<GetTrackingURL>;
-
-  /**
    * Returns tracking details for a shipment
    */
   track?: InlineOrReference<Track>;
@@ -92,4 +77,14 @@ export interface CarrierDefinition {
    * Creates a manifest for multiple shipments
    */
   createManifest?: InlineOrReference<CreateManifest>;
+
+  /**
+   * Requests a package pickup at a time and place
+   */
+  requestPickup?: InlineOrReference<RequestPickup>;
+
+  /**
+   * Cancels a previously-requested package pickup
+   */
+  cancelPickup?: InlineOrReference<CancelPickup>;
 }

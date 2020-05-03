@@ -1,8 +1,8 @@
 import { Country, DocumentFormat, DocumentSize, ServiceArea } from "../../enums";
 import { error, ErrorCode } from "../../errors";
-import { CarrierPOJO, LabelSpecPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, TrackingCriteriaPOJO } from "../../pojos/carrier";
+import { CarrierPOJO, LabelSpecPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO } from "../../pojos/carrier";
 import { LocalizedBrandingPOJO, TransactionPOJO } from "../../pojos/common";
-import { FilePath, UrlString, UUID } from "../../types";
+import { FilePath, UUID } from "../../types";
 import { Joi } from "../../validation";
 import { Transaction } from "../common";
 import { App } from "../common/app";
@@ -12,7 +12,7 @@ import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
 import { LabelConfirmation } from "./labels/label-confirmation";
 import { LabelSpec } from "./labels/label-spec";
-import { CancelPickup, CreateLabel, CreateManifest, GetRates, GetTrackingURL, RequestPickup, Track, VoidLabel } from "./methods";
+import { CancelPickup, CreateLabel, CreateManifest, GetRates, RequestPickup, Track, VoidLabel } from "./methods";
 import { Packaging } from "./packaging";
 import { PickupService } from "./pickup-service";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
@@ -21,7 +21,6 @@ import { PickupConfirmation } from "./pickups/pickup-confirmation";
 import { PickupRequest } from "./pickups/pickup-request";
 import { RateCriteria } from "./rates/rate-criteria";
 import { RateQuote } from "./rates/rate-quote";
-import { TrackingCriteria } from "./tracking/tracking-criteria";
 import { getMaxServiceArea } from "./utils";
 
 const _private = Symbol("private fields");
@@ -48,14 +47,13 @@ export class Carrier {
         description: Joi.string().trim().singleLine().allow("").max(1000),
         websiteURL: Joi.string().website(),
       }),
-      requestPickup: Joi.function(),
-      cancelPickup: Joi.function(),
       createLabel: Joi.function(),
       voidLabel: Joi.function(),
       getRates: Joi.function(),
-      getTrackingURL: Joi.function(),
       track: Joi.function(),
       createManifest: Joi.function(),
+      requestPickup: Joi.function(),
+      cancelPickup: Joi.function(),
     }),
   };
 
@@ -63,14 +61,13 @@ export class Carrier {
   private readonly [_private]: {
     readonly app: App;
     readonly localization: Localization<LocalizedBrandingPOJO>;
-    readonly requestPickup: RequestPickup | undefined;
-    readonly cancelPickup: CancelPickup | undefined;
     readonly createLabel: CreateLabel | undefined;
     readonly voidLabel: VoidLabel | undefined;
     readonly getRates: GetRates | undefined;
-    readonly getTrackingURL: GetTrackingURL | undefined;
     readonly track: Track | undefined;
     readonly createManifest: CreateManifest | undefined;
+    readonly requestPickup: RequestPickup | undefined;
+    readonly cancelPickup: CancelPickup | undefined;
   };
 
   //#endregion
@@ -261,14 +258,13 @@ export class Carrier {
 
       // Store any user-defined methods as private fields.
       // For any methods that aren't implemented, set the corresponding class method to undefined.
-      requestPickup: pojo.requestPickup ? pojo.requestPickup : (this.requestPickup = undefined),
-      cancelPickup: pojo.cancelPickup ? pojo.cancelPickup : (this.cancelPickup = undefined),
       createLabel: pojo.createLabel ? pojo.createLabel : (this.createLabel = undefined),
       voidLabel: pojo.voidLabel ? pojo.voidLabel : (this.voidLabel = undefined),
       getRates: pojo.getRates ? pojo.getRates : (this.getRates = undefined),
-      getTrackingURL: pojo.getTrackingURL ? pojo.getTrackingURL : (this.getTrackingURL = undefined),
       track: pojo.track ? pojo.track : (this.track = undefined),
       createManifest: pojo.createManifest ? pojo.createManifest : (this.createManifest = undefined),
+      requestPickup: pojo.requestPickup ? pojo.requestPickup : (this.requestPickup = undefined),
+      cancelPickup: pojo.cancelPickup ? pojo.cancelPickup : (this.cancelPickup = undefined),
     };
 
     // Make this object immutable
@@ -298,73 +294,19 @@ export class Carrier {
       ...this,
       deliveryServices: this.deliveryServices.map((o) => o.toJSON(locale)),
       pickupServices: this.pickupServices.map((o) => o.toJSON(locale)),
-      requestPickup: methods.requestPickup,
-      cancelPickup: methods.cancelPickup,
       createLabel: methods.createLabel,
       voidLabel: methods.voidLabel,
       getRates: methods.getRates,
-      getTrackingURL: methods.getTrackingURL,
       track: methods.track,
       createManifest: methods.createManifest,
+      requestPickup: methods.requestPickup,
+      cancelPickup: methods.cancelPickup,
       localization: localization.toJSON(),
       ...localizedValues,
     };
   }
 
   //#region Wrappers around user-defined methdos
-
-  /**
-   * Requests a package pickup at a time and place
-   */
-  public async requestPickup?(transaction: TransactionPOJO, request: PickupRequestPOJO): Promise<PickupConfirmation> {
-    let _transaction, _request;
-    let { app, requestPickup } = this[_private];
-
-    try {
-      _transaction = new Transaction(transaction);
-      _request = new PickupRequest(request, app);
-    }
-    catch (originalError) {
-      throw error(ErrorCode.InvalidInput, "Invalid input to the requestPickup method.", { originalError });
-    }
-
-    try {
-      let confirmation = await requestPickup!(_transaction, _request);
-      confirmation.shipments = confirmation.shipments || request.shipments;
-      return new PickupConfirmation(confirmation);
-    }
-    catch (originalError) {
-      let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in requestPickup method.`, { originalError, transactionID });
-    }
-  }
-
-  /**
-   * Cancels a previously-requested package pickup
-   */
-  public async cancelPickup?(transaction: TransactionPOJO, cancellation: PickupCancellationPOJO)
-  : Promise<PickupCancellationConfirmation> {
-    let _transaction, _cancellation;
-    let { app, cancelPickup } = this[_private];
-
-    try {
-      _transaction = new Transaction(transaction);
-      _cancellation = new PickupCancellation(cancellation, app);
-    }
-    catch (originalError) {
-      throw error(ErrorCode.InvalidInput, "Invalid input to the cancelPickup method.", { originalError });
-    }
-
-    try {
-      let confirmation = await cancelPickup!(_transaction, _cancellation);
-      confirmation = confirmation || { successful: true };
-      return new PickupCancellationConfirmation(confirmation);
-    }
-    catch (originalError) {
-      let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in cancelPickup method.`, { originalError, transactionID });
-    }
-  }
 
   /**
    * Creates a shipping label
@@ -440,31 +382,6 @@ export class Carrier {
   }
 
   /**
-   * Returns the web page URL where a customer can track a shipment
-   */
-  public getTrackingURL?(transaction: TransactionPOJO, criteria: TrackingCriteriaPOJO): URL | undefined {
-    let _transaction, _criteria;
-    let { app, getTrackingURL } = this[_private];
-
-    try {
-      _transaction = new Transaction(transaction);
-      _criteria = new TrackingCriteria(criteria, app);
-    }
-    catch (originalError) {
-      throw error(ErrorCode.InvalidInput, "Invalid input to the getTrackingURL method.", { originalError });
-    }
-
-    try {
-      let url = getTrackingURL!(_transaction, _criteria);
-      return url ? new URL(url as UrlString) : undefined;
-    }
-    catch (originalError) {
-      let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in getTrackingURL method.`, { originalError, transactionID });
-    }
-  }
-
-  /**
    * Returns tracking details for a shipment
    */
   public async track?(transaction: TransactionPOJO): Promise<unknown> {
@@ -507,6 +424,59 @@ export class Carrier {
     catch (originalError) {
       let transactionID = _transaction.id;
       throw error(ErrorCode.AppError, `Error in createManifest method.`, { originalError, transactionID });
+    }
+  }
+
+  /**
+   * Requests a package pickup at a time and place
+   */
+  public async requestPickup?(transaction: TransactionPOJO, request: PickupRequestPOJO): Promise<PickupConfirmation> {
+    let _transaction, _request;
+    let { app, requestPickup } = this[_private];
+
+    try {
+      _transaction = new Transaction(transaction);
+      _request = new PickupRequest(request, app);
+    }
+    catch (originalError) {
+      throw error(ErrorCode.InvalidInput, "Invalid input to the requestPickup method.", { originalError });
+    }
+
+    try {
+      let confirmation = await requestPickup!(_transaction, _request);
+      confirmation.shipments = confirmation.shipments || request.shipments;
+      return new PickupConfirmation(confirmation);
+    }
+    catch (originalError) {
+      let transactionID = _transaction.id;
+      throw error(ErrorCode.AppError, `Error in requestPickup method.`, { originalError, transactionID });
+    }
+  }
+
+  /**
+   * Cancels a previously-requested package pickup
+   */
+  public async cancelPickup?(transaction: TransactionPOJO, cancellation: PickupCancellationPOJO)
+  : Promise<PickupCancellationConfirmation> {
+    let _transaction, _cancellation;
+    let { app, cancelPickup } = this[_private];
+
+    try {
+      _transaction = new Transaction(transaction);
+      _cancellation = new PickupCancellation(cancellation, app);
+    }
+    catch (originalError) {
+      throw error(ErrorCode.InvalidInput, "Invalid input to the cancelPickup method.", { originalError });
+    }
+
+    try {
+      let confirmation = await cancelPickup!(_transaction, _cancellation);
+      confirmation = confirmation || { successful: true };
+      return new PickupCancellationConfirmation(confirmation);
+    }
+    catch (originalError) {
+      let transactionID = _transaction.id;
+      throw error(ErrorCode.AppError, `Error in cancelPickup method.`, { originalError, transactionID });
     }
   }
 

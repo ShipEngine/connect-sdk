@@ -29,14 +29,13 @@ describe("Carrier", () => {
       logo: path.resolve("logo.svg"),
       deliveryServices: [carrier.deliveryServices[0]],
       pickupServices: [],
-      requestPickup: undefined,
-      cancelPickup: undefined,
       createLabel: undefined,
       voidLabel: undefined,
       getRates: undefined,
-      getTrackingURL: undefined,
       track: undefined,
       createManifest: undefined,
+      requestPickup: undefined,
+      cancelPickup: undefined,
     });
   });
 
@@ -52,14 +51,13 @@ describe("Carrier", () => {
       localization: {
         es: { name: "Nombre de la compañía" },
       },
-      requestPickup () {},
-      cancelPickup () {},
       createLabel () {},
       voidLabel () {},
       getRates () {},
-      getTrackingURL () {},
       track () {},
       createManifest () {},
+      requestPickup () {},
+      cancelPickup () {},
     });
 
     expect(carrier).to.deep.equal({
@@ -91,14 +89,13 @@ describe("Carrier", () => {
       logo: path.resolve("logo.svg"),
       deliveryServices: [carrier.deliveryServices[0]],
       pickupServices: [],
-      requestPickup: undefined,
-      cancelPickup: undefined,
       createLabel: undefined,
       voidLabel: undefined,
       getRates: undefined,
-      getTrackingURL: undefined,
       track: undefined,
       createManifest: undefined,
+      requestPickup: undefined,
+      cancelPickup: undefined,
     });
   });
 

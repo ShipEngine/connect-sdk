@@ -1,5 +1,5 @@
 import { Connect } from "../../classes/connection/methods";
-import { FilePath, InlineOrReference, UrlString, UUID } from "../../types";
+import { FilePath, InlineOrReference, URLString, UUID } from "../../types";
 import { LocalizationDefinition } from "../common/localization-definition";
 import { FormDefinition } from "./form-definition";
 
@@ -26,7 +26,7 @@ export interface ConnectionDefinition {
   /**
    * The URL of the third-party service's website
    */
-  websiteURL: UrlString;
+  websiteURL: URLString;
 
   /**
    * The third party service's logo image
@@ -50,7 +50,7 @@ export interface ConnectionDefinition {
   localization?: InlineOrReference<LocalizationDefinition<{
     name?: string;
     description?: string;
-    websiteURL?: UrlString;
+    websiteURL?: URLString;
   }>>;
 
   /**

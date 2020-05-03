@@ -1,4 +1,5 @@
 import { DocumentFormat, DocumentSize } from "../../enums";
+import { URLString } from "../../types";
 import { CustomDataPOJO } from "../common";
 import { PackageIdentifierPOJO } from "./package-pojo";
 import { ShipmentIdentifierPOJO } from "./shipment-pojo";
@@ -31,6 +32,11 @@ export interface LabelConfirmationPOJO {
  */
 export interface ShipmentConfirmationPOJO extends ShipmentIdentifierPOJO {
   /**
+   * The URL of a webpage where the customer can track the shipment
+   */
+  trackingURL?: URLString | URL;
+
+  /**
    * The estimated date and time the shipment will be delivered
    */
   estimatedDeliveryDateTime?: Date;
@@ -50,6 +56,11 @@ export interface ShipmentConfirmationPOJO extends ShipmentIdentifierPOJO {
  * Confirmation details about a package in a shipment
  */
 export interface PackageConfirmationPOJO extends PackageIdentifierPOJO {
+  /**
+   * The URL of a webpage where the customer can track the package
+   */
+  trackingURL?: URLString | URL;
+
   /**
    * The shipping label for this package
    */

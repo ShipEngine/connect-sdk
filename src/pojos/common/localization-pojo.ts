@@ -1,4 +1,4 @@
-import { UrlString } from "../../types";
+import { URLString } from "../../types";
 
 /**
  * A map of BCP 47 language tags and localized values.
@@ -25,5 +25,5 @@ export interface LocalizedInfoPOJO {
  * @internal
  */
 export interface LocalizedBrandingPOJO extends LocalizedInfoPOJO {
-  websiteURL?: UrlString;
+  websiteURL?: URLString;
 }

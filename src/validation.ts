@@ -131,6 +131,11 @@ export interface ObjectValidationSchema extends joi.ObjectSchema {
    * Requires the object to be a map of BCP 47 language tags and localized values
    */
   localization(keys?: Record<string, joi.Schema>): ObjectValidationSchema;
+
+  /**
+   * Requires an object value to be a valid HTTP or HTTPS URL
+   */
+  website(): StringValidationSchema;
 }
 
 /**
@@ -254,6 +259,8 @@ export const Joi = joi.extend(
     base: joi.object(),
     messages: {
       "object.localization": '{{#label}} can only contain language codes, like "en" or "en-US"',
+      "object.website": "{{#label}} must be a URL",
+      "object.websiteProtocol": "{{#label}} must be an HTTP or HTTPS URL",
     },
     rules: {
       localization: {
@@ -268,6 +275,18 @@ export const Joi = joi.extend(
             }
           }
           return value;
+        },
+      },
+      website: {
+        validate(value: object, helpers: joi.CustomHelpers) {
+          if (value instanceof URL) {
+            if (value.protocol !== "http:" && value.protocol !== "https:") {
+              return helpers.error("object.websiteProtocol");
+            }
+          }
+          else {
+            return helpers.error("object.website");
+          }
         },
       },
     }

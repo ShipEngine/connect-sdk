@@ -1,4 +1,5 @@
 import { PackageConfirmationPOJO } from "../../../pojos/carrier";
+import { Joi } from "../../../validation";
 import { CustomData } from "../../common";
 import { hideAndFreeze, _internal } from "../../utils";
 import { Document } from "../document";
@@ -14,6 +15,7 @@ export class PackageConfirmation extends packageIdentifierMixin() {
   public static readonly [_internal] = {
     label: "package",
     schema: PackageIdentifier[_internal].schema.keys({
+      trackingURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
       label: Document[_internal].schema.required(),
       customsForm: Document[_internal].schema,
       customData: CustomData[_internal].schema,
@@ -22,6 +24,11 @@ export class PackageConfirmation extends packageIdentifierMixin() {
 
   //#endregion
   //#region Public Fields
+
+  /**
+   * The URL of a webpage where the customer can track the package
+   */
+  public readonly trackingURL?: URL;
 
   /**
    * The shipping label for this package
@@ -43,6 +50,7 @@ export class PackageConfirmation extends packageIdentifierMixin() {
   public constructor(pojo: PackageConfirmationPOJO) {
     super(pojo);
 
+    this.trackingURL = pojo.trackingURL ? new URL(pojo.trackingURL as string) : undefined;
     this.label = new Document({
       ...pojo.label,
       name: pojo.label.name || "Label"

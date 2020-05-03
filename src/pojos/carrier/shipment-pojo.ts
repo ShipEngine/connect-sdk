@@ -1,5 +1,5 @@
 import { BilledParty, Country, InsuranceProvider, NonDeliveryAction } from "../../enums";
-import { UUID } from "../../types";
+import { URLString, UUID } from "../../types";
 import { AddressWithContactInfoPOJO, CustomDataPOJO, IdentifierPOJO } from "../common";
 import { NewPackagePOJO, PackagePOJO } from "./package-pojo";
 
@@ -7,6 +7,11 @@ import { NewPackagePOJO, PackagePOJO } from "./package-pojo";
  * A complete shipment that already exists and has identifiers
  */
 export interface ShipmentPOJO extends ShipmentIdentifierPOJO, NewShipmentPOJO {
+  /**
+   * The URL of a webpage where the customer can track the shipment
+   */
+  trackingURL?: URLString | URL;
+
   /**
    * The estimated date and time the shipment will be delivered
    */

@@ -1,4 +1,4 @@
-import { CanonicalDeliveryService, Country, DeliveryServiceClass, DeliveryServiceGrade, DocumentFormat, DocumentSize, ServiceArea } from "../../enums";
+import { Country, DeliveryServiceClass, DeliveryServiceGrade, DocumentFormat, DocumentSize, FulfillmentService, ServiceArea } from "../../enums";
 import { DeliveryServicePOJO } from "../../pojos/carrier";
 import { LocalizedInfoPOJO } from "../../pojos/common";
 import { UUID } from "../../types";
@@ -26,7 +26,7 @@ export class DeliveryService {
       description: Joi.string().trim().singleLine().allow("").max(1000),
       class: Joi.string().enum(DeliveryServiceClass).required(),
       grade: Joi.string().enum(DeliveryServiceGrade).required(),
-      fulfilledBy: Joi.string().enum(CanonicalDeliveryService),
+      fulfillmentService: Joi.string().enum(FulfillmentService),
       serviceArea: Joi.string().enum(ServiceArea),
       isConsolidationService: Joi.boolean(),
       allowsMultiplePackages: Joi.boolean(),
@@ -81,10 +81,9 @@ export class DeliveryService {
   public readonly grade: DeliveryServiceGrade;
 
   /**
-   * If this service is fulfilled using a well-known third-party carrier, such as UPS, FedEx, DHL, etc.
-   * then specify the carrier service here. This will allow more shippers to discover and use your service.
+   * A well-known service that's used to fulfill this delivery service
    */
-  public readonly fulfilledBy?: CanonicalDeliveryService;
+  public readonly fulfillmentService?: FulfillmentService;
 
   /**
    * The service area this service covers
@@ -179,7 +178,7 @@ export class DeliveryService {
     this.description = pojo.description || "";
     this.class = pojo.class;
     this.grade = pojo.grade;
-    this.fulfilledBy = pojo.fulfilledBy;
+    this.fulfillmentService = pojo.fulfillmentService;
     this.serviceArea = pojo.serviceArea;
     this.isConsolidationService = pojo.isConsolidationService || false;
     this.allowsMultiplePackages = pojo.allowsMultiplePackages || false;

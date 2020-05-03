@@ -1,5 +1,5 @@
-export * from "./canonical-delivery-service";
 export * from "./country";
+export * from "./fulfillment-service";
 
 /**
  * A length measurement unit

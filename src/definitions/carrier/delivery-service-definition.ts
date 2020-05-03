@@ -1,4 +1,4 @@
-import { CanonicalDeliveryService, Country, DeliveryServiceClass, DeliveryServiceGrade, DocumentFormat, DocumentSize, ServiceArea } from "../../enums";
+import { Country, DeliveryServiceClass, DeliveryServiceGrade, DocumentFormat, DocumentSize, FulfillmentService, ServiceArea } from "../../enums";
 import { InlineOrReference, InlineOrReferenceArray, UUID } from "../../types";
 import { LocalizationDefinition } from "../common/localization-definition";
 import { DeliveryConfirmationDefinition } from "./delivery-confirmation-definition";
@@ -38,7 +38,7 @@ export interface DeliveryServiceDefinition {
    * If this service is fulfilled using a well-known third-party carrier, such as UPS, FedEx, DHL, etc.
    * then specify the carrier service here. This will allow more shippers to discover and use your service.
    */
-  fulfilledBy?: CanonicalDeliveryService;
+  fulfillmentService?: FulfillmentService;
 
   /**
    * The service area this service covers

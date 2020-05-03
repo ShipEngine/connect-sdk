@@ -1,3 +1,4 @@
+import { FulfillmentService } from "../../../enums";
 import { ShipmentConfirmationPOJO } from "../../../pojos/carrier";
 import { Joi } from "../../../validation";
 import { CustomData } from "../../common";
@@ -16,6 +17,7 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
     label: "shipment",
     schema: ShipmentIdentifier[_internal].schema.keys({
       trackingURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
+      fulfillmentService: Joi.string().enum(FulfillmentService),
       estimatedDeliveryDateTime: Joi.date(),
       packages: Joi.array().min(1).items(PackageConfirmation[_internal].schema).required(),
       customData: CustomData[_internal].schema,
@@ -29,6 +31,11 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
    * The URL of a webpage where the customer can track the shipment
    */
   public readonly trackingURL?: URL;
+
+  /**
+   * A well-known service that's being used to fulfill this shipment
+   */
+  public readonly fulfillmentService?: FulfillmentService;
 
   /**
    * The estimated date and time the shipment will be delivered
@@ -51,6 +58,7 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
     super(pojo);
 
     this.trackingURL = pojo.trackingURL ? new URL(pojo.trackingURL as string) : undefined;
+    this.fulfillmentService = pojo.fulfillmentService;
     this.estimatedDeliveryDateTime = pojo.estimatedDeliveryDateTime;
     this.packages = pojo.packages.map((parcel) => new PackageConfirmation(parcel));
     this.customData = pojo.customData && new CustomData(pojo.customData);

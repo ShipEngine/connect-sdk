@@ -50,6 +50,7 @@ describe("createLabel", () => {
         trackingNumber: "",
         trackingURL: undefined,
         identifiers: [],
+        fulfillmentService: undefined,
         estimatedDeliveryDateTime: undefined,
         customData: undefined,
         packages: [{
@@ -99,6 +100,7 @@ describe("createLabel", () => {
               name: "Shipment ID",
               id: "123456-ABCDEF",
             }],
+            fulfillmentService: "ups_ground",
             estimatedDeliveryDateTime: new Date("2005-05-05T05:05:05.0005Z"),
             customData: {
               foo: "bar",
@@ -165,6 +167,7 @@ describe("createLabel", () => {
           name: "Shipment ID",
           id: "123456-ABCDEF",
         }],
+        fulfillmentService: "ups_ground",
         estimatedDeliveryDateTime: new Date("2005-05-05T05:05:05.0005Z"),
         customData: {
           foo: "bar",

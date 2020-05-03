@@ -1,4 +1,4 @@
-import { DocumentFormat, DocumentSize } from "../../enums";
+import { DocumentFormat, DocumentSize, FulfillmentService } from "../../enums";
 import { URLString } from "../../types";
 import { CustomDataPOJO } from "../common";
 import { PackageIdentifierPOJO } from "./package-pojo";
@@ -35,6 +35,12 @@ export interface ShipmentConfirmationPOJO extends ShipmentIdentifierPOJO {
    * The URL of a webpage where the customer can track the shipment
    */
   trackingURL?: URLString | URL;
+
+  /**
+   * If the shipment is being fulfilled using a well-known third-party carrier, such as UPS, FedEx, DHL, etc.
+   * then specify the carrier service here.
+   */
+  fulfillmentService?: FulfillmentService;
 
   /**
    * The estimated date and time the shipment will be delivered

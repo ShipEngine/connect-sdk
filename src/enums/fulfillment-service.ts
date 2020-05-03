@@ -1,7 +1,7 @@
 /**
  * A well-known service that's often used to fulfill a carrier's delivery services.
  */
-export enum CanonicalDeliveryService {
+export enum FulfillmentService {
   DHLEconomySelect = "dhl_economy_select",
   DHLExpressDomestic = "dhl_express_domestic",
   DHLExpressDomestic9am = "dhl_express_domestic_9am",

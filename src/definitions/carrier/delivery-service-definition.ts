@@ -56,9 +56,9 @@ export interface DeliveryServiceDefinition {
   allowsMultiplePackages?: boolean;
 
   /**
-   * Indicates whether a tracking number is provided
+   * Indicates whether tracking numbers are provided
    */
-  hasTracking?: boolean;
+  isTrackable?: boolean;
 
   /**
    * Indicates whether the carrier provides a sandbox/development API for this delivery service.

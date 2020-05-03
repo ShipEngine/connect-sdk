@@ -41,7 +41,12 @@ describe("getRates", () => {
         fulfillmentService: undefined,
         shipDateTime: undefined,
         deliveryDateTime: undefined,
+        minimumDays: undefined,
+        maximumDays: undefined,
+        zone: undefined,
         isNegotiatedRate: false,
+        isGuaranteed: false,
+        isTrackable: false,
         notes: "",
         totalAmount: {
           value: "123.46",
@@ -75,7 +80,12 @@ describe("getRates", () => {
             fulfillmentService: "ups_ground",
             shipDateTime: new Date("2005-05-05T05:05:05.005Z"),
             deliveryDateTime: new Date("2005-05-05T05:05:05.005Z"),
+            minimumDays: 0,
+            maximumDays: 1,
+            zone: 1,
             isNegotiatedRate: true,
+            isGuaranteed: true,
+            isTrackable: true,
             notes: "This is a note",
             charges: [
               {
@@ -117,7 +127,12 @@ describe("getRates", () => {
         fulfillmentService: "ups_ground",
         shipDateTime: new Date("2005-05-05T05:05:05.005Z"),
         deliveryDateTime: new Date("2005-05-05T05:05:05.005Z"),
+        minimumDays: 0,
+        maximumDays: 1,
+        zone: 1,
         isNegotiatedRate: true,
+        isGuaranteed: true,
+        isTrackable: true,
         notes: "This is a note",
         totalAmount: {
           value: "124.96",
@@ -362,6 +377,39 @@ describe("getRates", () => {
         expect(error.message).to.equal(
           "Error in getRates method. \n" +
           "22222222-2222-2222-2222-222222222222 is a delivery service ID not a delivery confirmation ID"
+        );
+      }
+    });
+
+    it("should throw an error if minimumDays is greater than maximumDays", async () => {
+      let app = new CarrierApp(pojo.carrierApp({
+        carrier: pojo.carrier({
+          getRates: () => ({
+            rates: [{
+              deliveryServiceID: "22222222-2222-2222-2222-222222222222",
+              packagingID: "44444444-4444-4444-4444-444444444444",
+              minimumDays: 5,
+              maximumDays: 3,
+              charges: [{
+                type: "shipping",
+                amount: {
+                  value: 123.45,
+                  currency: "CAD",
+                },
+              }],
+            }]
+          })
+        }),
+      }));
+
+      try {
+        await app.carrier.getRates(pojo.transaction(), pojo.rateCriteria());
+        assert.fail("An error should have been thrown");
+      }
+      catch (error) {
+        expect(error.message).to.equal(
+          "Error in getRates method. \n" +
+          "Invalid delivery time range: minimumDays must be less than or equal to maximumDays"
         );
       }
     });

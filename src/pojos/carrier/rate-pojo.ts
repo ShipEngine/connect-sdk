@@ -49,9 +49,36 @@ export interface RatePOJO {
   deliveryDateTime?: Date;
 
   /**
+   * The minimum number of days delivery will take
+   */
+  minimumDays?: number;
+
+  /**
+   * The maximum number of days delivery will take
+   */
+  maximumDays?: number;
+
+  /**
+   * Certain carriers base their rates off of zone numbers that vary based on the origin and destination
+   *
+   * @see https://stamps.custhelp.com/app/answers/detail/a_id/6118/~/all-about-usps-postal-zones
+   */
+  zone?: number;
+
+  /**
    * Indicates whether this rate is based on pre-negotiated terms
    */
   isNegotiatedRate?: boolean;
+
+  /**
+   * Indicates whether the carrier guarantees delivery by the `deliveryDateTime`
+   */
+  isGuaranteed?: boolean;
+
+  /**
+   * Indicates whether tracking numbers are provided
+   */
+  isTrackable?: boolean;
 
   /**
    * The breakdown of charges for this rate.

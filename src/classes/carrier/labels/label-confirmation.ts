@@ -31,7 +31,7 @@ export class LabelConfirmation {
   public readonly confirmationID: string;
 
   /**
-   * The breakdown of charges in the total shipping cost for this label.
+   * The breakdown of charges for this label.
    * If the carrier does not provide a detailed breakdown, then just use a single
    * charge of type "shipping".
    */

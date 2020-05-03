@@ -30,7 +30,7 @@ export class DeliveryService {
       serviceArea: Joi.string().enum(ServiceArea),
       isConsolidationService: Joi.boolean(),
       allowsMultiplePackages: Joi.boolean(),
-      hasTracking: Joi.boolean(),
+      isTrackable: Joi.boolean(),
       hasSandbox: Joi.boolean(),
       labelFormats: Joi.array().items(Joi.string().enum(DocumentFormat)),
       labelSizes: Joi.array().items(Joi.string().enum(DocumentSize)),
@@ -101,9 +101,9 @@ export class DeliveryService {
   public readonly allowsMultiplePackages: boolean;
 
   /**
-   * Indicates whether a tracking number is provided
+   * Indicates whether tracking numbers are provided
    */
-  public readonly hasTracking: boolean;
+  public readonly isTrackable: boolean;
 
   /**
    * Indicates whether the carrier provides a sandbox/development API for this delivery service.
@@ -182,7 +182,7 @@ export class DeliveryService {
     this.serviceArea = pojo.serviceArea;
     this.isConsolidationService = pojo.isConsolidationService || false;
     this.allowsMultiplePackages = pojo.allowsMultiplePackages || false;
-    this.hasTracking = pojo.hasTracking || false;
+    this.isTrackable = pojo.isTrackable || false;
     this.hasSandbox = pojo.hasSandbox || false;
     this.labelFormats = pojo.labelFormats || [];
     this.labelSizes = pojo.labelSizes || [];

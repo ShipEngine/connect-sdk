@@ -129,11 +129,10 @@ export class Carrier {
   }
 
   /**
-   * Indicates whether a tracking number is provided.
-   * This property is `true` if any of the carrier's delivery services have tracking.
+   * Indicates whether any of the carrier's delivery services are trackable.
    */
   public get hasTracking(): boolean {
-    return this.deliveryServices.some((svc) => svc.hasTracking);
+    return this.deliveryServices.some((svc) => svc.isTrackable);
   }
 
   /**

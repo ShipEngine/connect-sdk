@@ -233,4 +233,20 @@ const pojo = module.exports = {
       ...props,
     };
   },
+
+  rateCriteria (props = {}) {
+    return {
+      shipDateTime: new Date(),
+      shipFrom: pojo.addressWithContactInfo(),
+      shipTo: pojo.addressWithContactInfo(),
+      packages: [pojo.rateCriteriaPackage()],
+      ...props,
+    };
+  },
+
+  rateCriteriaPackage (props = {}) {
+    return {
+      ...props,
+    };
+  },
 };

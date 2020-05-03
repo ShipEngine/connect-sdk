@@ -1,3 +1,4 @@
+import { FulfillmentService } from "../../../enums";
 import { RatePOJO } from "../../../pojos/carrier";
 import { Joi } from "../../../validation";
 import { MonetaryValue } from "../../common";
@@ -5,6 +6,7 @@ import { App } from "../../common/app";
 import { hideAndFreeze, _internal } from "../../utils";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
+import { Packaging } from "../packaging";
 import { ShippingCharge } from "../shipping-charge";
 import { calculateTotalCharges } from "../utils";
 
@@ -19,15 +21,14 @@ export class Rate {
     label: "rate",
     schema: Joi.object({
       deliveryServiceID: Joi.string().uuid().required(),
+      packagingID: Joi.string().uuid().required(),
       deliveryConfirmationID: Joi.string().uuid(),
+      fulfillmentService: Joi.string().enum(FulfillmentService),
       shipDateTime: Joi.date(),
       deliveryDateTime: Joi.date(),
       isNegotiatedRate: Joi.boolean(),
       charges: Joi.array().min(1).items(ShippingCharge[_internal].schema).required(),
-      notes: Joi.alternatives(
-        Joi.string().allow("").max(5000),
-        Joi.array().items(Joi.string().allow("").max(5000)),
-      )
+      notes: Joi.string().allow("").max(5000),
     }),
   };
 
@@ -35,14 +36,24 @@ export class Rate {
   //#region Public Fields
 
   /**
-   * The ID of the delivery service this rate is for
+   * The delivery service this rate is for
    */
   public readonly deliveryService: DeliveryService;
 
   /**
-   * The ID of the delivery confirmation included in this rate
+   * The packaging this rate is for
+   */
+  public readonly packaging: Packaging;
+
+  /**
+   * The delivery confirmation included in this rate
    */
   public readonly deliveryConfirmation?: DeliveryConfirmation;
+
+  /**
+   * The well-known third-party carrier service that will be used to fulfill the shipment
+   */
+  public readonly fulfillmentService?: FulfillmentService;
 
   /**
    * The date/time that the package is expected to ship.
@@ -75,19 +86,21 @@ export class Rate {
   /**
    * Additional information regarding this rate quote, such as limitations or restrictions
    */
-  public readonly notes: ReadonlyArray<string>;
+  public readonly notes: string;
 
   //#endregion
 
   public constructor(pojo: RatePOJO, app: App) {
     this.deliveryService = app[_internal].references.lookup(pojo.deliveryServiceID, DeliveryService);
-    this.deliveryConfirmation = app[_internal].references.get(pojo.deliveryConfirmationID, DeliveryConfirmation);
+    this.packaging = app[_internal].references.lookup(pojo.packagingID, Packaging);
+    this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmationID, DeliveryConfirmation);
+    this.fulfillmentService = pojo.fulfillmentService;
     this.shipDateTime = pojo.shipDateTime;
     this.deliveryDateTime = pojo.deliveryDateTime;
     this.isNegotiatedRate = pojo.isNegotiatedRate || false;
     this.charges = pojo.charges.map((charge) => new ShippingCharge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);
-    this.notes = pojo.notes ? typeof pojo.notes === "string" ? [pojo.notes] : pojo.notes : [];
+    this.notes = pojo.notes || "";
 
     // Make this object immutable
     hideAndFreeze(this);

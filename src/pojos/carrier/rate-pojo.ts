@@ -1,3 +1,4 @@
+import { FulfillmentService } from "../../enums";
 import { UUID } from "../../types";
 import { ShippingChargePOJO } from "./shipping-charge-pojo";
 
@@ -21,9 +22,20 @@ export interface RatePOJO {
   deliveryServiceID: UUID;
 
   /**
+   * The ID of the packaging this rate is for
+   */
+  packagingID: UUID;
+
+  /**
    * The ID of the delivery confirmation included in this rate
    */
   deliveryConfirmationID?: UUID;
+
+  /**
+   * If the rate will be fulfilled using a well-known third-party carrier, such as UPS, FedEx, DHL, etc.
+   * then specify the carrier service here.
+   */
+  fulfillmentService?: FulfillmentService;
 
   /**
    * The date/time that the package is expected to ship.
@@ -51,5 +63,5 @@ export interface RatePOJO {
   /**
    * Human-readable information regarding this rate quote, such as limitations or restrictions
    */
-  notes?: string | string[];
+  notes?: string;
 }

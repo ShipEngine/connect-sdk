@@ -1,5 +1,4 @@
 import { BilledParty, Country, InsuranceProvider, NonDeliveryAction } from "../../../enums";
-import { error, ErrorCode, ShipEngineError } from "../../../errors";
 import { Constructor } from "../../../internal-types";
 import { NewShipmentPOJO } from "../../../pojos/carrier";
 import { Joi } from "../../../validation";
@@ -9,6 +8,7 @@ import { hideAndFreeze, _internal } from "../../utils";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
 import { NewPackage } from "../packages/new-package";
+import { calculateTotalInsuranceAmount } from "../utils";
 import { ShipmentIdentifier } from "./shipment-identifier";
 
 
@@ -77,7 +77,7 @@ export function newShipmentMixin(base: Constructor = Object) {
     public readonly deliveryService: DeliveryService;
 
     /**
-     * The ID of the requested delivery confirmation
+     * The requested delivery confirmation
      */
     public readonly deliveryConfirmation?: DeliveryConfirmation;
 
@@ -181,7 +181,7 @@ export function newShipmentMixin(base: Constructor = Object) {
       base === Object ? super() : super(pojo);
 
       this.deliveryService = app[_internal].references.lookup(pojo.deliveryServiceID, DeliveryService);
-      this.deliveryConfirmation = app[_internal].references.get(pojo.deliveryConfirmationID, DeliveryConfirmation);
+      this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmationID, DeliveryConfirmation);
       this.shipFrom = new AddressWithContactInfo(pojo.shipFrom);
       this.shipTo = new AddressWithContactInfo(pojo.shipTo);
       this.returnTo = pojo.returnTo
@@ -207,27 +207,4 @@ export function newShipmentMixin(base: Constructor = Object) {
       this.totalInsuredValue = calculateTotalInsuranceAmount(this.packages);
     }
   };
-}
-
-/**
- * Calculates the total insurance amount for the shipment,
- * which is the sum of the insured value of all packages.
- */
-function calculateTotalInsuranceAmount(packages: ReadonlyArray<NewPackage>): MonetaryValue {
-  try {
-    let insuredValues = packages.map((parcel) => parcel.insuredValue);
-    return MonetaryValue.sum(insuredValues);
-  }
-  catch (originalError) {
-    // Check for a currency mismatch, and throw a more specific error message
-    if ((originalError as ShipEngineError).code === ErrorCode.CurrencyMismatch) {
-      throw error(
-        ErrorCode.CurrencyMismatch,
-        "All packages in a shipment must be insured in the same currency.",
-        { originalError }
-      );
-    }
-
-    throw originalError;
-  }
 }

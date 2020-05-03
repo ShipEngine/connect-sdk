@@ -13,7 +13,7 @@ export interface ShipmentPOJO extends ShipmentIdentifierPOJO, NewShipmentPOJO {
   trackingURL?: URLString | URL;
 
   /**
-   * A well-known service that's being used to fulfill this shipment
+   * A well-known carrier service that's being used to fulfill this shipment
    */
   fulfillmentService?: FulfillmentService;
 
@@ -81,7 +81,7 @@ export interface NewShipmentPOJO {
   returnTo?: AddressWithContactInfoPOJO;
 
   /**
-   * The date/time that the package is expected to ship.
+   * The date/time that the shipment is expected to ship.
    * This is not guaranteed to be in the future.
    */
   shipDateTime: Date;

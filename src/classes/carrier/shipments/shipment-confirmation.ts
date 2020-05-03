@@ -33,7 +33,7 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
   public readonly trackingURL?: URL;
 
   /**
-   * A well-known service that's being used to fulfill this shipment
+   * A well-known carrier service that's being used to fulfill this shipment
    */
   public readonly fulfillmentService?: FulfillmentService;
 

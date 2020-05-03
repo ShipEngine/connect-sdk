@@ -20,6 +20,7 @@ export * from "./pickups/pickup-request";
 export * from "./pickups/time-range";
 export * from "./rates/rate";
 export * from "./rates/rate-criteria";
+export * from "./rates/rate-criteria-package";
 export * from "./rates/rate-quote";
 export { NewShipment } from "./shipments/new-shipment";
 export * from "./shipments/shipment";

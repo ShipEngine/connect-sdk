@@ -54,7 +54,7 @@ export class ReferenceMap {
   /**
    * Returns the class instance with the specified ID, if any
    */
-  public get<T extends ClassInstance>(id: UUID | undefined, type: ShipEngineConstructor): T | undefined {
+  public get<T extends ClassInstance>(id: UUID | undefined, type: ShipEngineConstructor<T>): T | undefined {
     // This is for optional ID fields
     if (!id) return undefined;
 
@@ -62,13 +62,23 @@ export class ReferenceMap {
 
     let { map } = this[_private];
     let reference = map.get(id);
+
+    if (reference && reference.type !== type) {
+      throw new TypeError(`${id} is a ${reference.type[_internal].label} ID not a ${type[_internal].label} ID`);
+    }
+
     return reference && reference.instance as T;
   }
 
   /**
    * Returns the class instance that corresponds to the specified UUID, or throws an error if not found
    */
-  public lookup<T extends ClassInstance>(id: UUID, type: ShipEngineConstructor): T {
+  public lookup<T extends ClassInstance>(id: UUID, type: ShipEngineConstructor<T>): T;
+  public lookup<T extends ClassInstance>(id: UUID | undefined, type: ShipEngineConstructor<T>): T | undefined;
+  public lookup<T extends ClassInstance>(id: UUID | undefined, type: ShipEngineConstructor<T>): T | undefined {
+    // This is for optional ID fields
+    if (!id) return undefined;
+
     let value = this.get<T>(id, type);
 
     if (!value) {

@@ -45,7 +45,7 @@ export interface ShipmentConfirmationPOJO extends ShipmentIdentifierPOJO {
   /**
    * The estimated date and time the shipment will be delivered
    */
-  estimatedDeliveryDateTime?: Date;
+  deliveryDateTime?: Date;
 
   /**
    * Confirmation details about each package in the shipment

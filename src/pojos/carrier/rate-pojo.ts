@@ -34,7 +34,7 @@ export interface RatePOJO {
   /**
    * The estimated date and time the shipment will be delivered
    */
-  estimatedDeliveryDateTime?: Date;
+  deliveryDateTime?: Date;
 
   /**
    * Indicates whether this rate is based on pre-negotiated terms

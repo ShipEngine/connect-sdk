@@ -22,7 +22,7 @@ export class Shipment extends newShipmentMixin(shipmentIdentifierMixin()) {
   public static readonly [_internal] = {
     label: "shipment",
     schema: ShipmentIdentifier[_internal].schema.concat(NewShipment[_internal].schema).keys({
-      estimatedDeliveryDateTime: Joi.date(),
+      deliveryDateTime: Joi.date(),
       packages: Joi.array().min(1).items(Package[_internal].schema).required(),
       customData: CustomData[_internal].schema,
     }),
@@ -34,7 +34,7 @@ export class Shipment extends newShipmentMixin(shipmentIdentifierMixin()) {
   /**
    * The estimated date and time the shipment will be delivered
    */
-  public readonly estimatedDeliveryDateTime?: Date;
+  public readonly deliveryDateTime?: Date;
 
   /**
    * The list of packages in the shipment
@@ -51,7 +51,7 @@ export class Shipment extends newShipmentMixin(shipmentIdentifierMixin()) {
   public constructor(pojo: ShipmentPOJO, app: App) {
     super(pojo, app);
 
-    this.estimatedDeliveryDateTime = pojo.estimatedDeliveryDateTime;
+    this.deliveryDateTime = pojo.deliveryDateTime;
     this.packages = pojo.packages.map((parcel) => new Package(parcel, app));
     this.customData = new CustomData(pojo.customData);
 

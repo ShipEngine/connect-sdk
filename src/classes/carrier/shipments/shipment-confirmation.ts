@@ -18,7 +18,7 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
     schema: ShipmentIdentifier[_internal].schema.keys({
       trackingURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
       fulfillmentService: Joi.string().enum(FulfillmentService),
-      estimatedDeliveryDateTime: Joi.date(),
+      deliveryDateTime: Joi.date(),
       packages: Joi.array().min(1).items(PackageConfirmation[_internal].schema).required(),
       customData: CustomData[_internal].schema,
     }),
@@ -40,7 +40,7 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
   /**
    * The estimated date and time the shipment will be delivered
    */
-  public readonly estimatedDeliveryDateTime?: Date;
+  public readonly deliveryDateTime?: Date;
 
   /**
    * Confirmation details about each package in the shipment
@@ -59,7 +59,7 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
 
     this.trackingURL = pojo.trackingURL ? new URL(pojo.trackingURL as string) : undefined;
     this.fulfillmentService = pojo.fulfillmentService;
-    this.estimatedDeliveryDateTime = pojo.estimatedDeliveryDateTime;
+    this.deliveryDateTime = pojo.deliveryDateTime;
     this.packages = pojo.packages.map((parcel) => new PackageConfirmation(parcel));
     this.customData = pojo.customData && new CustomData(pojo.customData);
 

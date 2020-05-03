@@ -21,7 +21,7 @@ export class Rate {
       deliveryServiceID: Joi.string().uuid().required(),
       deliveryConfirmationID: Joi.string().uuid(),
       shipDateTime: Joi.date(),
-      estimatedDeliveryDateTime: Joi.date(),
+      deliveryDateTime: Joi.date(),
       isNegotiatedRate: Joi.boolean(),
       charges: Joi.array().min(1).items(ShippingCharge[_internal].schema).required(),
       notes: Joi.alternatives(
@@ -53,7 +53,7 @@ export class Rate {
   /**
    * The estimated date and time the shipment will be delivered
    */
-  public readonly estimatedDeliveryDateTime?: Date;
+  public readonly deliveryDateTime?: Date;
 
   /**
    * Indicates whether this rate is based on pre-negotiated terms
@@ -83,7 +83,7 @@ export class Rate {
     this.deliveryService = app[_internal].references.lookup(pojo.deliveryServiceID, DeliveryService);
     this.deliveryConfirmation = app[_internal].references.get(pojo.deliveryConfirmationID, DeliveryConfirmation);
     this.shipDateTime = pojo.shipDateTime;
-    this.estimatedDeliveryDateTime = pojo.estimatedDeliveryDateTime;
+    this.deliveryDateTime = pojo.deliveryDateTime;
     this.isNegotiatedRate = pojo.isNegotiatedRate || false;
     this.charges = pojo.charges.map((charge) => new ShippingCharge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);

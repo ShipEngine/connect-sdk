@@ -20,7 +20,7 @@ export interface ShipmentPOJO extends ShipmentIdentifierPOJO, NewShipmentPOJO {
   /**
    * The estimated date and time the shipment will be delivered
    */
-  estimatedDeliveryDateTime?: Date;
+  deliveryDateTime?: Date;
 
   /**
    * The list of packages in the shipment

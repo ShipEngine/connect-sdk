@@ -172,6 +172,11 @@ export enum ShippingChargeType {
   Tax = "tax",
 
   /**
+   * The charge for picking up the shipment from the shipper
+   */
+  Pickup = "pickup",
+
+  /**
    * Other charges that don't fit into other categories
    */
   Other = "other",

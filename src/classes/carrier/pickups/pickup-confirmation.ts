@@ -2,9 +2,9 @@ import { PickupConfirmationPOJO } from "../../../pojos/carrier";
 import { Joi, validate } from "../../../validation";
 import { CustomData, Identifier, MonetaryValue, TimeRange } from "../../common";
 import { hideAndFreeze, _internal } from "../../utils";
-import { Shipment } from "../shipments/shipment";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 import { ShippingCharge } from "../shipping-charge";
+import { calculateTotalCharges } from "../utils";
 
 /**
  * Confirmation that a package pickup has been scheduled
@@ -16,10 +16,11 @@ export class PickupConfirmation {
   public static readonly [_internal] = {
     label: "pickup confirmation",
     schema: Joi.object({
-      cancellationID: Joi.string().trim().singleLine().allow("").max(100),
+      confirmationID: Joi.string().trim().singleLine().allow("").max(100),
       identifiers: Joi.array().items(Identifier[_internal].schema),
-      shipments: Joi.array().min(1).items(Shipment[_internal].schema),
       timeWindows: Joi.array().min(1).items(TimeRange[_internal].schema).required(),
+      charges: Joi.array().min(1).items(ShippingCharge[_internal].schema).required(),
+      shipments: Joi.array().min(1).items(ShipmentIdentifier[_internal].schema.unknown(true)),
       notes: Joi.string().allow("").max(5000),
       customData: CustomData[_internal].schema,
     }),
@@ -34,19 +35,31 @@ export class PickupConfirmation {
   public readonly confirmationID: string;
 
   /**
-   * Alternative identifiers associated with this confirmation
+   * Alternative identifiers associated with this pickup
    */
   public readonly identifiers: ReadonlyArray<Identifier>;
-
-  /**
-   * The shipments to be picked-up
-   */
-  public readonly shipments: ReadonlyArray<ShipmentIdentifier>;
 
   /**
    * A list of dates and times when the carrier intends to be available to pickup
    */
   public readonly timeWindows: ReadonlyArray<TimeRange>;
+
+  /**
+   * The breakdown of charges for this pickup.
+   * If the carrier does not provide a detailed breakdown, then just use a single
+   * charge of type "pickup".
+   */
+  public readonly charges: ReadonlyArray<ShippingCharge>;
+
+  /**
+   * The total cost of all charges for this pickup.
+   */
+  public readonly totalAmount: MonetaryValue;
+
+  /**
+   * The shipments to be picked-up.
+   */
+  public readonly shipments: ReadonlyArray<ShipmentIdentifier>;
 
   /**
    * Additional information about the pickup confirmation
@@ -66,8 +79,10 @@ export class PickupConfirmation {
 
     this.confirmationID = pojo.confirmationID;
     this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];
-    this.shipments = pojo.shipments ? pojo.shipments.map((shipment) => new ShipmentIdentifier(shipment)) : [];
     this.timeWindows = pojo.timeWindows.map((window) => new TimeRange(window));
+    this.charges = pojo.charges.map((charge) => new ShippingCharge(charge));
+    this.totalAmount = calculateTotalCharges(this.charges);
+    this.shipments = pojo.shipments ? pojo.shipments.map((shipment) => new ShipmentIdentifier(shipment)) : [];
     this.notes = pojo.notes || "";
     this.customData = pojo.customData && new CustomData(pojo.customData);
 

@@ -34,7 +34,7 @@ describe("Carrier", () => {
       getRates: undefined,
       track: undefined,
       createManifest: undefined,
-      requestPickup: undefined,
+      schedulePickup: undefined,
       cancelPickup: undefined,
     });
   });
@@ -56,7 +56,7 @@ describe("Carrier", () => {
       getRates () {},
       track () {},
       createManifest () {},
-      requestPickup () {},
+      schedulePickup () {},
       cancelPickup () {},
     });
 
@@ -94,7 +94,7 @@ describe("Carrier", () => {
       getRates: undefined,
       track: undefined,
       createManifest: undefined,
-      requestPickup: undefined,
+      schedulePickup: undefined,
       cancelPickup: undefined,
     });
   });

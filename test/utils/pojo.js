@@ -249,4 +249,23 @@ const pojo = module.exports = {
       ...props,
     };
   },
+
+  pickupRequest (props = {}) {
+    return {
+      pickupServiceID: "33333333-3333-3333-3333-333333333333",
+      timeWindow: pojo.timeRange(),
+      address: pojo.address(),
+      contact: pojo.contactInfo(),
+      shipments: [pojo.shipment()],
+      ...props,
+    };
+  },
+
+  timeRange (props = {}) {
+    return {
+      startDateTime: new Date(),
+      endDateTime: new Date(),
+      ...props,
+    };
+  },
 };

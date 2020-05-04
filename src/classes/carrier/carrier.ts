@@ -12,7 +12,7 @@ import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
 import { LabelConfirmation } from "./labels/label-confirmation";
 import { LabelSpec } from "./labels/label-spec";
-import { CancelPickup, CreateLabel, CreateManifest, GetRates, RequestPickup, Track, VoidLabel } from "./methods";
+import { CancelPickup, CreateLabel, CreateManifest, GetRates, SchedulePickup, Track, VoidLabel } from "./methods";
 import { Packaging } from "./packaging";
 import { PickupService } from "./pickup-service";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
@@ -52,7 +52,7 @@ export class Carrier {
       getRates: Joi.function(),
       track: Joi.function(),
       createManifest: Joi.function(),
-      requestPickup: Joi.function(),
+      schedulePickup: Joi.function(),
       cancelPickup: Joi.function(),
     }),
   };
@@ -66,7 +66,7 @@ export class Carrier {
     readonly getRates: GetRates | undefined;
     readonly track: Track | undefined;
     readonly createManifest: CreateManifest | undefined;
-    readonly requestPickup: RequestPickup | undefined;
+    readonly schedulePickup: SchedulePickup | undefined;
     readonly cancelPickup: CancelPickup | undefined;
   };
 
@@ -262,7 +262,7 @@ export class Carrier {
       getRates: pojo.getRates ? pojo.getRates : (this.getRates = undefined),
       track: pojo.track ? pojo.track : (this.track = undefined),
       createManifest: pojo.createManifest ? pojo.createManifest : (this.createManifest = undefined),
-      requestPickup: pojo.requestPickup ? pojo.requestPickup : (this.requestPickup = undefined),
+      schedulePickup: pojo.schedulePickup ? pojo.schedulePickup : (this.schedulePickup = undefined),
       cancelPickup: pojo.cancelPickup ? pojo.cancelPickup : (this.cancelPickup = undefined),
     };
 
@@ -298,7 +298,7 @@ export class Carrier {
       getRates: methods.getRates,
       track: methods.track,
       createManifest: methods.createManifest,
-      requestPickup: methods.requestPickup,
+      schedulePickup: methods.schedulePickup,
       cancelPickup: methods.cancelPickup,
       localization: localization.toJSON(),
       ...localizedValues,
@@ -427,28 +427,33 @@ export class Carrier {
   }
 
   /**
-   * Requests a package pickup at a time and place
+   * Schedules a package pickup at a time and place
    */
-  public async requestPickup?(transaction: TransactionPOJO, request: PickupRequestPOJO): Promise<PickupConfirmation> {
+  public async schedulePickup?(transaction: TransactionPOJO, request: PickupRequestPOJO): Promise<PickupConfirmation> {
     let _transaction, _request;
-    let { app, requestPickup } = this[_private];
+    let { app, schedulePickup } = this[_private];
 
     try {
       _transaction = new Transaction(transaction);
       _request = new PickupRequest(request, app);
     }
     catch (originalError) {
-      throw error(ErrorCode.InvalidInput, "Invalid input to the requestPickup method.", { originalError });
+      throw error(ErrorCode.InvalidInput, "Invalid input to the schedulePickup method.", { originalError });
     }
 
     try {
-      let confirmation = await requestPickup!(_transaction, _request);
-      confirmation.shipments = confirmation.shipments || request.shipments;
+      let confirmation = await schedulePickup!(_transaction, _request);
+
+      if (confirmation && confirmation.shipments === undefined) {
+        // By default, all shipments will be picked up
+        confirmation.shipments = request.shipments;
+      }
+
       return new PickupConfirmation(confirmation);
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in requestPickup method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in schedulePickup method.`, { originalError, transactionID });
     }
   }
 

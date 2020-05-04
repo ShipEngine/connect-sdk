@@ -33,9 +33,9 @@ export type Track = (transaction: Transaction, criteria: TrackingCriteria) => vo
 export type CreateManifest = (transaction: Transaction, params: unknown) => void | Promise<void>;
 
 /**
- * Requests a package pickup at a time and place
+ * Schedules a package pickup at a time and place
  */
-export type RequestPickup = (transaction: Transaction, request: PickupRequest)
+export type SchedulePickup = (transaction: Transaction, request: PickupRequest)
   => PickupConfirmationPOJO | Promise<PickupConfirmationPOJO>;
 
 /**

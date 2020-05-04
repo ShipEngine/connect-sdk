@@ -230,7 +230,7 @@ describe("createLabel", () => {
       }));
 
       try {
-        await app.carrier.createLabel({ id: "12345678-1234-1234-1234-123456789012" });
+        await app.carrier.createLabel(pojo.transaction());
         assert.fail("An error should have been thrown");
       }
       catch (error) {

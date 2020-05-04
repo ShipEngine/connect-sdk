@@ -182,7 +182,7 @@ describe("getRates", () => {
       }
     });
 
-    it("should throw an error if called without a rateCriteria", async () => {
+    it("should throw an error if called without a RateCriteria", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
           getRates () {}
@@ -190,7 +190,7 @@ describe("getRates", () => {
       }));
 
       try {
-        await app.carrier.getRates({ id: "12345678-1234-1234-1234-123456789012" });
+        await app.carrier.getRates(pojo.transaction());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
@@ -202,7 +202,7 @@ describe("getRates", () => {
       }
     });
 
-    it("should throw an error if called without an invalid rateCriteria", async () => {
+    it("should throw an error if called without an invalid RateCriteria", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
           getRates () {}

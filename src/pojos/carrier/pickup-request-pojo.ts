@@ -1,7 +1,6 @@
 import { UUID } from "../../types";
-import { AddressPOJO, ContactInfoPOJO } from "../common";
+import { AddressPOJO, ContactInfoPOJO, TimeRangePOJO } from "../common";
 import { ShipmentPOJO } from "./shipment-pojo";
-import { TimeRangePOJO } from "./time-range-pojo";
 
 /**
  * A request for a carrier to pickup package(s) at a time and place

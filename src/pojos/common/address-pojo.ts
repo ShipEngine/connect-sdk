@@ -12,6 +12,7 @@ export interface AddressPOJO {
   country: Country;
   isResidential?: boolean;
   coordinates?: GeoCoordinatePOJO;
+  timeZone?: string;
 }
 
 /**

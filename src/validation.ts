@@ -18,6 +18,7 @@ const joiOptions = {
 };
 
 const isoDateTime = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?([+-]\d{2}:\d{2}|Z)$/;
+const ianaTimeZone = /^[A-Z][a-zA-Z0-9_+-]+(\/[A-Z][a-zA-Z0-9_+-]+)*$/;
 const appName = /^\@[a-z][a-z0-9]*(-[a-z0-9]+)*\/[a-z][a-z0-9]*(-[a-z0-9]+)*$/;
 const semver = /^\d+\.\d+\.\d+/;
 const money = /^\d+(\.\d+)?$/;
@@ -87,6 +88,12 @@ export interface StringValidationSchema extends joi.StringSchema {
   isoDateTime(): StringValidationSchema;
 
   /**
+   * Requires a string value to be a valid IANA time zone (e.g. "America/Los_Angeles", "Asia/Tokyo").
+   * @see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+   */
+  timeZone(): StringValidationSchema;
+
+  /**
    * Requires a string value to be a scoped NPM package name (e.g. "@company/app-name")
    */
   appName(): StringValidationSchema;
@@ -150,6 +157,8 @@ export const Joi = joi.extend(
     messages: {
       "string.singleLine": "{{#label}} cannot contain newlines or tabs",
       "string.isoDateTime": "{{#label}} must be a complete ISO 8601 date and time, like 2005-09-23T17:30:00.000Z",
+      "string.isoDateTimeInvalid": "{{#label}} must be a valid date/time",
+      "string.timeZone": '{{#label}} must be a valid IANA time zone, like "America/Los_Angeles" or "Asia/Tokyo"',
       "string.appName": '{{#label}} must be a scoped NPM package name, like "@company-name/app-name"',
       "string.semver": "{{#label}} must be a version number, like 1.23.456",
       "string.money": "{{#label}} must be a monetary value, like ##.##",
@@ -171,8 +180,19 @@ export const Joi = joi.extend(
       },
       isoDateTime: {
         validate(value: string, helpers: joi.CustomHelpers) {
-          if (!isoDateTime.test(value) || isNaN(new Date(value).getTime())) {
+          if (!isoDateTime.test(value)) {
             return helpers.error("string.isoDateTime");
+          }
+          else if (isNaN(new Date(value).getTime())) {
+            return helpers.error("string.isoDateTimeInvalid");
+          }
+          return value;
+        },
+      },
+      timeZone: {
+        validate(value: string, helpers: joi.CustomHelpers) {
+          if (!ianaTimeZone.test(value)) {
+            return helpers.error("string.timeZone");
           }
           return value;
         },

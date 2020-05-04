@@ -1,6 +1,6 @@
-import { CustomDataPOJO, IdentifierPOJO } from "../common";
+import { CustomDataPOJO, IdentifierPOJO, TimeRangePOJO } from "../common";
 import { ShipmentIdentifierPOJO } from "./shipment-pojo";
-import { TimeRangePOJO } from "./time-range-pojo";
+import { ShippingChargePOJO } from "./shipping-charge-pojo";
 
 /**
  * Confirmation that a package pickup has been scheduled

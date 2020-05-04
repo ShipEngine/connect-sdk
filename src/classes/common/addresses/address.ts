@@ -23,6 +23,7 @@ export class Address extends addressMixin() {
       country: Joi.string().enum(Country).required(),
       isResidential: Joi.boolean(),
       coordinates: GeoCoordinate[_internal].schema,
+      timeZone: Joi.string().timeZone(),
     }),
   };
 
@@ -56,6 +57,7 @@ export function addressMixin(base: Constructor = Object) {
     public readonly country: Country;
     public readonly isResidential?: boolean;
     public readonly coordinates?: GeoCoordinate;
+    public readonly timeZone?: string;
 
     //#endregion
 
@@ -70,6 +72,7 @@ export function addressMixin(base: Constructor = Object) {
       this.country = pojo.country;
       this.isResidential = pojo.isResidential;
       this.coordinates = pojo.coordinates && new GeoCoordinate(pojo.coordinates);
+      this.timeZone = pojo.timeZone;
     }
 
     /**

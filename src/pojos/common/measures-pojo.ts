@@ -42,3 +42,18 @@ export interface MonetaryValuePOJO {
    */
   currency: Currency;
 }
+
+/**
+ * A range of time
+ */
+export interface TimeRangePOJO {
+  /**
+   * The start date/time of the range
+   */
+  startDateTime: Date;
+
+  /**
+   * The end date/time of the range
+   */
+  endDateTime: Date;
+}

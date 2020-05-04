@@ -8,5 +8,6 @@ export * from "./identifier";
 export * from "./measures/dimensions";
 export * from "./measures/monetary-value";
 export * from "./measures/quantity";
+export * from "./measures/time-range";
 export * from "./measures/weight";
 export * from "./transaction";

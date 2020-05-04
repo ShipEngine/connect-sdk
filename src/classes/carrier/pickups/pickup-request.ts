@@ -1,11 +1,10 @@
 import { PickupRequestPOJO } from "../../../pojos/carrier";
 import { Joi, validate } from "../../../validation";
-import { Address, ContactInfo } from "../../common";
+import { Address, ContactInfo, TimeRange } from "../../common";
 import { App } from "../../common/app";
 import { hideAndFreeze, _internal } from "../../utils";
 import { PickupService } from "../pickup-service";
 import { Shipment } from "../shipments/shipment";
-import { TimeRange } from "./time-range";
 
 /**
  * A request for a carrier to pickup package(s) at a time and place

@@ -1,8 +1,7 @@
 import { PickupCancellationReason } from "../../enums";
 import { UUID } from "../../types";
-import { AddressPOJO, ContactInfoPOJO, CustomDataPOJO, IdentifierPOJO } from "../common";
+import { AddressPOJO, ContactInfoPOJO, CustomDataPOJO, IdentifierPOJO, TimeRangePOJO } from "../common";
 import { ShipmentPOJO } from "./shipment-pojo";
-import { TimeRangePOJO } from "./time-range-pojo";
 
 /**
  * Cancellation of a previously-requested package pickup

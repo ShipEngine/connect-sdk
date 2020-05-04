@@ -71,7 +71,7 @@ const pojo = module.exports = {
     return {
       id: "55555555-5555-5555-5555-555555555555",
       name: "Dummy Confirmation",
-      class: "signature",
+      type: "signature",
       ...props,
     };
   },

@@ -23,13 +23,13 @@ describe("DeliveryConfirmation", () => {
     let confirmation = createDeliveryConfirmation({
       id: "12345678-1234-1234-1234-123456789012",
       name: "Handshake",
-      class: "signature",
+      type: "signature",
     });
 
     expect(confirmation).to.deep.equal({
       id: "12345678-1234-1234-1234-123456789012",
       name: "Handshake",
-      class: "signature",
+      type: "signature",
       description: "",
     });
   });
@@ -38,14 +38,14 @@ describe("DeliveryConfirmation", () => {
     let confirmation = createDeliveryConfirmation({
       id: "12345678-1234-1234-1234-123456789012",
       name: "Handshake",
-      class: "signature",
+      type: "signature",
       description: "A firm handshake"
     });
 
     expect(confirmation).to.deep.equal({
       id: "12345678-1234-1234-1234-123456789012",
       name: "Handshake",
-      class: "signature",
+      type: "signature",
       description: "A firm handshake",
     });
   });
@@ -54,14 +54,14 @@ describe("DeliveryConfirmation", () => {
     let confirmation = createDeliveryConfirmation({
       id: "12345678-1234-1234-1234-123456789012",
       name: "Handshake",
-      class: "signature",
+      type: "signature",
       description: "",
     });
 
     expect(confirmation).to.deep.equal({
       id: "12345678-1234-1234-1234-123456789012",
       name: "Handshake",
-      class: "signature",
+      type: "signature",
       description: "",
     });
   });
@@ -79,7 +79,7 @@ describe("DeliveryConfirmation", () => {
       expect(() => createDeliveryConfirmation({
         id: "12345",
         name: "test",
-        class: "signature",
+        type: "signature",
       })
       ).to.throw(
         "Invalid ShipEngine Integration Platform carrier app: \n" +
@@ -91,7 +91,7 @@ describe("DeliveryConfirmation", () => {
       expect(() => createDeliveryConfirmation({
         id: "12345678-1234-1234-1234-123456789012",
         name: "  My \nConfirmation  ",
-        class: "signature"
+        type: "signature"
       })
       ).to.throw(
         "Invalid ShipEngine Integration Platform carrier app: \n" +
@@ -104,7 +104,7 @@ describe("DeliveryConfirmation", () => {
       expect(() => createDeliveryConfirmation({
         id: "12345678-1234-1234-1234-123456789012",
         name: "My Confirmation",
-        class: "signature",
+        type: "signature",
         description: 12345,
       })
       ).to.throw(
@@ -113,15 +113,15 @@ describe("DeliveryConfirmation", () => {
       );
     });
 
-    it("should throw an error if the class is invalid", () => {
+    it("should throw an error if the type is invalid", () => {
       expect(() => createDeliveryConfirmation({
         id: "12345678-1234-1234-1234-123456789012",
         name: "My Confirmation",
-        class: "handshake"
+        type: "handshake"
       })
       ).to.throw(
         "Invalid ShipEngine Integration Platform carrier app: \n" +
-        "  carrier.deliveryServices[0].deliveryConfirmations[0].class must be one of delivery, signature, adult_signature, direct_signature"
+        "  carrier.deliveryServices[0].deliveryConfirmations[0].type must be one of delivery, signature, adult_signature, direct_signature"
       );
     });
 

@@ -1,4 +1,4 @@
-import { DeliveryConfirmationClass } from "../../enums";
+import { DeliveryConfirmationType } from "../../enums";
 import { InlineOrReference, UUID } from "../../types";
 import { LocalizationDefinition } from "../common/localization-definition";
 
@@ -23,9 +23,9 @@ export interface DeliveryConfirmationDefinition {
   description?: string;
 
   /**
-   * The class of confirmation
+   * The type of confirmation
    */
-  class: DeliveryConfirmationClass;
+  type: DeliveryConfirmationType;
 
   /**
    * Localizaed values for fields that allow localization

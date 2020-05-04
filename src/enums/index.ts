@@ -63,9 +63,9 @@ export enum DocumentSize {
 }
 
 /**
- * A class of delivery confirmation
+ * Types of delivery confirmations
  */
-export enum DeliveryConfirmationClass {
+export enum DeliveryConfirmationType {
   Delivery = "delivery",
   Signature = "signature",
   AdultSignature = "adult_signature",

@@ -1,4 +1,4 @@
-import { DeliveryConfirmationClass } from "../../enums";
+import { DeliveryConfirmationType } from "../../enums";
 import { DeliveryConfirmationPOJO } from "../../pojos/carrier";
 import { LocalizedInfoPOJO } from "../../pojos/common";
 import { UUID } from "../../types";
@@ -22,7 +22,7 @@ export class DeliveryConfirmation {
       id: Joi.string().uuid().required(),
       name: Joi.string().trim().singleLine().min(1).max(100).required(),
       description: Joi.string().trim().singleLine().allow("").max(1000),
-      class: Joi.string().enum(DeliveryConfirmationClass).required(),
+      type: Joi.string().enum(DeliveryConfirmationType).required(),
       localization: Joi.object().localization({
         name: Joi.string().trim().singleLine().min(1).max(100),
         description: Joi.string().trim().singleLine().allow("").max(1000),
@@ -56,9 +56,9 @@ export class DeliveryConfirmation {
   public readonly description: string;
 
   /**
-   * The class of confirmation
+   * The type of confirmation
    */
-  public class: DeliveryConfirmationClass;
+  public type: DeliveryConfirmationType;
 
   //#endregion
 
@@ -66,7 +66,7 @@ export class DeliveryConfirmation {
     this.id = pojo.id;
     this.name = pojo.name;
     this.description = pojo.description || "";
-    this.class = pojo.class;
+    this.type = pojo.type;
 
     this[_private] = {
       app,

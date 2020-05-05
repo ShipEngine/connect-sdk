@@ -157,7 +157,6 @@ const pojo = module.exports = {
       shipFrom: pojo.addressWithContactInfo(),
       shipTo: pojo.addressWithContactInfo(),
       shipDateTime: new Date(),
-      nonDeliveryAction: "return_to_sender",
       packages: [pojo.newPackage()],
       ...props,
     };

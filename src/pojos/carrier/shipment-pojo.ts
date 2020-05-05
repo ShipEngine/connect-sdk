@@ -87,9 +87,10 @@ export interface NewShipmentPOJO {
   shipDateTime: Date;
 
   /**
-   * Indicates how a non-deliverable package should be handled
+   * Indicates how a non-deliverable package should be handled. If `undefined`, the carrier's
+   * default behavior applies, which may incur charges.
    */
-  nonDeliveryAction: NonDeliveryAction;
+  nonDeliveryAction?: NonDeliveryAction;
 
   /**
    * Which party will be insuring the shipment. Defaults to carrier-provided insurance.

@@ -28,7 +28,7 @@ export class NewShipment extends newShipmentMixin() {
       shipTo: AddressWithContactInfo[_internal].schema.required(),
       returnTo: AddressWithContactInfo[_internal].schema,
       shipDateTime: Joi.date().required(),
-      nonDeliveryAction: Joi.string().enum(NonDeliveryAction).required(),
+      nonDeliveryAction: Joi.string().enum(NonDeliveryAction),
       insuranceProvider: Joi.string().enum(InsuranceProvider),
       isReturn: Joi.boolean(),
       rmaNumber: Joi.string().trim().singleLine().min(1).max(100),
@@ -104,9 +104,10 @@ export function newShipmentMixin(base: Constructor = Object) {
     public readonly shipDateTime: Date;
 
     /**
-     * Indicates how a non-deliverable package should be handled
+     * Indicates how a non-deliverable package should be handled. If `undefined`,
+     * the carrier's default behavior applies, which may incur charges.
      */
-    public readonly nonDeliveryAction: NonDeliveryAction;
+    public readonly nonDeliveryAction?: NonDeliveryAction;
 
     /**
      * Which party will be insuring the shipment

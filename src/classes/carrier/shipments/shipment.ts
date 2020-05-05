@@ -1,6 +1,6 @@
 import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { ShipmentPOJO } from "../../../pojos/carrier";
-import { CustomData } from "../../common";
+import { CustomData, DateTimeZone } from "../../common";
 import { App } from "../../common/app";
 import { Package } from "../packages/package";
 import { NewShipment, newShipmentMixin } from "./new-shipment";
@@ -21,7 +21,7 @@ export class Shipment extends newShipmentMixin(shipmentIdentifierMixin()) {
   public static readonly [_internal] = {
     label: "shipment",
     schema: ShipmentIdentifier[_internal].schema.concat(NewShipment[_internal].schema).keys({
-      deliveryDateTime: Joi.date(),
+      deliveryDateTime: DateTimeZone[_internal].schema,
       packages: Joi.array().min(1).items(Package[_internal].schema).required(),
       customData: CustomData[_internal].schema,
     }),
@@ -33,7 +33,7 @@ export class Shipment extends newShipmentMixin(shipmentIdentifierMixin()) {
   /**
    * The estimated date and time the shipment will be delivered
    */
-  public readonly deliveryDateTime?: Date;
+  public readonly deliveryDateTime?: DateTimeZone;
 
   /**
    * The list of packages in the shipment
@@ -50,7 +50,7 @@ export class Shipment extends newShipmentMixin(shipmentIdentifierMixin()) {
   public constructor(pojo: ShipmentPOJO, app: App) {
     super(pojo, app);
 
-    this.deliveryDateTime = pojo.deliveryDateTime;
+    this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;
     this.packages = pojo.packages.map((parcel) => new Package(parcel, app));
     this.customData = new CustomData(pojo.customData);
 

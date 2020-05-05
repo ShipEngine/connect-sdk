@@ -1,7 +1,7 @@
 import { BilledParty, Country, InsuranceProvider, NonDeliveryAction } from "../../../enums";
 import { Constructor, hideAndFreeze, Joi, _internal } from "../../../internal";
 import { NewShipmentPOJO } from "../../../pojos/carrier";
-import { AddressWithContactInfo, MonetaryValue } from "../../common";
+import { AddressWithContactInfo, DateTimeZone, MonetaryValue } from "../../common";
 import { App } from "../../common/app";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
@@ -25,7 +25,7 @@ export class NewShipment extends newShipmentMixin() {
       shipFrom: AddressWithContactInfo[_internal].schema.required(),
       shipTo: AddressWithContactInfo[_internal].schema.required(),
       returnTo: AddressWithContactInfo[_internal].schema,
-      shipDateTime: Joi.date().required(),
+      shipDateTime: DateTimeZone[_internal].schema.required(),
       nonDeliveryAction: Joi.string().enum(NonDeliveryAction),
       insuranceProvider: Joi.string().enum(InsuranceProvider),
       isReturn: Joi.boolean(),
@@ -99,7 +99,7 @@ export function newShipmentMixin(base: Constructor = Object) {
      * The date/time that the package is expected to ship.
      * This is not guaranteed to be in the future.
      */
-    public readonly shipDateTime: Date;
+    public readonly shipDateTime: DateTimeZone;
 
     /**
      * Indicates how a non-deliverable package should be handled. If `undefined`,
@@ -193,7 +193,7 @@ export function newShipmentMixin(base: Constructor = Object) {
       this.returnTo = pojo.returnTo
         ? new AddressWithContactInfo(pojo.returnTo)
         : new AddressWithContactInfo(pojo.shipFrom);
-      this.shipDateTime = pojo.shipDateTime;
+      this.shipDateTime = new DateTimeZone(pojo.shipDateTime);
       this.nonDeliveryAction = pojo.nonDeliveryAction;
       this.insuranceProvider = pojo.insuranceProvider || InsuranceProvider.Carrier;
       this.isReturn = pojo.isReturn || false;

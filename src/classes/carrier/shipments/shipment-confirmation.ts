@@ -1,7 +1,7 @@
 import { FulfillmentService } from "../../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { ShipmentConfirmationPOJO } from "../../../pojos/carrier";
-import { CustomData } from "../../common";
+import { CustomData, DateTimeZone } from "../../common";
 import { PackageConfirmation } from "../packages/package-confirmation";
 import { ShipmentIdentifier, shipmentIdentifierMixin } from "./shipment-identifier";
 
@@ -17,7 +17,7 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
     schema: ShipmentIdentifier[_internal].schema.keys({
       trackingURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
       fulfillmentService: Joi.string().enum(FulfillmentService),
-      deliveryDateTime: Joi.date(),
+      deliveryDateTime: DateTimeZone[_internal].schema,
       packages: Joi.array().min(1).items(PackageConfirmation[_internal].schema).required(),
       customData: CustomData[_internal].schema,
     }),
@@ -39,7 +39,7 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
   /**
    * The estimated date and time the shipment will be delivered
    */
-  public readonly deliveryDateTime?: Date;
+  public readonly deliveryDateTime?: DateTimeZone;
 
   /**
    * Confirmation details about each package in the shipment
@@ -58,7 +58,7 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
 
     this.trackingURL = pojo.trackingURL ? new URL(pojo.trackingURL as string) : undefined;
     this.fulfillmentService = pojo.fulfillmentService;
-    this.deliveryDateTime = pojo.deliveryDateTime;
+    this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;
     this.packages = pojo.packages.map((parcel) => new PackageConfirmation(parcel));
     this.customData = pojo.customData && new CustomData(pojo.customData);
 

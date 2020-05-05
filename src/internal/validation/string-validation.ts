@@ -74,7 +74,7 @@ export const stringValidation: joi.Extension = {
   messages: {
     "string.singleLine": "{{#label}} cannot contain newlines or tabs",
     "string.isoDateTime": "{{#label}} must be an ISO 8601 date and time, like 2005-09-23T17:30:00",
-    "string.isoDateTimeZone": "{{#label}} must be a complete ISO 8601 date/time with a time zone, like 2005-09-23T17:30:00Z or 2005-09-23T17:30:00+05:30",
+    "string.isoDateTimeZone": "{{#label}} must be a complete ISO 8601 date/time with a time zone, like 2005-09-23T17:30:00+05:30",
     "string.isoDateTimeNoZone": "{{#label}} should not include a time zone",
     "string.isoDateTimeInvalid": "{{#label}} must be a valid date/time",
     "string.timeZone": '{{#label}} must be a UTC offset, like "+05:30", or a valid IANA time zone, like "America/Los_Angeles"',

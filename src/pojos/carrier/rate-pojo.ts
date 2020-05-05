@@ -1,5 +1,6 @@
 import { FulfillmentService } from "../../enums";
 import { UUID } from "../../types";
+import { DateTimeZonePOJO } from "../common";
 import { ShippingChargePOJO } from "./shipping-charge-pojo";
 
 /**
@@ -41,12 +42,12 @@ export interface RatePOJO {
    * The date/time that the package is expected to ship.
    * This is not guaranteed to be in the future.
    */
-  shipDateTime?: Date;
+  shipDateTime?: DateTimeZonePOJO | Date | string;
 
   /**
    * The estimated date and time the shipment will be delivered
    */
-  deliveryDateTime?: Date;
+  deliveryDateTime?: DateTimeZonePOJO | Date | string;
 
   /**
    * The minimum number of days delivery will take

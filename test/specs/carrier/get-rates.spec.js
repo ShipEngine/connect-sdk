@@ -81,8 +81,8 @@ describe("getRates", () => {
             packagingID: "44444444-4444-4444-4444-444444444444",
             deliveryConfirmationID: "55555555-5555-5555-5555-555555555555",
             fulfillmentService: "ups_ground",
-            shipDateTime: new Date("2005-05-05T05:05:05.005Z"),
-            deliveryDateTime: new Date("2005-05-05T05:05:05.005Z"),
+            shipDateTime: "2005-05-05T05:05:05.005+00:30",
+            deliveryDateTime: new Date("2005-05-05T05:05:05.005-07:00"),
             minimumDays: 0,
             maximumDays: 1,
             zone: 1,
@@ -136,8 +136,14 @@ describe("getRates", () => {
           id: "55555555-5555-5555-5555-555555555555",
         },
         fulfillmentService: "ups_ground",
-        shipDateTime: new Date("2005-05-05T05:05:05.005Z"),
-        deliveryDateTime: new Date("2005-05-05T05:05:05.005Z"),
+        shipDateTime: {
+          value: "2005-05-05T05:05:05.005",
+          timeZone: "+00:30",
+        },
+        deliveryDateTime: {
+          value: "2005-05-05T12:05:05.005",
+          timeZone: "UTC",
+        },
         minimumDays: 0,
         maximumDays: 1,
         zone: 1,
@@ -230,7 +236,7 @@ describe("getRates", () => {
         await app.carrier.getRates(pojo.transaction(), {
           deliveryServices: "12345678-1234-1234-1234-123456789012",
           packaging: ["Large Box"],
-          deliveryDateTime: "2005-05-05T05:05:05.005Z",
+          deliveryDateTime: "9999-99-99T99:99:99.999Z",
           packages: [],
         });
         assert.fail("An error should have been thrown");
@@ -242,7 +248,7 @@ describe("getRates", () => {
           "  deliveryServices must be an array \n" +
           "  packaging[0] must be a valid GUID \n" +
           "  shipDateTime is required \n" +
-          "  deliveryDateTime must be a valid date \n" +
+          "  deliveryDateTime must be a valid date/time \n" +
           "  shipFrom is required \n" +
           "  shipTo is required \n" +
           "  packages must contain at least 1 items"
@@ -276,7 +282,7 @@ describe("getRates", () => {
           getRates: () => ({
             rates: [{
               deliveryConfirmationID: "Handshake",
-              deliveryDateTime: "2005-05-05T05:05:05.005Z",
+              deliveryDateTime: "9999-99-99T99:99:99.999Z",
               isNegotiatedRate: "no",
               charges: [],
               notes: false,
@@ -296,7 +302,7 @@ describe("getRates", () => {
           "  rates[0].deliveryServiceID is required \n" +
           "  rates[0].packagingID is required \n" +
           "  rates[0].deliveryConfirmationID must be a valid GUID \n" +
-          "  rates[0].deliveryDateTime must be a valid date \n" +
+          "  rates[0].deliveryDateTime must be a valid date/time \n" +
           "  rates[0].isNegotiatedRate must be a boolean \n" +
           "  rates[0].charges must contain at least 1 items \n" +
           "  rates[0].notes must be a string"

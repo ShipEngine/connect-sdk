@@ -1,6 +1,6 @@
 import { FulfillmentService } from "../../enums";
 import { UUID } from "../../types";
-import { AddressWithContactInfoPOJO, DimensionsPOJO, MonetaryValuePOJO, WeightPOJO } from "../common";
+import { AddressWithContactInfoPOJO, DateTimeZonePOJO, DimensionsPOJO, MonetaryValuePOJO, WeightPOJO } from "../common";
 import { ShipmentIdentifierPOJO } from "./shipment-pojo";
 
 /**
@@ -37,12 +37,12 @@ export interface RateCriteriaPOJO {
    * The date/time that the shipment is expected to ship.
    * This is not guaranteed to be in the future.
    */
-  shipDateTime: Date;
+  shipDateTime: DateTimeZonePOJO | Date | string;
 
   /**
    * The latest date and time that the shipment can be delivered
    */
-  deliveryDateTime?: Date;
+  deliveryDateTime?: DateTimeZonePOJO | Date | string;
 
   /**
    * The sender's contact info and address

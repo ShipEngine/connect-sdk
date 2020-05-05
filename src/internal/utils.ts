@@ -9,7 +9,7 @@ export const _internal = Symbol("internal fields");
  * @internal
  */
 export const regex = {
-  isoDateTime: /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?([+-]\d{2}:\d{2}|Z)?$/,
+  isoDateTime: /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?)([+-]\d{2}:\d{2}|Z)?$/,
   utcOffset: /^[+-]([01][0-9]|2[0-3]):[0-5][0-9]$/,
   appName: /^\@[a-z][a-z0-9]*(-[a-z0-9]+)*\/[a-z][a-z0-9]*(-[a-z0-9]+)*$/,
   semver: /^\d+\.\d+\.\d+/,

@@ -1,5 +1,6 @@
 import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { TimeRangePOJO } from "../../../pojos/common";
+import { DateTimeZone } from "./date-time-zone";
 
 /**
  * A range of time
@@ -11,8 +12,8 @@ export class TimeRange {
   public static readonly [_internal] = {
     label: "time range",
     schema: Joi.object({
-      startDateTime: Joi.date().required(),
-      endDateTime: Joi.date().required(),
+      startDateTime: DateTimeZone[_internal].schema.required(),
+      endDateTime: DateTimeZone[_internal].schema.required(),
     }),
   };
 
@@ -22,18 +23,18 @@ export class TimeRange {
   /**
    * The start date/time of the range
    */
-  public readonly startDateTime: Date;
+  public readonly startDateTime: DateTimeZone;
 
   /**
    * The end date/time of the range
    */
-  public readonly endDateTime: Date;
+  public readonly endDateTime: DateTimeZone;
 
   //#endregion
 
   public constructor(pojo: TimeRangePOJO) {
-    this.startDateTime = pojo.startDateTime;
-    this.endDateTime = pojo.endDateTime;
+    this.startDateTime = new DateTimeZone(pojo.startDateTime);
+    this.endDateTime = new DateTimeZone(pojo.endDateTime);
 
     if (this.endDateTime.getTime() < this.startDateTime.getTime()) {
       throw new RangeError(`Invalid time range: ${this.toString()}. The start date occurs after the end date.`);

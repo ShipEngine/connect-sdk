@@ -1,6 +1,6 @@
 import { DocumentFormat, DocumentSize, FulfillmentService } from "../../enums";
 import { URLString } from "../../types";
-import { CustomDataPOJO } from "../common";
+import { CustomDataPOJO, DateTimeZonePOJO } from "../common";
 import { PackageIdentifierPOJO } from "./package-pojo";
 import { ShipmentIdentifierPOJO } from "./shipment-pojo";
 import { ShippingChargePOJO } from "./shipping-charge-pojo";
@@ -45,7 +45,7 @@ export interface ShipmentConfirmationPOJO extends ShipmentIdentifierPOJO {
   /**
    * The estimated date and time the shipment will be delivered
    */
-  deliveryDateTime?: Date;
+  deliveryDateTime?: DateTimeZonePOJO | Date | string;
 
   /**
    * Confirmation details about each package in the shipment

@@ -110,7 +110,7 @@ describe("createLabel", () => {
               id: "123456-ABCDEF",
             }],
             fulfillmentService: "ups_ground",
-            deliveryDateTime: new Date("2005-05-05T05:05:05.0005Z"),
+            deliveryDateTime: "2005-05-05T05:05:05.0005Z",
             customData: {
               foo: "bar",
               biz: "baz",
@@ -183,7 +183,10 @@ describe("createLabel", () => {
           id: "123456-ABCDEF",
         }],
         fulfillmentService: "ups_ground",
-        deliveryDateTime: new Date("2005-05-05T05:05:05.0005Z"),
+        deliveryDateTime: {
+          value: "2005-05-05T05:05:05.0005",
+          timeZone: "UTC",
+        },
         customData: {
           foo: "bar",
           biz: "baz",

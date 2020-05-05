@@ -1,6 +1,6 @@
 import { BilledParty, Country, FulfillmentService, InsuranceProvider, NonDeliveryAction } from "../../enums";
 import { URLString, UUID } from "../../types";
-import { AddressWithContactInfoPOJO, CustomDataPOJO, IdentifierPOJO } from "../common";
+import { AddressWithContactInfoPOJO, CustomDataPOJO, DateTimeZonePOJO, IdentifierPOJO } from "../common";
 import { NewPackagePOJO, PackagePOJO } from "./package-pojo";
 
 /**
@@ -20,7 +20,7 @@ export interface ShipmentPOJO extends ShipmentIdentifierPOJO, NewShipmentPOJO {
   /**
    * The estimated date and time the shipment will be delivered
    */
-  deliveryDateTime?: Date;
+  deliveryDateTime?: DateTimeZonePOJO | Date | string;
 
   /**
    * The list of packages in the shipment
@@ -84,7 +84,7 @@ export interface NewShipmentPOJO {
    * The date/time that the shipment is expected to ship.
    * This is not guaranteed to be in the future.
    */
-  shipDateTime: Date;
+  shipDateTime: DateTimeZonePOJO | Date | string;
 
   /**
    * Indicates how a non-deliverable package should be handled. If `undefined`, the carrier's

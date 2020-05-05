@@ -13,8 +13,8 @@ describe("schedulePickup", () => {
         schedulePickup: () => ({
           confirmationID: "ABCDEF-123456",
           timeWindows: [{
-            startDateTime: new Date("2005-05-05T05:05:05.005Z"),
-            endDateTime: new Date("2005-05-05T05:05:05.005Z"),
+            startDateTime: "2005-05-05T05:05:05.005+05:00",
+            endDateTime: new Date("2005-05-05T05:05:05.005+05:00"),
           }],
           charges: [{
             type: "pickup",
@@ -35,8 +35,14 @@ describe("schedulePickup", () => {
       notes: "",
       customData: undefined,
       timeWindows: [{
-        startDateTime: new Date("2005-05-05T05:05:05.005Z"),
-        endDateTime: new Date("2005-05-05T05:05:05.005Z"),
+        startDateTime: {
+          value: "2005-05-05T05:05:05.005",
+          timeZone: "+05:00",
+        },
+        endDateTime: {
+          value: "2005-05-05T00:05:05.005",
+          timeZone: "UTC",
+        },
       }],
       charges: [{
         name: "",
@@ -68,8 +74,11 @@ describe("schedulePickup", () => {
             id: "123456-ABCDEFG",
           }],
           timeWindows: [{
-            startDateTime: new Date("2005-05-05T05:05:05.005Z"),
-            endDateTime: new Date("2005-05-05T05:05:05.005Z"),
+            startDateTime: "2005-05-05T05:05:05.005+07:30",
+            endDateTime: {
+              value: "2005-05-05T05:05:05.005",
+              timeZone: "America/New_York",
+            },
           }],
           charges: [
             {
@@ -120,8 +129,14 @@ describe("schedulePickup", () => {
         id: "123456-ABCDEFG",
       }],
       timeWindows: [{
-        startDateTime: new Date("2005-05-05T05:05:05.005Z"),
-        endDateTime: new Date("2005-05-05T05:05:05.005Z"),
+        startDateTime: {
+          value: "2005-05-05T05:05:05.005",
+          timeZone: "+07:30",
+        },
+        endDateTime: {
+          value: "2005-05-05T05:05:05.005",
+          timeZone: "America/New_York",
+        },
       }],
       charges: [
         {
@@ -219,7 +234,7 @@ describe("schedulePickup", () => {
         await app.carrier.schedulePickup(pojo.transaction(), {
           pickupServiceID: "Come get it",
           timeWindow: {
-            startDateTime: "2005-05-05T05:05:05.005Z",
+            startDateTime: "9999-99-99T99:99:99.999Z",
             endDateTime: Date.now(),
           },
           notes: 5,
@@ -232,8 +247,8 @@ describe("schedulePickup", () => {
           "Invalid input to the schedulePickup method. \n" +
           "Invalid pickup request: \n" +
           "  pickupServiceID must be a valid GUID \n" +
-          "  timeWindow.startDateTime must be a valid date \n" +
-          "  timeWindow.endDateTime must be a valid date \n" +
+          "  timeWindow.startDateTime must be a valid date/time \n" +
+          "  timeWindow.endDateTime must be one of date, string, object \n" +
           "  address is required \n" +
           "  contact is required \n" +
           "  notes must be a string \n" +

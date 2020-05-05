@@ -1,7 +1,7 @@
 import { FulfillmentService } from "../../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { RatePOJO } from "../../../pojos/carrier";
-import { MonetaryValue } from "../../common";
+import { DateTimeZone, MonetaryValue } from "../../common";
 import { App } from "../../common/app";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
@@ -23,8 +23,8 @@ export class Rate {
       packagingID: Joi.string().uuid().required(),
       deliveryConfirmationID: Joi.string().uuid(),
       fulfillmentService: Joi.string().enum(FulfillmentService),
-      shipDateTime: Joi.date(),
-      deliveryDateTime: Joi.date(),
+      shipDateTime: DateTimeZone[_internal].schema,
+      deliveryDateTime: DateTimeZone[_internal].schema,
       minimumDays: Joi.number().integer().min(0),
       maximumDays: Joi.number().integer().min(0),
       zone: Joi.number().integer().min(1),
@@ -63,12 +63,12 @@ export class Rate {
    * The date/time that the package is expected to ship.
    * This is not guaranteed to be in the future.
    */
-  public readonly shipDateTime?: Date;
+  public readonly shipDateTime?: DateTimeZone;
 
   /**
    * The estimated date and time the shipment will be delivered
    */
-  public readonly deliveryDateTime?: Date;
+  public readonly deliveryDateTime?: DateTimeZone;
 
   /**
    * The minimum number of days delivery will take
@@ -126,8 +126,8 @@ export class Rate {
     this.packaging = app[_internal].references.lookup(pojo.packagingID, Packaging);
     this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmationID, DeliveryConfirmation);
     this.fulfillmentService = pojo.fulfillmentService;
-    this.shipDateTime = pojo.shipDateTime;
-    this.deliveryDateTime = pojo.deliveryDateTime;
+    this.shipDateTime = pojo.shipDateTime ? new DateTimeZone(pojo.shipDateTime) : undefined;
+    this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;
     this.minimumDays = pojo.minimumDays;
     this.maximumDays = pojo.maximumDays;
     this.zone = pojo.zone;

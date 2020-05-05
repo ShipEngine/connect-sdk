@@ -1,7 +1,7 @@
 import { FulfillmentService } from "../../../enums";
 import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
 import { RateCriteriaPOJO } from "../../../pojos/carrier";
-import { AddressWithContactInfo, MonetaryValue } from "../../common";
+import { AddressWithContactInfo, DateTimeZone, MonetaryValue } from "../../common";
 import { App } from "../../common/app";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
@@ -24,8 +24,8 @@ export class RateCriteria {
       packaging: Joi.array().items(Joi.string().uuid()),
       deliveryConfirmations: Joi.array().items(Joi.string().uuid()),
       fulfillmentServices: Joi.array().items(Joi.string().enum(FulfillmentService)),
-      shipDateTime: Joi.date().required(),
-      deliveryDateTime: Joi.date(),
+      shipDateTime: DateTimeZone[_internal].schema.required(),
+      deliveryDateTime: DateTimeZone[_internal].schema,
       shipFrom: AddressWithContactInfo[_internal].schema.required(),
       shipTo: AddressWithContactInfo[_internal].schema.required(),
       isReturn: Joi.boolean(),
@@ -67,12 +67,12 @@ export class RateCriteria {
    * The date/time that the shipment is expected to ship.
    * This is not guaranteed to be in the future.
    */
-  public readonly shipDateTime: Date;
+  public readonly shipDateTime: DateTimeZone;
 
   /**
    * The latest date and time that the shipment can be delivered
    */
-  public readonly deliveryDateTime?: Date;
+  public readonly deliveryDateTime?: DateTimeZone;
 
   /**
    * The sender's contact info and address
@@ -118,8 +118,8 @@ export class RateCriteria {
     this.deliveryConfirmations = (pojo.deliveryConfirmations || [])
       .map((id) => app[_internal].references.lookup(id, DeliveryConfirmation));
     this.fulfillmentServices = pojo.fulfillmentServices || [];
-    this.shipDateTime = pojo.shipDateTime;
-    this.deliveryDateTime = pojo.deliveryDateTime;
+    this.shipDateTime = new DateTimeZone(pojo.shipDateTime);
+    this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;
     this.shipFrom = new AddressWithContactInfo(pojo.shipFrom);
     this.shipTo = new AddressWithContactInfo(pojo.shipTo);
     this.isReturn = pojo.isReturn || false;

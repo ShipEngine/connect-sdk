@@ -1,6 +1,7 @@
 "use strict";
 
 const { CarrierApp } = require("../../../lib");
+const host = require("@jsdevtools/host-environment");
 const { assert, expect } = require("chai");
 const pojo = require("../../utils/pojo");
 
@@ -128,21 +129,23 @@ describe("DateTimeZone", () => {
     expect(datetime + 1).to.equal(1115269505006);
   });
 
-  it("should create a DateTimeZone from a DateTimeZonePOJO with Zulu time zone", async () => {
-    let datetime = await createDateTimeZone({ value: "2005-05-05T05:05:05.005", timeZone: "Zulu" });
+  if (host.node.version >= 12) {
+    it("should create a DateTimeZone from a DateTimeZonePOJO with Zulu time zone", async () => {
+      let datetime = await createDateTimeZone({ value: "2005-05-05T05:05:05.005", timeZone: "Zulu" });
 
-    expect(datetime.value).to.equal("2005-05-05T05:05:05.005");
-    expect(datetime.timeZone).to.equal("Zulu");
-    expect(datetime.isUTC).to.equal(true);
-    expect(datetime.isUTCOffset).to.equal(false);
-    expect(datetime.isIANATimeZone).to.equal(true);
-    expect(datetime.toDate()).to.deep.equal(new Date("2005-05-05T05:05:05.005Z"));
-    expect(datetime.toString()).to.deep.equal("2005-05-05T05:05:05.005 Zulu");
-    expect(datetime.toISOString()).to.deep.equal("2005-05-05T05:05:05.005Z");
-    expect(datetime.toJSON()).to.deep.equal({ value: "2005-05-05T05:05:05.005", timeZone: "Zulu" });
-    expect(datetime.getTime()).to.equal(1115269505005);
-    expect(datetime + 1).to.equal(1115269505006);
-  });
+      expect(datetime.value).to.equal("2005-05-05T05:05:05.005");
+      expect(datetime.timeZone).to.equal("Zulu");
+      expect(datetime.isUTC).to.equal(true);
+      expect(datetime.isUTCOffset).to.equal(false);
+      expect(datetime.isIANATimeZone).to.equal(true);
+      expect(datetime.toDate()).to.deep.equal(new Date("2005-05-05T05:05:05.005Z"));
+      expect(datetime.toString()).to.deep.equal("2005-05-05T05:05:05.005 Zulu");
+      expect(datetime.toISOString()).to.deep.equal("2005-05-05T05:05:05.005Z");
+      expect(datetime.toJSON()).to.deep.equal({ value: "2005-05-05T05:05:05.005", timeZone: "Zulu" });
+      expect(datetime.getTime()).to.equal(1115269505005);
+      expect(datetime + 1).to.equal(1115269505006);
+    });
+  }
 
   it("should create a DateTimeZone from a DateTimeZonePOJO with a +00:00 UTC offset", async () => {
     let datetime = await createDateTimeZone({ value: "2005-05-05T05:05:05.005", timeZone: "+00:00" });

@@ -16,7 +16,7 @@ export abstract class App {
       name: Joi.string().appName().required(),
       version: Joi.string().semver().required(),
       description: Joi.string().trim().singleLine().allow("").max(1000),
-    }),
+    }).unknown(true),
   };
 
   /** @internal */

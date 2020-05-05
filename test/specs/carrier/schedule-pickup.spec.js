@@ -37,10 +37,12 @@ describe("schedulePickup", () => {
       timeWindows: [{
         startDateTime: {
           value: "2005-05-05T05:05:05.005",
+          offset: "+05:00",
           timeZone: "+05:00",
         },
         endDateTime: {
           value: "2005-05-05T00:05:05.005",
+          offset: "+00:00",
           timeZone: "UTC",
         },
       }],
@@ -131,10 +133,12 @@ describe("schedulePickup", () => {
       timeWindows: [{
         startDateTime: {
           value: "2005-05-05T05:05:05.005",
+          offset: "+07:30",
           timeZone: "+07:30",
         },
         endDateTime: {
           value: "2005-05-05T05:05:05.005",
+          offset: "-04:00",
           timeZone: "America/New_York",
         },
       }],

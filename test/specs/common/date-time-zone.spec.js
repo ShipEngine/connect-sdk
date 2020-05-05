@@ -22,12 +22,11 @@ describe("DateTimeZone", () => {
 
     expect(datetime.value).to.equal("2005-05-05T05:05:05.005");
     expect(datetime.timeZone).to.equal("UTC");
+    expect(datetime.offset).to.equal("+00:00");
     expect(datetime.isUTC).to.equal(true);
-    expect(datetime.isUTCOffset).to.equal(false);
-    expect(datetime.isIANATimeZone).to.equal(true);
     expect(datetime.toDate()).to.deep.equal(new Date("2005-05-05T05:05:05.005Z"));
     expect(datetime.toString()).to.deep.equal("2005-05-05T05:05:05.005 UTC");
-    expect(datetime.toISOString()).to.deep.equal("2005-05-05T05:05:05.005Z");
+    expect(datetime.toISOString()).to.deep.equal("2005-05-05T05:05:05.005+00:00");
     expect(datetime.toJSON()).to.deep.equal({ value: "2005-05-05T05:05:05.005", timeZone: "UTC" });
     expect(datetime.getTime()).to.equal(1115269505005);
     expect(datetime + 1).to.equal(1115269505006);
@@ -38,12 +37,11 @@ describe("DateTimeZone", () => {
 
     expect(datetime.value).to.equal("2005-05-05T05:05:05.005");
     expect(datetime.timeZone).to.equal("UTC");
+    expect(datetime.offset).to.equal("+00:00");
     expect(datetime.isUTC).to.equal(true);
-    expect(datetime.isUTCOffset).to.equal(false);
-    expect(datetime.isIANATimeZone).to.equal(true);
     expect(datetime.toDate()).to.deep.equal(new Date("2005-05-05T05:05:05.005Z"));
     expect(datetime.toString()).to.deep.equal("2005-05-05T05:05:05.005 UTC");
-    expect(datetime.toISOString()).to.deep.equal("2005-05-05T05:05:05.005Z");
+    expect(datetime.toISOString()).to.deep.equal("2005-05-05T05:05:05.005+00:00");
     expect(datetime.toJSON()).to.deep.equal({ value: "2005-05-05T05:05:05.005", timeZone: "UTC" });
     expect(datetime.getTime()).to.equal(1115269505005);
     expect(datetime + 1).to.equal(1115269505006);
@@ -54,9 +52,8 @@ describe("DateTimeZone", () => {
 
     expect(datetime.value).to.equal("2005-05-05T05:05:05.005");
     expect(datetime.timeZone).to.equal("+00:00");
+    expect(datetime.offset).to.equal("+00:00");
     expect(datetime.isUTC).to.equal(true);
-    expect(datetime.isUTCOffset).to.equal(true);
-    expect(datetime.isIANATimeZone).to.equal(false);
     expect(datetime.toDate()).to.deep.equal(new Date("2005-05-05T05:05:05.005+00:00"));
     expect(datetime.toString()).to.deep.equal("2005-05-05T05:05:05.005+00:00");
     expect(datetime.toISOString()).to.deep.equal("2005-05-05T05:05:05.005+00:00");
@@ -70,9 +67,8 @@ describe("DateTimeZone", () => {
 
     expect(datetime.value).to.equal("2005-05-05T05:05:05.005");
     expect(datetime.timeZone).to.equal("-00:00");
+    expect(datetime.offset).to.equal("-00:00");
     expect(datetime.isUTC).to.equal(true);
-    expect(datetime.isUTCOffset).to.equal(true);
-    expect(datetime.isIANATimeZone).to.equal(false);
     expect(datetime.toDate()).to.deep.equal(new Date("2005-05-05T05:05:05.005-00:00"));
     expect(datetime.toString()).to.deep.equal("2005-05-05T05:05:05.005-00:00");
     expect(datetime.toISOString()).to.deep.equal("2005-05-05T05:05:05.005-00:00");
@@ -86,9 +82,8 @@ describe("DateTimeZone", () => {
 
     expect(datetime.value).to.equal("2005-05-05T05:05:05.005");
     expect(datetime.timeZone).to.equal("+05:30");
+    expect(datetime.offset).to.equal("+05:30");
     expect(datetime.isUTC).to.equal(false);
-    expect(datetime.isUTCOffset).to.equal(true);
-    expect(datetime.isIANATimeZone).to.equal(false);
     expect(datetime.toDate()).to.deep.equal(new Date("2005-05-05T05:05:05.005+05:30"));
     expect(datetime.toString()).to.deep.equal("2005-05-05T05:05:05.005+05:30");
     expect(datetime.toISOString()).to.deep.equal("2005-05-05T05:05:05.005+05:30");
@@ -102,9 +97,8 @@ describe("DateTimeZone", () => {
 
     expect(datetime.value).to.equal("2005-05-05T05:05:05.005");
     expect(datetime.timeZone).to.equal("-00:30");
+    expect(datetime.offset).to.equal("-00:30");
     expect(datetime.isUTC).to.equal(false);
-    expect(datetime.isUTCOffset).to.equal(true);
-    expect(datetime.isIANATimeZone).to.equal(false);
     expect(datetime.toDate()).to.deep.equal(new Date("2005-05-05T05:05:05.005-00:30"));
     expect(datetime.toString()).to.deep.equal("2005-05-05T05:05:05.005-00:30");
     expect(datetime.toISOString()).to.deep.equal("2005-05-05T05:05:05.005-00:30");
@@ -118,12 +112,11 @@ describe("DateTimeZone", () => {
 
     expect(datetime.value).to.equal("2005-05-05T05:05:05.005");
     expect(datetime.timeZone).to.equal("UTC");
+    expect(datetime.offset).to.equal("+00:00");
     expect(datetime.isUTC).to.equal(true);
-    expect(datetime.isUTCOffset).to.equal(false);
-    expect(datetime.isIANATimeZone).to.equal(true);
     expect(datetime.toDate()).to.deep.equal(new Date("2005-05-05T05:05:05.005Z"));
     expect(datetime.toString()).to.deep.equal("2005-05-05T05:05:05.005 UTC");
-    expect(datetime.toISOString()).to.deep.equal("2005-05-05T05:05:05.005Z");
+    expect(datetime.toISOString()).to.deep.equal("2005-05-05T05:05:05.005+00:00");
     expect(datetime.toJSON()).to.deep.equal({ value: "2005-05-05T05:05:05.005", timeZone: "UTC" });
     expect(datetime.getTime()).to.equal(1115269505005);
     expect(datetime + 1).to.equal(1115269505006);
@@ -135,12 +128,11 @@ describe("DateTimeZone", () => {
 
       expect(datetime.value).to.equal("2005-05-05T05:05:05.005");
       expect(datetime.timeZone).to.equal("Zulu");
+      expect(datetime.offset).to.equal("+00:00");
       expect(datetime.isUTC).to.equal(true);
-      expect(datetime.isUTCOffset).to.equal(false);
-      expect(datetime.isIANATimeZone).to.equal(true);
       expect(datetime.toDate()).to.deep.equal(new Date("2005-05-05T05:05:05.005Z"));
       expect(datetime.toString()).to.deep.equal("2005-05-05T05:05:05.005 Zulu");
-      expect(datetime.toISOString()).to.deep.equal("2005-05-05T05:05:05.005Z");
+      expect(datetime.toISOString()).to.deep.equal("2005-05-05T05:05:05.005+00:00");
       expect(datetime.toJSON()).to.deep.equal({ value: "2005-05-05T05:05:05.005", timeZone: "Zulu" });
       expect(datetime.getTime()).to.equal(1115269505005);
       expect(datetime + 1).to.equal(1115269505006);
@@ -152,9 +144,8 @@ describe("DateTimeZone", () => {
 
     expect(datetime.value).to.equal("2005-05-05T05:05:05.005");
     expect(datetime.timeZone).to.equal("+00:00");
+    expect(datetime.offset).to.equal("+00:00");
     expect(datetime.isUTC).to.equal(true);
-    expect(datetime.isUTCOffset).to.equal(true);
-    expect(datetime.isIANATimeZone).to.equal(false);
     expect(datetime.toDate()).to.deep.equal(new Date("2005-05-05T05:05:05.005+00:00"));
     expect(datetime.toString()).to.deep.equal("2005-05-05T05:05:05.005+00:00");
     expect(datetime.toISOString()).to.deep.equal("2005-05-05T05:05:05.005+00:00");
@@ -168,9 +159,8 @@ describe("DateTimeZone", () => {
 
     expect(datetime.value).to.equal("2005-05-05T05:05:05.005");
     expect(datetime.timeZone).to.equal("-00:00");
+    expect(datetime.offset).to.equal("-00:00");
     expect(datetime.isUTC).to.equal(true);
-    expect(datetime.isUTCOffset).to.equal(true);
-    expect(datetime.isIANATimeZone).to.equal(false);
     expect(datetime.toDate()).to.deep.equal(new Date("2005-05-05T05:05:05.005-00:00"));
     expect(datetime.toString()).to.deep.equal("2005-05-05T05:05:05.005-00:00");
     expect(datetime.toISOString()).to.deep.equal("2005-05-05T05:05:05.005-00:00");
@@ -184,9 +174,8 @@ describe("DateTimeZone", () => {
 
     expect(datetime.value).to.equal("2005-05-05T05:05:05.005");
     expect(datetime.timeZone).to.equal("+05:30");
+    expect(datetime.offset).to.equal("+05:30");
     expect(datetime.isUTC).to.equal(false);
-    expect(datetime.isUTCOffset).to.equal(true);
-    expect(datetime.isIANATimeZone).to.equal(false);
     expect(datetime.toDate()).to.deep.equal(new Date("2005-05-05T05:05:05.005+05:30"));
     expect(datetime.toString()).to.deep.equal("2005-05-05T05:05:05.005+05:30");
     expect(datetime.toISOString()).to.deep.equal("2005-05-05T05:05:05.005+05:30");
@@ -200,9 +189,8 @@ describe("DateTimeZone", () => {
 
     expect(datetime.value).to.equal("2005-05-05T05:05:05.005");
     expect(datetime.timeZone).to.equal("-00:30");
+    expect(datetime.offset).to.equal("-00:30");
     expect(datetime.isUTC).to.equal(false);
-    expect(datetime.isUTCOffset).to.equal(true);
-    expect(datetime.isIANATimeZone).to.equal(false);
     expect(datetime.toDate()).to.deep.equal(new Date("2005-05-05T05:05:05.005-00:30"));
     expect(datetime.toString()).to.deep.equal("2005-05-05T05:05:05.005-00:30");
     expect(datetime.toISOString()).to.deep.equal("2005-05-05T05:05:05.005-00:30");
@@ -216,15 +204,29 @@ describe("DateTimeZone", () => {
 
     expect(datetime.value).to.equal("2005-05-05T05:05:05.005");
     expect(datetime.timeZone).to.equal("America/New_York");
+    expect(datetime.offset).to.equal("-04:00");
     expect(datetime.isUTC).to.equal(false);
-    expect(datetime.isUTCOffset).to.equal(false);
-    expect(datetime.isIANATimeZone).to.equal(true);
     expect(datetime.toDate()).to.deep.equal(new Date("2005-05-05T05:05:05.005-04:00"));
     expect(datetime.toString()).to.deep.equal("2005-05-05T05:05:05.005 America/New_York");
-    expect(datetime.toISOString()).to.deep.equal("2005-05-05T09:05:05.005Z");
+    expect(datetime.toISOString()).to.deep.equal("2005-05-05T05:05:05.005-04:00");
     expect(datetime.toJSON()).to.deep.equal({ value: "2005-05-05T05:05:05.005", timeZone: "America/New_York" });
     expect(datetime.getTime()).to.equal(1115283905005);
     expect(datetime + 1).to.equal(1115283905006);
+  });
+
+  it("should create a DateTimeZone from a DateTimeZonePOJO with a negative IANA time zone during daylight savings", async () => {
+    let datetime = await createDateTimeZone({ value: "2005-01-05T05:05:05.005", timeZone: "America/New_York" });
+
+    expect(datetime.value).to.equal("2005-01-05T05:05:05.005");
+    expect(datetime.timeZone).to.equal("America/New_York");
+    expect(datetime.offset).to.equal("-05:00");
+    expect(datetime.isUTC).to.equal(false);
+    expect(datetime.toDate()).to.deep.equal(new Date("2005-01-05T05:05:05.005-05:00"));
+    expect(datetime.toString()).to.deep.equal("2005-01-05T05:05:05.005 America/New_York");
+    expect(datetime.toISOString()).to.deep.equal("2005-01-05T05:05:05.005-05:00");
+    expect(datetime.toJSON()).to.deep.equal({ value: "2005-01-05T05:05:05.005", timeZone: "America/New_York" });
+    expect(datetime.getTime()).to.equal(1104919505005);
+    expect(datetime + 1).to.equal(1104919505006);
   });
 
   it("should create a DateTimeZone from a DateTimeZonePOJO with a positive IANA time zone", async () => {
@@ -232,15 +234,29 @@ describe("DateTimeZone", () => {
 
     expect(datetime.value).to.equal("2005-05-05T05:05:05.005");
     expect(datetime.timeZone).to.equal("Europe/Paris");
+    expect(datetime.offset).to.equal("+02:00");
     expect(datetime.isUTC).to.equal(false);
-    expect(datetime.isUTCOffset).to.equal(false);
-    expect(datetime.isIANATimeZone).to.equal(true);
     expect(datetime.toDate()).to.deep.equal(new Date("2005-05-05T05:05:05.005+02:00"));
     expect(datetime.toString()).to.deep.equal("2005-05-05T05:05:05.005 Europe/Paris");
-    expect(datetime.toISOString()).to.deep.equal("2005-05-05T03:05:05.005Z");
+    expect(datetime.toISOString()).to.deep.equal("2005-05-05T05:05:05.005+02:00");
     expect(datetime.toJSON()).to.deep.equal({ value: "2005-05-05T05:05:05.005", timeZone: "Europe/Paris" });
     expect(datetime.getTime()).to.equal(1115262305005);
     expect(datetime + 1).to.equal(1115262305006);
+  });
+
+  it("should create a DateTimeZone from a DateTimeZonePOJO with a positive IANA time zone during daylight savings", async () => {
+    let datetime = await createDateTimeZone({ value: "2005-01-05T05:05:05.005", timeZone: "Europe/Paris" });
+
+    expect(datetime.value).to.equal("2005-01-05T05:05:05.005");
+    expect(datetime.timeZone).to.equal("Europe/Paris");
+    expect(datetime.offset).to.equal("+01:00");
+    expect(datetime.isUTC).to.equal(false);
+    expect(datetime.toDate()).to.deep.equal(new Date("2005-01-05T05:05:05.005+01:00"));
+    expect(datetime.toString()).to.deep.equal("2005-01-05T05:05:05.005 Europe/Paris");
+    expect(datetime.toISOString()).to.deep.equal("2005-01-05T05:05:05.005+01:00");
+    expect(datetime.toJSON()).to.deep.equal({ value: "2005-01-05T05:05:05.005", timeZone: "Europe/Paris" });
+    expect(datetime.getTime()).to.equal(1104897905005);
+    expect(datetime + 1).to.equal(1104897905006);
   });
 
   describe("Failure tests", () => {
@@ -339,6 +355,34 @@ describe("DateTimeZone", () => {
           "Error in getRates method. \n" +
           "Invalid rate quote: \n" +
           "  rates[0].shipDateTime does not match any of the allowed types"
+        );
+      }
+    });
+
+    it("should throw an error if the value is a DateTimeZonePOJO with an empty value", async () => {
+      try {
+        await createDateTimeZone({ value: "", timeZone: "UTC" });
+        assert.fail("An error should have been thrown");
+      }
+      catch (error) {
+        expect(error.message).to.equal(
+          "Error in getRates method. \n" +
+          "Invalid rate quote: \n" +
+          "  rates[0].shipDateTime.value is not allowed to be empty"
+        );
+      }
+    });
+
+    it("should throw an error if the value is a DateTimeZonePOJO with an empty time zone", async () => {
+      try {
+        await createDateTimeZone({ value: "2005-05-05T05:05:05.005", timeZone: "" });
+        assert.fail("An error should have been thrown");
+      }
+      catch (error) {
+        expect(error.message).to.equal(
+          "Error in getRates method. \n" +
+          "Invalid rate quote: \n" +
+          "  rates[0].shipDateTime.timeZone is not allowed to be empty"
         );
       }
     });

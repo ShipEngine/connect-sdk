@@ -206,6 +206,7 @@ const pojo = module.exports = {
       stateProvince: "TX",
       postalCode: "78754",
       country: "US",
+      timeZone: "America/Chicago",
       ...props,
     };
   },

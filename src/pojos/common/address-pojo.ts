@@ -10,9 +10,9 @@ export interface AddressPOJO {
   stateProvince: string;
   postalCode: string;
   country: Country;
+  timeZone: string;
   isResidential?: boolean;
   coordinates?: GeoCoordinatePOJO;
-  timeZone?: string;
 }
 
 /**

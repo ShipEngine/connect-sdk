@@ -1,4 +1,4 @@
-import { toDate } from "date-fns-tz";
+import { format, toDate } from "date-fns-tz";
 import { hideAndFreeze, Joi, regex, _internal } from "../../../internal";
 import { DateTimeZonePOJO } from "../../../pojos/common";
 
@@ -37,34 +37,22 @@ export class DateTimeZone {
   public readonly timeZone: string;
 
   /**
-   * Indicates whether the `timeZone` is UTC. Use this property rather than comparing the
-   * `timeZone` property to a string like "UTC", "Zulu", "+00:00", etc.
+   * The UTC offset (e.g. "+05:30")
+   */
+  public readonly offset: string;
+
+  /**
+   * Indicates whether the date/time is in UTC.
    */
   public get isUTC(): boolean {
-    let utc = this.toDate().toISOString();
-    return utc.startsWith(this.value);
-  }
-
-  /**
-   * Indicates whether the `timeZone` is a UTC offset (e.g. "+05:30")
-   */
-  public get isUTCOffset(): boolean {
-    let { timeZone } = this;
-    return timeZone[0] === "+" || timeZone[0] === "-";
-  }
-
-  /**
-   * Indicates whether the `timeZone` is an IANA time zone (e.g. "America/Los_Angeles", "Asia/Tokyo")
-   */
-  public get isIANATimeZone(): boolean {
-    return !this.isUTCOffset;
+    return this.offset.slice(1) === "00:00";
   }
 
   //#endregion
 
-  public constructor(pojo: Date | string | DateTimeZonePOJO) {
+  public constructor(pojo: DateTimeZonePOJO | Date | string) {
     if (typeof pojo === "string") {
-      pojo = DateTimeZone.parse(pojo);
+      pojo = parse(pojo);
     }
     else if (pojo instanceof Date) {
       pojo = {
@@ -73,23 +61,25 @@ export class DateTimeZone {
       };
     }
 
-    this.value = pojo.value;
-    this.timeZone = pojo.timeZone;
+    let { value, timeZone } = pojo;
+
+    this.value = value;
+    this.timeZone = timeZone;
+
+    if (timeZone[0] === "+" || timeZone[0] === "-") {
+      // The timeZone is already a UTC offset
+      this.offset = timeZone;
+    }
+    else {
+      // Get the UTC offset for this date/time and time zone
+      this.offset = format(toDate(value, { timeZone }), "xxx", { timeZone });
+    }
 
     // Make this object immutable
     hideAndFreeze(this);
   }
 
-  /**
-   * Parses an ISO 8601 date/time string with a time zone
-   */
-  private static parse(isoDateTime: string): DateTimeZonePOJO {
-    let [, value, timeZone] = regex.isoDateTime.exec(isoDateTime)!;
-    if (timeZone === "Z") {
-      timeZone = "UTC";
-    }
-    return { value, timeZone };
-  }
+  //#region Date methods
 
   /**
    * Returns the date/time as a JavaScript `Date` object.
@@ -97,24 +87,24 @@ export class DateTimeZone {
    * NOTE: JavaScript Date objects only support local/UTC time
    */
   public toDate(): Date {
-    let { value, timeZone, isUTCOffset } = this;
-    return isUTCOffset ? new Date(value + timeZone) : toDate(value, { timeZone });
+    let { value, offset } = this;
+    return new Date(value + offset);
   }
 
   /**
    * Returns a string representation of the date/time and time zone
    */
   public toString(): string {
-    let { value, timeZone, isUTCOffset } = this;
-    return isUTCOffset ? value + timeZone : `${value} ${timeZone}`;
+    let { value, timeZone, offset } = this;
+    return timeZone === offset ? value + offset : `${value} ${timeZone}`;
   }
 
   /**
-   * Returns the date/time as an ISO 8601 string, preserving the time zone if possible
+   * Returns the date/time as an ISO 8601 string
    */
   public toISOString(): string {
-    let { value, timeZone, isUTCOffset } = this;
-    return isUTCOffset ? value + timeZone : this.toDate().toISOString();
+    let { value, offset } = this;
+    return value + offset;
   }
 
   /**
@@ -143,7 +133,20 @@ export class DateTimeZone {
   public valueOf(): number {
     return this.toDate().getTime();
   }
+
+  //#endregion
 }
 
 // Prevent modifications to the class
 hideAndFreeze(DateTimeZone);
+
+/**
+ * Parses an ISO 8601 date/time string with a time zone
+ */
+function parse(isoDateTime: string): DateTimeZonePOJO {
+  let [, value, timeZone] = regex.isoDateTime.exec(isoDateTime)!;
+  if (timeZone === "Z") {
+    timeZone = "UTC";
+  }
+  return { value, timeZone };
+}

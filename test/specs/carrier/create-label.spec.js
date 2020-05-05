@@ -185,6 +185,7 @@ describe("createLabel", () => {
         fulfillmentService: "ups_ground",
         deliveryDateTime: {
           value: "2005-05-05T05:05:05.0005",
+          offset: "+00:00",
           timeZone: "UTC",
         },
         customData: {

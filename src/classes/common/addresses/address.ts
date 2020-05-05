@@ -19,9 +19,9 @@ export class Address extends addressMixin() {
       stateProvince: Joi.string().trim().singleLine().min(1).max(100).required(),
       postalCode: Joi.string().trim().singleLine().min(1).max(100).required(),
       country: Joi.string().enum(Country).required(),
+      timeZone: Joi.string().timeZone().required(),
       isResidential: Joi.boolean(),
       coordinates: GeoCoordinate[_internal].schema,
-      timeZone: Joi.string().timeZone(),
     }),
   };
 
@@ -53,9 +53,9 @@ export function addressMixin(base: Constructor = Object) {
     public readonly stateProvince: string;
     public readonly postalCode: string;
     public readonly country: Country;
+    public readonly timeZone: string;
     public readonly isResidential?: boolean;
     public readonly coordinates?: GeoCoordinate;
-    public readonly timeZone?: string;
 
     //#endregion
 
@@ -68,9 +68,9 @@ export function addressMixin(base: Constructor = Object) {
       this.stateProvince = pojo.stateProvince;
       this.postalCode = pojo.postalCode;
       this.country = pojo.country;
+      this.timeZone = pojo.timeZone;
       this.isResidential = pojo.isResidential;
       this.coordinates = pojo.coordinates && new GeoCoordinate(pojo.coordinates);
-      this.timeZone = pojo.timeZone;
     }
 
     /**

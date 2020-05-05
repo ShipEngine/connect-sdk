@@ -138,10 +138,12 @@ describe("getRates", () => {
         fulfillmentService: "ups_ground",
         shipDateTime: {
           value: "2005-05-05T05:05:05.005",
+          offset: "+00:30",
           timeZone: "+00:30",
         },
         deliveryDateTime: {
           value: "2005-05-05T12:05:05.005",
+          offset: "+00:00",
           timeZone: "UTC",
         },
         minimumDays: 0,

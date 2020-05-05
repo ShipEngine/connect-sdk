@@ -13,9 +13,9 @@ export type CreateLabel = (transaction: Transaction, label: LabelSpec)
   => LabelConfirmationPOJO | Promise<LabelConfirmationPOJO>;
 
 /**
- * Voids a previously-created shipping label
+ * Voids one or more previously-created shipping labels
  */
-export type VoidLabel = (transaction: Transaction, params: unknown) => void | Promise<void>;
+export type VoidLabels = (transaction: Transaction, params: unknown) => void | Promise<void>;
 
 /**
  * Gets shipping rates for a shipment

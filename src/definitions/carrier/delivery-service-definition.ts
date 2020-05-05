@@ -56,6 +56,11 @@ export interface DeliveryServiceDefinition {
   allowsMultiplePackages?: boolean;
 
   /**
+   * Indicates whether shippers can purchase insurance from the carrier for this service
+   */
+  isInsurable?: boolean;
+
+  /**
    * Indicates whether tracking numbers are provided
    */
   isTrackable?: boolean;

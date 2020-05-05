@@ -128,6 +128,13 @@ export class Carrier {
   }
 
   /**
+   * Indicates whether any of the carrier's delivery services are insurable.
+   */
+  public get hasInsurance(): boolean {
+    return this.deliveryServices.some((svc) => svc.isInsurable);
+  }
+
+  /**
    * Indicates whether any of the carrier's delivery services are trackable.
    */
   public get hasTracking(): boolean {

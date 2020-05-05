@@ -29,6 +29,7 @@ export class DeliveryService {
       serviceArea: Joi.string().enum(ServiceArea),
       isConsolidationService: Joi.boolean(),
       allowsMultiplePackages: Joi.boolean(),
+      isInsurable: Joi.boolean(),
       isTrackable: Joi.boolean(),
       hasSandbox: Joi.boolean(),
       labelFormats: Joi.array().items(Joi.string().enum(DocumentFormat)),
@@ -98,6 +99,11 @@ export class DeliveryService {
    * Indicates whether the service allows multiple packages in a single shipment
    */
   public readonly allowsMultiplePackages: boolean;
+
+  /**
+   * Indicates whether shippers can purchase insurance from the carrier for this service
+   */
+  public readonly isInsurable: boolean;
 
   /**
    * Indicates whether tracking numbers are provided
@@ -181,6 +187,7 @@ export class DeliveryService {
     this.serviceArea = pojo.serviceArea;
     this.isConsolidationService = pojo.isConsolidationService || false;
     this.allowsMultiplePackages = pojo.allowsMultiplePackages || false;
+    this.isInsurable = pojo.isInsurable || false;
     this.isTrackable = pojo.isTrackable || false;
     this.hasSandbox = pojo.hasSandbox || false;
     this.labelFormats = pojo.labelFormats || [];

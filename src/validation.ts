@@ -17,13 +17,14 @@ const joiOptions = {
   }
 };
 
-const isoDateTime = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?([+-]\d{2}:\d{2}|Z)$/;
-const ianaTimeZone = /^[A-Z][a-zA-Z0-9_+-]+(\/[A-Z][a-zA-Z0-9_+-]+)*$/;
+const isoDateTime = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?([+-]\d{2}:\d{2}|Z)?$/;
+const utcOffset = /^[+-]([01][0-9]|2[0-3]):[0-5][0-9]$/;
 const appName = /^\@[a-z][a-z0-9]*(-[a-z0-9]+)*\/[a-z][a-z0-9]*(-[a-z0-9]+)*$/;
 const semver = /^\d+\.\d+\.\d+/;
 const money = /^\d+(\.\d+)?$/;
 const protocol = /^https?:\/\//;
 const locale = /^[a-z]{2}(-[A-Z]{2})?$/;
+const ianaTimeZones: Record<string, boolean> = {};
 
 /**
  * Validates a value against a Joi schema. If validation fails, an error is thrown.
@@ -83,12 +84,15 @@ export interface StringValidationSchema extends joi.StringSchema {
   singleLine(): StringValidationSchema;
 
   /**
-   * Requires a string value to specify a complete ISO 8601 date and time (e.g. 2005-05-15T05:05:05.005Z)
+   * Requires a string value to specify a complete ISO 8601 date/time with a time zone
+   * (e.g. 2005-09-23T17:30:00.000Z or 2005-09-23T17:30:00+05:30)
    */
-  isoDateTime(): StringValidationSchema;
+  isoDateTime(args: { timeZone: boolean }): StringValidationSchema;
 
   /**
-   * Requires a string value to be a valid IANA time zone (e.g. "America/Los_Angeles", "Asia/Tokyo").
+   * Requires a string value to be a UTC offset (e.g. "+05:30") or a valid IANA time zone
+   * (e.g. "America/Los_Angeles", "Asia/Tokyo").
+   *
    * @see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
    */
   timeZone(): StringValidationSchema;
@@ -126,7 +130,7 @@ export interface StringValidationSchema extends joi.StringSchema {
   /**
    * Requires a string value to be a valid filesystem path, optionally with additional criteria
    */
-  filePath(criteria: Partial<ParsedPath>): StringValidationSchema;
+  filePath(args: Partial<ParsedPath>): StringValidationSchema;
 }
 
 /**
@@ -156,9 +160,11 @@ export const Joi = joi.extend(
     base: joi.string(),
     messages: {
       "string.singleLine": "{{#label}} cannot contain newlines or tabs",
-      "string.isoDateTime": "{{#label}} must be a complete ISO 8601 date and time, like 2005-09-23T17:30:00.000Z",
+      "string.isoDateTime": "{{#label}} must be an ISO 8601 date and time, like 2005-09-23T17:30:00",
+      "string.isoDateTimeZone": "{{#label}} must be a complete ISO 8601 date/time with a time zone, like 2005-09-23T17:30:00Z or 2005-09-23T17:30:00+05:30",
+      "string.isoDateTimeNoZone": "{{#label}} should not include a time zone",
       "string.isoDateTimeInvalid": "{{#label}} must be a valid date/time",
-      "string.timeZone": '{{#label}} must be a valid IANA time zone, like "America/Los_Angeles" or "Asia/Tokyo"',
+      "string.timeZone": '{{#label}} must be a UTC offset, like "+05:30", or a valid IANA time zone, like "America/Los_Angeles"',
       "string.appName": '{{#label}} must be a scoped NPM package name, like "@company-name/app-name"',
       "string.semver": "{{#label}} must be a version number, like 1.23.456",
       "string.money": "{{#label}} must be a monetary value, like ##.##",
@@ -179,9 +185,26 @@ export const Joi = joi.extend(
         },
       },
       isoDateTime: {
-        validate(value: string, helpers: joi.CustomHelpers) {
-          if (!isoDateTime.test(value)) {
-            return helpers.error("string.isoDateTime");
+        method(args: { timeZone: boolean }) {
+          return this.$_addRule({ name: "isoDateTime", args});
+        },
+        validate(value: string, helpers: joi.CustomHelpers, args: { timeZone: boolean }) {
+          let match = isoDateTime.exec(value);
+          let hasTimeZone = match && match[2];
+
+          if (!match) {
+            if (args.timeZone) {
+              return helpers.error("string.isoDateTimeZone");
+            }
+            else {
+              return helpers.error("string.isoDateTime");
+            }
+          }
+          else if (args.timeZone && !hasTimeZone) {
+            return helpers.error("string.isoDateTimeZone");
+          }
+          else if (!args.timeZone && hasTimeZone) {
+            return helpers.error("string.isoDateTimeNoZone");
           }
           else if (isNaN(new Date(value).getTime())) {
             return helpers.error("string.isoDateTimeInvalid");
@@ -191,7 +214,7 @@ export const Joi = joi.extend(
       },
       timeZone: {
         validate(value: string, helpers: joi.CustomHelpers) {
-          if (!ianaTimeZone.test(value)) {
+          if (!utcOffset.test(value) && !isValidTimeZone(value)) {
             return helpers.error("string.timeZone");
           }
           return value;
@@ -256,17 +279,17 @@ export const Joi = joi.extend(
         },
       },
       filePath: {
-        method(criteria: Partial<ParsedPath>) {
-          return this.$_addRule({ name: "filePath", args: criteria});
+        method(args: Partial<ParsedPath>) {
+          return this.$_addRule({ name: "filePath", args});
         },
-        validate(value: string, helpers: joi.CustomHelpers, criteria: Partial<ParsedPath>) {
+        validate(value: string, helpers: joi.CustomHelpers, args: Partial<ParsedPath>) {
           if (!path.isAbsolute(value)) {
-            return helpers.error("string.filePathRelative", criteria);
+            return helpers.error("string.filePathRelative", args);
           }
 
           let { ext } = path.parse(value);
-          if (criteria.ext && (ext !== criteria.ext)) {
-            return helpers.error("string.filePathExtension", criteria);
+          if (args.ext && (ext !== args.ext)) {
+            return helpers.error("string.filePathExtension", args);
           }
 
           return value;
@@ -312,3 +335,21 @@ export const Joi = joi.extend(
     }
   },
 ) as JoiExtended;
+
+
+function isValidTimeZone(timeZone: string): boolean {
+  // If we've already checked this time zone, then return the cached value
+  let isKnown = ianaTimeZones[timeZone];
+  if (isKnown !== undefined) {
+    return isKnown;
+  }
+
+  // Determine whether this time zone is valid
+  try {
+    let zone = new Intl.DateTimeFormat("en", { timeZone });
+    return ianaTimeZones[timeZone] = true;
+  }
+  catch (_) {
+    return ianaTimeZones[timeZone] = false;
+  }
+}

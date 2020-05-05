@@ -54,6 +54,9 @@ describe("getRates", () => {
         },
         charges: [{
           name: "",
+          description: "",
+          code: "",
+          notes: "",
           type: "shipping",
           amount: {
             value: "123.46",
@@ -89,6 +92,10 @@ describe("getRates", () => {
             notes: "This is a note",
             charges: [
               {
+                name: "Shipping Charge",
+                description: "Charge for shipping",
+                code: "SHP",
+                notes: "you were charged extra because reasons",
                 type: "shipping",
                 amount: {
                   value: 123.456,
@@ -96,6 +103,10 @@ describe("getRates", () => {
                 },
               },
               {
+                name: "Delivery Confirmation Charge",
+                description: "Charge for delivery conirmation",
+                code: "DEL",
+                notes: "Signatures cost extra",
                 type: "delivery_confirmation",
                 amount: {
                   value: 1.5,
@@ -140,7 +151,10 @@ describe("getRates", () => {
         },
         charges: [
           {
-            name: "",
+            name: "Shipping Charge",
+            description: "Charge for shipping",
+            code: "SHP",
+            notes: "you were charged extra because reasons",
             type: "shipping",
             amount: {
               value: "123.46",
@@ -148,7 +162,10 @@ describe("getRates", () => {
             }
           },
           {
-            name: "",
+            name: "Delivery Confirmation Charge",
+            description: "Charge for delivery conirmation",
+            code: "DEL",
+            notes: "Signatures cost extra",
             type: "delivery_confirmation",
             amount: {
               value: "1.50",

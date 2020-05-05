@@ -39,8 +39,11 @@ describe("schedulePickup", () => {
         endDateTime: new Date("2005-05-05T05:05:05.005Z"),
       }],
       charges: [{
-        type: "pickup",
         name: "",
+        description: "",
+        code: "",
+        notes: "",
+        type: "pickup",
         amount: {
           value: "12.34",
           currency: "AUD",
@@ -70,16 +73,22 @@ describe("schedulePickup", () => {
           }],
           charges: [
             {
-              type: "pickup",
               name: "Pickup Charge",
+              description: "Charge for pickup",
+              code: "PIK",
+              notes: "This is a note",
+              type: "pickup",
               amount: {
                 value: 12.34,
                 currency: "AUD",
               }
             },
             {
-              type: "tax",
               name: "Pickup Tax",
+              description: "Taxes for pickup",
+              code: "TAX",
+              notes: "This is a note",
+              type: "tax",
               amount: {
                 value: 2.5,
                 currency: "AUD",
@@ -116,16 +125,22 @@ describe("schedulePickup", () => {
       }],
       charges: [
         {
-          type: "pickup",
           name: "Pickup Charge",
+          description: "Charge for pickup",
+          code: "PIK",
+          notes: "This is a note",
+          type: "pickup",
           amount: {
             value: "12.34",
             currency: "AUD",
           }
         },
         {
-          type: "tax",
           name: "Pickup Tax",
+          description: "Taxes for pickup",
+          code: "TAX",
+          notes: "This is a note",
+          type: "tax",
           amount: {
             value: "2.50",
             currency: "AUD",

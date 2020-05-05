@@ -29,8 +29,8 @@ export class RateCriteria {
       deliveryDateTime: Joi.date(),
       shipFrom: AddressWithContactInfo[_internal].schema.required(),
       shipTo: AddressWithContactInfo[_internal].schema.required(),
-      outboundShipment: ShipmentIdentifier[_internal].schema,
       isReturn: Joi.boolean(),
+      outboundShipment: ShipmentIdentifier[_internal].schema,
       packages: Joi.array().min(1).items(RateCriteriaPackage[_internal].schema).required(),
     }),
   };
@@ -86,15 +86,15 @@ export class RateCriteria {
   public readonly shipTo: AddressWithContactInfo;
 
   /**
+   * Indicates whether this is a return shipment
+   */
+  public readonly isReturn: boolean;
+
+  /**
    * The original (outgoing) shipment that this return shipment is for.
    * This associates the two shipments, which is required by some carriers.
    */
   public readonly outboundShipment?: ShipmentIdentifier;
-
-  /**
-   * Indicates whether this is a return shipment
-   */
-  public readonly isReturn: boolean;
 
   /**
    * The total insured value of all packages in the shipment.
@@ -123,8 +123,8 @@ export class RateCriteria {
     this.deliveryDateTime = pojo.deliveryDateTime;
     this.shipFrom = new AddressWithContactInfo(pojo.shipFrom);
     this.shipTo = new AddressWithContactInfo(pojo.shipTo);
-    this.outboundShipment = pojo.outboundShipment && new ShipmentIdentifier(pojo.outboundShipment);
     this.isReturn = pojo.isReturn || false;
+    this.outboundShipment = pojo.outboundShipment && new ShipmentIdentifier(pojo.outboundShipment);
     this.packages = pojo.packages.map((parcel) => new RateCriteriaPackage(parcel));
     this.totalInsuredValue = calculateTotalInsuranceAmount(this.packages);
 

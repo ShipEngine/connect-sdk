@@ -30,8 +30,9 @@ export class NewShipment extends newShipmentMixin() {
       shipDateTime: Joi.date().required(),
       nonDeliveryAction: Joi.string().enum(NonDeliveryAction).required(),
       insuranceProvider: Joi.string().enum(InsuranceProvider),
-      outboundShipment: ShipmentIdentifier[_internal].schema,
       isReturn: Joi.boolean(),
+      rmaNumber: Joi.string().trim().singleLine().min(1).max(100),
+      outboundShipment: ShipmentIdentifier[_internal].schema,
       billing: Joi.object({
         dutiesPaidBy: Joi.string().enum(BilledParty),
         deliveryPaidBy: Joi.string().enum(BilledParty),
@@ -118,17 +119,23 @@ export function newShipmentMixin(base: Constructor = Object) {
     public readonly totalInsuredValue: MonetaryValue;
 
     /**
+     * Indicates whether this is a return shipment
+     */
+    public readonly isReturn: boolean;
+
+    /**
+     * A return merchandise authorization (RMA) is an associated number assigned to process the return,
+     * this number is often printed on the label, and used when the original shipper processes the inbound return.
+     */
+    public readonly rmaNumber: string;
+
+    /**
      * The original (outgoing) shipment that this return shipment is for.
      * This associates the two shipments, which is required by some carriers.
      * This field is `undefined` if this is not a return shipment, or if no
      * outbound shipment was specified.
      */
     public readonly outboundShipment?: ShipmentIdentifier;
-
-    /**
-     * Indicates whether this is a return shipment
-     */
-    public readonly isReturn: boolean;
 
     /**
      * Indicates whether the shipment cannot be processed automatically due to size, shape, weight, etc.
@@ -190,8 +197,9 @@ export function newShipmentMixin(base: Constructor = Object) {
       this.shipDateTime = pojo.shipDateTime;
       this.nonDeliveryAction = pojo.nonDeliveryAction;
       this.insuranceProvider = pojo.insuranceProvider || InsuranceProvider.Carrier;
-      this.outboundShipment = pojo.outboundShipment && new ShipmentIdentifier(pojo.outboundShipment);
       this.isReturn = pojo.isReturn || false;
+      this.rmaNumber = pojo.rmaNumber || "";
+      this.outboundShipment = pojo.outboundShipment && new ShipmentIdentifier(pojo.outboundShipment);
 
       // If there is no billing info, then the sender is billed by default.
       let billing = pojo.billing || {};

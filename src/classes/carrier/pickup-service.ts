@@ -1,10 +1,9 @@
+import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { PickupServicePOJO } from "../../pojos/carrier";
 import { LocalizedInfoPOJO } from "../../pojos/common";
 import { UUID } from "../../types";
-import { Joi } from "../../validation";
 import { App } from "../common/app";
 import { Localization, localize } from "../common/localization";
-import { hideAndFreeze, _internal } from "../utils";
 
 const _private = Symbol("private fields");
 

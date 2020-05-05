@@ -1,8 +1,7 @@
 import { DocumentFormat, DocumentSize } from "../../../enums";
+import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
 import { LabelSpecPOJO } from "../../../pojos/carrier";
-import { Joi, validate } from "../../../validation";
 import { App } from "../../common/app";
-import { hideAndFreeze, _internal } from "../../utils";
 import { NewShipment } from "../shipments/new-shipment";
 import { Shipment } from "../shipments/shipment";
 

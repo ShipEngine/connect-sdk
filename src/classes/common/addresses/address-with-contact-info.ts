@@ -1,5 +1,5 @@
+import { hideAndFreeze, _internal } from "../../../internal";
 import { AddressWithContactInfoPOJO } from "../../../pojos/common";
-import { hideAndFreeze, _internal } from "../../utils";
 import { Address, addressMixin } from "./address";
 import { ContactInfo, contactInfoMixin } from "./contact-info";
 

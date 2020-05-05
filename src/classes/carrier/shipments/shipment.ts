@@ -1,8 +1,7 @@
+import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { ShipmentPOJO } from "../../../pojos/carrier";
-import { Joi } from "../../../validation";
 import { CustomData } from "../../common";
 import { App } from "../../common/app";
-import { hideAndFreeze, _internal } from "../../utils";
 import { Package } from "../packages/package";
 import { NewShipment, newShipmentMixin } from "./new-shipment";
 import { ShipmentIdentifier, shipmentIdentifierMixin } from "./shipment-identifier";

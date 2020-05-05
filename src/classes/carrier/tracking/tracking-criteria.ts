@@ -1,7 +1,6 @@
+import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
 import { TrackingCriteriaPOJO } from "../../../pojos/carrier";
-import { Joi, validate } from "../../../validation";
 import { App } from "../../common/app";
-import { hideAndFreeze, _internal } from "../../utils";
 import { Shipment } from "../shipments/shipment";
 
 /**

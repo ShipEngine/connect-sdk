@@ -1,7 +1,6 @@
 import { WeightUnit } from "../../../enums";
+import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { WeightPOJO } from "../../../pojos/common";
-import { Joi } from "../../../validation";
-import { hideAndFreeze, _internal } from "../../utils";
 
 
 /**

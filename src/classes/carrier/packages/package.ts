@@ -1,7 +1,7 @@
+import { hideAndFreeze, _internal } from "../../../internal";
 import { PackagePOJO } from "../../../pojos/carrier";
 import { CustomData } from "../../common";
 import { App } from "../../common/app";
-import { hideAndFreeze, _internal } from "../../utils";
 import { NewPackage, newPackageMixin } from "./new-package";
 import { PackageIdentifier, packageIdentifierMixin } from "./package-identifier";
 

@@ -1,8 +1,7 @@
 import { FulfillmentService } from "../../../enums";
+import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { ShipmentConfirmationPOJO } from "../../../pojos/carrier";
-import { Joi } from "../../../validation";
 import { CustomData } from "../../common";
-import { hideAndFreeze, _internal } from "../../utils";
 import { PackageConfirmation } from "../packages/package-confirmation";
 import { ShipmentIdentifier, shipmentIdentifierMixin } from "./shipment-identifier";
 

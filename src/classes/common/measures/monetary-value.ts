@@ -1,9 +1,8 @@
 import * as currency from "currency.js";
 import { Currency } from "../../../enums";
 import { error, ErrorCode } from "../../../errors";
+import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { MonetaryValuePOJO } from "../../../pojos/common";
-import { Joi } from "../../../validation";
-import { hideAndFreeze, _internal } from "../../utils";
 
 /**
  * A monetary value in a supported currency

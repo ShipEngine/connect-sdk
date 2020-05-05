@@ -1,7 +1,6 @@
+import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
 import { LabelConfirmationPOJO } from "../../../pojos/carrier";
-import { Joi, validate } from "../../../validation";
 import { MonetaryValue } from "../../common";
-import { hideAndFreeze, _internal } from "../../utils";
 import { ShipmentConfirmation } from "../shipments/shipment-confirmation";
 import { ShippingCharge } from "../shipping-charge";
 import { calculateTotalCharges } from "../utils";

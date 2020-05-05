@@ -1,6 +1,5 @@
+import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { PersonNamePOJO } from "../../../pojos/common";
-import { Joi } from "../../../validation";
-import { hideAndFreeze, _internal } from "../../utils";
 
 /**
  * A person's name that has been parsed into separate fields.

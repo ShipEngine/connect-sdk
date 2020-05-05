@@ -1,10 +1,8 @@
 import { BilledParty, Country, InsuranceProvider, NonDeliveryAction } from "../../../enums";
-import { Constructor } from "../../../internal-types";
+import { Constructor, hideAndFreeze, Joi, _internal } from "../../../internal";
 import { NewShipmentPOJO } from "../../../pojos/carrier";
-import { Joi } from "../../../validation";
 import { AddressWithContactInfo, MonetaryValue } from "../../common";
 import { App } from "../../common/app";
-import { hideAndFreeze, _internal } from "../../utils";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
 import { NewPackage } from "../packages/new-package";

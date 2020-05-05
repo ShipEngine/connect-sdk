@@ -1,6 +1,5 @@
+import { Joi, _internal } from "../../internal";
 import { AppPOJO } from "../../pojos/common";
-import { Joi } from "../../validation";
-import { _internal } from "../utils";
 import { ReferenceMap } from "./reference-map";
 
 /**

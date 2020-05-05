@@ -1,7 +1,5 @@
-import { Constructor } from "../../../internal-types";
+import { Constructor, hideAndFreeze, Joi, _internal } from "../../../internal";
 import { ContactInfoPOJO, PersonNamePOJO } from "../../../pojos/common";
-import { Joi } from "../../../validation";
-import { hideAndFreeze, _internal } from "../../utils";
 import { PersonName } from "./person-name";
 
 /**

@@ -5,10 +5,26 @@
 export const _internal = Symbol("internal fields");
 
 /**
+ * Regular expression patterns
+ * @internal
+ */
+export const regex = {
+  isoDateTime: /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?([+-]\d{2}:\d{2}|Z)?$/,
+  utcOffset: /^[+-]([01][0-9]|2[0-3]):[0-5][0-9]$/,
+  appName: /^\@[a-z][a-z0-9]*(-[a-z0-9]+)*\/[a-z][a-z0-9]*(-[a-z0-9]+)*$/,
+  semver: /^\d+\.\d+\.\d+/,
+  money: /^\d+(\.\d+)?$/,
+  protocol: /^https?:\/\//,
+  locale: /^[a-z]{2}(-[A-Z]{2})?$/,
+};
+
+/**
  * Hides private/internal symbol fields and freezes all object/function fields.
  *
  * NOTE: This function is NOT recursive, since most objects in this SDK are immutable.
  *       In some cases, it may be necessary to call this function on nested objects explicitly.
+ *
+ * @internal
  */
 export function hideAndFreeze(obj: object): void {
   // Freeze all object/function fields

@@ -1,6 +1,5 @@
+import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { TimeRangePOJO } from "../../../pojos/common";
-import { Joi } from "../../../validation";
-import { hideAndFreeze, _internal } from "../../utils";
 
 /**
  * A range of time

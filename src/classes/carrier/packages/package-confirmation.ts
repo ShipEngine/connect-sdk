@@ -1,7 +1,6 @@
+import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { PackageConfirmationPOJO } from "../../../pojos/carrier";
-import { Joi } from "../../../validation";
 import { CustomData } from "../../common";
-import { hideAndFreeze, _internal } from "../../utils";
 import { Document } from "../document";
 import { PackageIdentifier, packageIdentifierMixin } from "./package-identifier";
 

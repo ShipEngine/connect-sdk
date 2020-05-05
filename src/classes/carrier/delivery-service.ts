@@ -1,11 +1,10 @@
 import { Country, DeliveryServiceClass, DeliveryServiceGrade, DocumentFormat, DocumentSize, FulfillmentService, ServiceArea } from "../../enums";
+import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { DeliveryServicePOJO } from "../../pojos/carrier";
 import { LocalizedInfoPOJO } from "../../pojos/common";
 import { UUID } from "../../types";
-import { Joi } from "../../validation";
 import { App } from "../common/app";
 import { Localization, localize } from "../common/localization";
-import { hideAndFreeze, _internal } from "../utils";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { Packaging } from "./packaging";
 

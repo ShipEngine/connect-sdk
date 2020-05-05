@@ -1,6 +1,5 @@
+import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { CustomDataPOJO } from "../../pojos/common";
-import { Joi } from "../../validation";
-import { hideAndFreeze, _internal } from "../utils";
 
 /**
  * Arbitrary data that will be persisted by the ShipEngine Integration Platform.

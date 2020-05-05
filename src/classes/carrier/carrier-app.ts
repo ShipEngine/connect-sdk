@@ -1,7 +1,6 @@
+import { hideAndFreeze, validate, _internal } from "../../internal";
 import { CarrierAppPOJO } from "../../pojos/carrier";
-import { validate } from "../../validation";
 import { App } from "../common/app";
-import { hideAndFreeze, _internal } from "../utils";
 import { Carrier } from "./carrier";
 
 /**

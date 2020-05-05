@@ -1,4 +1,4 @@
-import { _internal } from "./classes/utils";
+import { _internal } from "./utils";
 import { ValidationSchema } from "./validation";
 
 /**

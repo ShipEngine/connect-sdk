@@ -1,12 +1,11 @@
 import { error, ErrorCode } from "../../errors";
+import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { LocalizedBrandingPOJO, TransactionPOJO } from "../../pojos/common";
 import { ConnectionPOJO } from "../../pojos/connection";
 import { FilePath, UUID } from "../../types";
-import { Joi } from "../../validation";
 import { Transaction } from "../common";
 import { App } from "../common/app";
 import { Localization, localize } from "../common/localization";
-import { hideAndFreeze, _internal } from "../utils";
 import { Form } from "./form";
 import { Connect } from "./methods";
 

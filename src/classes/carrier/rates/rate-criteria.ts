@@ -1,9 +1,8 @@
 import { FulfillmentService } from "../../../enums";
+import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
 import { RateCriteriaPOJO } from "../../../pojos/carrier";
-import { Joi, validate } from "../../../validation";
 import { AddressWithContactInfo, MonetaryValue } from "../../common";
 import { App } from "../../common/app";
-import { hideAndFreeze, _internal } from "../../utils";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
 import { Packaging } from "../packaging";

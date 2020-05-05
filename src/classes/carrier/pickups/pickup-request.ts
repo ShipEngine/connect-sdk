@@ -1,8 +1,7 @@
+import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
 import { PickupRequestPOJO } from "../../../pojos/carrier";
-import { Joi, validate } from "../../../validation";
 import { Address, ContactInfo, TimeRange } from "../../common";
 import { App } from "../../common/app";
-import { hideAndFreeze, _internal } from "../../utils";
 import { PickupService } from "../pickup-service";
 import { Shipment } from "../shipments/shipment";
 

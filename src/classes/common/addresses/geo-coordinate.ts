@@ -1,6 +1,5 @@
+import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { GeoCoordinatePOJO } from "../../../pojos/common";
-import { Joi } from "../../../validation";
-import { hideAndFreeze, _internal } from "../../utils";
 
 /**
  * The geo coordinates of a location on Earth

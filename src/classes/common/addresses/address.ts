@@ -1,8 +1,6 @@
 import { Country } from "../../../enums";
-import { Constructor } from "../../../internal-types";
+import { Constructor, hideAndFreeze, Joi, _internal } from "../../../internal";
 import { AddressPOJO } from "../../../pojos/common";
-import { Joi } from "../../../validation";
-import { hideAndFreeze, _internal } from "../../utils";
 import { GeoCoordinate } from "./geo-coordinate";
 
 /**

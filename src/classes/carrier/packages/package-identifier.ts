@@ -1,8 +1,6 @@
-import { Constructor } from "../../../internal-types";
+import { Constructor, hideAndFreeze, Joi, _internal } from "../../../internal";
 import { PackageIdentifierPOJO } from "../../../pojos/carrier";
-import { Joi } from "../../../validation";
 import { Identifier } from "../../common";
-import { hideAndFreeze, _internal } from "../../utils";
 
 /**
  * Identifies a package

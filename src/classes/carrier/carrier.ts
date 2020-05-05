@@ -1,13 +1,12 @@
 import { Country, DocumentFormat, DocumentSize, ServiceArea } from "../../enums";
 import { error, ErrorCode } from "../../errors";
+import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { CarrierPOJO, LabelSpecPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO } from "../../pojos/carrier";
 import { LocalizedBrandingPOJO, TransactionPOJO } from "../../pojos/common";
 import { FilePath, UUID } from "../../types";
-import { Joi } from "../../validation";
 import { Transaction } from "../common";
 import { App } from "../common/app";
 import { Localization, localize } from "../common/localization";
-import { hideAndFreeze, _internal } from "../utils";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
 import { LabelConfirmation } from "./labels/label-confirmation";

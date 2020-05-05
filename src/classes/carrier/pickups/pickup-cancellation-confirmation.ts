@@ -1,7 +1,6 @@
+import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
 import { PickupCancellationConfirmationPOJO } from "../../../pojos/carrier";
-import { Joi, validate } from "../../../validation";
 import { CustomData } from "../../common";
-import { hideAndFreeze, _internal } from "../../utils";
 
 /**
  * Confirmation that a package pickup has been canceled

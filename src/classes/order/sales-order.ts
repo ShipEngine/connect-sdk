@@ -1,7 +1,6 @@
+import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { SalesOrderIdentifierPOJO } from "../../pojos/order";
-import { Joi } from "../../validation";
 import { Identifier } from "../common";
-import { hideAndFreeze, _internal } from "../utils";
 
 /**
  * Identifies a sales order

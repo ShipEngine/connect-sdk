@@ -1,6 +1,5 @@
+import { hideAndFreeze, Joi, validate } from "../../internal";
 import { LocalizationPOJO } from "../../pojos/common";
-import { Joi, validate } from "../../validation";
-import { hideAndFreeze } from "../utils";
 
 /**
  * An object that is localizable

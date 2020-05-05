@@ -1,10 +1,8 @@
 import { Currency } from "../../../enums";
-import { Constructor } from "../../../internal-types";
+import { Constructor, hideAndFreeze, Joi, _internal } from "../../../internal";
 import { NewPackagePOJO } from "../../../pojos/carrier";
-import { Joi } from "../../../validation";
 import { Dimensions, MonetaryValue, Weight } from "../../common";
 import { App } from "../../common/app";
-import { hideAndFreeze, _internal } from "../../utils";
 import { Packaging } from "../packaging";
 import { PackageItem } from "./package-item";
 

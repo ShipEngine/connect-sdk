@@ -1,7 +1,6 @@
 import { QuantityUnit } from "../../../enums";
+import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { QuantityPOJO } from "../../../pojos/common";
-import { Joi } from "../../../validation";
-import { hideAndFreeze, _internal } from "../../utils";
 
 /**
  * The quantity of items in a package

@@ -1,9 +1,8 @@
 import { JSONSchema6 } from "json-schema";
 import { UiSchema } from "react-jsonschema-form";
+import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { FormPOJO, LocalizedFormPOJO } from "../../pojos/connection";
-import { Joi } from "../../validation";
 import { Localization, localize } from "../common/localization";
-import { hideAndFreeze, _internal } from "../utils";
 
 const _private = Symbol("private fields");
 

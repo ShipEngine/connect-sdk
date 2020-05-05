@@ -1,7 +1,6 @@
+import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { RateCriteriaPackagePOJO } from "../../../pojos/carrier";
-import { Joi } from "../../../validation";
 import { Dimensions, MonetaryValue, Weight } from "../../common";
-import { hideAndFreeze, _internal } from "../../utils";
 
 
 /**

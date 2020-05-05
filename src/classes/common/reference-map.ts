@@ -1,7 +1,5 @@
-import { ShipEngineConstructor } from "../../internal-types";
+import { Joi, ShipEngineConstructor, validate, _internal } from "../../internal";
 import { UUID } from "../../types";
-import { Joi, validate } from "../../validation";
-import { _internal } from "../utils";
 
 interface ClassInstance { id: UUID; }
 

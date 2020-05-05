@@ -1,7 +1,6 @@
+import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
 import { PickupConfirmationPOJO } from "../../../pojos/carrier";
-import { Joi, validate } from "../../../validation";
 import { CustomData, Identifier, MonetaryValue, TimeRange } from "../../common";
-import { hideAndFreeze, _internal } from "../../utils";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 import { ShippingCharge } from "../shipping-charge";
 import { calculateTotalCharges } from "../utils";

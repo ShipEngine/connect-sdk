@@ -26,7 +26,6 @@ export interface FormPOJO extends FormDefinition {
 
 /**
  * Localized form fields
- * @internal
  */
 export interface LocalizedFormPOJO {
   [key: string]: unknown;

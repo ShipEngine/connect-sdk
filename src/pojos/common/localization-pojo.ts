@@ -12,7 +12,6 @@ export interface LocalizationPOJO<T extends object> {
 
 /**
  * Localized informational fields that are common to most objects
- * @internal
  */
 export interface LocalizedInfoPOJO {
   name?: string;
@@ -22,7 +21,6 @@ export interface LocalizedInfoPOJO {
 
 /**
  * Localized branding fields
- * @internal
  */
 export interface LocalizedBrandingPOJO extends LocalizedInfoPOJO {
   websiteURL?: URLString;

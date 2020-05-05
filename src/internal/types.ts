@@ -26,7 +26,7 @@ export interface ShipEngineConstructor<T extends object = object> extends ShipEn
  * ShipEngine Integration Platform SDK class.
  * @internal
  */
-export interface Constructor<T extends object = object> extends Partial<ShipEngineClass> {
+export interface Constructor<T extends object = object> {
   readonly name: string;
   new(...args: unknown[]): T;
 }

@@ -1,6 +1,7 @@
 import { hideAndFreeze, validate, _internal } from "../../internal";
 import { ConnectionAppPOJO } from "../../pojos/connection";
 import { App } from "../common/app";
+import { localize } from "../common/localization";
 import { Connection } from "./connection";
 
 /**
@@ -44,6 +45,25 @@ export class ConnectionApp extends App {
 
     // Make this object immutable
     hideAndFreeze(this);
+  }
+
+  /**
+   * Creates a copy of the app, localized for the specified locale if possible.
+   */
+  public localize(locale: string): ConnectionApp {
+    let pojo = localize(this, locale);
+    return new ConnectionApp(pojo);
+  }
+
+  /**
+   * Returns the app as a POJO that can be safely serialized as JSON.
+   * Optionally returns the POJO localized to the specifeid language and region.
+   */
+  public toJSON(locale?: string): ConnectionAppPOJO {
+    return {
+      ...super.toJSON(),
+      connection: this.connection.toJSON(locale),
+    };
   }
 }
 

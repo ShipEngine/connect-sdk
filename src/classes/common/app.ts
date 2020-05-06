@@ -51,4 +51,20 @@ export abstract class App {
     this.version = pojo.version;
     this.description = pojo.description || "";
   }
+
+  /**
+   * Creates a copy of the app, localized for the specified locale if possible.
+   */
+  public abstract localize(locale: string): App;
+
+  /**
+   * Returns the app as a POJO that can be safely serialized as JSON.
+   */
+  public toJSON(): AppPOJO {
+    return {
+      name: this.name,
+      version: this.version,
+      description: this.description,
+    };
+  }
 }

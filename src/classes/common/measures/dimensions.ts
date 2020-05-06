@@ -40,7 +40,7 @@ export class Dimensions {
   }
 
   /**
-   * Converts the dimensions to inches
+   * Returns the dimensions in inches
    */
   public toInches(): Dimensions {
     switch (this.unit) {
@@ -59,7 +59,7 @@ export class Dimensions {
   }
 
   /**
-   * Converts the dimensions to centimeters
+   * Returns the dimensions in centimeters
    */
   public toCentimeters(): Dimensions {
     switch (this.unit) {

@@ -35,59 +35,61 @@ export class Weight {
   }
 
   /**
-   * Converts the weight to ounces
+   * The weight in ounces
    */
-  public toOunces(): Weight {
+  public get ounces(): number {
     switch (this.unit) {
       case WeightUnit.Grams:
-        return new Weight({
-          value: this.value * 0.035274,
-          unit: WeightUnit.Ounces,
-        });
+        return this.value * 0.035274;
 
       case WeightUnit.Kilograms:
-        return new Weight({
-          value: this.value * 35.274,
-          unit: WeightUnit.Ounces,
-        });
+        return this.value * 35.274;
 
       case WeightUnit.Pounds:
-        return new Weight({
-          value: this.value * 16,
-          unit: WeightUnit.Ounces,
-        });
+        return this.value * 16;
 
       default:
-        return this;
+        return this.value;
     }
   }
 
   /**
-   * Converts the weight to grams
+   * The weight in grams
    */
-  public toGrams(): Weight {
+  public get grams(): number {
     switch (this.unit) {
       case WeightUnit.Kilograms:
-        return new Weight({
-          value: this.value * 1000,
-          unit: WeightUnit.Grams,
-        });
+        return this.value * 1000;
 
       case WeightUnit.Pounds:
-        return new Weight({
-          value: this.value * 453.592,
-          unit: WeightUnit.Grams,
-        });
+        return this.value * 453.592;
 
       case WeightUnit.Ounces:
-        return new Weight({
-          value: this.value * 28.3495,
-          unit: WeightUnit.Grams,
-        });
+        return this.value * 28.3495;
 
       default:
-        return this;
+        return this.value;
     }
+  }
+
+  /**
+   * Returns the weight in ounces
+   */
+  public toOunces(): Weight {
+    return new Weight({
+      value: this.ounces,
+      unit: WeightUnit.Ounces,
+    });
+  }
+
+  /**
+   * Returns the weight in grams
+   */
+  public toGrams(): Weight {
+    return new Weight({
+      value: this.grams,
+      unit: WeightUnit.Grams,
+    });
   }
 }
 

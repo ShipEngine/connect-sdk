@@ -21,6 +21,7 @@ export interface FormDefinition {
    * Localizaed values for form fields
    */
   localization?: InlineOrReference<LocalizationDefinition<{
-    [key: string]: unknown;
+    dataSchema?: InlineOrReference<JSONSchema6>;
+    uiSchema?: InlineOrReference<UiSchema>;
   }>>;
 }

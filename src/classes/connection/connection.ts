@@ -126,6 +126,8 @@ export class Connection {
     return {
       ...this,
       websiteURL: this.websiteURL.href,
+      connectForm: this.connectForm.toJSON(locale),
+      settingsForm: this.settingsForm && this.settingsForm.toJSON(locale),
       connect,
       localization: localization.toJSON(),
       ...localizedValues,

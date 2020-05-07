@@ -1,6 +1,6 @@
 "use strict";
 
-const { CarrierApp } = require("../../..");
+const { CarrierApp, ConnectionApp } = require("../../..");
 const { expect } = require("chai");
 const pojo = require("../../utils/pojo");
 
@@ -41,43 +41,46 @@ describe("Localization", () => {
 
     // There is no localization, so no matter what langauge is specified,
     // an identical object will be returned
-    let localized = app.carrier.localize("de");
+    let localized = app.localize("de");
 
-    expect(localized).to.deep.equal(app.carrier);
+    expect(localized).to.deep.equal(app);
 
     expect(localized).to.deep.equal({
-      ...app.carrier,
-      name: "Carrier Name",
-      description: "Carrier description",
-      websiteURL: new URL("http://example.com/"),
-      deliveryServices: [
-        {
-          ...app.carrier.deliveryServices[0],
-          name: "Delivery Service Name",
-          description: "Delivery service description",
-          packaging: [
-            {
-              ...app.carrier.deliveryServices[0].packaging[0],
-              name: "Packaging Name",
-              description: "Packaging description"
-            }
-          ],
-          deliveryConfirmations: [
-            {
-              ...app.carrier.deliveryServices[0].deliveryConfirmations[0],
-              name: "Confirmation Name",
-              description: "Confirmation description"
-            }
-          ],
-        },
-      ],
-      pickupServices: [
-        {
-          ...app.carrier.pickupServices[0],
-          name: "Pickup Service Name",
-          description: "Pickup service description",
-        }
-      ],
+      ...app,
+      carrier: {
+        ...app.carrier,
+        name: "Carrier Name",
+        description: "Carrier description",
+        websiteURL: new URL("http://example.com/"),
+        deliveryServices: [
+          {
+            ...app.carrier.deliveryServices[0],
+            name: "Delivery Service Name",
+            description: "Delivery service description",
+            packaging: [
+              {
+                ...app.carrier.deliveryServices[0].packaging[0],
+                name: "Packaging Name",
+                description: "Packaging description"
+              }
+            ],
+            deliveryConfirmations: [
+              {
+                ...app.carrier.deliveryServices[0].deliveryConfirmations[0],
+                name: "Confirmation Name",
+                description: "Confirmation description"
+              }
+            ],
+          },
+        ],
+        pickupServices: [
+          {
+            ...app.carrier.pickupServices[0],
+            name: "Pickup Service Name",
+            description: "Pickup service description",
+          }
+        ],
+      }
     });
   });
 
@@ -135,43 +138,46 @@ describe("Localization", () => {
     }));
 
     // There is no German localization, so an identical object will be returned
-    let localized = app.carrier.localize("de");
+    let localized = app.localize("de");
 
-    expect(localized).to.deep.equal(app.carrier);
+    expect(localized).to.deep.equal(app);
 
     expect(localized).to.deep.equal({
-      ...app.carrier,
-      name: "Carrier Name",
-      description: "Carrier description",
-      websiteURL: new URL("http://example.com/"),
-      deliveryServices: [
-        {
-          ...app.carrier.deliveryServices[0],
-          name: "Delivery Service Name",
-          description: "Delivery service description",
-          packaging: [
-            {
-              ...app.carrier.deliveryServices[0].packaging[0],
-              name: "Packaging Name",
-              description: "Packaging description"
-            }
-          ],
-          deliveryConfirmations: [
-            {
-              ...app.carrier.deliveryServices[0].deliveryConfirmations[0],
-              name: "Confirmation Name",
-              description: "Confirmation description"
-            }
-          ],
-        },
-      ],
-      pickupServices: [
-        {
-          ...app.carrier.pickupServices[0],
-          name: "Pickup Service Name",
-          description: "Pickup service description",
-        }
-      ],
+      ...app,
+      carrier: {
+        ...app.carrier,
+        name: "Carrier Name",
+        description: "Carrier description",
+        websiteURL: new URL("http://example.com/"),
+        deliveryServices: [
+          {
+            ...app.carrier.deliveryServices[0],
+            name: "Delivery Service Name",
+            description: "Delivery service description",
+            packaging: [
+              {
+                ...app.carrier.deliveryServices[0].packaging[0],
+                name: "Packaging Name",
+                description: "Packaging description"
+              }
+            ],
+            deliveryConfirmations: [
+              {
+                ...app.carrier.deliveryServices[0].deliveryConfirmations[0],
+                name: "Confirmation Name",
+                description: "Confirmation description"
+              }
+            ],
+          },
+        ],
+        pickupServices: [
+          {
+            ...app.carrier.pickupServices[0],
+            name: "Pickup Service Name",
+            description: "Pickup service description",
+          }
+        ],
+      }
     });
   });
 
@@ -229,43 +235,46 @@ describe("Localization", () => {
     }));
 
     // Only the names are localized in Chinese, so the descriptions will remain English
-    let localized = app.carrier.localize("zh");
+    let localized = app.localize("zh");
 
-    expect(localized).not.to.deep.equal(app.carrier);
+    expect(localized).not.to.deep.equal(app);
 
     expect(localized).to.deep.equal({
-      ...app.carrier,
-      name: "承运人名称",
-      description: "Carrier description",
-      websiteURL: new URL("http://example.com/"),
-      deliveryServices: [
-        {
-          ...app.carrier.deliveryServices[0],
-          name: "送货服务名称",
-          description: "Delivery service description",
-          packaging: [
-            {
-              ...app.carrier.deliveryServices[0].packaging[0],
-              name: "包装名称",
-              description: "Packaging description"
-            }
-          ],
-          deliveryConfirmations: [
-            {
-              ...app.carrier.deliveryServices[0].deliveryConfirmations[0],
-              name: "确认名称",
-              description: "Confirmation description"
-            }
-          ],
-        },
-      ],
-      pickupServices: [
-        {
-          ...app.carrier.pickupServices[0],
-          name: "接送服务名称",
-          description: "Pickup service description",
-        }
-      ],
+      ...app,
+      carrier: {
+        ...app.carrier,
+        name: "承运人名称",
+        description: "Carrier description",
+        websiteURL: new URL("http://example.com/"),
+        deliveryServices: [
+          {
+            ...app.carrier.deliveryServices[0],
+            name: "送货服务名称",
+            description: "Delivery service description",
+            packaging: [
+              {
+                ...app.carrier.deliveryServices[0].packaging[0],
+                name: "包装名称",
+                description: "Packaging description"
+              }
+            ],
+            deliveryConfirmations: [
+              {
+                ...app.carrier.deliveryServices[0].deliveryConfirmations[0],
+                name: "确认名称",
+                description: "Confirmation description"
+              }
+            ],
+          },
+        ],
+        pickupServices: [
+          {
+            ...app.carrier.pickupServices[0],
+            name: "接送服务名称",
+            description: "Pickup service description",
+          }
+        ],
+      }
     });
   });
 
@@ -360,43 +369,46 @@ describe("Localization", () => {
 
     // Sine we're just specifying "en" here, it will first use the "en" values,
     // and will fill-in any missing values using "en-GB" and "en-US"
-    let localized = app.carrier.localize("en");
+    let localized = app.localize("en");
 
-    expect(localized).not.to.deep.equal(app.carrier);
+    expect(localized).not.to.deep.equal(app);
 
     expect(localized).to.deep.equal({
-      ...app.carrier,
-      name: "Carrier Name",
-      description: "Carrier description",
-      websiteURL: new URL("https://example.com/en/"),
-      deliveryServices: [
-        {
-          ...app.carrier.deliveryServices[0],
-          name: "Delivery Service Name",
-          description: "Delivery service description",
-          packaging: [
-            {
-              ...app.carrier.deliveryServices[0].packaging[0],
-              name: "Packaging Name",
-              description: "Packaging description"
-            }
-          ],
-          deliveryConfirmations: [
-            {
-              ...app.carrier.deliveryServices[0].deliveryConfirmations[0],
-              name: "Confirmation Name",
-              description: "Confirmation description"
-            }
-          ],
-        },
-      ],
-      pickupServices: [
-        {
-          ...app.carrier.pickupServices[0],
-          name: "Pickup Service Name",
-          description: "Pickup service description",
-        }
-      ],
+      ...app,
+      carrier: {
+        ...app.carrier,
+        name: "Carrier Name",
+        description: "Carrier description",
+        websiteURL: new URL("https://example.com/en/"),
+        deliveryServices: [
+          {
+            ...app.carrier.deliveryServices[0],
+            name: "Delivery Service Name",
+            description: "Delivery service description",
+            packaging: [
+              {
+                ...app.carrier.deliveryServices[0].packaging[0],
+                name: "Packaging Name",
+                description: "Packaging description"
+              }
+            ],
+            deliveryConfirmations: [
+              {
+                ...app.carrier.deliveryServices[0].deliveryConfirmations[0],
+                name: "Confirmation Name",
+                description: "Confirmation description"
+              }
+            ],
+          },
+        ],
+        pickupServices: [
+          {
+            ...app.carrier.pickupServices[0],
+            name: "Pickup Service Name",
+            description: "Pickup service description",
+          }
+        ],
+      }
     });
   });
 
@@ -496,43 +508,138 @@ describe("Localization", () => {
 
     // Since we're specifying "en-GB" here, it will fill-in any missing
     // keys from the fallback "en" localizations
-    let localized = app.carrier.localize("en-GB");
+    let localized = app.localize("en-GB");
 
-    expect(localized).not.to.deep.equal(app.carrier);
+    expect(localized).not.to.deep.equal(app);
 
     expect(localized).to.deep.equal({
-      ...app.carrier,
-      name: "Carrier Name",
-      description: "Carrier description",
-      websiteURL: new URL("https://example.com/en/"),
-      deliveryServices: [
-        {
-          ...app.carrier.deliveryServices[0],
-          name: "Delivery Service Name",
-          description: "Delivery service description",
-          packaging: [
-            {
-              ...app.carrier.deliveryServices[0].packaging[0],
-              name: "Packaging Name",
-              description: "Packaging description"
+      ...app,
+      carrier: {
+        ...app.carrier,
+        name: "Carrier Name",
+        description: "Carrier description",
+        websiteURL: new URL("https://example.com/en/"),
+        deliveryServices: [
+          {
+            ...app.carrier.deliveryServices[0],
+            name: "Delivery Service Name",
+            description: "Delivery service description",
+            packaging: [
+              {
+                ...app.carrier.deliveryServices[0].packaging[0],
+                name: "Packaging Name",
+                description: "Packaging description"
+              }
+            ],
+            deliveryConfirmations: [
+              {
+                ...app.carrier.deliveryServices[0].deliveryConfirmations[0],
+                name: "Confirmation Name",
+                description: "Confirmation description"
+              }
+            ],
+          },
+        ],
+        pickupServices: [
+          {
+            ...app.carrier.pickupServices[0],
+            name: "Pickup Service Name",
+            description: "Pickup service description",
+          }
+        ],
+      }
+    });
+  });
+
+  it("should localize complex values", () => {
+    let app = new ConnectionApp(pojo.connectionApp({
+      connection: pojo.connection({
+        connectForm: {
+          dataSchema: {
+            title: "Login",
+            description: "Login to your account",
+            properties: {
+              username: {
+                title: "Username",
+                type: "string"
+              },
+              passwrod: {
+                title: "Password",
+                type: "string"
+              }
             }
-          ],
-          deliveryConfirmations: [
-            {
-              ...app.carrier.deliveryServices[0].deliveryConfirmations[0],
-              name: "Confirmation Name",
-              description: "Confirmation description"
+          },
+          uiSchema: {
+            username: {
+              "ui:widget": "text",
+              "ui:autofocus": true,
+            },
+            password: {
+              "ui:widget": "password",
+              "ui:help": "Note: password is case sensitive"
+            },
+          },
+          localization: {
+            zh: {
+              dataSchema: {
+                title: "登录",
+                description: "登录到您的帐户",
+                properties: {
+                  username: {
+                    title: "用户名",
+                  },
+                  passwrod: {
+                    title: "密码",
+                  }
+                }
+              },
+              uiSchema: {
+                password: {
+                  "ui:help": "注意：密码区分大小写"
+                }
+              }
             }
-          ],
-        },
-      ],
-      pickupServices: [
-        {
-          ...app.carrier.pickupServices[0],
-          name: "Pickup Service Name",
-          description: "Pickup service description",
+          }
         }
-      ],
+      }),
+    }));
+
+    let localized = app.localize("zh-CN");
+
+    expect(localized).not.to.deep.equal(app);
+
+    expect(localized).to.deep.equal({
+      ...app,
+      connection: {
+        ...app.connection,
+        connectForm: {
+          ...app.connection.connectForm,
+          dataSchema: {
+            title: "登录",
+            description: "登录到您的帐户",
+            properties: {
+              username: {
+                title: "用户名",
+                type: "string"
+              },
+              passwrod: {
+                title: "密码",
+                type: "string"
+              }
+            }
+          },
+          uiSchema: {
+            username: {
+              "ui:widget": "text",
+              "ui:autofocus": true,
+            },
+            password: {
+              "ui:widget": "password",
+              "ui:help": "注意：密码区分大小写"
+            },
+          },
+        }
+      }
     });
   });
 
@@ -540,7 +647,7 @@ describe("Localization", () => {
 
     it("should throw an error if no langauge tag is specified", () => {
       let app = new CarrierApp(pojo.carrierApp());
-      expect(() => app.carrier.localize()).to.throw(
+      expect(() => app.localize()).to.throw(
         "Invalid locale: \n" +
         "  A value is required"
       );
@@ -548,7 +655,7 @@ describe("Localization", () => {
 
     it("should throw an error if an invalid langauge tag is specified", () => {
       let app = new CarrierApp(pojo.carrierApp());
-      expect(() => app.carrier.localize("XX")).to.throw(
+      expect(() => app.localize("XX")).to.throw(
         "Invalid locale: \n" +
         '  value must be a valid language code, like "en" or "en-US"'
       );

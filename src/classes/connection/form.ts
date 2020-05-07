@@ -18,7 +18,10 @@ export class Form {
     schema: Joi.object({
       dataSchema: Joi.object().required(),
       uiSchema: Joi.object().required(),
-      localization: Joi.object().localization(),
+      localization: Joi.object().localization({
+        dataSchema: Joi.object(),
+        uiSchema: Joi.object(),
+      }),
     }),
   };
 
@@ -67,14 +70,38 @@ export class Form {
    * Optionally returns the POJO localized to the specifeid language and region.
    */
   public toJSON(locale?: string): FormPOJO {
-    let localizedValues = locale ? this[_private].localization.lookup(locale) : {};
+    let { localization } = this[_private];
+    let localizedValues = locale ? localization.lookup(locale) : {};
 
     return {
       ...this,
-      ...localizedValues,
+      localization: localization.toJSON(),
+      dataSchema: deepPatch(this.dataSchema, localizedValues.dataSchema),
+      uiSchema: deepPatch(this.uiSchema, localizedValues.uiSchema),
     };
   }
 }
 
 // Prevent modifications to the class
 hideAndFreeze(Form);
+
+/**
+ * Creates a clone of the `original` object, patched with the values of the `patch` object
+ */
+function deepPatch<T>(original: T, patch = {}): T {
+  let record = original as Record<string, unknown>;
+  let merged = { ...record };
+
+  for (let [key, value] of Object.entries(patch)) {
+    let isPOJO = typeof value === "object" && value && value.constructor === Object;
+
+    if (isPOJO) {
+      merged[key] = deepPatch(record[key], value as object);
+    }
+    else {
+      merged[key] = value;
+    }
+  }
+
+  return merged as unknown as T;
+}

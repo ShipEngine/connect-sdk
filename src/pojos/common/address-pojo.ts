@@ -53,6 +53,9 @@ export interface ContactInfoPOJO {
  * A person's name that has been parsed into separate fields.
  */
 export interface PersonNamePOJO {
-  first: string;
-  last: string;
+  title?: string;
+  given: string;
+  middle?: string;
+  family: string;
+  suffix?: string;
 }

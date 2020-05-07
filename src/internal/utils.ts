@@ -26,9 +26,11 @@ export const regex = {
  *
  * @internal
  */
-export function hideAndFreeze(obj: object): void {
+export function hideAndFreeze<T extends object>(obj: T, ...omit: Array<keyof T>): void {
   // Freeze all object/function fields
-  for (let value of Object.values(obj)) {
+  for (let [key, value] of Object.entries(obj)) {
+    if (omit.includes(key as keyof T)) continue;
+
     let type = typeof value;
     if (type === "object" || type === "function") {
       // It's not currently possible to make buffers read-only

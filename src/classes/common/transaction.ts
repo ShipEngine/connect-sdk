@@ -98,7 +98,7 @@ export class Transaction {
     this.useSandbox = pojo.useSandbox || false;
 
     this[_private] = {
-      session: { ...pojo.session },
+      session: pojo.session || {},
     };
 
     // Make the session getter/setter look like a normal property
@@ -108,7 +108,7 @@ export class Transaction {
     });
 
     // Make this object immutable
-    hideAndFreeze(this);
+    hideAndFreeze(this, "session");
   }
 }
 

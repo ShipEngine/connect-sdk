@@ -28,5 +28,6 @@ export interface FormPOJO extends FormDefinition {
  * Localized form fields
  */
 export interface LocalizedFormPOJO {
-  [key: string]: unknown;
+  dataSchema?: JSONSchema6;
+  uiSchema?: UiSchema;
 }

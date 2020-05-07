@@ -297,6 +297,7 @@ export class Carrier {
 
     return {
       ...this,
+      websiteURL: this.websiteURL.href,
       deliveryServices: this.deliveryServices.map((o) => o.toJSON(locale)),
       pickupServices: this.pickupServices.map((o) => o.toJSON(locale)),
       createLabel: methods.createLabel,

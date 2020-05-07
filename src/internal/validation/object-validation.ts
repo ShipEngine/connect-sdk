@@ -9,7 +9,7 @@ export interface ObjectValidationSchema extends joi.ObjectSchema {
   /**
    * Requires the object to be a map of BCP 47 language tags and localized values
    */
-  localization(keys?: Record<string, joi.Schema>): ObjectValidationSchema;
+  localization(keys: Record<string, joi.Schema>): ObjectValidationSchema;
 
   /**
    * Requires an object value to be a valid HTTP or HTTPS URL
@@ -32,7 +32,7 @@ export const objectValidation: joi.Extension = {
   },
   rules: {
     localization: {
-      method(keys?: Record<string, joi.Schema>) {
+      method(keys: Record<string, joi.Schema>) {
         let schema = (this as ObjectValidationSchema).pattern(joi.string(), joi.object(keys));
         return schema.$_addRule("localization");
       },

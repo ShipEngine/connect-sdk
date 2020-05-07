@@ -26,7 +26,7 @@ export class Connection {
       description: Joi.string().trim().singleLine().allow("").max(1000),
       websiteURL: Joi.string().website().required(),
       logo: Joi.string().filePath({ ext: ".svg" }).required(),
-      connectForm: Form[_internal].schema.required(),
+      connectionForm: Form[_internal].schema.required(),
       settingsForm: Form[_internal].schema,
       localization: Joi.object().localization({
         name: Joi.string().trim().singleLine().min(1).max(100),
@@ -77,7 +77,7 @@ export class Connection {
    * A form that allows the user to connect to the third-party service.
    * This form will usually prompt for an account number and login credentials.
    */
-  public readonly connectForm: Form;
+  public readonly connectionForm: Form;
 
   /**
    * A form that allows the user to configure connection settings
@@ -92,7 +92,7 @@ export class Connection {
     this.description = pojo.description || "";
     this.websiteURL = new URL(pojo.websiteURL);
     this.logo =  pojo.logo;
-    this.connectForm = new Form(pojo.connectForm);
+    this.connectionForm = new Form(pojo.connectionForm);
     this.settingsForm = pojo.settingsForm && new Form(pojo.settingsForm);
 
     this[_private] = {
@@ -126,7 +126,7 @@ export class Connection {
     return {
       ...this,
       websiteURL: this.websiteURL.href,
-      connectForm: this.connectForm.toJSON(locale),
+      connectionForm: this.connectionForm.toJSON(locale),
       settingsForm: this.settingsForm && this.settingsForm.toJSON(locale),
       connect,
       localization: localization.toJSON(),
@@ -137,23 +137,23 @@ export class Connection {
   //#region Wrappers around user-defined methdos
 
   /**
-   * Connects to an existing account using the data that was gathered in the `connectForm`.
+   * Connects to an existing account using the data that was gathered in the `connectionForm`.
    * NOTE: This function does not return a value. It updates the `transaction.session` property.
    */
-  public async connect(transaction: TransactionPOJO, connectionData: object): Promise<void> {
-    let _transaction, _connectionData;
+  public async connect(transaction: TransactionPOJO, connectionFormData: object): Promise<void> {
+    let _transaction, _connectionFormData;
     let { connect } = this[_private];
 
     try {
       _transaction = new Transaction(transaction);
-      _connectionData = Object.assign({}, connectionData);
+      _connectionFormData = Object.assign({}, connectionFormData);
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the connect method.", { originalError });
     }
 
     try {
-      await connect(_transaction, _connectionData);
+      await connect(_transaction, _connectionFormData);
     }
     catch (originalError) {
       let transactionID = _transaction.id;

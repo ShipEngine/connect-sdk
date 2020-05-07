@@ -28,6 +28,11 @@ export abstract class App {
   //#region Public Fields
 
   /**
+   * Indicates the type of app
+   */
+  public abstract readonly type: string;
+
+  /**
    * The ShipEngine Integration Platform app name.
    * This is a scoped NPM package name (e.g. @company-name/app-name)
    */

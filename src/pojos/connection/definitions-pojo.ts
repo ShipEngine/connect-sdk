@@ -9,7 +9,7 @@ import { LocalizationPOJO, LocalizedBrandingPOJO } from "../common";
  * A connection to a third-party service, such as a carrier or marketplace
  */
 export interface ConnectionPOJO extends ConnectionDefinition {
-  connectForm: FormPOJO;
+  connectionForm: FormPOJO;
   settingsForm?: FormPOJO;
   localization?: LocalizationPOJO<LocalizedBrandingPOJO>;
   connect: Connect;

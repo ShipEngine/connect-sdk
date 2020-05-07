@@ -37,7 +37,7 @@ export interface ConnectionDefinition {
    * A form that allows the user to connect to the third-party service.
    * This form will usually prompt for an account number and login credentials.
    */
-  connectForm: InlineOrReference<FormDefinition>;
+  connectionForm: InlineOrReference<FormDefinition>;
 
   /**
    * A form that allows the user to configure connection settings
@@ -54,7 +54,7 @@ export interface ConnectionDefinition {
   }>>;
 
   /**
-   * Connects to an existing account using the data that was gathered in the `connectForm`.
+   * Connects to an existing account using the data that was gathered in the `connectionForm`.
    * NOTE: This function does not return a value. It updates the `transaction.session` property.
    */
   connect: InlineOrReference<Connect>;

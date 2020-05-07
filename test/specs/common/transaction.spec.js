@@ -3,7 +3,7 @@
 const { expect } = require("chai");
 const { Transaction } = require("../../..");
 
-describe("Transaction", () => {
+describe.only("Transaction", () => {
 
   it("should create a Transaction with the minimum required fields", () => {
     let transaction = new Transaction({
@@ -60,6 +60,39 @@ describe("Transaction", () => {
         foo: "bar",
         biz: "baz",
       }
+    });
+  });
+
+  it("should allow the session to be updated", () => {
+    let transaction = new Transaction({
+      id: "12345678-1234-1234-1234-123456789012",
+      session: {
+        foo: "bar",
+        biz: "baz",
+      }
+    });
+
+    // Directly editing a session field
+    transaction.session.foo = "Hello, world";
+    expect(transaction.session).to.deep.equal({
+      foo: "Hello, world",
+      biz: "baz",
+    });
+
+    // Directly deleting a session field
+    delete transaction.session.foo;
+    expect(transaction.session).to.deep.equal({
+      biz: "baz",
+    });
+
+    // Setting the session property
+    transaction.session = {
+      firstName: "John",
+      lastName: "Doe",
+    };
+    expect(transaction.session).to.deep.equal({
+      firstName: "John",
+      lastName: "Doe",
     });
   });
 
@@ -133,6 +166,28 @@ describe("Transaction", () => {
         "Invalid transaction: \n" +
         "  session.foo must be a string"
       );
+    });
+
+    it("should throw an error if a session property is set to a non-string", () => {
+      let transaction = new Transaction({
+        id: "12345678-1234-1234-1234-123456789012",
+      });
+
+      expect(() => transaction.session = { foo: 123 }).to.throw(
+        "Invalid session data: \n" +
+        "  foo must be a string"
+      );
+    });
+
+    it("should throw an error if any fields other than session are modified", () => {
+      let transaction = new Transaction({
+        id: "12345678-1234-1234-1234-123456789012",
+      });
+
+      expect(() => transaction.id = "abc").to.throw(TypeError, "Cannot assign to read only property");
+      expect(() => transaction.isRetry = true).to.throw(TypeError, "Cannot assign to read only property");
+      expect(() => transaction.useSandbox = true).to.throw(TypeError, "Cannot assign to read only property");
+      expect(() => transaction.newProperty = "hello").to.throw(TypeError, "Cannot add property newProperty, object is not extensible");
     });
 
   });

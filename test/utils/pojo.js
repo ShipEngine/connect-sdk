@@ -82,7 +82,7 @@ const pojo = module.exports = {
       name: "Dummy Connection",
       websiteURL: "https://example.com/",
       logo: path.resolve("logo.svg"),
-      connectForm: pojo.form(),
+      connectionForm: pojo.form(),
       connect () {},
       ...props,
     };

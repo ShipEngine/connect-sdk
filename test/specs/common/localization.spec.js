@@ -554,7 +554,7 @@ describe("Localization", () => {
   it("should localize complex values", () => {
     let app = new ConnectionApp(pojo.connectionApp({
       connection: pojo.connection({
-        connectForm: {
+        connectionForm: {
           dataSchema: {
             title: "Login",
             description: "Login to your account",
@@ -612,8 +612,8 @@ describe("Localization", () => {
       ...app,
       connection: {
         ...app.connection,
-        connectForm: {
-          ...app.connection.connectForm,
+        connectionForm: {
+          ...app.connection.connectionForm,
           dataSchema: {
             title: "登录",
             description: "登录到您的帐户",

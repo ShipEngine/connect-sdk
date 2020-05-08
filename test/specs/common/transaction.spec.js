@@ -3,7 +3,7 @@
 const { expect } = require("chai");
 const { Transaction } = require("../../..");
 
-describe.only("Transaction", () => {
+describe("Transaction", () => {
 
   it("should create a Transaction with the minimum required fields", () => {
     let transaction = new Transaction({

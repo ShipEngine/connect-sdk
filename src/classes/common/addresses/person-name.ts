@@ -11,8 +11,11 @@ export class PersonName {
   public static readonly [_internal] = {
     label: "name",
     schema: Joi.object({
-      first: Joi.string().trim().singleLine().min(1).max(100).required(),
-      last: Joi.string().trim().singleLine().min(1).max(100).required(),
+      title: Joi.string().trim().singleLine().min(1).max(100),
+      given: Joi.string().trim().singleLine().min(1).max(100).required(),
+      middle: Joi.string().trim().singleLine().min(1).max(100),
+      family: Joi.string().trim().singleLine().min(1).max(100),
+      suffix: Joi.string().trim().singleLine().min(1).max(100),
     }),
   };
 
@@ -30,36 +33,18 @@ export class PersonName {
 
   public constructor(pojo: string | PersonNamePOJO) {
     if (typeof pojo === "string") {
-      this.given = pojo;
-      this.title = "";
-      this.middle = "";
-      this.family = "";
-      this.suffix = "";
+      pojo = { given: pojo, family: "" };
     }
 
-    else {
-      this.title = pojo.title || "";
-      this.given = pojo.given || "";
-      this.middle = pojo.middle || "";
-      this.family = pojo.family || "";
-      this.suffix = pojo.suffix || "";
-    }
+    this.title = pojo.title || "";
+    this.given = pojo.given;
+    this.middle = pojo.middle || "";
+    this.family = pojo.family || "";
+    this.suffix = pojo.suffix || "";
 
     // Make this object immutable
     hideAndFreeze(this);
   }
-
-  /**
-   * Returns the full name
-   */
-  // public toString(): string {
-  //   if (this.first && this.last) {
-  //     return `${this.first} ${this.last}`;
-  //   }
-  //   else {
-  //     return this.first || this.last;
-  //   }
-  // }
 }
 
 // Prevent modifications to the class

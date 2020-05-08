@@ -1,5 +1,5 @@
 import { Constructor, hideAndFreeze, Joi, _internal } from "../../../internal";
-import { ContactInfoPOJO, PersonNamePOJO } from "../../../pojos/common";
+import { ContactInfoPOJO } from "../../../pojos/common";
 import { PersonName } from "./person-name";
 
 /**
@@ -12,7 +12,10 @@ export class ContactInfo extends contactInfoMixin() {
   public static readonly [_internal] = {
     label: "contact info",
     schema: Joi.object({
-      name: Joi.alternatives(Joi.string().trim().singleLine().min(1).max(100), PersonName[_internal].schema).required(),
+      name: Joi.alternatives(
+        Joi.string().trim().singleLine().min(1).max(100),
+        PersonName[_internal].schema
+      ).required(),
       email: Joi.string().email().allow(""),
       phoneNumber: Joi.string().trim().singleLine().allow("").max(30),
       phoneNumberExtension: Joi.string().trim().singleLine().allow("").max(30),
@@ -40,7 +43,7 @@ export function contactInfoMixin(base: Constructor = Object) {
   return class ContactInfoMixin extends base {
     //#region Public Fields
 
-    public readonly name: PersonNamePOJO;
+    public readonly name: PersonName;
     public readonly email: string;
     public readonly phoneNumber: string;
     public readonly phoneNumberExtension: string;

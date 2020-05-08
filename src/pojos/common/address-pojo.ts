@@ -56,6 +56,6 @@ export interface PersonNamePOJO {
   title?: string;
   given: string;
   middle?: string;
-  family: string;
+  family?: string;
   suffix?: string;
 }

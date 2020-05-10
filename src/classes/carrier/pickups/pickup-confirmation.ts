@@ -81,7 +81,7 @@ export class PickupConfirmation {
     this.timeWindows = pojo.timeWindows.map((window) => new TimeRange(window));
     this.charges = pojo.charges.map((charge) => new ShippingCharge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);
-    this.shipments = pojo.shipments ? pojo.shipments.map((shipment) => new ShipmentIdentifier(shipment)) : [];
+    this.shipments = pojo.shipments!.map((shipment) => new ShipmentIdentifier(shipment));
     this.notes = pojo.notes || "";
     this.customData = pojo.customData && new CustomData(pojo.customData);
 

@@ -1,5 +1,4 @@
 import { UUID } from "../../types";
-import { CustomDataPOJO } from "./custom-data-pojo";
 
 /**
  * The ShpEngine Integration Platform passes this object to every method call.
@@ -31,8 +30,8 @@ export interface TransactionPOJO {
   useSandbox?: boolean;
 
   /**
-   * Arbitrary session data. Any method may update the session data,
+   * Arbitrary session data. Must be JSON serializable. Any method may update the session data,
    * such as renewing a session token or updating a timestamp.
    */
-  session?: CustomDataPOJO;
+  session?: object;
 }

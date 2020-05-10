@@ -1,7 +1,6 @@
 import { hideAndFreeze, Joi, validate, _internal } from "../../internal";
-import { CustomDataPOJO, TransactionPOJO } from "../../pojos/common";
+import { TransactionPOJO } from "../../pojos/common";
 import { UUID } from "../../types";
-import { CustomData } from "./custom-data";
 
 const _private = Symbol("private fields");
 
@@ -19,13 +18,13 @@ export class Transaction {
       id: Joi.string().uuid().required(),
       isRetry: Joi.boolean(),
       useSandbox: Joi.boolean(),
-      session: CustomData[_internal].schema,
+      session: Joi.object(),
     }),
   };
 
   /** @internal */
   private readonly [_private]: {
-    session: CustomDataPOJO;
+    session: object;
   };
 
   //#endregion
@@ -56,30 +55,29 @@ export class Transaction {
   public readonly useSandbox: boolean;
 
   /**
-   * Arbitrary session data. Any method may update the session data,
+   * Arbitrary session data. Must be JSON serializable. Any method may update the session data,
    * such as renewing a session token or updating a timestamp.
    */
-  public get session(): CustomDataPOJO {
+  public get session(): object {
     return this[_private].session;
   }
 
   /**
-   * Updates the session data, creating new keys, updating existing keys, and/or deleting keys
-   * that are no longer present.
+   * Updates the session data.
    */
-  public set session(value: CustomDataPOJO) {
+  public set session(value: object) {
     if (value === undefined) {
       value = {};
     }
 
-    validate(value, "session data", CustomData[_internal].schema);
+    validate(value, "session data", Joi.object());
 
-    let { session } = this[_private];
+    let session = this[_private].session as Record<string, unknown>;
     let keys = Object.getOwnPropertyNames(session).concat(Object.getOwnPropertyNames(value));
 
     for (let key of keys) {
       if (key in value) {
-        session[key] = value[key];
+        session[key] = (value as Record<string, unknown>)[key];
       }
       else {
         // tslint:disable-next-line: no-dynamic-delete
@@ -107,7 +105,7 @@ export class Transaction {
       enumerable: true,
     });
 
-    // Make this object immutable
+    // Make this object immutable (except for the session property)
     hideAndFreeze(this, "session");
   }
 }

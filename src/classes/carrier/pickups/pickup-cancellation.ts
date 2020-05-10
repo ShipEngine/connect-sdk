@@ -7,7 +7,7 @@ import { PickupService } from "../pickup-service";
 import { Shipment } from "../shipments/shipment";
 
 /**
- * Cancellation of a previously-requested package pickup
+ * Cancellation of a previously-scheduled package pickup
  */
 export class PickupCancellation {
   //#region Private/Internal Fields

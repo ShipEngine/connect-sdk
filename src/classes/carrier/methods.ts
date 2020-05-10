@@ -23,7 +23,7 @@ export type VoidLabels = (transaction: Transaction, params: unknown) => void | P
 export type GetRates = (transaction: Transaction, criteria: RateCriteria) => RateQuotePOJO | Promise<RateQuotePOJO>;
 
 /**
- * Returns tracking details for a shipment
+ * Returns tracking information for a shipment
  */
 export type Track = (transaction: Transaction, criteria: TrackingCriteria) => void | Promise<void>;
 

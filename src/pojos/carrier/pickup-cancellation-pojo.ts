@@ -4,7 +4,7 @@ import { AddressPOJO, ContactInfoPOJO, CustomDataPOJO, IdentifierPOJO, TimeRange
 import { ShipmentPOJO } from "./shipment-pojo";
 
 /**
- * Cancellation of a previously-requested package pickup
+ * Cancellation of a previously-scheduled package pickup
  */
 export interface PickupCancellationPOJO {
   /**

@@ -41,8 +41,8 @@ describe("getRates", () => {
         fulfillmentService: undefined,
         shipDateTime: undefined,
         deliveryDateTime: undefined,
-        minimumDays: undefined,
-        maximumDays: undefined,
+        minimumDeliveryDays: undefined,
+        maximumDeliveryDays: undefined,
         zone: undefined,
         isNegotiatedRate: false,
         isGuaranteed: false,
@@ -83,8 +83,8 @@ describe("getRates", () => {
             fulfillmentService: "ups_ground",
             shipDateTime: "2005-05-05T05:05:05.005+00:30",
             deliveryDateTime: new Date("2005-05-05T05:05:05.005-07:00"),
-            minimumDays: 0,
-            maximumDays: 1,
+            minimumDeliveryDays: 0,
+            maximumDeliveryDays: 1,
             zone: 1,
             isNegotiatedRate: true,
             isGuaranteed: true,
@@ -146,8 +146,8 @@ describe("getRates", () => {
           offset: "+00:00",
           timeZone: "UTC",
         },
-        minimumDays: 0,
-        maximumDays: 1,
+        minimumDeliveryDays: 0,
+        maximumDeliveryDays: 1,
         zone: 1,
         isNegotiatedRate: true,
         isGuaranteed: true,
@@ -406,15 +406,15 @@ describe("getRates", () => {
       }
     });
 
-    it("should throw an error if minimumDays is greater than maximumDays", async () => {
+    it("should throw an error if minimumDeliveryDays is greater than maximumDeliveryDays", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
           getRates: () => ({
             rates: [{
               deliveryServiceID: "22222222-2222-2222-2222-222222222222",
               packagingID: "44444444-4444-4444-4444-444444444444",
-              minimumDays: 5,
-              maximumDays: 3,
+              minimumDeliveryDays: 5,
+              maximumDeliveryDays: 3,
               charges: [{
                 type: "shipping",
                 amount: {
@@ -434,7 +434,7 @@ describe("getRates", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Error in getRates method. \n" +
-          "Invalid delivery time range: minimumDays must be less than or equal to maximumDays"
+          "Invalid delivery time range: minimumDeliveryDays must be less than or equal to maximumDeliveryDays"
         );
       }
     });

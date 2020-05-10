@@ -52,12 +52,12 @@ export interface RatePOJO {
   /**
    * The minimum number of days delivery will take
    */
-  minimumDays?: number;
+  minimumDeliveryDays?: number;
 
   /**
    * The maximum number of days delivery will take
    */
-  maximumDays?: number;
+  maximumDeliveryDays?: number;
 
   /**
    * Certain carriers base their rates off of zone numbers that vary based on the origin and destination

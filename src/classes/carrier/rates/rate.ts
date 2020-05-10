@@ -25,8 +25,8 @@ export class Rate {
       fulfillmentService: Joi.string().enum(FulfillmentService),
       shipDateTime: DateTimeZone[_internal].schema,
       deliveryDateTime: DateTimeZone[_internal].schema,
-      minimumDays: Joi.number().integer().min(0),
-      maximumDays: Joi.number().integer().min(0),
+      minimumDeliveryDays: Joi.number().integer().min(0),
+      maximumDeliveryDays: Joi.number().integer().min(0),
       zone: Joi.number().integer().min(1),
       isNegotiatedRate: Joi.boolean(),
       isGuaranteed: Joi.boolean(),
@@ -73,12 +73,12 @@ export class Rate {
   /**
    * The minimum number of days delivery will take
    */
-  public readonly minimumDays?: number;
+  public readonly minimumDeliveryDays?: number;
 
   /**
    * The maximum number of days delivery will take
    */
-  public readonly maximumDays?: number;
+  public readonly maximumDeliveryDays?: number;
 
   /**
    * Certain carriers base their rates off of zone numbers that vary based on the origin and destination
@@ -128,8 +128,8 @@ export class Rate {
     this.fulfillmentService = pojo.fulfillmentService;
     this.shipDateTime = pojo.shipDateTime ? new DateTimeZone(pojo.shipDateTime) : undefined;
     this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;
-    this.minimumDays = pojo.minimumDays;
-    this.maximumDays = pojo.maximumDays;
+    this.minimumDeliveryDays = pojo.minimumDeliveryDays;
+    this.maximumDeliveryDays = pojo.maximumDeliveryDays;
     this.zone = pojo.zone;
     this.isNegotiatedRate = pojo.isNegotiatedRate || false;
     this.isGuaranteed = pojo.isGuaranteed || false;
@@ -138,9 +138,9 @@ export class Rate {
     this.totalAmount = calculateTotalCharges(this.charges);
     this.notes = pojo.notes || "";
 
-    let { minimumDays, maximumDays } = this;
-    if (minimumDays !== undefined && maximumDays !== undefined && minimumDays > maximumDays) {
-      throw new RangeError("Invalid delivery time range: minimumDays must be less than or equal to maximumDays");
+    let { minimumDeliveryDays, maximumDeliveryDays } = this;
+    if (minimumDeliveryDays !== undefined && maximumDeliveryDays !== undefined && minimumDeliveryDays > maximumDeliveryDays) {
+      throw new RangeError("Invalid delivery time range: minimumDeliveryDays must be less than or equal to maximumDeliveryDays");
     }
 
     // Make this object immutable

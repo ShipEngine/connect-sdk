@@ -16,7 +16,7 @@ export class PickupCancellation {
   public static readonly [_internal] = {
     label: "pickup cancellation",
     schema: Joi.object({
-      cancellationID: Joi.string().trim().singleLine().min(1).max(100).required(),
+      confirmationID: Joi.string().trim().singleLine().min(1).max(100).required(),
       pickupServiceID: Joi.string().uuid().required(),
       identifiers: Joi.array().items(Identifier[_internal].schema),
       reason: Joi.string().enum(PickupCancellationReason).required(),

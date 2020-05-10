@@ -15,6 +15,12 @@ export interface RateCriteriaPOJO {
   deliveryServices?: UUID[];
 
   /**
+   * The IDs of the packaging that may be used. If not specified, then rate quotes should be
+   * returned for all applicable packaging.
+   */
+  packaging?: UUID[];
+
+  /**
    * The IDs of the delivery confirmations that may be used. If not specified, then rate quotes
    * should be returned for all applicable delivery confirmations.
    */
@@ -69,12 +75,6 @@ export interface RateCriteriaPOJO {
  * The package details needed for a rate quote
  */
 export interface RateCriteriaPackagePOJO {
-  /**
-   * The IDs of the packaging that may be used. If not specified, then rate quotes should be
-   * returned for all applicable packaging.
-   */
-  packaging?: UUID[];
-
   /**
    * The package dimensions
    */

@@ -55,13 +55,13 @@ describe("createLabel", () => {
         identifiers: [],
         fulfillmentService: undefined,
         deliveryDateTime: undefined,
-        customData: undefined,
+        metadata: undefined,
         packages: [{
           trackingNumber: "",
           trackingURL: undefined,
           identifiers: [],
           customsForm: undefined,
-          customData: undefined,
+          metadata: undefined,
           label: {
             name: "Label",
             size: "letter",
@@ -111,7 +111,7 @@ describe("createLabel", () => {
             }],
             fulfillmentService: "ups_ground",
             deliveryDateTime: "2005-05-05T05:05:05.0005Z",
-            customData: {
+            metadata: {
               foo: "bar",
               biz: "baz",
             },
@@ -134,7 +134,7 @@ describe("createLabel", () => {
                 format: "html",
                 data: Buffer.from("customs form data"),
               },
-              customData: {
+              metadata: {
                 fizz: "buzz",
               },
             }],
@@ -188,7 +188,7 @@ describe("createLabel", () => {
           offset: "+00:00",
           timeZone: "UTC",
         },
-        customData: {
+        metadata: {
           foo: "bar",
           biz: "baz",
         },
@@ -211,7 +211,7 @@ describe("createLabel", () => {
             format: "html",
             data: Buffer.from("customs form data"),
           },
-          customData: {
+          metadata: {
             fizz: "buzz",
           },
         }],

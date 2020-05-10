@@ -1,6 +1,6 @@
 import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { ShipmentPOJO } from "../../../pojos/carrier";
-import { CustomData, DateTimeZone } from "../../common";
+import { DateTimeZone } from "../../common";
 import { App } from "../../common/app";
 import { Package } from "../packages/package";
 import { NewShipment, newShipmentMixin } from "./new-shipment";
@@ -23,7 +23,7 @@ export class Shipment extends newShipmentMixin(shipmentIdentifierMixin()) {
     schema: ShipmentIdentifier[_internal].schema.concat(NewShipment[_internal].schema).keys({
       deliveryDateTime: DateTimeZone[_internal].schema,
       packages: Joi.array().min(1).items(Package[_internal].schema).required(),
-      customData: CustomData[_internal].schema,
+      metadata: Joi.object(),
     }),
   };
 
@@ -43,7 +43,7 @@ export class Shipment extends newShipmentMixin(shipmentIdentifierMixin()) {
   /**
    * Arbitrary data that was returned for the shipment when the label was created.
    */
-  public readonly customData: CustomData;
+  public readonly metadata: object;
 
   //#endregion
 
@@ -52,7 +52,7 @@ export class Shipment extends newShipmentMixin(shipmentIdentifierMixin()) {
 
     this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;
     this.packages = pojo.packages.map((parcel) => new Package(parcel, app));
-    this.customData = new CustomData(pojo.customData);
+    this.metadata = pojo.metadata || {};
 
     // Make this object immutable
     hideAndFreeze(this);

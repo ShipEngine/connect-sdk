@@ -1,4 +1,4 @@
-import { CustomDataPOJO, IdentifierPOJO, TimeRangePOJO } from "../common";
+import { IdentifierPOJO, TimeRangePOJO } from "../common";
 import { ShipmentIdentifierPOJO } from "./shipment-pojo";
 import { ShippingChargePOJO } from "./shipping-charge-pojo";
 
@@ -41,6 +41,7 @@ export interface PickupConfirmationPOJO {
 
   /**
    * Arbitrary data that will be persisted by the ShipEngine Integration Platform.
+   * Must be JSON serializable.
    */
-  customData?: CustomDataPOJO;
+  metadata?: object;
 }

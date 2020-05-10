@@ -1,7 +1,7 @@
 import { PickupCancellationReason } from "../../../enums";
 import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
 import { PickupCancellationPOJO } from "../../../pojos/carrier";
-import { Address, ContactInfo, CustomData, Identifier, TimeRange } from "../../common";
+import { Address, ContactInfo, Identifier, TimeRange } from "../../common";
 import { App } from "../../common/app";
 import { PickupService } from "../pickup-service";
 import { Shipment } from "../shipments/shipment";
@@ -25,7 +25,7 @@ export class PickupCancellation {
       contact: ContactInfo[_internal].schema.required(),
       timeWindows: Joi.array().min(1).items(TimeRange[_internal].schema).required(),
       shipments: Joi.array().min(1).items(Shipment[_internal].schema).required(),
-      customData: CustomData[_internal].schema,
+      metadata: Joi.object(),
     }),
   };
 
@@ -80,7 +80,7 @@ export class PickupCancellation {
   /**
    * Arbitrary data that was returned when the pickup was originally confirmed.
    */
-  public readonly customData: CustomData;
+  public readonly metadata: object;
 
   //#endregion
 
@@ -96,7 +96,7 @@ export class PickupCancellation {
     this.contact = new ContactInfo(pojo.contact);
     this.timeWindows = pojo.timeWindows.map((window) => new TimeRange(window));
     this.shipments = pojo.shipments.map((shipment) => new Shipment(shipment, app));
-    this.customData = new CustomData(pojo.customData);
+    this.metadata = pojo.metadata || {};
 
     // Make this object immutable
     hideAndFreeze(this);

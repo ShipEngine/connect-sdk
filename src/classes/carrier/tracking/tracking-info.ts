@@ -27,7 +27,7 @@ export class TrackingInfo {
   //#endregion
 
   public constructor(pojo: TrackingCriteriaPOJO) {
-    validate(pojo, TrackingCriteria);
+    validate(pojo, TrackingInfo);
 
     this.shipment = new ShipmentIdentifier(pojo.shipment);
 
@@ -37,4 +37,4 @@ export class TrackingInfo {
 }
 
 // Prevent modifications to the class
-hideAndFreeze(TrackingCriteria);
+hideAndFreeze(TrackingInfo);

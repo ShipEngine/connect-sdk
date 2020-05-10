@@ -3,7 +3,6 @@ export * from "./addresses/address-with-contact-info";
 export { ContactInfo } from "./addresses/contact-info";
 export * from "./addresses/geo-coordinate";
 export * from "./addresses/person-name";
-export * from "./custom-data";
 export * from "./identifier";
 export * from "./measures/date-time-zone";
 export * from "./measures/dimensions";

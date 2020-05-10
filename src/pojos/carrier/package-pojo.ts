@@ -1,5 +1,5 @@
 import { URLString, UUID } from "../../types";
-import { CustomDataPOJO, DimensionsPOJO, IdentifierPOJO, MonetaryValuePOJO, WeightPOJO } from "../common";
+import { DimensionsPOJO, IdentifierPOJO, MonetaryValuePOJO, WeightPOJO } from "../common";
 import { PackageItemPOJO } from "./package-item-pojo";
 
 /**
@@ -14,7 +14,7 @@ export interface PackagePOJO extends PackageIdentifierPOJO, NewPackagePOJO {
   /**
    * Arbitrary data that was returned for this package when the label was created.
    */
-  customData?: CustomDataPOJO;
+  metadata?: object;
 }
 
 /**

@@ -1,6 +1,6 @@
 import { BilledParty, Country, FulfillmentService, InsuranceProvider, NonDeliveryAction } from "../../enums";
 import { URLString, UUID } from "../../types";
-import { AddressWithContactInfoPOJO, CustomDataPOJO, DateTimeZonePOJO, IdentifierPOJO } from "../common";
+import { AddressWithContactInfoPOJO, DateTimeZonePOJO, IdentifierPOJO } from "../common";
 import { NewPackagePOJO, PackagePOJO } from "./package-pojo";
 
 /**
@@ -30,7 +30,7 @@ export interface ShipmentPOJO extends ShipmentIdentifierPOJO, NewShipmentPOJO {
   /**
    * Arbitrary data that was returned for the shipment when the label was created.
    */
-  customData?: CustomDataPOJO;
+  metadata?: object;
 }
 
 /**

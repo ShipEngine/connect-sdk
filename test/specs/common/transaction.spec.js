@@ -25,7 +25,9 @@ describe("Transaction", () => {
       useSandbox: false,
       session: {
         foo: "bar",
-        biz: "baz",
+        biz: {
+          baz: 42,
+        }
       }
     });
 
@@ -35,7 +37,9 @@ describe("Transaction", () => {
       useSandbox: false,
       session: {
         foo: "bar",
-        biz: "baz",
+        biz: {
+          baz: 42,
+        }
       }
     });
   });
@@ -45,7 +49,9 @@ describe("Transaction", () => {
       id: "12345678-1234-1234-1234-123456789012",
       session: {
         foo: "bar",
-        biz: "baz",
+        biz: {
+          baz: 42,
+        }
       }
     });
 
@@ -58,7 +64,9 @@ describe("Transaction", () => {
       useSandbox: false,
       session: {
         foo: "bar",
-        biz: "baz",
+        biz: {
+          baz: 42,
+        }
       }
     });
   });
@@ -68,7 +76,9 @@ describe("Transaction", () => {
       id: "12345678-1234-1234-1234-123456789012",
       session: {
         foo: "bar",
-        biz: "baz",
+        biz: {
+          baz: 42,
+        }
       }
     });
 
@@ -76,13 +86,23 @@ describe("Transaction", () => {
     transaction.session.foo = "Hello, world";
     expect(transaction.session).to.deep.equal({
       foo: "Hello, world",
-      biz: "baz",
+      biz: {
+        baz: 42,
+      }
     });
 
     // Directly deleting a session field
     delete transaction.session.foo;
     expect(transaction.session).to.deep.equal({
-      biz: "baz",
+      biz: {
+        baz: 42
+      },
+    });
+
+    // Directly deleting a deep session field
+    delete transaction.session.biz.baz;
+    expect(transaction.session).to.deep.equal({
+      biz: {},
     });
 
     // Setting the session property
@@ -152,30 +172,6 @@ describe("Transaction", () => {
       ).to.throw(
         "Invalid transaction: \n" +
         "  session must be of type object"
-      );
-    });
-
-    it("should throw an error if the session object contains non-strings", () => {
-      expect(() => new Transaction({
-        id: "12345678-1234-1234-1234-123456789012",
-        session: {
-          foo: true,
-        },
-      })
-      ).to.throw(
-        "Invalid transaction: \n" +
-        "  session.foo must be a string"
-      );
-    });
-
-    it("should throw an error if a session property is set to a non-string", () => {
-      let transaction = new Transaction({
-        id: "12345678-1234-1234-1234-123456789012",
-      });
-
-      expect(() => transaction.session = { foo: 123 }).to.throw(
-        "Invalid session data: \n" +
-        "  foo must be a string"
       );
     });
 

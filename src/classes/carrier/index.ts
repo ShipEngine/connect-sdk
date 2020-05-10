@@ -27,3 +27,5 @@ export * from "./shipments/shipment-confirmation";
 export { ShipmentIdentifier } from "./shipments/shipment-identifier";
 export * from "./shipping-charge";
 export * from "./tracking/tracking-criteria";
+export * from "./tracking/tracking-event";
+export * from "./tracking/tracking-info";

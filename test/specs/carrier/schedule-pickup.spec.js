@@ -33,7 +33,7 @@ describe("schedulePickup", () => {
       confirmationID: "ABCDEF-123456",
       identifiers: [],
       notes: "",
-      customData: undefined,
+      metadata: undefined,
       timeWindows: [{
         startDateTime: {
           value: "2005-05-05T05:05:05.005",
@@ -114,7 +114,7 @@ describe("schedulePickup", () => {
             }]
           }],
           notes: "this is a note",
-          customData: {
+          metadata: {
             foo: "bar",
             biz: "baz",
           }
@@ -178,7 +178,7 @@ describe("schedulePickup", () => {
         }]
       }],
       notes: "this is a note",
-      customData: {
+      metadata: {
         foo: "bar",
         biz: "baz",
       }
@@ -318,9 +318,7 @@ describe("schedulePickup", () => {
             confirmationID: 12345,
             timeWindows: [],
             notes: true,
-            customData: {
-              foo: false,
-            }
+            metadata: false
           })
         }),
       }));
@@ -337,7 +335,7 @@ describe("schedulePickup", () => {
           "  timeWindows must contain at least 1 items \n" +
           "  charges is required \n" +
           "  notes must be a string \n" +
-          "  customData.foo must be a string"
+          "  metadata must be of type object"
         );
       }
     });

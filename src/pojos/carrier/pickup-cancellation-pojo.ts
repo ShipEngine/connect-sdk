@@ -1,6 +1,6 @@
 import { PickupCancellationReason } from "../../enums";
 import { UUID } from "../../types";
-import { AddressPOJO, ContactInfoPOJO, CustomDataPOJO, IdentifierPOJO, TimeRangePOJO } from "../common";
+import { AddressPOJO, ContactInfoPOJO, IdentifierPOJO, TimeRangePOJO } from "../common";
 import { ShipmentPOJO } from "./shipment-pojo";
 
 /**
@@ -55,5 +55,5 @@ export interface PickupCancellationPOJO {
   /**
    * Arbitrary data that was returned when the pickup was originally confirmed.
    */
-  customData?: CustomDataPOJO;
+  metadata?: object;
 }

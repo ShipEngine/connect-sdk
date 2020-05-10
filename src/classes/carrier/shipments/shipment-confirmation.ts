@@ -1,7 +1,7 @@
 import { FulfillmentService } from "../../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { ShipmentConfirmationPOJO } from "../../../pojos/carrier";
-import { CustomData, DateTimeZone } from "../../common";
+import { DateTimeZone } from "../../common";
 import { PackageConfirmation } from "../packages/package-confirmation";
 import { ShipmentIdentifier, shipmentIdentifierMixin } from "./shipment-identifier";
 
@@ -19,7 +19,7 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
       fulfillmentService: Joi.string().enum(FulfillmentService),
       deliveryDateTime: DateTimeZone[_internal].schema,
       packages: Joi.array().min(1).items(PackageConfirmation[_internal].schema).required(),
-      customData: CustomData[_internal].schema,
+      metadata: Joi.object(),
     }),
   };
 
@@ -48,8 +48,9 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
 
   /**
    * Arbitrary data that will be persisted by the ShipEngine Integration Platform.
+   * Must be JSON serializable.
    */
-  public readonly customData?: CustomData;
+  public readonly metadata?: object;
 
   //#endregion
 
@@ -60,7 +61,7 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
     this.fulfillmentService = pojo.fulfillmentService;
     this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;
     this.packages = pojo.packages.map((parcel) => new PackageConfirmation(parcel));
-    this.customData = pojo.customData && new CustomData(pojo.customData);
+    this.metadata = pojo.metadata;
 
     // Make this object immutable
     hideAndFreeze(this);

@@ -1,6 +1,6 @@
 import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
 import { PickupConfirmationPOJO } from "../../../pojos/carrier";
-import { CustomData, Identifier, MonetaryValue, TimeRange } from "../../common";
+import { Identifier, MonetaryValue, TimeRange } from "../../common";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 import { ShippingCharge } from "../shipping-charge";
 import { calculateTotalCharges } from "../utils";
@@ -21,7 +21,7 @@ export class PickupConfirmation {
       charges: Joi.array().min(1).items(ShippingCharge[_internal].schema).required(),
       shipments: Joi.array().min(1).items(ShipmentIdentifier[_internal].schema.unknown(true)),
       notes: Joi.string().allow("").max(5000),
-      customData: CustomData[_internal].schema,
+      metadata: Joi.object(),
     }),
   };
 
@@ -67,9 +67,9 @@ export class PickupConfirmation {
 
   /**
    * Arbitrary data that will be persisted by the ShipEngine Integration Platform.
-   * If the pickup is later canceled, this data will be included.
+   * Must be JSON serializable.
    */
-  public readonly customData?: CustomData;
+  public readonly metadata?: object;
 
   //#endregion
 
@@ -83,7 +83,7 @@ export class PickupConfirmation {
     this.totalAmount = calculateTotalCharges(this.charges);
     this.shipments = pojo.shipments!.map((shipment) => new ShipmentIdentifier(shipment));
     this.notes = pojo.notes || "";
-    this.customData = pojo.customData && new CustomData(pojo.customData);
+    this.metadata = pojo.metadata;
 
     // Make this object immutable
     hideAndFreeze(this);

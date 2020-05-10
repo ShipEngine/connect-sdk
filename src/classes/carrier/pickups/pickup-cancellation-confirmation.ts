@@ -1,6 +1,5 @@
 import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
 import { PickupCancellationConfirmationPOJO } from "../../../pojos/carrier";
-import { CustomData } from "../../common";
 
 /**
  * Confirmation that a package pickup has been canceled
@@ -15,7 +14,7 @@ export class PickupCancellationConfirmation {
       successful: Joi.boolean().required(),
       cancellationID: Joi.string().trim().singleLine().allow("").max(100),
       notes: Joi.string().allow("").max(5000),
-      customData: CustomData[_internal].schema,
+      metadata: Joi.object(),
     }),
   };
 
@@ -42,9 +41,9 @@ export class PickupCancellationConfirmation {
 
   /**
    * Arbitrary data that will be persisted by the ShipEngine Integration Platform.
-   * If the pickup is later canceled, this data will be included.
+   * Must be JSON serializable.
    */
-  public readonly customData?: CustomData;
+  public readonly metadata?: object;
 
   //#endregion
 
@@ -54,7 +53,7 @@ export class PickupCancellationConfirmation {
     this.successful = pojo.successful;
     this.cancellationID = pojo.cancellationID || "";
     this.notes = pojo.notes || "";
-    this.customData = pojo.customData && new CustomData(pojo.customData);
+    this.metadata = pojo.metadata;
 
     // Make this object immutable
     hideAndFreeze(this);

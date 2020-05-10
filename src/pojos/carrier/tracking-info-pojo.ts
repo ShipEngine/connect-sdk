@@ -14,13 +14,13 @@ export interface TrackingInfoPOJO {
   /**
    * The events and status changes that have occured for this shipment
    */
-  events: TrackingEvent[];
+  events: TrackingEventPOJO[];
 }
 
 /**
  * An event or status change that occurred while processing a shipment
  */
-export interface TrackingEvent {
+export interface TrackingEventPOJO {
   /**
    * The date/time that this event occurred
    */

@@ -1,4 +1,3 @@
-import { CustomDataPOJO } from "../common";
 
 /**
  * Confirmation that a package pickup has been canceled
@@ -24,6 +23,7 @@ export interface PickupCancellationConfirmationPOJO {
 
   /**
    * Arbitrary data that will be persisted by the ShipEngine Integration Platform.
+   * Must be JSON serializable.
    */
-  customData?: CustomDataPOJO;
+  metadata?: object;
 }

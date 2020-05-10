@@ -13,3 +13,4 @@ export * from "./rate-pojo";
 export * from "./shipment-pojo";
 export * from "./shipping-charge-pojo";
 export * from "./tracking-criteria-pojo";
+export * from "./tracking-info-pojo";

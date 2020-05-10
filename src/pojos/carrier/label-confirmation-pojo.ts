@@ -1,6 +1,6 @@
 import { DocumentFormat, DocumentSize, FulfillmentService } from "../../enums";
 import { URLString } from "../../types";
-import { CustomDataPOJO, DateTimeZonePOJO } from "../common";
+import { DateTimeZonePOJO } from "../common";
 import { PackageIdentifierPOJO } from "./package-pojo";
 import { ShipmentIdentifierPOJO } from "./shipment-pojo";
 import { ShippingChargePOJO } from "./shipping-charge-pojo";
@@ -54,8 +54,9 @@ export interface ShipmentConfirmationPOJO extends ShipmentIdentifierPOJO {
 
   /**
    * Arbitrary data that will be persisted by the ShipEngine Integration Platform.
+   * Must be JSON serializable.
    */
-  customData?: CustomDataPOJO;
+  metadata?: object;
 }
 
 /**
@@ -79,8 +80,9 @@ export interface PackageConfirmationPOJO extends PackageIdentifierPOJO {
 
   /**
    * Arbitrary data that will be persisted by the ShipEngine Integration Platform.
+   * Must be JSON serializable.
    */
-  customData?: CustomDataPOJO;
+  metadata?: object;
 }
 
 /**

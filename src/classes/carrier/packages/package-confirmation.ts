@@ -1,6 +1,5 @@
 import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { PackageConfirmationPOJO } from "../../../pojos/carrier";
-import { CustomData } from "../../common";
 import { Document } from "../document";
 import { PackageIdentifier, packageIdentifierMixin } from "./package-identifier";
 
@@ -17,7 +16,7 @@ export class PackageConfirmation extends packageIdentifierMixin() {
       trackingURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
       label: Document[_internal].schema.required(),
       customsForm: Document[_internal].schema,
-      customData: CustomData[_internal].schema,
+      metadata: Joi.object(),
     }),
   };
 
@@ -41,8 +40,9 @@ export class PackageConfirmation extends packageIdentifierMixin() {
 
   /**
    * Arbitrary data that will be persisted by the ShipEngine Integration Platform.
+   * Must be JSON serializable.
    */
-  public readonly customData?: CustomData;
+  public readonly metadata?: object;
 
   //#endregion
 
@@ -58,7 +58,7 @@ export class PackageConfirmation extends packageIdentifierMixin() {
       ...pojo.customsForm,
       name: pojo.customsForm.name || "Customs Form",
     });
-    this.customData = pojo.customData && new CustomData(pojo.customData);
+    this.metadata = pojo.metadata;
 
     // Make this object immutable
     hideAndFreeze(this);

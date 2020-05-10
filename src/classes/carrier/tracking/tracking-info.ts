@@ -3,14 +3,14 @@ import { TrackingCriteriaPOJO } from "../../../pojos/carrier";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 
 /**
- * Specifies the criteria for requesting tracking information about a shipment
+ * Tracking information about a shipment
  */
-export class TrackingCriteria {
+export class TrackingInfo {
   //#region Private/Internal Fields
 
   /** @internal */
   public static readonly [_internal] = {
-    label: "tracking criteria",
+    label: "tracking info",
     schema: Joi.object({
       shipment: ShipmentIdentifier[_internal].schema.required(),
     }),
@@ -20,7 +20,7 @@ export class TrackingCriteria {
   //#region Public Fields
 
   /**
-   * The shipment to get tracking information for
+   * The shipment to get tracking details for
    */
   public readonly shipment: ShipmentIdentifier;
 

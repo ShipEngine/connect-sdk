@@ -164,3 +164,14 @@ export enum ShippingChargeType {
   Tax = "tax",
   Uncategorized = "uncategorized",
 }
+
+/**
+ * The status of a shipment
+ */
+export enum ShipmentStatus {
+  Accepted = "accepted",
+  InTransit = "in_transit",
+  DeliveryAttempted = "delivery_attempted",
+  Delivered = "delivered",
+  Exception = "exception",
+}

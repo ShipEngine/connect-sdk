@@ -1,4 +1,5 @@
 import { LabelConfirmationPOJO, PickupCancellationConfirmationPOJO, PickupConfirmationPOJO, RateQuotePOJO } from "../../pojos/carrier";
+import { TrackingInfoPOJO } from "../../pojos/carrier/tracking-info-pojo";
 import { Transaction } from "../common";
 import { LabelSpec } from "./labels/label-spec";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
@@ -25,7 +26,7 @@ export type GetRates = (transaction: Transaction, criteria: RateCriteria) => Rat
 /**
  * Returns tracking information for a shipment
  */
-export type Track = (transaction: Transaction, criteria: TrackingCriteria) => void | Promise<void>;
+export type Track = (transaction: Transaction, criteria: TrackingCriteria) => TrackingInfoPOJO | Promise<TrackingInfoPOJO>;
 
 /**
  * Creates a manifest for multiple shipments

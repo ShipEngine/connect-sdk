@@ -1,4 +1,4 @@
-import { CancelPickup, CreateLabel, CreateManifest, GetRates, SchedulePickup, Track, VoidLabels } from "../../classes/carrier/methods";
+import { CancelPickup, CreateManifest, CreateShipment, GetRates, SchedulePickup, Track, VoidLabels } from "../../classes/carrier/methods";
 import { FilePath, InlineOrReference, InlineOrReferenceArray, URLString, UUID } from "../../types";
 import { LocalizationDefinition } from "../common/localization-definition";
 import { DeliveryServiceDefinition } from "./delivery-service-definition";
@@ -54,9 +54,9 @@ export interface CarrierDefinition {
   }>>;
 
   /**
-   * Creates a shipping label
+   * Creates a new shipment, including its labels, tracking numbers, customs forms, etc.
    */
-  createLabel?: InlineOrReference<CreateLabel>;
+  createShipment?: InlineOrReference<CreateShipment>;
 
   /**
    * Voids one or more previously-created shipping labels

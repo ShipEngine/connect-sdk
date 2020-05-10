@@ -8,9 +8,9 @@ import { RateCriteria } from "./rates/rate-criteria";
 import { TrackingCriteria } from "./tracking/tracking-criteria";
 
 /**
- * Creates a shipping label
+ * Creates a new shipment, including its labels, tracking numbers, customs forms, etc.
  */
-export type CreateLabel = (transaction: Transaction, label: LabelSpec)
+export type CreateShipment = (transaction: Transaction, label: LabelSpec)
   => LabelConfirmationPOJO | Promise<LabelConfirmationPOJO>;
 
 /**

@@ -4,12 +4,12 @@ const { CarrierApp } = require("../../..");
 const pojo = require("../../utils/pojo");
 const { expect, assert } = require("chai");
 
-describe("createLabel", () => {
+describe("createShipment", () => {
 
   it("should return a LabelConfirmation from minimal return values", async () => {
     let app = new CarrierApp(pojo.carrierApp({
       carrier: pojo.carrier({
-        createLabel: () => ({
+        createShipment: () => ({
           charges: [{
             type: "shipping",
             amount: {
@@ -30,7 +30,7 @@ describe("createLabel", () => {
       }),
     }));
 
-    let confirmation = await app.carrier.createLabel(pojo.transaction(), pojo.labelSpec());
+    let confirmation = await app.carrier.createShipment(pojo.transaction(), pojo.labelSpec());
 
     expect(confirmation).to.deep.equal({
       confirmationID: "",
@@ -76,7 +76,7 @@ describe("createLabel", () => {
   it("should return a LabelConfirmation from all possible return values", async () => {
     let app = new CarrierApp(pojo.carrierApp({
       carrier: pojo.carrier({
-        createLabel: () => ({
+        createShipment: () => ({
           confirmationID: "ABCDEF-123456",
           charges: [
             {
@@ -143,7 +143,7 @@ describe("createLabel", () => {
       }),
     }));
 
-    let confirmation = await app.carrier.createLabel(pojo.transaction(), pojo.labelSpec());
+    let confirmation = await app.carrier.createShipment(pojo.transaction(), pojo.labelSpec());
 
     expect(confirmation).to.deep.equal({
       confirmationID: "ABCDEF-123456",
@@ -224,17 +224,17 @@ describe("createLabel", () => {
     it("should throw an error if called with no arguments", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
-          createLabel () {}
+          createShipment () {}
         }),
       }));
 
       try {
-        await app.carrier.createLabel();
+        await app.carrier.createShipment();
         assert.fail("An error should have been thrown");
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Invalid input to the createLabel method. \n" +
+          "Invalid input to the createShipment method. \n" +
           "Invalid transaction: \n" +
           "  A value is required"
         );
@@ -244,17 +244,17 @@ describe("createLabel", () => {
     it("should throw an error if called without a LabelSpec", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
-          createLabel () {}
+          createShipment () {}
         }),
       }));
 
       try {
-        await app.carrier.createLabel(pojo.transaction());
+        await app.carrier.createShipment(pojo.transaction());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Invalid input to the createLabel method. \n" +
+          "Invalid input to the createShipment method. \n" +
           "Invalid label specification: \n" +
           "  A value is required"
         );
@@ -264,12 +264,12 @@ describe("createLabel", () => {
     it("should throw an error if called without an invalid LabelSpec", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
-          createLabel () {}
+          createShipment () {}
         }),
       }));
 
       try {
-        await app.carrier.createLabel(pojo.transaction(), {
+        await app.carrier.createShipment(pojo.transaction(), {
           format: "paper",
           size: "large",
           shipment: true,
@@ -278,7 +278,7 @@ describe("createLabel", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Invalid input to the createLabel method. \n" +
+          "Invalid input to the createShipment method. \n" +
           "Invalid label specification: \n" +
           "  format must be one of pdf, html, zpl, png \n" +
           "  size must be one of A4, letter, 4x6, 4x8 \n" +
@@ -290,17 +290,17 @@ describe("createLabel", () => {
     it("should throw an error if nothing is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
-          createLabel () {}
+          createShipment () {}
         }),
       }));
 
       try {
-        await app.carrier.createLabel(pojo.transaction(), pojo.labelSpec());
+        await app.carrier.createShipment(pojo.transaction(), pojo.labelSpec());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in createLabel method. \n" +
+          "Error in createShipment method. \n" +
           "Invalid label confirmation: \n" +
           "  A value is required"
         );
@@ -310,7 +310,7 @@ describe("createLabel", () => {
     it("should throw an error if an invalid LabelConfirmation is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
-          createLabel: () => ({
+          createShipment: () => ({
             confirmationID: 12345,
             shipment: {
               packages: []
@@ -320,12 +320,12 @@ describe("createLabel", () => {
       }));
 
       try {
-        await app.carrier.createLabel(pojo.transaction(), pojo.labelSpec());
+        await app.carrier.createShipment(pojo.transaction(), pojo.labelSpec());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in createLabel method. \n" +
+          "Error in createShipment method. \n" +
           "Invalid label confirmation: \n" +
           "  confirmationID must be a string \n" +
           "  charges is required \n" +
@@ -337,7 +337,7 @@ describe("createLabel", () => {
     it("should throw an error if the label data is empty", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
-          createLabel: () => pojo.labelConfirmation({
+          createShipment: () => pojo.labelConfirmation({
             shipment: pojo.shipmentConfirmation({
               packages: [
                 pojo.packageConfirmation({
@@ -352,12 +352,12 @@ describe("createLabel", () => {
       }));
 
       try {
-        await app.carrier.createLabel(pojo.transaction(), pojo.labelSpec());
+        await app.carrier.createShipment(pojo.transaction(), pojo.labelSpec());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in createLabel method. \n" +
+          "Error in createShipment method. \n" +
           "Label data cannot be empty"
         );
       }
@@ -366,7 +366,7 @@ describe("createLabel", () => {
     it("should throw an error if the customs form data is empty", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
-          createLabel: () => pojo.labelConfirmation({
+          createShipment: () => pojo.labelConfirmation({
             shipment: pojo.shipmentConfirmation({
               packages: [
                 pojo.packageConfirmation({
@@ -382,12 +382,12 @@ describe("createLabel", () => {
       }));
 
       try {
-        await app.carrier.createLabel(pojo.transaction(), pojo.labelSpec());
+        await app.carrier.createShipment(pojo.transaction(), pojo.labelSpec());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in createLabel method. \n" +
+          "Error in createShipment method. \n" +
           "Customs Form data cannot be empty"
         );
       }

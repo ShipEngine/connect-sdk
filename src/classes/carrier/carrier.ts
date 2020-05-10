@@ -11,7 +11,7 @@ import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
 import { LabelConfirmation } from "./labels/label-confirmation";
 import { LabelSpec } from "./labels/label-spec";
-import { CancelPickup, CreateLabel, CreateManifest, GetRates, SchedulePickup, Track, VoidLabels } from "./methods";
+import { CancelPickup, CreateManifest, CreateShipment, GetRates, SchedulePickup, Track, VoidLabels } from "./methods";
 import { Packaging } from "./packaging";
 import { PickupService } from "./pickup-service";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
@@ -46,7 +46,7 @@ export class Carrier {
         description: Joi.string().trim().singleLine().allow("").max(1000),
         websiteURL: Joi.string().website(),
       }),
-      createLabel: Joi.function(),
+      createShipment: Joi.function(),
       voidLabels: Joi.function(),
       getRates: Joi.function(),
       track: Joi.function(),
@@ -60,7 +60,7 @@ export class Carrier {
   private readonly [_private]: {
     readonly app: App;
     readonly localization: Localization<LocalizedBrandingPOJO>;
-    readonly createLabel: CreateLabel | undefined;
+    readonly createShipment: CreateShipment | undefined;
     readonly voidLabels: VoidLabels | undefined;
     readonly getRates: GetRates | undefined;
     readonly track: Track | undefined;
@@ -263,7 +263,7 @@ export class Carrier {
 
       // Store any user-defined methods as private fields.
       // For any methods that aren't implemented, set the corresponding class method to undefined.
-      createLabel: pojo.createLabel ? pojo.createLabel : (this.createLabel = undefined),
+      createShipment: pojo.createShipment ? pojo.createShipment : (this.createShipment = undefined),
       voidLabels: pojo.voidLabels ? pojo.voidLabels : (this.voidLabels = undefined),
       getRates: pojo.getRates ? pojo.getRates : (this.getRates = undefined),
       track: pojo.track ? pojo.track : (this.track = undefined),
@@ -300,7 +300,7 @@ export class Carrier {
       websiteURL: this.websiteURL.href,
       deliveryServices: this.deliveryServices.map((o) => o.toJSON(locale)),
       pickupServices: this.pickupServices.map((o) => o.toJSON(locale)),
-      createLabel: methods.createLabel,
+      createShipment: methods.createShipment,
       voidLabels: methods.voidLabels,
       getRates: methods.getRates,
       track: methods.track,
@@ -315,27 +315,27 @@ export class Carrier {
   //#region Wrappers around user-defined methdos
 
   /**
-   * Creates a shipping label
+   * Creates a new shipment, including its labels, tracking numbers, customs forms, etc.
    */
-  public async createLabel?(transaction: TransactionPOJO, label: LabelSpecPOJO): Promise<LabelConfirmation> {
+  public async createShipment?(transaction: TransactionPOJO, label: LabelSpecPOJO): Promise<LabelConfirmation> {
     let _transaction, _label;
-    let { app, createLabel } = this[_private];
+    let { app, createShipment } = this[_private];
 
     try {
       _transaction = new Transaction(transaction);
       _label = new LabelSpec(label, app);
     }
     catch (originalError) {
-      throw error(ErrorCode.InvalidInput, "Invalid input to the createLabel method.", { originalError });
+      throw error(ErrorCode.InvalidInput, "Invalid input to the createShipment method.", { originalError });
     }
 
     try {
-      let confirmation = await createLabel!(_transaction, _label);
+      let confirmation = await createShipment!(_transaction, _label);
       return new LabelConfirmation(confirmation);
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in createLabel method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in createShipment method.`, { originalError, transactionID });
     }
   }
 

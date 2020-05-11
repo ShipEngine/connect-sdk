@@ -5,10 +5,9 @@ import { AddressWithContactInfo, DateTimeZone, MonetaryValue } from "../../commo
 import { App } from "../../common/app";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
-import { Packaging } from "../packaging";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 import { calculateTotalInsuranceAmount } from "../utils";
-import { RateCriteriaPackage } from "./rate-criteria-package";
+import { PackageRateCriteria } from "./package-rate-criteria";
 
 /**
  * Specifies the criteria for rate quotes
@@ -21,7 +20,6 @@ export class RateCriteria {
     label: "rate criteria",
     schema: Joi.object({
       deliveryServices: Joi.array().items(Joi.string().uuid()),
-      packaging: Joi.array().items(Joi.string().uuid()),
       deliveryConfirmations: Joi.array().items(Joi.string().uuid()),
       fulfillmentServices: Joi.array().items(Joi.string().enum(FulfillmentService)),
       shipDateTime: DateTimeZone[_internal].schema.required(),
@@ -30,7 +28,7 @@ export class RateCriteria {
       shipTo: AddressWithContactInfo[_internal].schema.required(),
       isReturn: Joi.boolean(),
       outboundShipment: ShipmentIdentifier[_internal].schema,
-      packages: Joi.array().min(1).items(RateCriteriaPackage[_internal].schema).required(),
+      packages: Joi.array().min(1).items(PackageRateCriteria[_internal].schema).required(),
     }),
   };
 
@@ -43,12 +41,6 @@ export class RateCriteria {
    * applicable services.
    */
   public readonly deliveryServices: ReadonlyArray<DeliveryService>;
-
-  /**
-   * The packaging that may be used. If not specified, then rate quotes should be
-   * returned for all applicable packaging.
-   */
-  public readonly packaging: ReadonlyArray<Packaging>;
 
   /**
    * The delivery confirmations that may be used. If not specified, then rate quotes
@@ -104,7 +96,7 @@ export class RateCriteria {
   /**
    * The list of packages in the shipment
    */
-  public readonly packages: ReadonlyArray<RateCriteriaPackage>;
+  public readonly packages: ReadonlyArray<PackageRateCriteria>;
 
   //#endregion
 
@@ -113,8 +105,6 @@ export class RateCriteria {
 
     this.deliveryServices = (pojo.deliveryServices || [])
       .map((id) => app[_internal].references.lookup(id, DeliveryService));
-    this.packaging = (pojo.packaging || [])
-      .map((id) => app[_internal].references.lookup(id, Packaging));
     this.deliveryConfirmations = (pojo.deliveryConfirmations || [])
       .map((id) => app[_internal].references.lookup(id, DeliveryConfirmation));
     this.fulfillmentServices = pojo.fulfillmentServices || [];
@@ -124,7 +114,7 @@ export class RateCriteria {
     this.shipTo = new AddressWithContactInfo(pojo.shipTo);
     this.isReturn = pojo.isReturn || false;
     this.outboundShipment = pojo.outboundShipment && new ShipmentIdentifier(pojo.outboundShipment);
-    this.packages = pojo.packages.map((parcel) => new RateCriteriaPackage(parcel));
+    this.packages = pojo.packages.map((parcel) => new PackageRateCriteria(parcel, app));
     this.totalInsuredValue = calculateTotalInsuranceAmount(this.packages);
 
     // Make this object immutable

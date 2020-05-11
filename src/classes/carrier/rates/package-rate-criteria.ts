@@ -1,18 +1,21 @@
 import { hideAndFreeze, Joi, _internal } from "../../../internal";
-import { RateCriteriaPackagePOJO } from "../../../pojos/carrier";
+import { PackageRateCriteriaPOJO } from "../../../pojos/carrier";
 import { Dimensions, MonetaryValue, Weight } from "../../common";
+import { App } from "../../common/app";
+import { Packaging } from "../packaging";
 
 
 /**
  * The package details needed for a rate quote
  */
-export class RateCriteriaPackage {
+export class PackageRateCriteria {
   //#region Private/Internal Fields
 
   /** @internal */
   public static readonly [_internal] = {
     label: "package",
     schema: Joi.object({
+      packaging: Joi.array().items(Joi.string().uuid()),
       dimensions: Dimensions[_internal].schema,
       weight: Weight[_internal].schema,
       insuredValue: MonetaryValue[_internal].schema,
@@ -23,6 +26,12 @@ export class RateCriteriaPackage {
 
   //#endregion
   //#region Public Fields
+
+  /**
+   * The packaging that may be used. If not specified, then rate quotes should be
+   * returned for all applicable packaging.
+   */
+  public readonly packaging: ReadonlyArray<Packaging>;
 
   /**
    * The package dimensions
@@ -52,7 +61,9 @@ export class RateCriteriaPackage {
 
   //#endregion
 
-  public constructor(pojo: RateCriteriaPackagePOJO) {
+  public constructor(pojo: PackageRateCriteriaPOJO, app: App) {
+    this.packaging = (pojo.packaging || [])
+      .map((id) => app[_internal].references.lookup(id, Packaging));
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
     this.insuredValue = pojo.insuredValue && new MonetaryValue(pojo.insuredValue);
@@ -65,4 +76,4 @@ export class RateCriteriaPackage {
 }
 
 // Prevent modifications to the class
-hideAndFreeze(RateCriteriaPackage);
+hideAndFreeze(PackageRateCriteria);

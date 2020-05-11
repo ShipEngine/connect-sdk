@@ -1,5 +1,5 @@
 import { IdentifierPOJO, TimeRangePOJO } from "../common";
-import { ShipmentIdentifierPOJO } from "./shipment-pojo";
+import { ShipmentIdentifierPOJO } from "./shipment-identifier-pojo";
 import { ShippingChargePOJO } from "./shipping-charge-pojo";
 
 /**

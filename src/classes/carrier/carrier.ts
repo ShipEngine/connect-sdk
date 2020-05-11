@@ -365,20 +365,20 @@ export class Carrier {
   /**
    * Gets shipping rates for a shipment
    */
-  public async getRates?(transaction: TransactionPOJO, criteria: RateCriteriaPOJO): Promise<RateQuote> {
-    let _transaction, _criteria;
+  public async getRates?(transaction: TransactionPOJO, shipment: RateCriteriaPOJO): Promise<RateQuote> {
+    let _transaction, _shipment;
     let { app, getRates } = this[_private];
 
     try {
       _transaction = new Transaction(transaction);
-      _criteria = new RateCriteria(criteria, app);
+      _shipment = new RateCriteria(shipment, app);
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the getRates method.", { originalError });
     }
 
     try {
-      let quote = await getRates!(_transaction, _criteria);
+      let quote = await getRates!(_transaction, _shipment);
       return new RateQuote(quote, app);
     }
     catch (originalError) {

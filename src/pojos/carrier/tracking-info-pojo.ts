@@ -1,6 +1,6 @@
 import { ShipmentStatus } from "../../enums";
 import { DateTimeZonePOJO } from "../common";
-import { ShipmentIdentifierPOJO } from "./shipment-pojo";
+import { ShipmentIdentifierPOJO } from "./shipment-identifier-pojo";
 
 /**
  * Tracking information about a shipment

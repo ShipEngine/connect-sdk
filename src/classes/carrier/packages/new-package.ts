@@ -4,7 +4,7 @@ import { NewPackagePOJO } from "../../../pojos/carrier";
 import { Dimensions, MonetaryValue, Weight } from "../../common";
 import { App } from "../../common/app";
 import { Packaging } from "../packaging";
-import { NewLabel } from "../shipments/new-label";
+import { NewLabel } from "./new-label";
 import { PackageItem } from "./package-item";
 
 

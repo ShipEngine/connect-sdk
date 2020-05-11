@@ -1,6 +1,6 @@
 import { Country, DocumentFormat, DocumentSize, ServiceArea } from "../../enums";
 import { error, ErrorCode } from "../../errors";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { hideAndFreeze, Joi, validateArray, _internal } from "../../internal";
 import { CarrierPOJO, NewShipmentPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO } from "../../pojos/carrier";
 import { LocalizedBrandingPOJO, TransactionPOJO } from "../../pojos/common";
 import { FilePath, UUID } from "../../types";
@@ -16,8 +16,8 @@ import { PickupCancellation } from "./pickups/pickup-cancellation";
 import { PickupCancellationConfirmation } from "./pickups/pickup-cancellation-confirmation";
 import { PickupConfirmation } from "./pickups/pickup-confirmation";
 import { PickupRequest } from "./pickups/pickup-request";
+import { Rate } from "./rates/rate";
 import { RateCriteria } from "./rates/rate-criteria";
-import { RateQuote } from "./rates/rate-quote";
 import { NewShipment } from "./shipments/new-shipment";
 import { ShipmentConfirmation } from "./shipments/shipment-confirmation";
 import { getMaxServiceArea } from "./utils";
@@ -365,7 +365,7 @@ export class Carrier {
   /**
    * Calculates the shipping costs for a shipment, or multiple permutations of a shipment
    */
-  public async rateShipment?(transaction: TransactionPOJO, shipment: RateCriteriaPOJO): Promise<RateQuote> {
+  public async rateShipment?(transaction: TransactionPOJO, shipment: RateCriteriaPOJO): Promise<Rate[]> {
     let _transaction, _shipment;
     let { app, rateShipment } = this[_private];
 
@@ -378,8 +378,9 @@ export class Carrier {
     }
 
     try {
-      let quote = await rateShipment!(_transaction, _shipment);
-      return new RateQuote(quote, app);
+      let rates = await rateShipment!(_transaction, _shipment);
+      validateArray(rates, Rate);
+      return rates.map((rate) => new Rate(rate, app));
     }
     catch (originalError) {
       let transactionID = _transaction.id;

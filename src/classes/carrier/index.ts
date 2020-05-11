@@ -18,7 +18,6 @@ export * from "./pickups/pickup-request";
 export * from "./rates/package-rate-criteria";
 export * from "./rates/rate";
 export * from "./rates/rate-criteria";
-export * from "./rates/rate-quote";
 export { NewShipment } from "./shipments/new-shipment";
 export * from "./shipments/shipment-confirmation";
 export { ShipmentIdentifier } from "./shipments/shipment-identifier";

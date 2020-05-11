@@ -6,7 +6,7 @@ const { expect, assert } = require("chai");
 
 describe("rateShipment", () => {
 
-  it("should return a RateQuote from minimal return values", async () => {
+  it("should return a rate from minimal return values", async () => {
     let app = new CarrierApp(pojo.carrierApp({
       carrier: pojo.carrier({
         rateShipment: () => ({
@@ -67,7 +67,7 @@ describe("rateShipment", () => {
     });
   });
 
-  it("should return a RateQuote from all possible return values", async () => {
+  it("should return a rate from all possible return values", async () => {
     let app = new CarrierApp(pojo.carrierApp({
       carrier: pojo.carrier({
         deliveryServices: [
@@ -278,7 +278,7 @@ describe("rateShipment", () => {
       }
     });
 
-    it("should throw an error if an invalid RateQuote is returned", async () => {
+    it("should throw an error if an invalid rate is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
           rateShipment: () => ({

@@ -1,4 +1,4 @@
-import { PickupCancellationConfirmationPOJO, PickupConfirmationPOJO, RateQuotePOJO, ShipmentConfirmationPOJO } from "../../pojos/carrier";
+import { PickupCancellationConfirmationPOJO, PickupConfirmationPOJO, RatePOJO, ShipmentConfirmationPOJO } from "../../pojos/carrier";
 import { TrackingInfoPOJO } from "../../pojos/carrier/tracking-info-pojo";
 import { Transaction } from "../common";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
@@ -21,7 +21,7 @@ export type VoidLabels = (transaction: Transaction, params: unknown) => void | P
 /**
  * Calculates the shipping costs for a shipment, or multiple permutations of a shipment
  */
-export type RateShipment = (transaction: Transaction, shipment: RateCriteria) => RateQuotePOJO | Promise<RateQuotePOJO>;
+export type RateShipment = (transaction: Transaction, shipment: RateCriteria) => RatePOJO[] | Promise<RatePOJO[]>;
 
 /**
  * Returns tracking information for a shipment

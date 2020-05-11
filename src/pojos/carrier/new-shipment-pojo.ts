@@ -1,58 +1,11 @@
-import { BilledParty, Country, FulfillmentService, InsuranceProvider, NonDeliveryAction } from "../../enums";
-import { URLString, UUID } from "../../types";
-import { AddressWithContactInfoPOJO, DateTimeZonePOJO, IdentifierPOJO } from "../common";
-import { NewPackagePOJO, PackagePOJO } from "./package-pojo";
+import { BilledParty, Country, InsuranceProvider, NonDeliveryAction } from "../../enums";
+import { UUID } from "../../types";
+import { AddressWithContactInfoPOJO, DateTimeZonePOJO } from "../common";
+import { NewPackagePOJO } from "./new-package-pojo";
+import { ShipmentIdentifierPOJO } from "./shipment-identifier-pojo";
 
 /**
- * A complete shipment that already exists and has identifiers
- */
-export interface ShipmentPOJO extends ShipmentIdentifierPOJO, NewShipmentPOJO {
-  /**
-   * The URL of a webpage where the customer can track the shipment
-   */
-  trackingURL?: URLString | URL;
-
-  /**
-   * A well-known carrier service that's being used to fulfill this shipment
-   */
-  fulfillmentService?: FulfillmentService;
-
-  /**
-   * The estimated date and time the shipment will be delivered
-   */
-  deliveryDateTime?: DateTimeZonePOJO | Date | string;
-
-  /**
-   * The list of packages in the shipment
-   */
-  packages: PackagePOJO[];
-
-  /**
-   * Arbitrary data that was returned for the shipment when the label was created.
-   */
-  metadata?: object;
-}
-
-/**
- * Identifies a shipment
- */
-export interface ShipmentIdentifierPOJO {
-  /**
-   * The master tracking number for the entire shipment.
-   * For single-piece shipments, this will be the same as the package tracking number.
-   * For multi-piece shipments, this may be a separate tracking number, or the same
-   * tracking number as one of the packages.
-   */
-  trackingNumber?: string;
-
-  /**
-   * Alternative identifiers associated with this shipment
-   */
-  identifiers?: IdentifierPOJO[];
-}
-
-/**
- * A shipment that has not yet been created and has no identifiers yet
+ * The information needed to create a new shipment
  */
 export interface NewShipmentPOJO {
   /**

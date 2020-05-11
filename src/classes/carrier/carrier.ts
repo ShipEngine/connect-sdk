@@ -1,7 +1,7 @@
 import { Country, DocumentFormat, DocumentSize, ServiceArea } from "../../enums";
 import { error, ErrorCode } from "../../errors";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
-import { CarrierPOJO, LabelSpecPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO } from "../../pojos/carrier";
+import { CarrierPOJO, NewShipmentPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO } from "../../pojos/carrier";
 import { LocalizedBrandingPOJO, TransactionPOJO } from "../../pojos/common";
 import { FilePath, UUID } from "../../types";
 import { Transaction } from "../common";
@@ -9,8 +9,6 @@ import { App } from "../common/app";
 import { Localization, localize } from "../common/localization";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
-import { LabelConfirmation } from "./labels/label-confirmation";
-import { LabelSpec } from "./labels/label-spec";
 import { CancelPickup, CreateManifest, CreateShipment, GetRates, SchedulePickup, Track, VoidLabels } from "./methods";
 import { Packaging } from "./packaging";
 import { PickupService } from "./pickup-service";
@@ -20,6 +18,8 @@ import { PickupConfirmation } from "./pickups/pickup-confirmation";
 import { PickupRequest } from "./pickups/pickup-request";
 import { RateCriteria } from "./rates/rate-criteria";
 import { RateQuote } from "./rates/rate-quote";
+import { NewShipment } from "./shipments/new-shipment";
+import { ShipmentConfirmation } from "./shipments/shipment-confirmation";
 import { getMaxServiceArea } from "./utils";
 
 const _private = Symbol("private fields");
@@ -317,21 +317,21 @@ export class Carrier {
   /**
    * Creates a new shipment, including its labels, tracking numbers, customs forms, etc.
    */
-  public async createShipment?(transaction: TransactionPOJO, label: LabelSpecPOJO): Promise<LabelConfirmation> {
-    let _transaction, _label;
+  public async createShipment?(transaction: TransactionPOJO, shipment: NewShipmentPOJO): Promise<ShipmentConfirmation> {
+    let _transaction, _shipment;
     let { app, createShipment } = this[_private];
 
     try {
       _transaction = new Transaction(transaction);
-      _label = new LabelSpec(label, app);
+      _shipment = new NewShipment(shipment, app);
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the createShipment method.", { originalError });
     }
 
     try {
-      let confirmation = await createShipment!(_transaction, _label);
-      return new LabelConfirmation(confirmation);
+      let confirmation = await createShipment!(_transaction, _shipment);
+      return new ShipmentConfirmation(confirmation);
     }
     catch (originalError) {
       let transactionID = _transaction.id;

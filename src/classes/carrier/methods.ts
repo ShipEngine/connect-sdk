@@ -1,17 +1,17 @@
-import { LabelConfirmationPOJO, PickupCancellationConfirmationPOJO, PickupConfirmationPOJO, RateQuotePOJO } from "../../pojos/carrier";
+import { PickupCancellationConfirmationPOJO, PickupConfirmationPOJO, RateQuotePOJO, ShipmentConfirmationPOJO } from "../../pojos/carrier";
 import { TrackingInfoPOJO } from "../../pojos/carrier/tracking-info-pojo";
 import { Transaction } from "../common";
-import { LabelSpec } from "./labels/label-spec";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
 import { PickupRequest } from "./pickups/pickup-request";
 import { RateCriteria } from "./rates/rate-criteria";
+import { NewShipment } from "./shipments/new-shipment";
 import { TrackingCriteria } from "./tracking/tracking-criteria";
 
 /**
  * Creates a new shipment, including its labels, tracking numbers, customs forms, etc.
  */
-export type CreateShipment = (transaction: Transaction, label: LabelSpec)
-  => LabelConfirmationPOJO | Promise<LabelConfirmationPOJO>;
+export type CreateShipment = (transaction: Transaction, shipment: NewShipment)
+  => ShipmentConfirmationPOJO | Promise<ShipmentConfirmationPOJO>;
 
 /**
  * Voids one or more previously-created shipping labels

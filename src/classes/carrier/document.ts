@@ -1,6 +1,6 @@
 import { DocumentFormat, DocumentSize } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
-import { DocumentPOJO } from "../../pojos/carrier";
+import { DocumentPOJO } from "../../pojos/carrier/document-pojo";
 
 /**
  * A document that is associated with a shipment or package, such as a customs form.

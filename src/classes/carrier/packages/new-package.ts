@@ -1,16 +1,17 @@
 import { Currency } from "../../../enums";
-import { Constructor, hideAndFreeze, Joi, _internal } from "../../../internal";
+import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { NewPackagePOJO } from "../../../pojos/carrier";
 import { Dimensions, MonetaryValue, Weight } from "../../common";
 import { App } from "../../common/app";
 import { Packaging } from "../packaging";
+import { NewLabel } from "../shipments/new-label";
 import { PackageItem } from "./package-item";
 
 
 /**
- * A package that has not yet been created and has no identifiers yet
+ * The package information needed when creating a new shipment
  */
-export class NewPackage extends newPackageMixin() {
+export class NewPackage {
   //#region Private/Internal Fields
 
   /** @internal */
@@ -23,15 +24,66 @@ export class NewPackage extends newPackageMixin() {
       insuredValue: MonetaryValue[_internal].schema,
       containsAlcohol: Joi.boolean(),
       isNonMachineable: Joi.boolean(),
-      labelMessages: Joi.array().items(Joi.string().trim().singleLine().allow("").max(100)),
+      label: NewLabel[_internal].schema.required(),
       contents: Joi.array().items(PackageItem[_internal].schema),
     }),
   };
 
   //#endregion
+  //#region Public Fields
+
+  /**
+   * The packaging used
+   */
+  public readonly packaging: Packaging;
+
+  /**
+   * The package dimensions
+   */
+  public readonly dimensions?: Dimensions;
+
+  /**
+   * The package weight
+   */
+  public readonly weight?: Weight;
+
+  /**
+   * The insured value of this package
+   */
+  public readonly insuredValue: MonetaryValue;
+
+  /**
+   * Indicates whether the package contains alcohol
+   */
+  public readonly containsAlcohol: boolean;
+
+  /**
+   * Indicates whether the package cannot be processed automatically due to size, shape, weight, etc.
+   * and requires manual handling.
+   */
+  public readonly isNonMachineable: boolean;
+
+  /**
+   * Label preferences for this package
+   */
+  public readonly label: NewLabel;
+
+  /**
+   * Describes the items inside the package
+   */
+  public readonly contents: ReadonlyArray<PackageItem>;
+
+  //#endregion
 
   public constructor(pojo: NewPackagePOJO, app: App) {
-    super(pojo, app);
+    this.packaging = app[_internal].references.lookup(pojo.packagingID, Packaging);
+    this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
+    this.weight = pojo.weight && new Weight(pojo.weight);
+    this.insuredValue = new MonetaryValue(pojo.insuredValue || { value: 0, currency: Currency.UnitedStatesDollar });
+    this.containsAlcohol = pojo.containsAlcohol || false;
+    this.isNonMachineable = pojo.isNonMachineable || false;
+    this.label = new NewLabel(pojo.label);
+    this.contents = (pojo.contents || []).map((item) => new PackageItem(item));
 
     // Make this object immutable
     hideAndFreeze(this);
@@ -40,71 +92,3 @@ export class NewPackage extends newPackageMixin() {
 
 // Prevent modifications to the class
 hideAndFreeze(NewPackage);
-
-/**
- * Extends a base class with the fields of a new package
- * @internal
- */
-export function newPackageMixin(base: Constructor = Object) {
-  return class NewPackageMixin extends base {
-    //#region Public Fields
-
-    /**
-     * The packaging used
-     */
-    public readonly packaging: Packaging;
-
-    /**
-     * The package dimensions
-     */
-    public readonly dimensions?: Dimensions;
-
-    /**
-     * The package weight
-     */
-    public readonly weight?: Weight;
-
-    /**
-     * The insured value of this package
-     */
-    public readonly insuredValue: MonetaryValue;
-
-    /**
-     * Indicates whether the package contains alcohol
-     */
-    public readonly containsAlcohol: boolean;
-
-    /**
-     * Indicates whether the package cannot be processed automatically due to size, shape, weight, etc.
-     * and requires manual handling.
-     */
-    public readonly isNonMachineable: boolean;
-
-    /**
-     * Customized strings the end user expects to appear on their label.
-     * The exact location on the label depends on the carrier. Some carriers
-     * may limit the number of allowed label messages, or not support them at all.
-     */
-    public readonly labelMessages: ReadonlyArray<string>;
-
-    /**
-     * Describes the items inside the package
-     */
-    public readonly contents: ReadonlyArray<PackageItem>;
-
-    //#endregion
-
-    public constructor(pojo: NewPackagePOJO, app: App) {
-      base === Object ? super() : super(pojo);
-
-      this.packaging = app[_internal].references.lookup(pojo.packagingID, Packaging);
-      this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
-      this.weight = pojo.weight && new Weight(pojo.weight);
-      this.insuredValue = new MonetaryValue(pojo.insuredValue || { value: 0, currency: Currency.UnitedStatesDollar });
-      this.containsAlcohol = pojo.containsAlcohol || false;
-      this.isNonMachineable = pojo.isNonMachineable || false;
-      this.labelMessages = pojo.labelMessages || [];
-      this.contents = (pojo.contents || []).map((item) => new PackageItem(item));
-    }
-  };
-}

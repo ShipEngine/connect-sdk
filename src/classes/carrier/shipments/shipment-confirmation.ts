@@ -1,8 +1,10 @@
 import { FulfillmentService } from "../../../enums";
-import { hideAndFreeze, Joi, _internal } from "../../../internal";
+import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
 import { ShipmentConfirmationPOJO } from "../../../pojos/carrier";
-import { DateTimeZone } from "../../common";
+import { DateTimeZone, MonetaryValue } from "../../common";
 import { PackageConfirmation } from "../packages/package-confirmation";
+import { ShippingCharge } from "../shipping-charge";
+import { calculateTotalCharges } from "../utils";
 import { ShipmentIdentifier, shipmentIdentifierMixin } from "./shipment-identifier";
 
 /**
@@ -18,6 +20,7 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
       trackingURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
       fulfillmentService: Joi.string().enum(FulfillmentService),
       deliveryDateTime: DateTimeZone[_internal].schema,
+      charges: Joi.array().min(1).items(ShippingCharge[_internal].schema).required(),
       packages: Joi.array().min(1).items(PackageConfirmation[_internal].schema).required(),
       metadata: Joi.object(),
     }),
@@ -42,6 +45,18 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
   public readonly deliveryDateTime?: DateTimeZone;
 
   /**
+   * The breakdown of charges for this shipment.
+   * If the carrier does not provide a detailed breakdown, then just use a single
+   * charge of type "shipping".
+   */
+  public readonly charges: ReadonlyArray<ShippingCharge>;
+
+  /**
+   * The total cost of all charges for this label.
+   */
+  public readonly totalAmount: MonetaryValue;
+
+  /**
    * Confirmation details about each package in the shipment
    */
   public readonly packages: ReadonlyArray<PackageConfirmation>;
@@ -57,9 +72,13 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
   public constructor(pojo: ShipmentConfirmationPOJO) {
     super(pojo);
 
+    validate(pojo, ShipmentConfirmation);
+
     this.trackingURL = pojo.trackingURL ? new URL(pojo.trackingURL as string) : undefined;
     this.fulfillmentService = pojo.fulfillmentService;
     this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;
+    this.charges = pojo.charges.map((charge) => new ShippingCharge(charge));
+    this.totalAmount = calculateTotalCharges(this.charges);
     this.packages = pojo.packages.map((parcel) => new PackageConfirmation(parcel));
     this.metadata = pojo.metadata;
 

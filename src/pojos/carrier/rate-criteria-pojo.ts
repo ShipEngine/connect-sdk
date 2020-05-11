@@ -1,7 +1,7 @@
 import { FulfillmentService } from "../../enums";
 import { UUID } from "../../types";
 import { AddressWithContactInfoPOJO, DateTimeZonePOJO, DimensionsPOJO, MonetaryValuePOJO, WeightPOJO } from "../common";
-import { ShipmentIdentifierPOJO } from "./shipment-pojo";
+import { ShipmentIdentifierPOJO } from "./shipment-identifier-pojo";
 
 /**
  * Specifies the criteria for rate quotes

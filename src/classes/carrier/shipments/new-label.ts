@@ -1,23 +1,22 @@
 import { DocumentFormat, DocumentSize } from "../../../enums";
-import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
-import { LabelSpecPOJO } from "../../../pojos/carrier";
-import { App } from "../../common/app";
-import { NewShipment } from "../shipments/new-shipment";
-import { Shipment } from "../shipments/shipment";
+import { hideAndFreeze, Joi, _internal } from "../../../internal";
+import { NewLabelPOJO } from "../../../pojos/carrier";
 
 /**
- * Specifies the information needed to create a shipping label for a shipment.
+ * The information needed to create a new label
  */
-export class LabelSpec {
+export class NewLabel {
   //#region Private/Internal Fields
 
   /** @internal */
   public static readonly [_internal] = {
-    label: "label specification",
+    label: "label",
     schema: Joi.object({
       format: Joi.string().enum(DocumentFormat).required(),
       size: Joi.string().enum(DocumentSize).required(),
-      shipment: Shipment[_internal].schema.required(),
+      messages: Joi.array().items(
+        Joi.string().trim().singleLine().allow("").max(100)
+      ),
     }),
   };
 
@@ -37,18 +36,18 @@ export class LabelSpec {
   public readonly size: DocumentSize;
 
   /**
-   * The shipment information needed to create a label
+   * Customized strings the end user expects to appear on their label.
+   * The exact location on the label depends on the carrier. Some carriers
+   * may limit the number of allowed label messages, or not support them at all.
    */
-  public readonly shipment: NewShipment;
+  public readonly messages: ReadonlyArray<string>;
 
   //#endregion
 
-  public constructor(pojo: LabelSpecPOJO, app: App) {
-    validate(pojo, LabelSpec);
-
+  public constructor(pojo: NewLabelPOJO) {
     this.format = pojo.format;
     this.size = pojo.size;
-    this.shipment = new NewShipment(pojo.shipment, app);
+    this.messages = pojo.messages || [];
 
     // Make this object immutable
     hideAndFreeze(this);
@@ -56,4 +55,4 @@ export class LabelSpec {
 }
 
 // Prevent modifications to the class
-hideAndFreeze(LabelSpec);
+hideAndFreeze(NewLabel);

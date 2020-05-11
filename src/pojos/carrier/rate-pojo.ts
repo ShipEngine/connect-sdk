@@ -4,16 +4,6 @@ import { DateTimeZonePOJO } from "../common";
 import { ShippingChargePOJO } from "./shipping-charge-pojo";
 
 /**
- * Quoted shipping rates for the specified rate criteria
- */
-export interface RateQuotePOJO {
-  /**
-   * A list of rates that match the specified rate criteria
-   */
-  rates: RatePOJO[];
-}
-
-/**
  * A quoted shipping rate based on the specified rate criteria
  */
 export interface RatePOJO {
@@ -21,11 +11,6 @@ export interface RatePOJO {
    * The ID of the delivery service this rate is for
    */
   deliveryServiceID: UUID;
-
-  /**
-   * The ID of the packaging this rate is for
-   */
-  packagingID: UUID;
 
   /**
    * The ID of the delivery confirmation included in this rate
@@ -92,4 +77,19 @@ export interface RatePOJO {
    * Human-readable information regarding this rate quote, such as limitations or restrictions
    */
   notes?: string;
+
+  /**
+   * The list of packages in the shipment
+   */
+  packages: RatePackagePOJO[];
+}
+
+/**
+ * The package information for a rate
+ */
+export interface RatePackagePOJO {
+  /**
+   * The ID of the packaging this rate is for
+   */
+  packagingID: UUID;
 }

@@ -5,9 +5,9 @@ import { DateTimeZone, MonetaryValue } from "../../common";
 import { App } from "../../common/app";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
-import { Packaging } from "../packaging";
 import { ShippingCharge } from "../shipping-charge";
 import { calculateTotalCharges } from "../utils";
+import { RatePackage } from "./rate-package";
 
 /**
  * A quoted shipping rate based on the specified rate criteria
@@ -20,7 +20,6 @@ export class Rate {
     label: "rate",
     schema: Joi.object({
       deliveryServiceID: Joi.string().uuid().required(),
-      packagingID: Joi.string().uuid().required(),
       deliveryConfirmationID: Joi.string().uuid(),
       fulfillmentService: Joi.string().enum(FulfillmentService),
       shipDateTime: DateTimeZone[_internal].schema,
@@ -33,6 +32,7 @@ export class Rate {
       isTrackable: Joi.boolean(),
       charges: Joi.array().min(1).items(ShippingCharge[_internal].schema).required(),
       notes: Joi.string().allow("").max(5000),
+      packages: Joi.array().min(1).items(RatePackage[_internal].schema).required(),
     }),
   };
 
@@ -43,11 +43,6 @@ export class Rate {
    * The delivery service this rate is for
    */
   public readonly deliveryService: DeliveryService;
-
-  /**
-   * The packaging this rate is for
-   */
-  public readonly packaging: Packaging;
 
   /**
    * The delivery confirmation included in this rate
@@ -119,11 +114,15 @@ export class Rate {
    */
   public readonly notes: string;
 
+  /**
+   * The list of packages in the shipment
+   */
+  public readonly packages: ReadonlyArray<RatePackage>;
+
   //#endregion
 
   public constructor(pojo: RatePOJO, app: App) {
     this.deliveryService = app[_internal].references.lookup(pojo.deliveryServiceID, DeliveryService);
-    this.packaging = app[_internal].references.lookup(pojo.packagingID, Packaging);
     this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmationID, DeliveryConfirmation);
     this.fulfillmentService = pojo.fulfillmentService;
     this.shipDateTime = pojo.shipDateTime ? new DateTimeZone(pojo.shipDateTime) : undefined;
@@ -137,9 +136,12 @@ export class Rate {
     this.charges = pojo.charges.map((charge) => new ShippingCharge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);
     this.notes = pojo.notes || "";
+    this.packages = pojo.packages.map((parcel) => new RatePackage(parcel, app));
 
     let { minimumDeliveryDays, maximumDeliveryDays } = this;
-    if (minimumDeliveryDays !== undefined && maximumDeliveryDays !== undefined && minimumDeliveryDays > maximumDeliveryDays) {
+    if (minimumDeliveryDays !== undefined
+    && maximumDeliveryDays !== undefined
+    && minimumDeliveryDays > maximumDeliveryDays) {
       throw new RangeError("Invalid delivery time range: minimumDeliveryDays must be less than or equal to maximumDeliveryDays");
     }
 

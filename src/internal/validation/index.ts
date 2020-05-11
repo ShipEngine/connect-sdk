@@ -19,6 +19,19 @@ const joiOptions = {
 
 
 /**
+ * Validates an array of values against a Joi schema. If validation fails, an error is thrown.
+ * @internal
+ */
+export function validateArray(value: unknown[], type: ShipEngineConstructor, schema?: ValidationSchema): void;
+export function validateArray(value: unknown[], type: string, schema: ValidationSchema): void;
+export function validateArray(value: unknown[], arg2: ShipEngineConstructor | string, arg3?: ValidationSchema): void {
+  let label = typeof arg2 === "string" ? arg2 : arg2[_internal].label;
+  let itemSchema = arg3 || (arg2 as ShipEngineConstructor)[_internal].schema;
+  validateAgainstSchema(value, label, Joi.array().items(itemSchema));
+}
+
+
+/**
  * Validates a value against a Joi schema. If validation fails, an error is thrown.
  * @internal
  */
@@ -27,7 +40,15 @@ export function validate(value: unknown, type: string, schema: ValidationSchema)
 export function validate(value: unknown, arg2: ShipEngineConstructor | string, arg3?: ValidationSchema): void {
   let label = typeof arg2 === "string" ? arg2 : arg2[_internal].label;
   let schema = arg3 || (arg2 as ShipEngineConstructor)[_internal].schema;
+  validateAgainstSchema(value, label, schema);
+}
 
+
+/**
+ * Validates a value against a Joi schema. If validation fails, an error is thrown.
+ * @internal
+ */
+function validateAgainstSchema(value: unknown, label: string, schema: ValidationSchema): void {
   if (value === undefined || value === null) {
     throw error(ErrorCode.Validation, `Invalid ${label}: \n  A value is required`);
   }

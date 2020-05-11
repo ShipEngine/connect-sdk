@@ -1,4 +1,4 @@
-import { CancelPickup, CreateManifest, CreateShipment, GetRates, SchedulePickup, Track, VoidLabels } from "../../classes/carrier/methods";
+import { CancelPickup, CreateManifest, CreateShipment, RateShipment, SchedulePickup, Track, VoidLabels } from "../../classes/carrier/methods";
 import { FilePath, InlineOrReference, InlineOrReferenceArray, URLString, UUID } from "../../types";
 import { LocalizationDefinition } from "../common/localization-definition";
 import { DeliveryServiceDefinition } from "./delivery-service-definition";
@@ -64,9 +64,9 @@ export interface CarrierDefinition {
   voidLabels?: InlineOrReference<VoidLabels>;
 
   /**
-   * Gets shipping rates for a shipment
+   * Calculates the shipping costs for a shipment, or multiple permutations of a shipment
    */
-  getRates?: InlineOrReference<GetRates>;
+  rateShipment?: InlineOrReference<RateShipment>;
 
   /**
    * Returns tracking details for a shipment

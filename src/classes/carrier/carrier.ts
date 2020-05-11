@@ -9,7 +9,7 @@ import { App } from "../common/app";
 import { Localization, localize } from "../common/localization";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
-import { CancelPickup, CreateManifest, CreateShipment, GetRates, SchedulePickup, Track, VoidLabels } from "./methods";
+import { CancelPickup, CreateManifest, CreateShipment, RateShipment, SchedulePickup, Track, VoidLabels } from "./methods";
 import { Packaging } from "./packaging";
 import { PickupService } from "./pickup-service";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
@@ -48,7 +48,7 @@ export class Carrier {
       }),
       createShipment: Joi.function(),
       voidLabels: Joi.function(),
-      getRates: Joi.function(),
+      rateShipment: Joi.function(),
       track: Joi.function(),
       createManifest: Joi.function(),
       schedulePickup: Joi.function(),
@@ -62,7 +62,7 @@ export class Carrier {
     readonly localization: Localization<LocalizedBrandingPOJO>;
     readonly createShipment: CreateShipment | undefined;
     readonly voidLabels: VoidLabels | undefined;
-    readonly getRates: GetRates | undefined;
+    readonly rateShipment: RateShipment | undefined;
     readonly track: Track | undefined;
     readonly createManifest: CreateManifest | undefined;
     readonly schedulePickup: SchedulePickup | undefined;
@@ -265,7 +265,7 @@ export class Carrier {
       // For any methods that aren't implemented, set the corresponding class method to undefined.
       createShipment: pojo.createShipment ? pojo.createShipment : (this.createShipment = undefined),
       voidLabels: pojo.voidLabels ? pojo.voidLabels : (this.voidLabels = undefined),
-      getRates: pojo.getRates ? pojo.getRates : (this.getRates = undefined),
+      rateShipment: pojo.rateShipment ? pojo.rateShipment : (this.rateShipment = undefined),
       track: pojo.track ? pojo.track : (this.track = undefined),
       createManifest: pojo.createManifest ? pojo.createManifest : (this.createManifest = undefined),
       schedulePickup: pojo.schedulePickup ? pojo.schedulePickup : (this.schedulePickup = undefined),
@@ -302,7 +302,7 @@ export class Carrier {
       pickupServices: this.pickupServices.map((o) => o.toJSON(locale)),
       createShipment: methods.createShipment,
       voidLabels: methods.voidLabels,
-      getRates: methods.getRates,
+      rateShipment: methods.rateShipment,
       track: methods.track,
       createManifest: methods.createManifest,
       schedulePickup: methods.schedulePickup,
@@ -363,27 +363,27 @@ export class Carrier {
   }
 
   /**
-   * Gets shipping rates for a shipment
+   * Calculates the shipping costs for a shipment, or multiple permutations of a shipment
    */
-  public async getRates?(transaction: TransactionPOJO, shipment: RateCriteriaPOJO): Promise<RateQuote> {
+  public async rateShipment?(transaction: TransactionPOJO, shipment: RateCriteriaPOJO): Promise<RateQuote> {
     let _transaction, _shipment;
-    let { app, getRates } = this[_private];
+    let { app, rateShipment } = this[_private];
 
     try {
       _transaction = new Transaction(transaction);
       _shipment = new RateCriteria(shipment, app);
     }
     catch (originalError) {
-      throw error(ErrorCode.InvalidInput, "Invalid input to the getRates method.", { originalError });
+      throw error(ErrorCode.InvalidInput, "Invalid input to the rateShipment method.", { originalError });
     }
 
     try {
-      let quote = await getRates!(_transaction, _shipment);
+      let quote = await rateShipment!(_transaction, _shipment);
       return new RateQuote(quote, app);
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in getRates method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in rateShipment method.`, { originalError, transactionID });
     }
   }
 

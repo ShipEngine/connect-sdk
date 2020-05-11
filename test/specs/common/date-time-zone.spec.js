@@ -10,10 +10,10 @@ describe("DateTimeZone", () => {
   async function createDateTimeZone (value) {
     let app = new CarrierApp(pojo.carrierApp({
       carrier: pojo.carrier({
-        getRates: () => ({ rates: [pojo.rate({ shipDateTime: value })]})
+        rateShipment: () => ({ rates: [pojo.rate({ shipDateTime: value })]})
       }),
     }));
-    let quote = await app.carrier.getRates(pojo.transaction(), pojo.rateCriteria());
+    let quote = await app.carrier.rateShipment(pojo.transaction(), pojo.rateCriteria());
     return quote.rates[0].shipDateTime;
   }
 
@@ -268,7 +268,7 @@ describe("DateTimeZone", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in getRates method. \n" +
+          "Error in rateShipment method. \n" +
           "Invalid rate quote: \n" +
           "  rates[0].shipDateTime must be one of date, string, object"
         );
@@ -282,7 +282,7 @@ describe("DateTimeZone", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in getRates method. \n" +
+          "Error in rateShipment method. \n" +
           "Invalid rate quote: \n" +
           "  rates[0].shipDateTime does not match any of the allowed types"
         );
@@ -296,7 +296,7 @@ describe("DateTimeZone", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in getRates method. \n" +
+          "Error in rateShipment method. \n" +
           "Invalid rate quote: \n" +
           "  rates[0].shipDateTime must be a complete ISO 8601 date/time with a time zone, like 2005-09-23T17:30:00+05:30"
         );
@@ -310,7 +310,7 @@ describe("DateTimeZone", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in getRates method. \n" +
+          "Error in rateShipment method. \n" +
           "Invalid rate quote: \n" +
           "  rates[0].shipDateTime must be a valid date/time"
         );
@@ -324,7 +324,7 @@ describe("DateTimeZone", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in getRates method. \n" +
+          "Error in rateShipment method. \n" +
           "Invalid rate quote: \n" +
           "  rates[0].shipDateTime must be a complete ISO 8601 date/time with a time zone, like 2005-09-23T17:30:00+05:30"
         );
@@ -338,7 +338,7 @@ describe("DateTimeZone", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in getRates method. \n" +
+          "Error in rateShipment method. \n" +
           "Invalid rate quote: \n" +
           "  rates[0].shipDateTime does not match any of the allowed types"
         );
@@ -352,7 +352,7 @@ describe("DateTimeZone", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in getRates method. \n" +
+          "Error in rateShipment method. \n" +
           "Invalid rate quote: \n" +
           "  rates[0].shipDateTime does not match any of the allowed types"
         );
@@ -366,7 +366,7 @@ describe("DateTimeZone", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in getRates method. \n" +
+          "Error in rateShipment method. \n" +
           "Invalid rate quote: \n" +
           "  rates[0].shipDateTime.value is not allowed to be empty"
         );
@@ -380,7 +380,7 @@ describe("DateTimeZone", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in getRates method. \n" +
+          "Error in rateShipment method. \n" +
           "Invalid rate quote: \n" +
           "  rates[0].shipDateTime.timeZone is not allowed to be empty"
         );
@@ -394,7 +394,7 @@ describe("DateTimeZone", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in getRates method. \n" +
+          "Error in rateShipment method. \n" +
           "Invalid rate quote: \n" +
           "  rates[0].shipDateTime.value must be an ISO 8601 date and time, like 2005-09-23T17:30:00"
         );
@@ -408,7 +408,7 @@ describe("DateTimeZone", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in getRates method. \n" +
+          "Error in rateShipment method. \n" +
           "Invalid rate quote: \n" +
           "  rates[0].shipDateTime.value must be a valid date/time"
         );
@@ -422,7 +422,7 @@ describe("DateTimeZone", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in getRates method. \n" +
+          "Error in rateShipment method. \n" +
           "Invalid rate quote: \n" +
           "  rates[0].shipDateTime.value should not include a time zone"
         );
@@ -436,7 +436,7 @@ describe("DateTimeZone", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in getRates method. \n" +
+          "Error in rateShipment method. \n" +
           "Invalid rate quote: \n" +
           '  rates[0].shipDateTime.timeZone must be a UTC offset, like "+05:30", or a valid IANA time zone, like "America/Los_Angeles"'
         );

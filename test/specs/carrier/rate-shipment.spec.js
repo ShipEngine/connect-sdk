@@ -4,12 +4,12 @@ const { CarrierApp } = require("../../../lib");
 const pojo = require("../../utils/pojo");
 const { expect, assert } = require("chai");
 
-describe("getRates", () => {
+describe("rateShipment", () => {
 
   it("should return a RateQuote from minimal return values", async () => {
     let app = new CarrierApp(pojo.carrierApp({
       carrier: pojo.carrier({
-        getRates: () => ({
+        rateShipment: () => ({
           rates: [{
             deliveryServiceID: "22222222-2222-2222-2222-222222222222",
             packagingID: "44444444-4444-4444-4444-444444444444",
@@ -25,7 +25,7 @@ describe("getRates", () => {
       }),
     }));
 
-    let quote = await app.carrier.getRates(pojo.transaction(), pojo.rateCriteria());
+    let quote = await app.carrier.rateShipment(pojo.transaction(), pojo.rateCriteria());
 
     expect(quote).to.deep.equal({
       rates: [{
@@ -75,7 +75,7 @@ describe("getRates", () => {
             deliveryConfirmations: [pojo.deliveryConfirmation()],
           })
         ],
-        getRates: () => ({
+        rateShipment: () => ({
           rates: [{
             deliveryServiceID: "22222222-2222-2222-2222-222222222222",
             packagingID: "44444444-4444-4444-4444-444444444444",
@@ -119,7 +119,7 @@ describe("getRates", () => {
       }),
     }));
 
-    let quote = await app.carrier.getRates(pojo.transaction(), pojo.rateCriteria());
+    let quote = await app.carrier.rateShipment(pojo.transaction(), pojo.rateCriteria());
 
     expect(quote).to.deep.equal({
       rates: [{
@@ -190,17 +190,17 @@ describe("getRates", () => {
     it("should throw an error if called with no arguments", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
-          getRates () {}
+          rateShipment () {}
         }),
       }));
 
       try {
-        await app.carrier.getRates();
+        await app.carrier.rateShipment();
         assert.fail("An error should have been thrown");
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Invalid input to the getRates method. \n" +
+          "Invalid input to the rateShipment method. \n" +
           "Invalid transaction: \n" +
           "  A value is required"
         );
@@ -210,17 +210,17 @@ describe("getRates", () => {
     it("should throw an error if called without a RateCriteria", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
-          getRates () {}
+          rateShipment () {}
         }),
       }));
 
       try {
-        await app.carrier.getRates(pojo.transaction());
+        await app.carrier.rateShipment(pojo.transaction());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Invalid input to the getRates method. \n" +
+          "Invalid input to the rateShipment method. \n" +
           "Invalid rate criteria: \n" +
           "  A value is required"
         );
@@ -230,12 +230,12 @@ describe("getRates", () => {
     it("should throw an error if called without an invalid RateCriteria", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
-          getRates () {}
+          rateShipment () {}
         }),
       }));
 
       try {
-        await app.carrier.getRates(pojo.transaction(), {
+        await app.carrier.rateShipment(pojo.transaction(), {
           deliveryServices: "12345678-1234-1234-1234-123456789012",
           packaging: ["Large Box"],
           deliveryDateTime: "9999-99-99T99:99:99.999Z",
@@ -245,7 +245,7 @@ describe("getRates", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Invalid input to the getRates method. \n" +
+          "Invalid input to the rateShipment method. \n" +
           "Invalid rate criteria: \n" +
           "  deliveryServices must be an array \n" +
           "  packaging[0] must be a valid GUID \n" +
@@ -261,17 +261,17 @@ describe("getRates", () => {
     it("should throw an error if nothing is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
-          getRates () {}
+          rateShipment () {}
         }),
       }));
 
       try {
-        await app.carrier.getRates(pojo.transaction(), pojo.rateCriteria());
+        await app.carrier.rateShipment(pojo.transaction(), pojo.rateCriteria());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in getRates method. \n" +
+          "Error in rateShipment method. \n" +
           "Invalid rate quote: \n" +
           "  A value is required"
         );
@@ -281,7 +281,7 @@ describe("getRates", () => {
     it("should throw an error if an invalid RateQuote is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
-          getRates: () => ({
+          rateShipment: () => ({
             rates: [{
               deliveryConfirmationID: "Handshake",
               deliveryDateTime: "9999-99-99T99:99:99.999Z",
@@ -294,12 +294,12 @@ describe("getRates", () => {
       }));
 
       try {
-        await app.carrier.getRates(pojo.transaction(), pojo.rateCriteria());
+        await app.carrier.rateShipment(pojo.transaction(), pojo.rateCriteria());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in getRates method. \n" +
+          "Error in rateShipment method. \n" +
           "Invalid rate quote: \n" +
           "  rates[0].deliveryServiceID is required \n" +
           "  rates[0].packagingID is required \n" +
@@ -315,7 +315,7 @@ describe("getRates", () => {
     it("should throw an error if an invalid deliveryServiceID is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
-          getRates: () => ({
+          rateShipment: () => ({
             rates: [{
               deliveryServiceID: "12345678-1234-1234-1234-123456789012",
               packagingID: "44444444-4444-4444-4444-444444444444",
@@ -332,12 +332,12 @@ describe("getRates", () => {
       }));
 
       try {
-        await app.carrier.getRates(pojo.transaction(), pojo.rateCriteria());
+        await app.carrier.rateShipment(pojo.transaction(), pojo.rateCriteria());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in getRates method. \n" +
+          "Error in rateShipment method. \n" +
           "Unable to find delivery service ID: 12345678-1234-1234-1234-123456789012"
         );
       }
@@ -346,7 +346,7 @@ describe("getRates", () => {
     it("should throw an error if an invalid packagingID is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
-          getRates: () => ({
+          rateShipment: () => ({
             rates: [{
               deliveryServiceID: "22222222-2222-2222-2222-222222222222",
               packagingID: "12345678-1234-1234-1234-123456789012",
@@ -363,12 +363,12 @@ describe("getRates", () => {
       }));
 
       try {
-        await app.carrier.getRates(pojo.transaction(), pojo.rateCriteria());
+        await app.carrier.rateShipment(pojo.transaction(), pojo.rateCriteria());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in getRates method. \n" +
+          "Error in rateShipment method. \n" +
           "Unable to find packaging ID: 12345678-1234-1234-1234-123456789012"
         );
       }
@@ -377,7 +377,7 @@ describe("getRates", () => {
     it("should throw an error if an invalid deliveryConfirmationID is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
-          getRates: () => ({
+          rateShipment: () => ({
             rates: [{
               deliveryServiceID: "22222222-2222-2222-2222-222222222222",
               packagingID: "44444444-4444-4444-4444-444444444444",
@@ -395,12 +395,12 @@ describe("getRates", () => {
       }));
 
       try {
-        await app.carrier.getRates(pojo.transaction(), pojo.rateCriteria());
+        await app.carrier.rateShipment(pojo.transaction(), pojo.rateCriteria());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in getRates method. \n" +
+          "Error in rateShipment method. \n" +
           "22222222-2222-2222-2222-222222222222 is a delivery service ID not a delivery confirmation ID"
         );
       }
@@ -409,7 +409,7 @@ describe("getRates", () => {
     it("should throw an error if minimumDeliveryDays is greater than maximumDeliveryDays", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
-          getRates: () => ({
+          rateShipment: () => ({
             rates: [{
               deliveryServiceID: "22222222-2222-2222-2222-222222222222",
               packagingID: "44444444-4444-4444-4444-444444444444",
@@ -428,12 +428,12 @@ describe("getRates", () => {
       }));
 
       try {
-        await app.carrier.getRates(pojo.transaction(), pojo.rateCriteria());
+        await app.carrier.rateShipment(pojo.transaction(), pojo.rateCriteria());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in getRates method. \n" +
+          "Error in rateShipment method. \n" +
           "Invalid delivery time range: minimumDeliveryDays must be less than or equal to maximumDeliveryDays"
         );
       }

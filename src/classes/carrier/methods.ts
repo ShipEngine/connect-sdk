@@ -19,9 +19,9 @@ export type CreateShipment = (transaction: Transaction, shipment: NewShipment)
 export type VoidLabels = (transaction: Transaction, params: unknown) => void | Promise<void>;
 
 /**
- * Gets shipping rates for a shipment
+ * Calculates the shipping costs for a shipment, or multiple permutations of a shipment
  */
-export type GetRates = (transaction: Transaction, shipment: RateCriteria) => RateQuotePOJO | Promise<RateQuotePOJO>;
+export type RateShipment = (transaction: Transaction, shipment: RateCriteria) => RateQuotePOJO | Promise<RateQuotePOJO>;
 
 /**
  * Returns tracking information for a shipment

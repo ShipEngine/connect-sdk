@@ -1,5 +1,5 @@
 // tslint:disable: no-empty-interface
-import { CancelPickup, CreateManifest, CreateShipment, RateShipment, SchedulePickup, Track, VoidLabels } from "../../classes/carrier/methods";
+import { CancelPickups, CreateManifest, CreateShipment, RateShipment, SchedulePickup, Track, VoidLabels } from "../../classes/carrier/methods";
 import { CarrierDefinition, DeliveryConfirmationDefinition, DeliveryServiceDefinition, PackagingDefinition, PickupServiceDefinition } from "../../definitions";
 import { Country } from "../../enums";
 import { LocalizationPOJO, LocalizedBrandingPOJO, LocalizedInfoPOJO } from "../common";
@@ -17,7 +17,7 @@ export interface CarrierPOJO extends CarrierDefinition {
   track?: Track;
   createManifest?: CreateManifest;
   schedulePickup?: SchedulePickup;
-  cancelPickup?: CancelPickup;
+  cancelPickups?: CancelPickups;
 }
 
 /**

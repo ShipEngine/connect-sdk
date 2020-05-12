@@ -1,4 +1,4 @@
-import { CancelPickup, CreateManifest, CreateShipment, RateShipment, SchedulePickup, Track, VoidLabels } from "../../classes/carrier/methods";
+import { CancelPickups, CreateManifest, CreateShipment, RateShipment, SchedulePickup, Track, VoidLabels } from "../../classes/carrier/methods";
 import { FilePath, InlineOrReference, InlineOrReferenceArray, URLString, UUID } from "../../types";
 import { LocalizationDefinition } from "../common/localization-definition";
 import { DeliveryServiceDefinition } from "./delivery-service-definition";
@@ -84,7 +84,7 @@ export interface CarrierDefinition {
   schedulePickup?: InlineOrReference<SchedulePickup>;
 
   /**
-   * Cancels a previously-requested package pickup
+   * Cancels one or more previously-requested package pickups
    */
-  cancelPickup?: InlineOrReference<CancelPickup>;
+  cancelPickups?: InlineOrReference<CancelPickups>;
 }

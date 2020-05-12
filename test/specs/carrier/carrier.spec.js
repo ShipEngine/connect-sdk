@@ -35,7 +35,7 @@ describe("Carrier", () => {
       track: undefined,
       createManifest: undefined,
       schedulePickup: undefined,
-      cancelPickup: undefined,
+      cancelPickups: undefined,
     });
   });
 
@@ -57,7 +57,7 @@ describe("Carrier", () => {
       track () {},
       createManifest () {},
       schedulePickup () {},
-      cancelPickup () {},
+      cancelPickups () {},
     });
 
     expect(carrier).to.deep.equal({
@@ -95,7 +95,7 @@ describe("Carrier", () => {
       track: undefined,
       createManifest: undefined,
       schedulePickup: undefined,
-      cancelPickup: undefined,
+      cancelPickups: undefined,
     });
   });
 

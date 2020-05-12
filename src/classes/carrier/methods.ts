@@ -40,7 +40,7 @@ export type SchedulePickup = (transaction: Transaction, request: PickupRequest)
   => PickupConfirmationPOJO | Promise<PickupConfirmationPOJO>;
 
 /**
- * Cancels a previously-requested package pickup
+ * Cancels one or more previously-requested package pickups
  */
-export type CancelPickup = (transaction: Transaction, cancellation: PickupCancellation)
-  => void | PickupCancellationConfirmationPOJO | Promise<PickupCancellationConfirmationPOJO | void>;
+export type CancelPickups = (transaction: Transaction, cancellations: PickupCancellation[])
+  => void | PickupCancellationConfirmationPOJO[] | Promise<PickupCancellationConfirmationPOJO[] | void>;

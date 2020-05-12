@@ -9,7 +9,7 @@ import { App } from "../common/app";
 import { Localization, localize } from "../common/localization";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
-import { CancelPickup, CreateManifest, CreateShipment, RateShipment, SchedulePickup, Track, VoidLabels } from "./methods";
+import { CancelPickups, CreateManifest, CreateShipment, RateShipment, SchedulePickup, Track, VoidLabels } from "./methods";
 import { Packaging } from "./packaging";
 import { PickupService } from "./pickup-service";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
@@ -52,7 +52,7 @@ export class Carrier {
       track: Joi.function(),
       createManifest: Joi.function(),
       schedulePickup: Joi.function(),
-      cancelPickup: Joi.function(),
+      cancelPickups: Joi.function(),
     }),
   };
 
@@ -66,7 +66,7 @@ export class Carrier {
     readonly track: Track | undefined;
     readonly createManifest: CreateManifest | undefined;
     readonly schedulePickup: SchedulePickup | undefined;
-    readonly cancelPickup: CancelPickup | undefined;
+    readonly cancelPickups: CancelPickups | undefined;
   };
 
   //#endregion
@@ -269,7 +269,7 @@ export class Carrier {
       track: pojo.track ? pojo.track : (this.track = undefined),
       createManifest: pojo.createManifest ? pojo.createManifest : (this.createManifest = undefined),
       schedulePickup: pojo.schedulePickup ? pojo.schedulePickup : (this.schedulePickup = undefined),
-      cancelPickup: pojo.cancelPickup ? pojo.cancelPickup : (this.cancelPickup = undefined),
+      cancelPickups: pojo.cancelPickups ? pojo.cancelPickups : (this.cancelPickups = undefined),
     };
 
     // Make this object immutable
@@ -306,7 +306,7 @@ export class Carrier {
       track: methods.track,
       createManifest: methods.createManifest,
       schedulePickup: methods.schedulePickup,
-      cancelPickup: methods.cancelPickup,
+      cancelPickups: methods.cancelPickups,
       localization: localization.toJSON(),
       ...localizedValues,
     };
@@ -466,29 +466,39 @@ export class Carrier {
   }
 
   /**
-   * Cancels a previously-requested package pickup
+   * Cancels one or more previously-requested package pickups
    */
-  public async cancelPickup?(transaction: TransactionPOJO, cancellation: PickupCancellationPOJO)
-  : Promise<PickupCancellationConfirmation> {
-    let _transaction, _cancellation;
-    let { app, cancelPickup } = this[_private];
+  public async cancelPickups?(transaction: TransactionPOJO, cancellations: PickupCancellationPOJO[])
+  : Promise<PickupCancellationConfirmation[]> {
+    let _transaction, _cancellations;
+    let { app, cancelPickups } = this[_private];
 
     try {
       _transaction = new Transaction(transaction);
-      _cancellation = new PickupCancellation(cancellation, app);
+      validateArray(cancellations, PickupCancellation);
+      _cancellations = cancellations.map((cancellation) => new PickupCancellation(cancellation, app));
     }
     catch (originalError) {
-      throw error(ErrorCode.InvalidInput, "Invalid input to the cancelPickup method.", { originalError });
+      throw error(ErrorCode.InvalidInput, "Invalid input to the cancelPickups method.", { originalError });
     }
 
     try {
-      let confirmation = await cancelPickup!(_transaction, _cancellation);
-      confirmation = confirmation || { successful: true };
-      return new PickupCancellationConfirmation(confirmation);
+      let confirmations = await cancelPickups!(_transaction, _cancellations);
+
+      if (!confirmations) {
+        // Nothing was returned, so assume all pickups were canceled successfully
+        confirmations = _cancellations.map((cancellation) => ({
+          pickupID: cancellation.pickupID,
+          successful: true,
+        }));
+      }
+
+      validateArray(confirmations, PickupCancellationConfirmation);
+      return confirmations.map((confirmation) => new PickupCancellationConfirmation(confirmation));
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in cancelPickup method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in cancelPickups method.`, { originalError, transactionID });
     }
   }
 

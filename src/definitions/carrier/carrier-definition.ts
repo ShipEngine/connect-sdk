@@ -1,4 +1,4 @@
-import { CancelPickups, CreateManifest, CreateShipment, RateShipment, SchedulePickup, Track, VoidLabels } from "../../classes/carrier/methods";
+import { CancelPickups, CancelShipments, CreateManifest, CreateShipment, RateShipment, SchedulePickup, Track } from "../../classes/carrier/methods";
 import { FilePath, InlineOrReference, InlineOrReferenceArray, URLString, UUID } from "../../types";
 import { LocalizationDefinition } from "../common/localization-definition";
 import { DeliveryServiceDefinition } from "./delivery-service-definition";
@@ -59,9 +59,10 @@ export interface CarrierDefinition {
   createShipment?: InlineOrReference<CreateShipment>;
 
   /**
-   * Voids one or more previously-created shipping labels
+   * Cancels one or more shipments that were previously created. Depending on the carrier,
+   * this may include voiding labels, refunding charges, and/or removing the shipment from the day's manifest.
    */
-  voidLabels?: InlineOrReference<VoidLabels>;
+  cancelShipments?: InlineOrReference<CancelShipments>;
 
   /**
    * Calculates the shipping costs for a shipment, or multiple permutations of a shipment

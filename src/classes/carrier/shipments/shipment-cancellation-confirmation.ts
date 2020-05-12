@@ -1,17 +1,18 @@
 import { hideAndFreeze, Joi, _internal } from "../../../internal";
-import { PickupCancellationConfirmationPOJO } from "../../../pojos/carrier";
+import { ShipmentCancellationConfirmationPOJO } from "../../../pojos/carrier";
+import { ShipmentIdentifier } from "./shipment-identifier";
 
 /**
- * Confirmation that a package pickup has been canceled
+ * Confirmation that a shipment has been canceled
  */
-export class PickupCancellationConfirmation {
+export class ShipmentCancellationConfirmation {
   //#region Private/Internal Fields
 
   /** @internal */
   public static readonly [_internal] = {
-    label: "pickup",
-    schema: Joi.object({
-      pickupID: Joi.string().trim().singleLine().min(1).max(100).required(),
+    label: "shipment",
+    schema: ShipmentIdentifier[_internal].schema.keys({
+      shipmentID: Joi.string().trim().singleLine().min(1).max(100).required(),
       successful: Joi.boolean().required(),
       cancellationNumber: Joi.string().trim().singleLine().allow("").max(100),
       notes: Joi.string().allow("").max(5000),
@@ -23,14 +24,14 @@ export class PickupCancellationConfirmation {
   //#region Public Fields
 
   /**
-   * ShipEngine's unique identifier for the pickup. Indicates which pickup this cancellation
+   * ShipEngine's unique identifier for the shipment. Indicates which shipment this cancellation
    * confirmation is for.
    */
-  public readonly pickupID: string;
+  public readonly shipmentID: string;
 
   /**
-   * Indicates whether the pickup was successfully canceled.
-   * If the pickup was _not_ canceled, then the `notes` field should contain
+   * Indicates whether the shipment was successfully canceled.
+   * If the shipment was _not_ canceled, then the `notes` field should contain
    * information and/or instructions for the customer. (e.g. "Please call ###-#### to cancel")
    */
   public readonly successful: boolean;
@@ -41,21 +42,21 @@ export class PickupCancellationConfirmation {
   public readonly cancellationNumber: string;
 
   /**
-   * Additional information/instructions regarding the cancellation
+   * Human-readable information/instructions regarding the cancellation
    * (e.g. "Please call ###-#### to cancel", "Cannot cancel because driver is en-route")
    */
   public readonly notes: string;
 
   /**
-   * Arbitrary data about this pickup that will be persisted by the ShipEngine Integration Platform.
+   * Arbitrary data about this shipment that will be persisted by the ShipEngine Integration Platform.
    * Must be JSON serializable.
    */
   public readonly metadata?: object;
 
   //#endregion
 
-  public constructor(pojo: PickupCancellationConfirmationPOJO) {
-    this.pickupID = pojo.pickupID;
+  public constructor(pojo: ShipmentCancellationConfirmationPOJO) {
+    this.shipmentID = pojo.shipmentID;
     this.successful = pojo.successful;
     this.cancellationNumber = pojo.cancellationNumber || "";
     this.notes = pojo.notes || "";
@@ -67,4 +68,4 @@ export class PickupCancellationConfirmation {
 }
 
 // Prevent modifications to the class
-hideAndFreeze(PickupCancellationConfirmation);
+hideAndFreeze(ShipmentCancellationConfirmation);

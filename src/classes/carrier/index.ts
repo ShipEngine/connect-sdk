@@ -22,6 +22,8 @@ export * from "./rates/rate";
 export * from "./rates/rate-criteria";
 export * from "./rates/rate-package";
 export { NewShipment } from "./shipments/new-shipment";
+export * from "./shipments/shipment-cancellation";
+export * from "./shipments/shipment-cancellation-confirmation";
 export * from "./shipments/shipment-confirmation";
 export { ShipmentIdentifier } from "./shipments/shipment-identifier";
 export * from "./shipping-charge";

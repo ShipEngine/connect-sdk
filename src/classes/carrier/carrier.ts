@@ -1,7 +1,7 @@
 import { Country, DocumentFormat, DocumentSize, ServiceArea } from "../../enums";
 import { error, ErrorCode } from "../../errors";
 import { hideAndFreeze, Joi, validate, validateArray, _internal } from "../../internal";
-import { CarrierPOJO, NewShipmentPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, TrackingCriteriaPOJO } from "../../pojos/carrier";
+import { CarrierPOJO, NewShipmentPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, ShipmentCancellationPOJO, TrackingCriteriaPOJO } from "../../pojos/carrier";
 import { LocalizedBrandingPOJO, TransactionPOJO } from "../../pojos/common";
 import { FilePath, UUID } from "../../types";
 import { Transaction } from "../common";
@@ -9,7 +9,7 @@ import { App } from "../common/app";
 import { Localization, localize } from "../common/localization";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
-import { CancelPickups, CreateManifest, CreateShipment, RateShipment, SchedulePickup, Track, VoidLabels } from "./methods";
+import { CancelPickups, CancelShipments, CreateManifest, CreateShipment, RateShipment, SchedulePickup, Track } from "./methods";
 import { Packaging } from "./packaging";
 import { PickupService } from "./pickup-service";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
@@ -19,6 +19,8 @@ import { PickupRequest } from "./pickups/pickup-request";
 import { Rate } from "./rates/rate";
 import { RateCriteria } from "./rates/rate-criteria";
 import { NewShipment } from "./shipments/new-shipment";
+import { ShipmentCancellation } from "./shipments/shipment-cancellation";
+import { ShipmentCancellationConfirmation } from "./shipments/shipment-cancellation-confirmation";
 import { ShipmentConfirmation } from "./shipments/shipment-confirmation";
 import { TrackingCriteria } from "./tracking/tracking-criteria";
 import { TrackingInfo } from "./tracking/tracking-info";
@@ -49,7 +51,7 @@ export class Carrier {
         websiteURL: Joi.string().website(),
       }),
       createShipment: Joi.function(),
-      voidLabels: Joi.function(),
+      cancelShipments: Joi.function(),
       rateShipment: Joi.function(),
       track: Joi.function(),
       createManifest: Joi.function(),
@@ -63,7 +65,7 @@ export class Carrier {
     readonly app: App;
     readonly localization: Localization<LocalizedBrandingPOJO>;
     readonly createShipment: CreateShipment | undefined;
-    readonly voidLabels: VoidLabels | undefined;
+    readonly cancelShipments: CancelShipments | undefined;
     readonly rateShipment: RateShipment | undefined;
     readonly track: Track | undefined;
     readonly createManifest: CreateManifest | undefined;
@@ -266,7 +268,7 @@ export class Carrier {
       // Store any user-defined methods as private fields.
       // For any methods that aren't implemented, set the corresponding class method to undefined.
       createShipment: pojo.createShipment ? pojo.createShipment : (this.createShipment = undefined),
-      voidLabels: pojo.voidLabels ? pojo.voidLabels : (this.voidLabels = undefined),
+      cancelShipments: pojo.cancelShipments ? pojo.cancelShipments : (this.cancelShipments = undefined),
       rateShipment: pojo.rateShipment ? pojo.rateShipment : (this.rateShipment = undefined),
       track: pojo.track ? pojo.track : (this.track = undefined),
       createManifest: pojo.createManifest ? pojo.createManifest : (this.createManifest = undefined),
@@ -303,7 +305,7 @@ export class Carrier {
       deliveryServices: this.deliveryServices.map((o) => o.toJSON(locale)),
       pickupServices: this.pickupServices.map((o) => o.toJSON(locale)),
       createShipment: methods.createShipment,
-      voidLabels: methods.voidLabels,
+      cancelShipments: methods.cancelShipments,
       rateShipment: methods.rateShipment,
       track: methods.track,
       createManifest: methods.createManifest,
@@ -342,25 +344,38 @@ export class Carrier {
   }
 
   /**
-   * Voids one or more previously-created shipping labels
+   * Cancels one or more shipments that were previously created. Depending on the carrier,
+   * this may include voiding labels, refunding charges, and/or removing the shipment from the day's manifest.
    */
-  public async voidLabels?(transaction: TransactionPOJO): Promise<unknown> {
-    let _transaction;
+  public async cancelShipments?(transaction: TransactionPOJO, shipments: ShipmentCancellationPOJO[]): Promise<unknown> {
+    let _transaction, _shipments;
+    let { app, cancelShipments } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
+      _shipments = validateArray(shipments, ShipmentCancellation).map((shipment) => new ShipmentCancellation(shipment));
     }
     catch (originalError) {
-      throw error(ErrorCode.InvalidInput, "Invalid input to the voidLabels method.", { originalError });
+      throw error(ErrorCode.InvalidInput, "Invalid input to the cancelShipments method.", { originalError });
     }
 
     try {
-      // TODO: NOT IMPLEMENTED YET
-      return await Promise.resolve(undefined);
+      let confirmations = await cancelShipments!(_transaction, _shipments);
+
+      if (!confirmations) {
+        // Nothing was returned, so assume all shipments were canceled successfully
+        confirmations = _shipments.map((shipment) => ({
+          shipmentID: shipment.shipmentID,
+          successful: true,
+        }));
+      }
+
+      return validateArray(confirmations, ShipmentCancellationConfirmation)
+        .map((confirmation) => new ShipmentCancellationConfirmation(confirmation));
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in voidLabels method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in cancelShipments method.`, { originalError, transactionID });
     }
   }
 
@@ -471,27 +486,27 @@ export class Carrier {
   /**
    * Cancels one or more previously-requested package pickups
    */
-  public async cancelPickups?(transaction: TransactionPOJO, cancellations: PickupCancellationPOJO[])
+  public async cancelPickups?(transaction: TransactionPOJO, pickups: PickupCancellationPOJO[])
   : Promise<PickupCancellationConfirmation[]> {
-    let _transaction, _cancellations;
+    let _transaction, _pickups;
     let { app, cancelPickups } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
-      _cancellations = validateArray(cancellations, PickupCancellation)
-        .map((cancellation) => new PickupCancellation(cancellation, app));
+      _pickups = validateArray(pickups, PickupCancellation)
+        .map((pickup) => new PickupCancellation(pickup, app));
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the cancelPickups method.", { originalError });
     }
 
     try {
-      let confirmations = await cancelPickups!(_transaction, _cancellations);
+      let confirmations = await cancelPickups!(_transaction, _pickups);
 
       if (!confirmations) {
         // Nothing was returned, so assume all pickups were canceled successfully
-        confirmations = _cancellations.map((cancellation) => ({
-          pickupID: cancellation.pickupID,
+        confirmations = _pickups.map((pickup) => ({
+          pickupID: pickup.pickupID,
           successful: true,
         }));
       }

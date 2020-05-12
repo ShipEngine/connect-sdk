@@ -1,10 +1,11 @@
-import { PickupCancellationConfirmationPOJO, PickupConfirmationPOJO, RatePOJO, ShipmentConfirmationPOJO } from "../../pojos/carrier";
+import { PickupCancellationConfirmationPOJO, PickupConfirmationPOJO, RatePOJO, ShipmentCancellationConfirmationPOJO, ShipmentConfirmationPOJO } from "../../pojos/carrier";
 import { TrackingInfoPOJO } from "../../pojos/carrier/tracking-info-pojo";
 import { Transaction } from "../common";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
 import { PickupRequest } from "./pickups/pickup-request";
 import { RateCriteria } from "./rates/rate-criteria";
 import { NewShipment } from "./shipments/new-shipment";
+import { ShipmentCancellation } from "./shipments/shipment-cancellation";
 import { TrackingCriteria } from "./tracking/tracking-criteria";
 
 /**
@@ -14,9 +15,11 @@ export type CreateShipment = (transaction: Transaction, shipment: NewShipment)
   => ShipmentConfirmationPOJO | Promise<ShipmentConfirmationPOJO>;
 
 /**
- * Voids one or more previously-created shipping labels
+ * Cancels one or more shipments that were previously created. Depending on the carrier,
+ * this may include voiding labels, refunding charges, and/or removing the shipment from the day's manifest.
  */
-export type VoidLabels = (transaction: Transaction, params: unknown) => void | Promise<void>;
+export type CancelShipments = (transaction: Transaction, shipments: ShipmentCancellation[])
+  => void | ShipmentCancellationConfirmationPOJO[] | Promise<void | ShipmentCancellationConfirmationPOJO[]>;
 
 /**
  * Calculates the shipping costs for a shipment, or multiple permutations of a shipment
@@ -42,5 +45,5 @@ export type SchedulePickup = (transaction: Transaction, request: PickupRequest)
 /**
  * Cancels one or more previously-requested package pickups
  */
-export type CancelPickups = (transaction: Transaction, cancellations: PickupCancellation[])
+export type CancelPickups = (transaction: Transaction, pickups: PickupCancellation[])
   => void | PickupCancellationConfirmationPOJO[] | Promise<PickupCancellationConfirmationPOJO[] | void>;

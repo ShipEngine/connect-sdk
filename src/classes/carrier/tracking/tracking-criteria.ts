@@ -1,18 +1,19 @@
-import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
+import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { TrackingCriteriaPOJO } from "../../../pojos/carrier";
-import { ShipmentIdentifier } from "../shipments/shipment-identifier";
+import { ShipmentIdentifier, shipmentIdentifierMixin } from "../shipments/shipment-identifier";
 
 /**
- * Specifies the criteria for requesting tracking information about a shipment
+ * The information needed to request tracking information for a shipment
  */
-export class TrackingCriteria {
+export class TrackingCriteria extends shipmentIdentifierMixin() {
   //#region Private/Internal Fields
 
   /** @internal */
   public static readonly [_internal] = {
-    label: "tracking criteria",
-    schema: Joi.object({
-      shipment: ShipmentIdentifier[_internal].schema.required(),
+    label: "shipment",
+    schema: ShipmentIdentifier[_internal].schema.keys({
+      isReturn: Joi.boolean(),
+      metadata: Joi.object(),
     }),
   };
 
@@ -20,16 +21,22 @@ export class TrackingCriteria {
   //#region Public Fields
 
   /**
-   * The shipment to get tracking information for
+   * Indicates whether this is a return shipment
    */
-  public readonly shipment: ShipmentIdentifier;
+  public readonly isReturn: boolean;
+
+  /**
+   * Arbitrary data about this shipment that was previously persisted by the ShipEngine Platform.
+   */
+  public readonly metadata: object;
 
   //#endregion
 
   public constructor(pojo: TrackingCriteriaPOJO) {
-    validate(pojo, TrackingCriteria);
+    super(pojo);
 
-    this.shipment = new ShipmentIdentifier(pojo.shipment);
+    this.isReturn = pojo.isReturn || false;
+    this.metadata = pojo.metadata || {};
 
     // Make this object immutable
     hideAndFreeze(this);

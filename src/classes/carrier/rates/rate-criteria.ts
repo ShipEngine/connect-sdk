@@ -17,7 +17,7 @@ export class RateCriteria {
 
   /** @internal */
   public static readonly [_internal] = {
-    label: "rate criteria",
+    label: "shipment",
     schema: Joi.object({
       deliveryServices: Joi.array().items(Joi.string().uuid()),
       deliveryConfirmations: Joi.array().items(Joi.string().uuid()),

@@ -1,11 +1,16 @@
-import { ShipmentPOJO } from "./shipment-pojo";
+import { ShipmentIdentifierPOJO } from "./shipment-identifier-pojo";
 
 /**
- * Specifies the criteria for requesting tracking information about a shipment
+ * The information needed to request tracking information for a shipment
  */
-export interface TrackingCriteriaPOJO {
+export interface TrackingCriteriaPOJO extends ShipmentIdentifierPOJO {
   /**
-   * The shipment to get tracking information for
+   * Indicates whether this is a return shipment
    */
-  shipment: ShipmentPOJO;
+  isReturn?: boolean;
+
+  /**
+   * Arbitrary data about this shipment that was previously persisted by the ShipEngine Platform.
+   */
+  metadata?: object;
 }

@@ -1,7 +1,7 @@
 import { Country, DocumentFormat, DocumentSize, ServiceArea } from "../../enums";
 import { error, ErrorCode } from "../../errors";
 import { hideAndFreeze, Joi, validateArray, _internal } from "../../internal";
-import { CarrierPOJO, NewShipmentPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO } from "../../pojos/carrier";
+import { CarrierPOJO, NewShipmentPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, TrackingCriteriaPOJO } from "../../pojos/carrier";
 import { LocalizedBrandingPOJO, TransactionPOJO } from "../../pojos/common";
 import { FilePath, UUID } from "../../types";
 import { Transaction } from "../common";
@@ -20,6 +20,8 @@ import { Rate } from "./rates/rate";
 import { RateCriteria } from "./rates/rate-criteria";
 import { NewShipment } from "./shipments/new-shipment";
 import { ShipmentConfirmation } from "./shipments/shipment-confirmation";
+import { TrackingCriteria } from "./tracking/tracking-criteria";
+import { TrackingInfo } from "./tracking/tracking-info";
 import { getMaxServiceArea } from "./utils";
 
 const _private = Symbol("private fields");
@@ -391,19 +393,21 @@ export class Carrier {
   /**
    * Returns tracking details for a shipment
    */
-  public async track?(transaction: TransactionPOJO): Promise<unknown> {
-    let _transaction;
+  public async track?(transaction: TransactionPOJO, shipment: TrackingCriteriaPOJO): Promise<TrackingInfo> {
+    let _transaction, _shipment;
+    let { app, track } = this[_private];
 
     try {
       _transaction = new Transaction(transaction);
+      _shipment = new TrackingCriteria(shipment);
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the track method.", { originalError });
     }
 
     try {
-      // TODO: NOT IMPLEMENTED YET
-      return await Promise.resolve(undefined);
+      let trackingInfo = await track!(_transaction, _shipment);
+      return new TrackingInfo(trackingInfo, app);
     }
     catch (originalError) {
       let transactionID = _transaction.id;

@@ -1,7 +1,7 @@
 import { Country, DocumentFormat, DocumentSize, ServiceArea } from "../../enums";
 import { error, ErrorCode } from "../../errors";
 import { hideAndFreeze, Joi, validate, validateArray, _internal } from "../../internal";
-import { CarrierPOJO, NewShipmentPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, ShipmentCancellationPOJO, TrackingCriteriaPOJO } from "../../pojos/carrier";
+import { CarrierPOJO, NewManifestPOJO, NewShipmentPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, ShipmentCancellationPOJO, TrackingCriteriaPOJO } from "../../pojos/carrier";
 import { LocalizedBrandingPOJO, TransactionPOJO } from "../../pojos/common";
 import { FilePath, UUID } from "../../types";
 import { Transaction } from "../common";
@@ -9,6 +9,8 @@ import { App } from "../common/app";
 import { Localization, localize } from "../common/localization";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
+import { ManifestConfirmation } from "./manifests/manifest-confirmation";
+import { NewManifest } from "./manifests/new-manifest";
 import { CancelPickups, CancelShipments, CreateManifest, CreateShipment, RateShipment, SchedulePickup, Track } from "./methods";
 import { Packaging } from "./packaging";
 import { PickupService } from "./pickup-service";
@@ -430,21 +432,34 @@ export class Carrier {
   }
 
   /**
-   * Creates a manifest for multiple shipments
+   * Creates an end-of-day manifest
    */
-  public async createManifest?(transaction: TransactionPOJO): Promise<unknown> {
-    let _transaction;
+  public async createManifest?(transaction: TransactionPOJO, manifest: NewManifestPOJO): Promise<ManifestConfirmation> {
+    let _transaction, _manifest;
+    let { app, createManifest } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
+      _manifest = new NewManifest(validate(manifest, NewManifest));
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the createManifest method.", { originalError });
     }
 
     try {
-      // TODO: NOT IMPLEMENTED YET
-      return await Promise.resolve(undefined);
+      let confirmation = await createManifest!(_transaction, _manifest);
+
+      if (confirmation === undefined) {
+        confirmation = {
+          shipments: manifest.includedShipments,
+        };
+      }
+      else if (confirmation && confirmation.shipments === undefined) {
+        // By default, all shipments are included in the manifest
+        confirmation.shipments = manifest.includedShipments;
+      }
+
+      return new ManifestConfirmation(validate(confirmation, ManifestConfirmation));
     }
     catch (originalError) {
       let transactionID = _transaction.id;

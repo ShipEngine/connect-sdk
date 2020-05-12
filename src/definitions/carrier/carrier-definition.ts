@@ -75,7 +75,7 @@ export interface CarrierDefinition {
   track?: InlineOrReference<Track>;
 
   /**
-   * Creates a manifest for multiple shipments
+   * Creates an end-of-day manifest
    */
   createManifest?: InlineOrReference<CreateManifest>;
 

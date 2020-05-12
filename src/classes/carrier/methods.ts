@@ -1,6 +1,7 @@
-import { PickupCancellationConfirmationPOJO, PickupConfirmationPOJO, RatePOJO, ShipmentCancellationConfirmationPOJO, ShipmentConfirmationPOJO } from "../../pojos/carrier";
+import { ManifestConfirmationPOJO, PickupCancellationConfirmationPOJO, PickupConfirmationPOJO, RatePOJO, ShipmentCancellationConfirmationPOJO, ShipmentConfirmationPOJO } from "../../pojos/carrier";
 import { TrackingInfoPOJO } from "../../pojos/carrier/tracking-info-pojo";
 import { Transaction } from "../common";
+import { NewManifest } from "./manifests/new-manifest";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
 import { PickupRequest } from "./pickups/pickup-request";
 import { RateCriteria } from "./rates/rate-criteria";
@@ -32,9 +33,10 @@ export type RateShipment = (transaction: Transaction, shipment: RateCriteria) =>
 export type Track = (transaction: Transaction, shipment: TrackingCriteria) => TrackingInfoPOJO | Promise<TrackingInfoPOJO>;
 
 /**
- * Creates a manifest for multiple shipments
+ * Creates an end-of-day manifest
  */
-export type CreateManifest = (transaction: Transaction, params: unknown) => void | Promise<void>;
+export type CreateManifest = (transaction: Transaction, manifest: NewManifest)
+  => void | ManifestConfirmationPOJO | Promise<void | ManifestConfirmationPOJO>;
 
 /**
  * Schedules a package pickup at a time and place

@@ -3,6 +3,8 @@ export * from "./carrier-app";
 export * from "./delivery-confirmation";
 export * from "./delivery-service";
 export * from "./document";
+export * from "./manifests/manifest-confirmation";
+export * from "./manifests/new-manifest";
 export * from "./methods";
 export * from "./packages/new-label";
 export { NewPackage } from "./packages/new-package";

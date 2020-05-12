@@ -53,7 +53,7 @@ export interface PickupCancellationPOJO {
   shipments: ShipmentPOJO[];
 
   /**
-   * Arbitrary data that was returned when the pickup was originally confirmed.
+   * Arbitrary data about this pickup that was previously persisted by the ShipEngine Platform.
    */
   metadata?: object;
 }

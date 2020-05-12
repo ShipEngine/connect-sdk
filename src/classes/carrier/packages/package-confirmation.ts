@@ -39,7 +39,7 @@ export class PackageConfirmation extends packageIdentifierMixin() {
   public readonly customsForm?: Document;
 
   /**
-   * Arbitrary data that will be persisted by the ShipEngine Integration Platform.
+   * Arbitrary data about this package that will be persisted by the ShipEngine Integration Platform.
    * Must be JSON serializable.
    */
   public readonly metadata?: object;

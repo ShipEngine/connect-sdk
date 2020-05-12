@@ -62,7 +62,7 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
   public readonly packages: ReadonlyArray<PackageConfirmation>;
 
   /**
-   * Arbitrary data that will be persisted by the ShipEngine Integration Platform.
+   * Arbitrary data about this shipment that will be persisted by the ShipEngine Integration Platform.
    * Must be JSON serializable.
    */
   public readonly metadata?: object;

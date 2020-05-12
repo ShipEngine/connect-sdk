@@ -66,7 +66,7 @@ export class PickupConfirmation {
   public readonly notes: string;
 
   /**
-   * Arbitrary data that will be persisted by the ShipEngine Integration Platform.
+   * Arbitrary data about this pickup that will be persisted by the ShipEngine Integration Platform.
    * Must be JSON serializable.
    */
   public readonly metadata?: object;

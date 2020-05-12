@@ -40,7 +40,7 @@ export interface PickupConfirmationPOJO {
   notes?: string;
 
   /**
-   * Arbitrary data that will be persisted by the ShipEngine Integration Platform.
+   * Arbitrary data about this pickup that will be persisted by the ShipEngine Integration Platform.
    * Must be JSON serializable.
    */
   metadata?: object;

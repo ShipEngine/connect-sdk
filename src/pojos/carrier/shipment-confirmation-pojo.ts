@@ -39,7 +39,7 @@ export interface ShipmentConfirmationPOJO extends ShipmentIdentifierPOJO {
   packages: PackageConfirmationPOJO[];
 
   /**
-   * Arbitrary data that will be persisted by the ShipEngine Integration Platform.
+   * Arbitrary data about this shipment that will be persisted by the ShipEngine Integration Platform.
    * Must be JSON serializable.
    */
   metadata?: object;
@@ -65,7 +65,7 @@ export interface PackageConfirmationPOJO extends PackageIdentifierPOJO {
   customsForm?: DocumentPOJO;
 
   /**
-   * Arbitrary data that will be persisted by the ShipEngine Integration Platform.
+   * Arbitrary data about this package that will be persisted by the ShipEngine Integration Platform.
    * Must be JSON serializable.
    */
   metadata?: object;

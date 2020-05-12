@@ -1,5 +1,6 @@
 export * from "./carrier-app-pojo";
 export * from "./definitions-pojo";
+export * from "./document-pojo";
 export * from "./new-package-pojo";
 export * from "./new-shipment-pojo";
 export * from "./package-identifier-pojo";

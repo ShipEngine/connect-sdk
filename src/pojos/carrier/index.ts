@@ -8,6 +8,7 @@ export * from "./pickup-cancellation-confirmation-pojo";
 export * from "./pickup-cancellation-pojo";
 export * from "./pickup-confirmation-pojo";
 export * from "./pickup-request-pojo";
+export * from "./pickup-shipment-pojo";
 export * from "./rate-criteria-pojo";
 export * from "./rate-pojo";
 export * from "./shipment-confirmation-pojo";

@@ -3,7 +3,7 @@ import { PickupRequestPOJO } from "../../../pojos/carrier";
 import { Address, ContactInfo, TimeRange } from "../../common";
 import { App } from "../../common/app";
 import { PickupService } from "../pickup-service";
-import { Shipment } from "../shipments/shipment";
+import { PickupShipment } from "../pickup-shipment";
 
 /**
  * A request for a carrier to pickup package(s) at a time and place
@@ -20,7 +20,7 @@ export class PickupRequest {
       address: Address[_internal].schema.required(),
       contact: ContactInfo[_internal].schema.required(),
       notes: Joi.string().allow("").max(5000),
-      shipments: Joi.array().min(1).items(Shipment[_internal].schema).required(),
+      shipments: Joi.array().min(1).items(PickupShipment[_internal].schema).required(),
     }),
   };
 
@@ -55,7 +55,7 @@ export class PickupRequest {
   /**
    * The shipments to be picked up
    */
-  public readonly shipments: ReadonlyArray<Shipment>;
+  public readonly shipments: ReadonlyArray<PickupShipment>;
 
   //#endregion
 
@@ -67,7 +67,7 @@ export class PickupRequest {
     this.address = new Address(pojo.address);
     this.contact = new ContactInfo(pojo.contact);
     this.notes = pojo.notes || "";
-    this.shipments = pojo.shipments.map((shipment) => new Shipment(shipment, app));
+    this.shipments = pojo.shipments.map((shipment) => new PickupShipment(shipment, app));
 
     // Make this object immutable
     hideAndFreeze(this);

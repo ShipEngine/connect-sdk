@@ -1,6 +1,6 @@
 import { UUID } from "../../types";
 import { AddressPOJO, ContactInfoPOJO, TimeRangePOJO } from "../common";
-import { ShipmentPOJO } from "./shipment-pojo";
+import { PickupShipmentPOJO } from "./pickup-shipment-pojo";
 
 /**
  * A request for a carrier to pickup package(s) at a time and place
@@ -34,5 +34,5 @@ export interface PickupRequestPOJO {
   /**
    * The shipments to be picked up
    */
-  shipments: ShipmentPOJO[];
+  shipments: PickupShipmentPOJO[];
 }

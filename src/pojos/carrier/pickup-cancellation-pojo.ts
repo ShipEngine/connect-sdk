@@ -8,19 +8,19 @@ import { ShipmentPOJO } from "./shipment-pojo";
  */
 export interface PickupCancellationPOJO {
   /**
-   * The confirmation ID of the pickup request to be canceled
+   * The confirmation number of the pickup request to be canceled
    */
-  confirmationID: string;
-
-  /**
-   * The ID of the requested pickup service
-   */
-  pickupServiceID: UUID;
+  confirmationNumber?: string;
 
   /**
    * Alternative identifiers associated with this confirmation
    */
   identifiers?: IdentifierPOJO[];
+
+  /**
+   * The ID of the requested pickup service
+   */
+  pickupServiceID: UUID;
 
   /**
    * The reason for the cancellation

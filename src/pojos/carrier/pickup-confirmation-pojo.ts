@@ -7,9 +7,9 @@ import { ShippingChargePOJO } from "./shipping-charge-pojo";
  */
 export interface PickupConfirmationPOJO {
   /**
-   * The carrier's confirmation ID
+   * The carrier's confirmation number, if any
    */
-  confirmationID: string;
+  confirmationNumber?: string;
 
   /**
    * Alternative identifiers associated with this pickup

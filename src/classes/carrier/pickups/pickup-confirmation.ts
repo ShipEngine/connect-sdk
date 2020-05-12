@@ -15,7 +15,7 @@ export class PickupConfirmation {
   public static readonly [_internal] = {
     label: "pickup confirmation",
     schema: Joi.object({
-      confirmationID: Joi.string().trim().singleLine().allow("").max(100),
+      confirmationNumber: Joi.string().trim().singleLine().allow("").max(100),
       identifiers: Joi.array().items(Identifier[_internal].schema),
       timeWindows: Joi.array().min(1).items(TimeRange[_internal].schema).required(),
       charges: Joi.array().min(1).items(ShippingCharge[_internal].schema).required(),
@@ -29,9 +29,9 @@ export class PickupConfirmation {
   //#region Public Fields
 
   /**
-   * The carrier's confirmation ID
+   * The carrier's confirmation number, if any
    */
-  public readonly confirmationID: string;
+  public readonly confirmationNumber: string;
 
   /**
    * Alternative identifiers associated with this pickup
@@ -76,7 +76,7 @@ export class PickupConfirmation {
   public constructor(pojo: PickupConfirmationPOJO) {
     validate(pojo, PickupConfirmation);
 
-    this.confirmationID = pojo.confirmationID;
+    this.confirmationNumber = pojo.confirmationNumber || "";
     this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];
     this.timeWindows = pojo.timeWindows.map((window) => new TimeRange(window));
     this.charges = pojo.charges.map((charge) => new ShippingCharge(charge));

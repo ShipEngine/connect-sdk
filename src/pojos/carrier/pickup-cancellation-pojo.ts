@@ -8,6 +8,12 @@ import { PickupShipmentPOJO } from "./pickup-shipment-pojo";
  */
 export interface PickupCancellationPOJO {
   /**
+   * ShipEngine's unique identifier for the pickup. This ID must be returned, along with a flag
+   * indicating whether it was successfully canceled.
+   */
+  pickupID: string;
+
+  /**
    * The confirmation number of the pickup request to be canceled
    */
   confirmationNumber?: string;

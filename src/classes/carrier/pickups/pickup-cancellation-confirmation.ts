@@ -11,6 +11,7 @@ export class PickupCancellationConfirmation {
   public static readonly [_internal] = {
     label: "pickup cancellation confirmation",
     schema: Joi.object({
+      pickupID: Joi.string().trim().singleLine().min(1).max(100).required(),
       successful: Joi.boolean().required(),
       cancellationNumber: Joi.string().trim().singleLine().allow("").max(100),
       notes: Joi.string().allow("").max(5000),
@@ -20,6 +21,12 @@ export class PickupCancellationConfirmation {
 
   //#endregion
   //#region Public Fields
+
+  /**
+   * ShipEngine's unique identifier for the pickup. Indicates which pickup this cancellation
+   * confirmation is for.
+   */
+  public readonly pickupID: string;
 
   /**
    * Indicates whether the pickup was successfully canceled.
@@ -48,7 +55,7 @@ export class PickupCancellationConfirmation {
   //#endregion
 
   public constructor(pojo: PickupCancellationConfirmationPOJO) {
-    validate(pojo, PickupCancellationConfirmation);
+    this.pickupID = pojo.pickupID;
     this.successful = pojo.successful;
     this.cancellationNumber = pojo.cancellationNumber || "";
     this.notes = pojo.notes || "";

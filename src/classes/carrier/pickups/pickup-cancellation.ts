@@ -16,6 +16,7 @@ export class PickupCancellation {
   public static readonly [_internal] = {
     label: "pickup cancellation",
     schema: Joi.object({
+      pickupID: Joi.string().trim().singleLine().min(1).max(100).required(),
       confirmationNumber: Joi.string().trim().singleLine().min(1).max(100),
       pickupServiceID: Joi.string().uuid().required(),
       identifiers: Joi.array().items(Identifier[_internal].schema),
@@ -31,6 +32,12 @@ export class PickupCancellation {
 
   //#endregion
   //#region Public Fields
+
+  /**
+   * ShipEngine's unique identifier for the pickup. This ID must be returned, along with a flag
+   * indicating whether it was successfully canceled.
+   */
+  public readonly pickupID: string;
 
   /**
    * The confirmation ID of the pickup request to be canceled
@@ -85,7 +92,7 @@ export class PickupCancellation {
   //#endregion
 
   public constructor(pojo: PickupCancellationPOJO, app: App) {
-    validate(pojo, PickupCancellation);
+    this.pickupID = pojo.pickupID;
     this.confirmationNumber = pojo.confirmationNumber || "";
     this.pickupService = app[_internal].references.lookup(pojo.pickupServiceID, PickupService);
     this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];

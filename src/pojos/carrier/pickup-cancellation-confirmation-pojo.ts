@@ -4,6 +4,12 @@
  */
 export interface PickupCancellationConfirmationPOJO {
   /**
+   * ShipEngine's unique identifier for the pickup. Indicates which pickup this cancellation
+   * confirmation is for.
+   */
+  pickupID: string;
+
+  /**
    * Indicates whether the pickup was successfully canceled.
    * If the pickup was _not_ canceled, then the `notes` field should contain
    * information and/or instructions for the customer. (e.g. "Please call ###-#### to cancel")

@@ -3,7 +3,7 @@ import { PickupRequestPOJO } from "../../../pojos/carrier";
 import { Address, ContactInfo, TimeRange } from "../../common";
 import { App } from "../../common/app";
 import { PickupService } from "../pickup-service";
-import { PickupShipment } from "../pickup-shipment";
+import { PickupShipment } from "./pickup-shipment";
 
 /**
  * A request for a carrier to pickup package(s) at a time and place

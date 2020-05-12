@@ -11,9 +11,9 @@ export interface PickupCancellationConfirmationPOJO {
   successful: boolean;
 
   /**
-   * The carrier's cancellation ID, if any
+   * The carrier's cancellation number, if any
    */
-  cancellationID?: string;
+  cancellationNumber?: string;
 
   /**
    * Human-readable information/instructions regarding the cancellation

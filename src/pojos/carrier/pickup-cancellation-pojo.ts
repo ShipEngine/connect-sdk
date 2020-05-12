@@ -1,7 +1,7 @@
 import { PickupCancellationReason } from "../../enums";
 import { UUID } from "../../types";
 import { AddressPOJO, ContactInfoPOJO, IdentifierPOJO, TimeRangePOJO } from "../common";
-import { ShipmentPOJO } from "./shipment-pojo";
+import { PickupShipmentPOJO } from "./pickup-shipment-pojo";
 
 /**
  * Cancellation of a previously-scheduled package pickup
@@ -50,7 +50,7 @@ export interface PickupCancellationPOJO {
   /**
    * The shipments to be picked up
    */
-  shipments: ShipmentPOJO[];
+  shipments: PickupShipmentPOJO[];
 
   /**
    * Arbitrary data about this pickup that was previously persisted by the ShipEngine Platform.

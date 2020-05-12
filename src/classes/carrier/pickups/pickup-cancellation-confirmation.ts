@@ -1,4 +1,4 @@
-import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
+import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { PickupCancellationConfirmationPOJO } from "../../../pojos/carrier";
 
 /**
@@ -12,7 +12,7 @@ export class PickupCancellationConfirmation {
     label: "pickup cancellation confirmation",
     schema: Joi.object({
       successful: Joi.boolean().required(),
-      cancellationID: Joi.string().trim().singleLine().allow("").max(100),
+      cancellationNumber: Joi.string().trim().singleLine().allow("").max(100),
       notes: Joi.string().allow("").max(5000),
       metadata: Joi.object(),
     }),
@@ -29,9 +29,9 @@ export class PickupCancellationConfirmation {
   public readonly successful: boolean;
 
   /**
-   * The carrier's cancellation ID, if any
+   * The carrier's cancellation number, if any
    */
-  public readonly cancellationID: string;
+  public readonly cancellationNumber: string;
 
   /**
    * Additional information/instructions regarding the cancellation
@@ -49,9 +49,8 @@ export class PickupCancellationConfirmation {
 
   public constructor(pojo: PickupCancellationConfirmationPOJO) {
     validate(pojo, PickupCancellationConfirmation);
-
     this.successful = pojo.successful;
-    this.cancellationID = pojo.cancellationID || "";
+    this.cancellationNumber = pojo.cancellationNumber || "";
     this.notes = pojo.notes || "";
     this.metadata = pojo.metadata;
 

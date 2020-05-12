@@ -1,10 +1,10 @@
 import { PickupCancellationReason } from "../../../enums";
-import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
+import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { PickupCancellationPOJO } from "../../../pojos/carrier";
 import { Address, ContactInfo, Identifier, TimeRange } from "../../common";
 import { App } from "../../common/app";
 import { PickupService } from "../pickup-service";
-import { Shipment } from "../shipments/shipment";
+import { PickupShipment } from "./pickup-shipment";
 
 /**
  * Cancellation of a previously-scheduled package pickup
@@ -24,7 +24,7 @@ export class PickupCancellation {
       address: Address[_internal].schema.required(),
       contact: ContactInfo[_internal].schema.required(),
       timeWindows: Joi.array().min(1).items(TimeRange[_internal].schema).required(),
-      shipments: Joi.array().min(1).items(Shipment[_internal].schema).required(),
+      shipments: Joi.array().min(1).items(PickupShipment[_internal].schema).required(),
       metadata: Joi.object(),
     }),
   };
@@ -75,7 +75,7 @@ export class PickupCancellation {
   /**
    * The shipments to be picked up
    */
-  public readonly shipments: ReadonlyArray<Shipment>;
+  public readonly shipments: ReadonlyArray<PickupShipment>;
 
   /**
    * Arbitrary data about this pickup that was previously persisted by the ShipEngine Platform.
@@ -86,7 +86,6 @@ export class PickupCancellation {
 
   public constructor(pojo: PickupCancellationPOJO, app: App) {
     validate(pojo, PickupCancellation);
-
     this.confirmationNumber = pojo.confirmationNumber || "";
     this.pickupService = app[_internal].references.lookup(pojo.pickupServiceID, PickupService);
     this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];
@@ -95,7 +94,7 @@ export class PickupCancellation {
     this.address = new Address(pojo.address);
     this.contact = new ContactInfo(pojo.contact);
     this.timeWindows = pojo.timeWindows.map((window) => new TimeRange(window));
-    this.shipments = pojo.shipments.map((shipment) => new Shipment(shipment, app));
+    this.shipments = pojo.shipments.map((shipment) => new PickupShipment(shipment, app));
     this.metadata = pojo.metadata || {};
 
     // Make this object immutable

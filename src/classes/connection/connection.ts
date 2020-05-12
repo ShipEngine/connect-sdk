@@ -1,5 +1,5 @@
 import { error, ErrorCode } from "../../errors";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { hideAndFreeze, Joi, validate, _internal } from "../../internal";
 import { LocalizedBrandingPOJO, TransactionPOJO } from "../../pojos/common";
 import { ConnectionPOJO } from "../../pojos/connection";
 import { FilePath, UUID } from "../../types";
@@ -145,7 +145,7 @@ export class Connection {
     let { connect } = this[_private];
 
     try {
-      _transaction = new Transaction(transaction);
+      _transaction = new Transaction(validate(transaction, Transaction));
       _connectionFormData = Object.assign({}, connectionFormData);
     }
     catch (originalError) {

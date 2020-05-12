@@ -1,5 +1,5 @@
 import { FulfillmentService } from "../../../enums";
-import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
+import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { ShipmentConfirmationPOJO } from "../../../pojos/carrier";
 import { DateTimeZone, MonetaryValue } from "../../common";
 import { PackageConfirmation } from "../packages/package-confirmation";
@@ -71,8 +71,6 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
 
   public constructor(pojo: ShipmentConfirmationPOJO) {
     super(pojo);
-
-    validate(pojo, ShipmentConfirmation);
 
     this.trackingURL = pojo.trackingURL ? new URL(pojo.trackingURL as string) : undefined;
     this.fulfillmentService = pojo.fulfillmentService;

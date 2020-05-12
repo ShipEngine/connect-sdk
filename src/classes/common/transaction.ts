@@ -89,8 +89,6 @@ export class Transaction {
   //#endregion
 
   public constructor(pojo: TransactionPOJO) {
-    validate(pojo, Transaction);
-
     this.id = pojo.id;
     this.isRetry = pojo.isRetry || false;
     this.useSandbox = pojo.useSandbox || false;

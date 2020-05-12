@@ -1,5 +1,5 @@
 import { BilledParty, Country, InsuranceProvider, NonDeliveryAction } from "../../../enums";
-import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
+import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { NewShipmentPOJO } from "../../../pojos/carrier";
 import { AddressWithContactInfo, DateTimeZone, MonetaryValue } from "../../common";
 import { App } from "../../common/app";
@@ -165,8 +165,6 @@ export class NewShipment {
   //#endregion
 
   public constructor(pojo: NewShipmentPOJO, app: App) {
-    validate(pojo, NewShipment);
-
     this.deliveryService = app[_internal].references.lookup(pojo.deliveryServiceID, DeliveryService);
     this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmationID, DeliveryConfirmation);
     this.shipFrom = new AddressWithContactInfo(pojo.shipFrom);

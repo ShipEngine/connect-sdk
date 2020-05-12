@@ -1,4 +1,4 @@
-import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
+import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { PickupRequestPOJO } from "../../../pojos/carrier";
 import { Address, ContactInfo, TimeRange } from "../../common";
 import { App } from "../../common/app";
@@ -60,8 +60,6 @@ export class PickupRequest {
   //#endregion
 
   public constructor(pojo: PickupRequestPOJO, app: App) {
-    validate(pojo, PickupRequest);
-
     this.pickupService = app[_internal].references.lookup(pojo.pickupServiceID, PickupService);
     this.timeWindow = new TimeRange(pojo.timeWindow);
     this.address = new Address(pojo.address);

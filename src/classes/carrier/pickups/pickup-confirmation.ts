@@ -1,4 +1,4 @@
-import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
+import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { PickupConfirmationPOJO } from "../../../pojos/carrier";
 import { Identifier, MonetaryValue, TimeRange } from "../../common";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
@@ -74,8 +74,6 @@ export class PickupConfirmation {
   //#endregion
 
   public constructor(pojo: PickupConfirmationPOJO) {
-    validate(pojo, PickupConfirmation);
-
     this.confirmationNumber = pojo.confirmationNumber || "";
     this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];
     this.timeWindows = pojo.timeWindows.map((window) => new TimeRange(window));

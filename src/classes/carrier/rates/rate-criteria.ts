@@ -1,5 +1,5 @@
 import { FulfillmentService } from "../../../enums";
-import { hideAndFreeze, Joi, validate, _internal } from "../../../internal";
+import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { RateCriteriaPOJO } from "../../../pojos/carrier";
 import { AddressWithContactInfo, DateTimeZone, MonetaryValue } from "../../common";
 import { App } from "../../common/app";
@@ -101,8 +101,6 @@ export class RateCriteria {
   //#endregion
 
   public constructor(pojo: RateCriteriaPOJO, app: App) {
-    validate(pojo, RateCriteria);
-
     this.deliveryServices = (pojo.deliveryServices || [])
       .map((id) => app[_internal].references.lookup(id, DeliveryService));
     this.deliveryConfirmations = (pojo.deliveryConfirmations || [])

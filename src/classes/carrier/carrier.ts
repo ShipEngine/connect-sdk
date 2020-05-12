@@ -1,6 +1,6 @@
 import { Country, DocumentFormat, DocumentSize, ServiceArea } from "../../enums";
 import { error, ErrorCode } from "../../errors";
-import { hideAndFreeze, Joi, validateArray, _internal } from "../../internal";
+import { hideAndFreeze, Joi, validate, validateArray, _internal } from "../../internal";
 import { CarrierPOJO, NewShipmentPOJO, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, TrackingCriteriaPOJO } from "../../pojos/carrier";
 import { LocalizedBrandingPOJO, TransactionPOJO } from "../../pojos/common";
 import { FilePath, UUID } from "../../types";
@@ -324,8 +324,8 @@ export class Carrier {
     let { app, createShipment } = this[_private];
 
     try {
-      _transaction = new Transaction(transaction);
-      _shipment = new NewShipment(shipment, app);
+      _transaction = new Transaction(validate(transaction, Transaction));
+      _shipment = new NewShipment(validate(shipment, NewShipment), app);
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the createShipment method.", { originalError });
@@ -333,7 +333,7 @@ export class Carrier {
 
     try {
       let confirmation = await createShipment!(_transaction, _shipment);
-      return new ShipmentConfirmation(confirmation);
+      return new ShipmentConfirmation(validate(confirmation, ShipmentConfirmation));
     }
     catch (originalError) {
       let transactionID = _transaction.id;
@@ -348,7 +348,7 @@ export class Carrier {
     let _transaction;
 
     try {
-      _transaction = new Transaction(transaction);
+      _transaction = new Transaction(validate(transaction, Transaction));
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the voidLabels method.", { originalError });
@@ -372,8 +372,8 @@ export class Carrier {
     let { app, rateShipment } = this[_private];
 
     try {
-      _transaction = new Transaction(transaction);
-      _shipment = new RateCriteria(shipment, app);
+      _transaction = new Transaction(validate(transaction, Transaction));
+      _shipment = new RateCriteria(validate(shipment, RateCriteria), app);
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the rateShipment method.", { originalError });
@@ -381,8 +381,7 @@ export class Carrier {
 
     try {
       let rates = await rateShipment!(_transaction, _shipment);
-      validateArray(rates, Rate);
-      return rates.map((rate) => new Rate(rate, app));
+      return validateArray(rates, Rate).map((rate) => new Rate(rate, app));
     }
     catch (originalError) {
       let transactionID = _transaction.id;
@@ -398,8 +397,8 @@ export class Carrier {
     let { app, track } = this[_private];
 
     try {
-      _transaction = new Transaction(transaction);
-      _shipment = new TrackingCriteria(shipment);
+      _transaction = new Transaction(validate(transaction, Transaction));
+      _shipment = new TrackingCriteria(validate(shipment, TrackingCriteria));
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the track method.", { originalError });
@@ -407,7 +406,7 @@ export class Carrier {
 
     try {
       let trackingInfo = await track!(_transaction, _shipment);
-      return new TrackingInfo(trackingInfo, app);
+      return new TrackingInfo(validate(trackingInfo, TrackingInfo), app);
     }
     catch (originalError) {
       let transactionID = _transaction.id;
@@ -422,7 +421,7 @@ export class Carrier {
     let _transaction;
 
     try {
-      _transaction = new Transaction(transaction);
+      _transaction = new Transaction(validate(transaction, Transaction));
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the createManifest method.", { originalError });
@@ -446,8 +445,8 @@ export class Carrier {
     let { app, schedulePickup } = this[_private];
 
     try {
-      _transaction = new Transaction(transaction);
-      _request = new PickupRequest(request, app);
+      _transaction = new Transaction(validate(transaction, Transaction));
+      _request = new PickupRequest(validate(request, PickupRequest), app);
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the schedulePickup method.", { originalError });
@@ -461,7 +460,7 @@ export class Carrier {
         confirmation.shipments = request.shipments;
       }
 
-      return new PickupConfirmation(confirmation);
+      return new PickupConfirmation(validate(confirmation, PickupConfirmation));
     }
     catch (originalError) {
       let transactionID = _transaction.id;
@@ -478,9 +477,9 @@ export class Carrier {
     let { app, cancelPickups } = this[_private];
 
     try {
-      _transaction = new Transaction(transaction);
-      validateArray(cancellations, PickupCancellation);
-      _cancellations = cancellations.map((cancellation) => new PickupCancellation(cancellation, app));
+      _transaction = new Transaction(validate(transaction, Transaction));
+      _cancellations = validateArray(cancellations, PickupCancellation)
+        .map((cancellation) => new PickupCancellation(cancellation, app));
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the cancelPickups method.", { originalError });
@@ -497,8 +496,8 @@ export class Carrier {
         }));
       }
 
-      validateArray(confirmations, PickupCancellationConfirmation);
-      return confirmations.map((confirmation) => new PickupCancellationConfirmation(confirmation));
+      return validateArray(confirmations, PickupCancellationConfirmation)
+        .map((confirmation) => new PickupCancellationConfirmation(confirmation));
     }
     catch (originalError) {
       let transactionID = _transaction.id;

@@ -1,12 +1,40 @@
+// tslint:disable: max-classes-per-file
 import { Country } from "../../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { AddressPOJO } from "../../../pojos/common";
 import { GeoCoordinate } from "./geo-coordinate";
 
 /**
+ * The abstract base class for all address classes
+ */
+export abstract class BaseAddress {
+  public readonly company: string;
+  public readonly addressLines: ReadonlyArray<string>;
+  public readonly cityLocality: string;
+  public readonly stateProvince: string;
+  public readonly postalCode: string;
+  public readonly country?: Country;
+  public readonly timeZone?: string;
+  public readonly isResidential?: boolean;
+  public readonly coordinates?: GeoCoordinate;
+
+  public constructor(pojo: Partial<AddressPOJO>) {
+    this.company = pojo.company || "";
+    this.addressLines = pojo.addressLines || [];
+    this.cityLocality = pojo.cityLocality || "";
+    this.stateProvince = pojo.stateProvince || "";
+    this.postalCode = pojo.postalCode || "";
+    this.country = pojo.country;
+    this.timeZone = pojo.timeZone;
+    this.isResidential = pojo.isResidential;
+    this.coordinates = pojo.coordinates && new GeoCoordinate(pojo.coordinates);
+  }
+}
+
+/**
  * A partial mailing address
  */
-export class PartialAddress {
+export class PartialAddress extends BaseAddress {
   //#region Private/Internal Fields
 
   /** @internal */
@@ -26,30 +54,9 @@ export class PartialAddress {
   };
 
   //#endregion
-  //#region Public Fields
-
-  public readonly company: string;
-  public readonly addressLines: ReadonlyArray<string>;
-  public readonly cityLocality: string;
-  public readonly stateProvince: string;
-  public readonly postalCode: string;
-  public readonly country?: Country;
-  public readonly timeZone?: string;
-  public readonly isResidential?: boolean;
-  public readonly coordinates?: GeoCoordinate;
-
-  //#endregion
 
   public constructor(pojo: Partial<AddressPOJO>) {
-    this.company = pojo.company || "";
-    this.addressLines = pojo.addressLines || [];
-    this.cityLocality = pojo.cityLocality || "";
-    this.stateProvince = pojo.stateProvince || "";
-    this.postalCode = pojo.postalCode || "";
-    this.country = pojo.country;
-    this.timeZone = pojo.timeZone;
-    this.isResidential = pojo.isResidential;
-    this.coordinates = pojo.coordinates && new GeoCoordinate(pojo.coordinates);
+    super(pojo);
 
     // Make this object immutable
     hideAndFreeze(this);

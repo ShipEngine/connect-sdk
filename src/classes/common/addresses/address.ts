@@ -1,12 +1,12 @@
 import { Country } from "../../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../../internal";
 import { AddressPOJO } from "../../../pojos/common";
-import { PartialAddress } from "./partial-address";
+import { BaseAddress, PartialAddress } from "./partial-address";
 
 /**
  * A mailing address
  */
-export class Address extends PartialAddress {
+export class Address extends addressMixin() {
   //#region Private/Internal Fields
 
   /** @internal */
@@ -23,12 +23,6 @@ export class Address extends PartialAddress {
   };
 
   //#endregion
-  //#region Public Fields
-
-  public readonly country!: Country;
-  public readonly timeZone!: string;
-
-  //#endregion
 
   public constructor(pojo: AddressPOJO) {
     super(pojo);
@@ -36,19 +30,38 @@ export class Address extends PartialAddress {
     // Make this object immutable
     hideAndFreeze(this);
   }
-
-  /**
-   * Returns the formatted address
-   */
-  public toString(): string {
-    let address = [];
-    this.company && address.push(this.company);
-    address.push(...this.addressLines);
-    address.push(`${this.cityLocality}, ${this.stateProvince} ${this.postalCode}`);
-    address.push(this.country);
-    return address.join("\n");
-  }
 }
 
 // Prevent modifications to the class
 hideAndFreeze(Address);
+
+/**
+ * Extends a base class with the fields of an address
+ * @internal
+ */
+export function addressMixin(base: typeof BaseAddress = BaseAddress) {
+  return class AddressMixin extends base {
+    //#region Public Fields
+
+    public readonly country!: Country;
+    public readonly timeZone!: string;
+
+    //#endregion
+
+    public constructor(pojo: AddressPOJO) {
+      super(pojo);
+    }
+
+    /**
+     * Returns the formatted address
+     */
+    public toString(): string {
+      let address = [];
+      this.company && address.push(this.company);
+      address.push(...this.addressLines);
+      address.push(`${this.cityLocality}, ${this.stateProvince} ${this.postalCode}`);
+      address.push(this.country);
+      return address.join("\n");
+    }
+  };
+}

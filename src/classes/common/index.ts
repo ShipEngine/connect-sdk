@@ -1,8 +1,8 @@
-export * from "./addresses/address";
+export { Address } from "./addresses/address";
 export * from "./addresses/address-with-contact-info";
 export { ContactInfo } from "./addresses/contact-info";
 export * from "./addresses/geo-coordinate";
-export * from "./addresses/partial-address";
+export { PartialAddress } from "./addresses/partial-address";
 export * from "./addresses/person-name";
 export * from "./identifier";
 export * from "./measures/date-time-zone";

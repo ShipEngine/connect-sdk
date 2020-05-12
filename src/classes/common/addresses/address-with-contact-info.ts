@@ -1,6 +1,6 @@
 import { hideAndFreeze, _internal } from "../../../internal";
 import { AddressWithContactInfoPOJO } from "../../../pojos/common";
-import { Address } from "./address";
+import { Address, addressMixin } from "./address";
 import { ContactInfo, contactInfoMixin } from "./contact-info";
 
 /**
@@ -11,7 +11,7 @@ export interface AddressWithContactInfo extends Address, ContactInfo {}
 /**
  * A mailing address with a person's contact info
  */
-export class AddressWithContactInfo extends contactInfoMixin(Address) {
+export class AddressWithContactInfo extends contactInfoMixin(addressMixin()) {
   //#region Private/Internal Fields
 
   /** @internal */

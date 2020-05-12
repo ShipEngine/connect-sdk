@@ -10,11 +10,11 @@ describe("DateTimeZone", () => {
   async function createDateTimeZone (value) {
     let app = new CarrierApp(pojo.carrierApp({
       carrier: pojo.carrier({
-        rateShipment: () => ({ rates: [pojo.rate({ shipDateTime: value })]})
+        rateShipment: () => [pojo.rate({ shipDateTime: value })]
       }),
     }));
-    let quote = await app.carrier.rateShipment(pojo.transaction(), pojo.rateCriteria());
-    return quote.rates[0].shipDateTime;
+    let rates = await app.carrier.rateShipment(pojo.transaction(), pojo.rateCriteria());
+    return rates[0].shipDateTime;
   }
 
   it("should create a DateTimeZone from a Date object", async () => {
@@ -269,8 +269,8 @@ describe("DateTimeZone", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Error in rateShipment method. \n" +
-          "Invalid rate quote: \n" +
-          "  rates[0].shipDateTime must be one of date, string, object"
+          "Invalid rate: \n" +
+          "  [0].shipDateTime must be one of date, string, object"
         );
       }
     });
@@ -283,8 +283,8 @@ describe("DateTimeZone", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Error in rateShipment method. \n" +
-          "Invalid rate quote: \n" +
-          "  rates[0].shipDateTime does not match any of the allowed types"
+          "Invalid rate: \n" +
+          "  [0].shipDateTime does not match any of the allowed types"
         );
       }
     });
@@ -297,8 +297,8 @@ describe("DateTimeZone", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Error in rateShipment method. \n" +
-          "Invalid rate quote: \n" +
-          "  rates[0].shipDateTime must be a complete ISO 8601 date/time with a time zone, like 2005-09-23T17:30:00+05:30"
+          "Invalid rate: \n" +
+          "  [0].shipDateTime must be a complete ISO 8601 date/time with a time zone, like 2005-09-23T17:30:00+05:30"
         );
       }
     });
@@ -311,8 +311,8 @@ describe("DateTimeZone", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Error in rateShipment method. \n" +
-          "Invalid rate quote: \n" +
-          "  rates[0].shipDateTime must be a valid date/time"
+          "Invalid rate: \n" +
+          "  [0].shipDateTime must be a valid date/time"
         );
       }
     });
@@ -325,8 +325,8 @@ describe("DateTimeZone", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Error in rateShipment method. \n" +
-          "Invalid rate quote: \n" +
-          "  rates[0].shipDateTime must be a complete ISO 8601 date/time with a time zone, like 2005-09-23T17:30:00+05:30"
+          "Invalid rate: \n" +
+          "  [0].shipDateTime must be a complete ISO 8601 date/time with a time zone, like 2005-09-23T17:30:00+05:30"
         );
       }
     });
@@ -339,8 +339,8 @@ describe("DateTimeZone", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Error in rateShipment method. \n" +
-          "Invalid rate quote: \n" +
-          "  rates[0].shipDateTime does not match any of the allowed types"
+          "Invalid rate: \n" +
+          "  [0].shipDateTime does not match any of the allowed types"
         );
       }
     });
@@ -353,8 +353,8 @@ describe("DateTimeZone", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Error in rateShipment method. \n" +
-          "Invalid rate quote: \n" +
-          "  rates[0].shipDateTime does not match any of the allowed types"
+          "Invalid rate: \n" +
+          "  [0].shipDateTime does not match any of the allowed types"
         );
       }
     });
@@ -367,8 +367,8 @@ describe("DateTimeZone", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Error in rateShipment method. \n" +
-          "Invalid rate quote: \n" +
-          "  rates[0].shipDateTime.value is not allowed to be empty"
+          "Invalid rate: \n" +
+          "  [0].shipDateTime.value is not allowed to be empty"
         );
       }
     });
@@ -381,8 +381,8 @@ describe("DateTimeZone", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Error in rateShipment method. \n" +
-          "Invalid rate quote: \n" +
-          "  rates[0].shipDateTime.timeZone is not allowed to be empty"
+          "Invalid rate: \n" +
+          "  [0].shipDateTime.timeZone is not allowed to be empty"
         );
       }
     });
@@ -395,8 +395,8 @@ describe("DateTimeZone", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Error in rateShipment method. \n" +
-          "Invalid rate quote: \n" +
-          "  rates[0].shipDateTime.value must be an ISO 8601 date and time, like 2005-09-23T17:30:00"
+          "Invalid rate: \n" +
+          "  [0].shipDateTime.value must be an ISO 8601 date and time, like 2005-09-23T17:30:00"
         );
       }
     });
@@ -409,8 +409,8 @@ describe("DateTimeZone", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Error in rateShipment method. \n" +
-          "Invalid rate quote: \n" +
-          "  rates[0].shipDateTime.value must be a valid date/time"
+          "Invalid rate: \n" +
+          "  [0].shipDateTime.value must be a valid date/time"
         );
       }
     });
@@ -423,8 +423,8 @@ describe("DateTimeZone", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Error in rateShipment method. \n" +
-          "Invalid rate quote: \n" +
-          "  rates[0].shipDateTime.value should not include a time zone"
+          "Invalid rate: \n" +
+          "  [0].shipDateTime.value should not include a time zone"
         );
       }
     });
@@ -437,8 +437,8 @@ describe("DateTimeZone", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Error in rateShipment method. \n" +
-          "Invalid rate quote: \n" +
-          '  rates[0].shipDateTime.timeZone must be a UTC offset, like "+05:30", or a valid IANA time zone, like "America/Los_Angeles"'
+          "Invalid rate: \n" +
+          '  [0].shipDateTime.timeZone must be a UTC offset, like "+05:30", or a valid IANA time zone, like "America/Los_Angeles"'
         );
       }
     });

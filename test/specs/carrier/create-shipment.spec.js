@@ -6,7 +6,7 @@ const { expect, assert } = require("chai");
 
 describe("createShipment", () => {
 
-  it("should return a LabelConfirmation from minimal return values", async () => {
+  it("should return a shipment from minimal return values", async () => {
     let app = new CarrierApp(pojo.carrierApp({
       carrier: pojo.carrier({
         createShipment: () => ({
@@ -17,27 +17,26 @@ describe("createShipment", () => {
               currency: "CAD",
             },
           }],
-          shipment: {
-            packages: [{
-              label: {
-                size: "letter",
-                format: "pdf",
-                data: Buffer.from("data"),
-              }
-            }]
-          }
+          packages: [{
+            label: {
+              size: "letter",
+              format: "pdf",
+              data: Buffer.from("data"),
+            }
+          }]
         })
       }),
     }));
 
-    let confirmation = await app.carrier.createShipment(pojo.transaction(), pojo.labelSpec());
+    let confirmation = await app.carrier.createShipment(pojo.transaction(), pojo.newShipment());
 
     expect(confirmation).to.deep.equal({
-      confirmationID: "",
-      totalAmount: {
-        value: "123.46",
-        currency: "CAD",
-      },
+      trackingNumber: "",
+      trackingURL: undefined,
+      identifiers: [],
+      fulfillmentService: undefined,
+      deliveryDateTime: undefined,
+      metadata: undefined,
       charges: [{
         name: "",
         description: "",
@@ -49,35 +48,42 @@ describe("createShipment", () => {
           currency: "CAD",
         }
       }],
-      shipment: {
+      totalAmount: {
+        value: "123.46",
+        currency: "CAD",
+      },
+      packages: [{
         trackingNumber: "",
         trackingURL: undefined,
         identifiers: [],
-        fulfillmentService: undefined,
-        deliveryDateTime: undefined,
+        customsForm: undefined,
         metadata: undefined,
-        packages: [{
-          trackingNumber: "",
-          trackingURL: undefined,
-          identifiers: [],
-          customsForm: undefined,
-          metadata: undefined,
-          label: {
-            name: "Label",
-            size: "letter",
-            format: "pdf",
-            data: Buffer.from("data"),
-          }
-        }],
-      },
+        label: {
+          name: "Label",
+          size: "letter",
+          format: "pdf",
+          data: Buffer.from("data"),
+        }
+      }],
     });
   });
 
-  it("should return a LabelConfirmation from all possible return values", async () => {
+  it("should return a shipment from all possible return values", async () => {
     let app = new CarrierApp(pojo.carrierApp({
       carrier: pojo.carrier({
         createShipment: () => ({
-          confirmationID: "ABCDEF-123456",
+          trackingNumber: "123456-ABCDEF",
+          trackingURL: "http://example.com/",
+          identifiers: [{
+            name: "Shipment ID",
+            id: "123456-ABCDEF",
+          }],
+          fulfillmentService: "ups_ground",
+          deliveryDateTime: "2005-05-05T05:05:05.0005Z",
+          metadata: {
+            foo: "bar",
+            biz: "baz",
+          },
           charges: [
             {
               name: "Shipping Charges",
@@ -102,51 +108,52 @@ describe("createShipment", () => {
               }
             },
           ],
-          shipment: {
-            trackingNumber: "123456-ABCDEF",
-            trackingURL: "http://example.com/",
+          packages: [{
+            trackingNumber: "ABCDEF-123456",
+            trackingURL: new URL("https://example.com"),
             identifiers: [{
-              name: "Shipment ID",
-              id: "123456-ABCDEF",
+              name: "Package ID",
+              id: "123456-ABCDEF-1",
             }],
-            fulfillmentService: "ups_ground",
-            deliveryDateTime: "2005-05-05T05:05:05.0005Z",
-            metadata: {
-              foo: "bar",
-              biz: "baz",
+            label: {
+              name: "Shipping Label",
+              size: "letter",
+              format: "pdf",
+              data: Buffer.from("label data"),
             },
-            packages: [{
-              trackingNumber: "ABCDEF-123456",
-              trackingURL: new URL("https://example.com"),
-              identifiers: [{
-                name: "Package ID",
-                id: "123456-ABCDEF-1",
-              }],
-              label: {
-                name: "Shipping Label",
-                size: "letter",
-                format: "pdf",
-                data: Buffer.from("label data"),
-              },
-              customsForm: {
-                name: "Customs Form",
-                size: "A4",
-                format: "html",
-                data: Buffer.from("customs form data"),
-              },
-              metadata: {
-                fizz: "buzz",
-              },
-            }],
-          },
+            customsForm: {
+              name: "Customs Form",
+              size: "A4",
+              format: "html",
+              data: Buffer.from("customs form data"),
+            },
+            metadata: {
+              fizz: "buzz",
+            },
+          }],
         })
       }),
     }));
 
-    let confirmation = await app.carrier.createShipment(pojo.transaction(), pojo.labelSpec());
+    let confirmation = await app.carrier.createShipment(pojo.transaction(), pojo.newShipment());
 
     expect(confirmation).to.deep.equal({
-      confirmationID: "ABCDEF-123456",
+      trackingNumber: "123456-ABCDEF",
+      trackingURL: new URL("http://example.com"),
+      identifiers: [{
+        name: "Shipment ID",
+        id: "123456-ABCDEF",
+      }],
+      fulfillmentService: "ups_ground",
+      deliveryDateTime: {
+        value: "2005-05-05T05:05:05.0005",
+        offset: "+00:00",
+        timeZone: "UTC",
+      },
+      metadata: {
+        foo: "bar",
+        biz: "baz",
+      },
       charges: [
         {
           name: "Shipping Charges",
@@ -175,47 +182,29 @@ describe("createShipment", () => {
         value: "10.95",
         currency: "GBP",
       },
-      shipment: {
-        trackingNumber: "123456-ABCDEF",
-        trackingURL: new URL("http://example.com"),
+      packages: [{
+        trackingNumber: "ABCDEF-123456",
+        trackingURL: new URL("https://example.com"),
         identifiers: [{
-          name: "Shipment ID",
-          id: "123456-ABCDEF",
+          name: "Package ID",
+          id: "123456-ABCDEF-1",
         }],
-        fulfillmentService: "ups_ground",
-        deliveryDateTime: {
-          value: "2005-05-05T05:05:05.0005",
-          offset: "+00:00",
-          timeZone: "UTC",
+        label: {
+          name: "Shipping Label",
+          size: "letter",
+          format: "pdf",
+          data: Buffer.from("label data"),
+        },
+        customsForm: {
+          name: "Customs Form",
+          size: "A4",
+          format: "html",
+          data: Buffer.from("customs form data"),
         },
         metadata: {
-          foo: "bar",
-          biz: "baz",
+          fizz: "buzz",
         },
-        packages: [{
-          trackingNumber: "ABCDEF-123456",
-          trackingURL: new URL("https://example.com"),
-          identifiers: [{
-            name: "Package ID",
-            id: "123456-ABCDEF-1",
-          }],
-          label: {
-            name: "Shipping Label",
-            size: "letter",
-            format: "pdf",
-            data: Buffer.from("label data"),
-          },
-          customsForm: {
-            name: "Customs Form",
-            size: "A4",
-            format: "html",
-            data: Buffer.from("customs form data"),
-          },
-          metadata: {
-            fizz: "buzz",
-          },
-        }],
-      },
+      }],
     });
   });
 
@@ -241,7 +230,7 @@ describe("createShipment", () => {
       }
     });
 
-    it("should throw an error if called without a LabelSpec", async () => {
+    it("should throw an error if called without a shipment", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
           createShipment () {}
@@ -255,13 +244,13 @@ describe("createShipment", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Invalid input to the createShipment method. \n" +
-          "Invalid label specification: \n" +
+          "Invalid shipment: \n" +
           "  A value is required"
         );
       }
     });
 
-    it("should throw an error if called without an invalid LabelSpec", async () => {
+    it("should throw an error if called with an invalid shipment", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
           createShipment () {}
@@ -270,19 +259,22 @@ describe("createShipment", () => {
 
       try {
         await app.carrier.createShipment(pojo.transaction(), {
-          format: "paper",
-          size: "large",
-          shipment: true,
+          shipFrom: "here",
+          shipTo: "there",
+          shipDateTime: true,
+          packages: [],
         });
         assert.fail("An error should have been thrown");
       }
       catch (error) {
         expect(error.message).to.equal(
           "Invalid input to the createShipment method. \n" +
-          "Invalid label specification: \n" +
-          "  format must be one of pdf, html, zpl, png \n" +
-          "  size must be one of A4, letter, 4x6, 4x8 \n" +
-          "  shipment must be of type object"
+          "Invalid shipment: \n" +
+          "  deliveryServiceID is required \n" +
+          "  shipFrom must be of type object \n" +
+          "  shipTo must be of type object \n" +
+          "  shipDateTime must be one of date, string, object \n" +
+          "  packages must contain at least 1 items"
         );
       }
     });
@@ -295,41 +287,41 @@ describe("createShipment", () => {
       }));
 
       try {
-        await app.carrier.createShipment(pojo.transaction(), pojo.labelSpec());
+        await app.carrier.createShipment(pojo.transaction(), pojo.newShipment());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
         expect(error.message).to.equal(
           "Error in createShipment method. \n" +
-          "Invalid label confirmation: \n" +
+          "Invalid shipment: \n" +
           "  A value is required"
         );
       }
     });
 
-    it("should throw an error if an invalid LabelConfirmation is returned", async () => {
+    it("should throw an error if an invalid shipment is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
           createShipment: () => ({
-            confirmationID: 12345,
-            shipment: {
-              packages: []
-            }
+            deliveryDateTime: true,
+            fulfillmentService: 123,
+            packages: []
           })
         }),
       }));
 
       try {
-        await app.carrier.createShipment(pojo.transaction(), pojo.labelSpec());
+        await app.carrier.createShipment(pojo.transaction(), pojo.newShipment());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
         expect(error.message).to.equal(
           "Error in createShipment method. \n" +
-          "Invalid label confirmation: \n" +
-          "  confirmationID must be a string \n" +
+          "Invalid shipment: \n" +
+          "  fulfillmentService must be a string \n" +
+          "  deliveryDateTime must be one of date, string, object \n" +
           "  charges is required \n" +
-          "  shipment.packages must contain at least 1 items"
+          "  packages must contain at least 1 items"
         );
       }
     });
@@ -337,22 +329,20 @@ describe("createShipment", () => {
     it("should throw an error if the label data is empty", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
-          createShipment: () => pojo.labelConfirmation({
-            shipment: pojo.shipmentConfirmation({
-              packages: [
-                pojo.packageConfirmation({
-                  label: pojo.document({
-                    data: Buffer.alloc(0),
-                  }),
+          createShipment: () => pojo.shipmentConfirmation({
+            packages: [
+              pojo.packageConfirmation({
+                label: pojo.document({
+                  data: Buffer.alloc(0),
                 }),
-              ]
-            }),
+              }),
+            ]
           }),
         }),
       }));
 
       try {
-        await app.carrier.createShipment(pojo.transaction(), pojo.labelSpec());
+        await app.carrier.createShipment(pojo.transaction(), pojo.newShipment());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
@@ -366,23 +356,21 @@ describe("createShipment", () => {
     it("should throw an error if the customs form data is empty", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
-          createShipment: () => pojo.labelConfirmation({
-            shipment: pojo.shipmentConfirmation({
-              packages: [
-                pojo.packageConfirmation({
-                  label: pojo.document(),
-                  customsForm: pojo.document({
-                    data: Buffer.alloc(0),
-                  }),
+          createShipment: () => pojo.shipmentConfirmation({
+            packages: [
+              pojo.packageConfirmation({
+                label: pojo.document(),
+                customsForm: pojo.document({
+                  data: Buffer.alloc(0),
                 }),
-              ]
-            }),
+              }),
+            ]
           }),
         }),
       }));
 
       try {
-        await app.carrier.createShipment(pojo.transaction(), pojo.labelSpec());
+        await app.carrier.createShipment(pojo.transaction(), pojo.newShipment());
         assert.fail("An error should have been thrown");
       }
       catch (error) {

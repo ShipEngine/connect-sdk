@@ -1,7 +1,8 @@
 "use strict";
 
-const { expect } = require("chai");
-const { Transaction } = require("../../..");
+const { assert, expect } = require("chai");
+const { ConnectionApp, Transaction } = require("../../..");
+const pojo = require("../../utils/pojo");
 
 describe("Transaction", () => {
 
@@ -55,10 +56,10 @@ describe("Transaction", () => {
       }
     });
 
-    let json = JSON.stringify(transaction);
-    let pojo = JSON.parse(json);
+    let transactionJSON = JSON.stringify(transaction);
+    let transactionPOJO = JSON.parse(transactionJSON);
 
-    expect(pojo).to.deep.equal({
+    expect(transactionPOJO).to.deep.equal({
       id: "12345678-1234-1234-1234-123456789012",
       isRetry: false,
       useSandbox: false,
@@ -118,64 +119,117 @@ describe("Transaction", () => {
 
   describe("Failure tests", () => {
 
-    it("should throw an error if called without any arguments", () => {
-      expect(() => new Transaction()).to.throw(
-        "Invalid transaction: \n" +
-        "  A value is required"
-      );
+    async function createTransaction (transactionPOJO) {
+      let transaction;
+
+      let app = new ConnectionApp(pojo.connectionApp({
+        connection: pojo.connection({
+          connect (tx) {
+            transaction = tx;
+          }
+        })
+      }));
+
+      await app.connection.connect(transactionPOJO, {});
+      return transaction;
+    }
+
+    it("should throw an error if called without any arguments", async () => {
+      try {
+        await createTransaction();
+        assert.fail("An error should have been thrown");
+      }
+      catch (error) {
+        expect(error.message).to.equal(
+          "Invalid input to the connect method. \n" +
+          "Invalid transaction: \n" +
+          "  A value is required"
+        );
+      }
     });
 
-    it("should throw an error if called with an invalid pojo", () => {
-      expect(() => new Transaction(12345)).to.throw(
-        "Invalid transaction: \n" +
-        "  value must be of type object"
-      );
+    it("should throw an error if called with an invalid pojo", async () => {
+      try {
+        await createTransaction(12345);
+        assert.fail("An error should have been thrown");
+      }
+      catch (error) {
+        expect(error.message).to.equal(
+          "Invalid input to the connect method. \n" +
+          "Invalid transaction: \n" +
+          "  value must be of type object"
+        );
+      }
     });
 
-    it("should throw an error if called with an invalid ID", () => {
-      expect(() => new Transaction({
-        id: "12345",
-      })
-      ).to.throw(
-        "Invalid transaction: \n" +
-        "  id must be a valid GUID"
-      );
+    it("should throw an error if called with an invalid ID", async () => {
+      try {
+        await createTransaction({
+          id: "12345",
+        });
+        assert.fail("An error should have been thrown");
+      }
+      catch (error) {
+        expect(error.message).to.equal(
+          "Invalid input to the connect method. \n" +
+          "Invalid transaction: \n" +
+          "  id must be a valid GUID"
+        );
+      }
     });
 
-    it("should throw an error if called with an invalid isRetry flag", () => {
-      expect(() => new Transaction({
-        id: "12345678-1234-1234-1234-123456789012",
-        isRetry: "yes"
-      })
-      ).to.throw(
-        "Invalid transaction: \n" +
-        "  isRetry must be a boolean"
-      );
+    it("should throw an error if called with an invalid isRetry flag", async () => {
+      try {
+        await createTransaction({
+          id: "12345678-1234-1234-1234-123456789012",
+          isRetry: "yes"
+        });
+        assert.fail("An error should have been thrown");
+      }
+      catch (error) {
+        expect(error.message).to.equal(
+          "Invalid input to the connect method. \n" +
+          "Invalid transaction: \n" +
+          "  isRetry must be a boolean"
+        );
+      }
     });
 
-    it("should throw an error if called with an invalid useSandbox flag", () => {
-      expect(() => new Transaction({
-        id: "12345678-1234-1234-1234-123456789012",
-        useSandbox: "no"
-      })
-      ).to.throw(
-        "Invalid transaction: \n" +
-        "  useSandbox must be a boolean"
-      );
+    it("should throw an error if called with an invalid useSandbox flag", async () => {
+      try {
+        await createTransaction({
+          id: "12345678-1234-1234-1234-123456789012",
+          useSandbox: "no"
+        });
+        assert.fail("An error should have been thrown");
+      }
+      catch (error) {
+        expect(error.message).to.equal(
+          "Invalid input to the connect method. \n" +
+          "Invalid transaction: \n" +
+          "  useSandbox must be a boolean"
+        );
+      }
     });
 
-    it("should throw an error if called with an invalid session object", () => {
-      expect(() => new Transaction({
-        id: "12345678-1234-1234-1234-123456789012",
-        session: 12345,
-      })
-      ).to.throw(
-        "Invalid transaction: \n" +
-        "  session must be of type object"
-      );
+    it("should throw an error if called with an invalid session object", async () => {
+      try {
+        await createTransaction({
+          id: "12345678-1234-1234-1234-123456789012",
+          session: 12345,
+        });
+        assert.fail("An error should have been thrown");
+      }
+      catch (error) {
+        expect(error.message).to.equal(
+          "Invalid input to the connect method. \n" +
+          "Invalid transaction: \n" +
+          "  session must be of type object"
+        );
+      }
     });
 
-    it("should throw an error if any fields other than session are modified", () => {
+    it("should throw an error if any fields other than session are modified", async () => {
       let transaction = new Transaction({
         id: "12345678-1234-1234-1234-123456789012",
       });

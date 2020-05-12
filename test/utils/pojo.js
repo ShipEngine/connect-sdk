@@ -103,23 +103,6 @@ const pojo = module.exports = {
     };
   },
 
-  labelSpec (props = {}) {
-    return {
-      format: "pdf",
-      size: "letter",
-      shipment: pojo.newShipment(),
-      ...props,
-    };
-  },
-
-  labelConfirmation (props = {}) {
-    return {
-      charges: [pojo.shippingCharge()],
-      shipment: pojo.shipmentConfirmation(),
-      ...props,
-    };
-  },
-
   document (props = {}) {
     return {
       size: "letter",
@@ -143,14 +126,6 @@ const pojo = module.exports = {
     };
   },
 
-  shipmentConfirmation (props = {}) {
-    return {
-      ...pojo.shipmentIdentifier(),
-      packages: [pojo.packageConfirmation()],
-      ...props,
-    };
-  },
-
   newShipment (props = {}) {
     return {
       deliveryServiceID: "22222222-2222-2222-2222-222222222222",
@@ -158,6 +133,24 @@ const pojo = module.exports = {
       shipTo: pojo.addressWithContactInfo(),
       shipDateTime: new Date(),
       packages: [pojo.newPackage()],
+      ...props,
+    };
+  },
+
+  shipmentConfirmation (props = {}) {
+    return {
+      ...pojo.shipmentIdentifier(),
+      charges: [pojo.shippingCharge()],
+      packages: [pojo.packageConfirmation()],
+      ...props,
+    };
+  },
+
+  pickupShipment (props = {}) {
+    return {
+      ...pojo.shipmentIdentifier(),
+      deliveryServiceID: "22222222-2222-2222-2222-222222222222",
+      packages: [pojo.pickupPackage()],
       ...props,
     };
   },
@@ -187,6 +180,22 @@ const pojo = module.exports = {
   newPackage (props = {}) {
     return {
       packagingID: "44444444-4444-4444-4444-444444444444",
+      label: pojo.newLabel(),
+      ...props,
+    };
+  },
+
+  pickupPackage (props = {}) {
+    return {
+      packagingID: "44444444-4444-4444-4444-444444444444",
+      ...props,
+    };
+  },
+
+  newLabel (props = {}) {
+    return {
+      format: "pdf",
+      size: "letter",
       ...props,
     };
   },
@@ -253,8 +262,10 @@ const pojo = module.exports = {
   rate (props = {}) {
     return {
       deliveryServiceID: "22222222-2222-2222-2222-222222222222",
-      packagingID: "44444444-4444-4444-4444-444444444444",
       charges: [pojo.charge()],
+      packages: [{
+        packagingID: "44444444-4444-4444-4444-444444444444",
+      }],
       ...props,
     };
   },
@@ -276,7 +287,7 @@ const pojo = module.exports = {
       timeWindow: pojo.timeRange(),
       address: pojo.address(),
       contact: pojo.contactInfo(),
-      shipments: [pojo.shipment()],
+      shipments: [pojo.pickupShipment()],
       ...props,
     };
   },

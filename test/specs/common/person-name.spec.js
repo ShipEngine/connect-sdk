@@ -11,18 +11,16 @@ describe("PersonName", () => {
 
     let app = new CarrierApp(pojo.carrierApp({
       carrier: pojo.carrier({
-        createShipment (_, label) {
-          personName = label.shipment.shipFrom.name;
-          return pojo.labelConfirmation();
+        createShipment (_, shipment) {
+          personName = shipment.shipFrom.name;
+          return pojo.shipmentConfirmation();
         }
       }),
     }));
 
-    await app.carrier.createShipment(pojo.transaction(), pojo.labelSpec({
-      shipment: pojo.shipment({
-        shipFrom: pojo.address({
-          name: personNamePOJO,
-        })
+    await app.carrier.createShipment(pojo.transaction(), pojo.newShipment({
+      shipFrom: pojo.address({
+        name: personNamePOJO,
       })
     }));
 
@@ -83,8 +81,8 @@ describe("PersonName", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Invalid input to the createShipment method. \n" +
-          "Invalid label specification: \n" +
-          "  shipment.shipFrom.name must be one of string, object"
+          "Invalid shipment: \n" +
+          "  shipFrom.name must be one of string, object"
         );
       }
     });
@@ -97,8 +95,8 @@ describe("PersonName", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Invalid input to the createShipment method. \n" +
-          "Invalid label specification: \n" +
-          "  shipment.shipFrom.name is not allowed to be empty"
+          "Invalid shipment: \n" +
+          "  shipFrom.name is not allowed to be empty"
         );
       }
     });
@@ -111,8 +109,8 @@ describe("PersonName", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Invalid input to the createShipment method. \n" +
-          "Invalid label specification: \n" +
-          "  shipment.shipFrom.name does not match any of the allowed types"
+          "Invalid shipment: \n" +
+          "  shipFrom.name does not match any of the allowed types"
         );
       }
     });
@@ -125,8 +123,8 @@ describe("PersonName", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Invalid input to the createShipment method. \n" +
-          "Invalid label specification: \n" +
-          "  shipment.shipFrom.name.given is required"
+          "Invalid shipment: \n" +
+          "  shipFrom.name.given is required"
         );
       }
     });
@@ -139,8 +137,8 @@ describe("PersonName", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Invalid input to the createShipment method. \n" +
-          "Invalid label specification: \n" +
-          "  shipment.shipFrom.name.given is required"
+          "Invalid shipment: \n" +
+          "  shipFrom.name.given is required"
         );
       }
     });
@@ -158,8 +156,8 @@ describe("PersonName", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Invalid input to the createShipment method. \n" +
-          "Invalid label specification: \n" +
-          "  shipment.shipFrom.name.given is required"
+          "Invalid shipment: \n" +
+          "  shipFrom.name.given is required"
         );
       }
     });
@@ -174,8 +172,8 @@ describe("PersonName", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Invalid input to the createShipment method. \n" +
-          "Invalid label specification: \n" +
-          "  shipment.shipFrom.name.given must be a string"
+          "Invalid shipment: \n" +
+          "  shipFrom.name.given must be a string"
         );
       }
     });
@@ -190,8 +188,8 @@ describe("PersonName", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Invalid input to the createShipment method. \n" +
-          "Invalid label specification: \n" +
-          "  shipment.shipFrom.name.given is not allowed to be empty"
+          "Invalid shipment: \n" +
+          "  shipFrom.name.given is not allowed to be empty"
         );
       }
     });
@@ -206,8 +204,8 @@ describe("PersonName", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Invalid input to the createShipment method. \n" +
-          "Invalid label specification: \n" +
-          "  shipment.shipFrom.name does not match any of the allowed types"
+          "Invalid shipment: \n" +
+          "  shipFrom.name does not match any of the allowed types"
         );
       }
     });
@@ -226,8 +224,8 @@ describe("PersonName", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Invalid input to the createShipment method. \n" +
-          "Invalid label specification: \n" +
-          "  shipment.shipFrom.name does not match any of the allowed types"
+          "Invalid shipment: \n" +
+          "  shipFrom.name does not match any of the allowed types"
         );
       }
     });

@@ -227,7 +227,7 @@ describe("schedulePickup", () => {
       }
     });
 
-    it("should throw an error if called without an invalid PickupRequest", async () => {
+    it("should throw an error if called with an invalid PickupRequest", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
           schedulePickup () {}
@@ -269,16 +269,9 @@ describe("schedulePickup", () => {
       }));
 
       try {
-        await app.carrier.schedulePickup(pojo.transaction(), {
+        await app.carrier.schedulePickup(pojo.transaction(), pojo.pickupRequest({
           pickupServiceID: "22222222-2222-2222-2222-222222222222",
-          timeWindow: {
-            startDateTime: new Date(),
-            endDateTime: new Date(),
-          },
-          address: pojo.address(),
-          contact: pojo.contactInfo(),
-          shipments: [pojo.shipment()],
-        });
+        }));
         assert.fail("An error should have been thrown");
       }
       catch (error) {

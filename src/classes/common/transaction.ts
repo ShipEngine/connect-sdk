@@ -8,7 +8,7 @@ const _private = Symbol("private fields");
  * The ShpEngine Integration Platform passes this object to every method call. It provides information about the
  * transaction being performed, including authentication, metadata, etc.
  */
-export class Transaction {
+export class Transaction<T extends object = object> {
   //#region Private/Internal Fields
 
   /** @internal */
@@ -24,7 +24,7 @@ export class Transaction {
 
   /** @internal */
   private readonly [_private]: {
-    session: object;
+    session: T;
   };
 
   //#endregion
@@ -58,16 +58,16 @@ export class Transaction {
    * Arbitrary session data. Must be JSON serializable. Any method may update the session data,
    * such as renewing a session token or updating a timestamp.
    */
-  public get session(): object {
+  public get session(): T {
     return this[_private].session;
   }
 
   /**
    * Updates the session data.
    */
-  public set session(value: object) {
+  public set session(value: T) {
     if (value === undefined) {
-      value = {};
+      value = {} as unknown as T;
     }
 
     validate(value, "session data", Joi.object());
@@ -88,13 +88,13 @@ export class Transaction {
 
   //#endregion
 
-  public constructor(pojo: TransactionPOJO) {
+  public constructor(pojo: TransactionPOJO<T>) {
     this.id = pojo.id;
     this.isRetry = pojo.isRetry || false;
     this.useSandbox = pojo.useSandbox || false;
 
     this[_private] = {
-      session: pojo.session || {},
+      session: pojo.session || {} as unknown as T,
     };
 
     // Make the session getter/setter look like a normal property

@@ -61,6 +61,9 @@ function validateAgainstSchema(value: unknown, label: string, schema: Validation
     throw error(
       ErrorCode.Validation,
       `Invalid ${label}: \n  ` + result.error.details.map((detail) => detail.message).join(" \n  "),
+      {
+        details: result.error.details
+      }
     );
   }
 }

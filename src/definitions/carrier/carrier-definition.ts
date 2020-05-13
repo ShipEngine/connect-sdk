@@ -1,4 +1,4 @@
-import { CancelPickups, CancelShipments, CreateManifest, CreateShipment, RateShipment, SchedulePickup, Track } from "../../classes/carrier/methods";
+import { CancelPickups, CancelShipments, CreateManifest, CreateShipment, RateShipment, SchedulePickup, TrackShipment } from "../../classes/carrier/methods";
 import { FilePath, InlineOrReference, InlineOrReferenceArray, URLString, UUID } from "../../types";
 import { LocalizationDefinition } from "../common/localization-definition";
 import { DeliveryServiceDefinition } from "./delivery-service-definition";
@@ -72,7 +72,7 @@ export interface CarrierDefinition {
   /**
    * Returns tracking details for a shipment
    */
-  track?: InlineOrReference<Track>;
+  trackShipment?: InlineOrReference<TrackShipment>;
 
   /**
    * Creates an end-of-day manifest

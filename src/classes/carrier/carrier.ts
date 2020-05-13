@@ -11,7 +11,7 @@ import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
 import { ManifestConfirmation } from "./manifests/manifest-confirmation";
 import { NewManifest } from "./manifests/new-manifest";
-import { CancelPickups, CancelShipments, CreateManifest, CreateShipment, RateShipment, SchedulePickup, Track } from "./methods";
+import { CancelPickups, CancelShipments, CreateManifest, CreateShipment, RateShipment, SchedulePickup, TrackShipment } from "./methods";
 import { Packaging } from "./packaging";
 import { PickupService } from "./pickup-service";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
@@ -55,7 +55,7 @@ export class Carrier {
       createShipment: Joi.function(),
       cancelShipments: Joi.function(),
       rateShipment: Joi.function(),
-      track: Joi.function(),
+      trackShipment: Joi.function(),
       createManifest: Joi.function(),
       schedulePickup: Joi.function(),
       cancelPickups: Joi.function(),
@@ -69,7 +69,7 @@ export class Carrier {
     readonly createShipment: CreateShipment | undefined;
     readonly cancelShipments: CancelShipments | undefined;
     readonly rateShipment: RateShipment | undefined;
-    readonly track: Track | undefined;
+    readonly trackShipment: TrackShipment | undefined;
     readonly createManifest: CreateManifest | undefined;
     readonly schedulePickup: SchedulePickup | undefined;
     readonly cancelPickups: CancelPickups | undefined;
@@ -272,7 +272,7 @@ export class Carrier {
       createShipment: pojo.createShipment ? pojo.createShipment : (this.createShipment = undefined),
       cancelShipments: pojo.cancelShipments ? pojo.cancelShipments : (this.cancelShipments = undefined),
       rateShipment: pojo.rateShipment ? pojo.rateShipment : (this.rateShipment = undefined),
-      track: pojo.track ? pojo.track : (this.track = undefined),
+      trackShipment: pojo.trackShipment ? pojo.trackShipment : (this.trackShipment = undefined),
       createManifest: pojo.createManifest ? pojo.createManifest : (this.createManifest = undefined),
       schedulePickup: pojo.schedulePickup ? pojo.schedulePickup : (this.schedulePickup = undefined),
       cancelPickups: pojo.cancelPickups ? pojo.cancelPickups : (this.cancelPickups = undefined),
@@ -309,7 +309,7 @@ export class Carrier {
       createShipment: methods.createShipment,
       cancelShipments: methods.cancelShipments,
       rateShipment: methods.rateShipment,
-      track: methods.track,
+      trackShipment: methods.trackShipment,
       createManifest: methods.createManifest,
       schedulePickup: methods.schedulePickup,
       cancelPickups: methods.cancelPickups,
@@ -409,25 +409,25 @@ export class Carrier {
   /**
    * Returns tracking details for a shipment
    */
-  public async track?(transaction: TransactionPOJO, shipment: TrackingCriteriaPOJO): Promise<TrackingInfo> {
+  public async trackShipment?(transaction: TransactionPOJO, shipment: TrackingCriteriaPOJO): Promise<TrackingInfo> {
     let _transaction, _shipment;
-    let { app, track } = this[_private];
+    let { app, trackShipment } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
       _shipment = new TrackingCriteria(validate(shipment, TrackingCriteria));
     }
     catch (originalError) {
-      throw error(ErrorCode.InvalidInput, "Invalid input to the track method.", { originalError });
+      throw error(ErrorCode.InvalidInput, "Invalid input to the trackShipment method.", { originalError });
     }
 
     try {
-      let trackingInfo = await track!(_transaction, _shipment);
+      let trackingInfo = await trackShipment!(_transaction, _shipment);
       return new TrackingInfo(validate(trackingInfo, TrackingInfo), app);
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in track method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in trackShipment method.`, { originalError, transactionID });
     }
   }
 

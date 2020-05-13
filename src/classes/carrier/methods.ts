@@ -30,7 +30,7 @@ export type RateShipment = (transaction: Transaction, shipment: RateCriteria) =>
 /**
  * Returns tracking information for a shipment
  */
-export type Track = (transaction: Transaction, shipment: TrackingCriteria) => TrackingInfoPOJO | Promise<TrackingInfoPOJO>;
+export type TrackShipment = (transaction: Transaction, shipment: TrackingCriteria) => TrackingInfoPOJO | Promise<TrackingInfoPOJO>;
 
 /**
  * Creates an end-of-day manifest

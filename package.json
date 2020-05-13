@@ -1,6 +1,6 @@
 {
   "name": "@shipengine/integration-platform-sdk",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "The official SDK for building ShipEngine Integration Platform apps",
   "keywords": [
     "shipengine",
@@ -71,7 +71,7 @@
     "@hapi/joi": "^17.1.1",
     "@jsdevtools/ono": "^7.1.2",
     "@types/json-schema": "^7.0.4",
-    "@types/react-jsonschema-form": "^1.7.2",
+    "@types/react-jsonschema-form": "^1.7.3",
     "currency.js": "^1.2.2",
     "date-fns": "^2.13.0",
     "date-fns-tz": "^1.0.10"

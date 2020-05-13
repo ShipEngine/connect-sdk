@@ -40,41 +40,23 @@ describe("package exports", () => {
   });
 
   it("should export carrier classes", () => {
-    assertFileExports("src/classes/carrier", true, ["utils.ts"]);
+    assertFileExports("src/carrier", true, ["utils.ts"]);
   });
 
   it("should export common classes", () => {
-    assertFileExports("src/classes/common", true, [
-      "app.ts", "localization.ts", "reference-map.ts"
-    ]);
+    assertFileExports("src/common", true);
   });
 
   it("should export connection classes", () => {
-    assertFileExports("src/classes/connection", true);
+    assertFileExports("src/connection", true);
+  });
+
+  it("should export enumerations", () => {
+    assertFileExports("src/enums", true);
   });
 
   it("should export order classes", () => {
-    assertFileExports("src/classes/order", true);
-  });
-
-  it("should export definition interfaces", () => {
-    assertFileExports("src/definitions", true);
-  });
-
-  it("should export carrier pojos", () => {
-    assertFileExports("src/pojos/carrier", true);
-  });
-
-  it("should export common pojos", () => {
-    assertFileExports("src/pojos/common", true);
-  });
-
-  it("should export connection pojos", () => {
-    assertFileExports("src/pojos/connection", true);
-  });
-
-  it("should export order pojos", () => {
-    assertFileExports("src/pojos/order", true);
+    assertFileExports("src/order", true);
   });
 
 });

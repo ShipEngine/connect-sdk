@@ -1,12 +1,7 @@
-export * from "./classes/carrier";
-export * from "./classes/common";
-export * from "./classes/connection";
-export * from "./classes/order";
-export * from "./definitions";
+export * from "./carrier";
+export * from "./common";
+export * from "./connection";
 export * from "./enums";
 export { ErrorCode, ShipEngineError } from "./errors";
-export * from "./pojos/carrier";
-export * from "./pojos/common";
-export * from "./pojos/connection";
-export * from "./pojos/order";
+export * from "./order";
 export * from "./types";

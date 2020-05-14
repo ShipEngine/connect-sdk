@@ -1,5 +1,5 @@
 import { IdentifierPOJO } from "../../common";
-import { DocumentPOJO } from "../document";
+import { DocumentPOJO } from "../documents/document-pojo";
 import { ShipmentIdentifierPOJO } from "../shipments/shipment-identifier";
 
 /**

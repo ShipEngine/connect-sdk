@@ -18,11 +18,12 @@ describe("createShipment", () => {
             },
           }],
           packages: [{
-            label: {
+            documents: [{
+              type: "label",
               size: "letter",
               format: "pdf",
               data: Buffer.from("data"),
-            }
+            }]
           }]
         })
       }),
@@ -56,14 +57,15 @@ describe("createShipment", () => {
         trackingNumber: "",
         trackingURL: undefined,
         identifiers: [],
-        customsForm: undefined,
         metadata: undefined,
-        label: {
+        documents: [{
           name: "Label",
+          type: "label",
           size: "letter",
           format: "pdf",
           data: Buffer.from("data"),
-        }
+          referenceFields: [],
+        }]
       }],
     });
   });
@@ -115,18 +117,23 @@ describe("createShipment", () => {
               name: "Package ID",
               id: "123456-ABCDEF-1",
             }],
-            label: {
-              name: "Shipping Label",
-              size: "letter",
-              format: "pdf",
-              data: Buffer.from("label data"),
-            },
-            customsForm: {
-              name: "Customs Form",
-              size: "A4",
-              format: "html",
-              data: Buffer.from("customs form data"),
-            },
+            documents: [
+              {
+                name: "Shipping Label",
+                type: "label",
+                size: "letter",
+                format: "pdf",
+                data: Buffer.from("label data"),
+                referenceFields: ["one", "two", "three"],
+              },
+              {
+                name: "Customs Form",
+                type: "customs_form",
+                size: "A4",
+                format: "html",
+                data: Buffer.from("customs form data"),
+              },
+            ],
             metadata: {
               fizz: "buzz",
             },
@@ -189,18 +196,23 @@ describe("createShipment", () => {
           name: "Package ID",
           id: "123456-ABCDEF-1",
         }],
-        label: {
-          name: "Shipping Label",
-          size: "letter",
-          format: "pdf",
-          data: Buffer.from("label data"),
-        },
-        customsForm: {
-          name: "Customs Form",
-          size: "A4",
-          format: "html",
-          data: Buffer.from("customs form data"),
-        },
+        documents: [
+          {
+            name: "Shipping Label",
+            type: "label",
+            size: "letter",
+            format: "pdf",
+            data: Buffer.from("label data"),
+            referenceFields: ["one", "two", "three"],
+          },
+          {
+            name: "Customs Form",
+            type: "customs_form",
+            size: "A4",
+            format: "html",
+            data: Buffer.from("customs form data"),
+          },
+        ],
         metadata: {
           fizz: "buzz",
         },
@@ -326,15 +338,48 @@ describe("createShipment", () => {
       }
     });
 
-    it("should throw an error if the label data is empty", async () => {
+    it("should throw an error if the document is invalid", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
           createShipment: () => pojo.shipmentConfirmation({
             packages: [
               pojo.packageConfirmation({
-                label: pojo.document({
-                  data: Buffer.alloc(0),
-                }),
+                documents: [
+                  {
+                    name: "   \n\t  ",
+                    type: "letter",
+                  },
+                ]
+              }),
+            ]
+          }),
+        }),
+      }));
+
+      try {
+        await app.carrier.createShipment(pojo.transaction(), pojo.newShipment());
+        assert.fail("An error should have been thrown");
+      }
+      catch (error) {
+        expect(error.message).to.equal(
+          "Error in createShipment method. \n" +
+          "Invalid shipment: \n" +
+          "  packages[0].documents[0] does not match any of the allowed types"
+        );
+      }
+    });
+
+    it("should throw an error if the document is empty", async () => {
+      let app = new CarrierApp(pojo.carrierApp({
+        carrier: pojo.carrier({
+          createShipment: () => pojo.shipmentConfirmation({
+            packages: [
+              pojo.packageConfirmation({
+                documents: [
+                  pojo.document({
+                    data: Buffer.alloc(0),
+                  }),
+                ]
               }),
             ]
           }),
@@ -349,34 +394,6 @@ describe("createShipment", () => {
         expect(error.message).to.equal(
           "Error in createShipment method. \n" +
           "Label data cannot be empty"
-        );
-      }
-    });
-
-    it("should throw an error if the customs form data is empty", async () => {
-      let app = new CarrierApp(pojo.carrierApp({
-        carrier: pojo.carrier({
-          createShipment: () => pojo.shipmentConfirmation({
-            packages: [
-              pojo.packageConfirmation({
-                label: pojo.document(),
-                customsForm: pojo.document({
-                  data: Buffer.alloc(0),
-                }),
-              }),
-            ]
-          }),
-        }),
-      }));
-
-      try {
-        await app.carrier.createShipment(pojo.transaction(), pojo.newShipment());
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal(
-          "Error in createShipment method. \n" +
-          "Customs Form data cannot be empty"
         );
       }
     });

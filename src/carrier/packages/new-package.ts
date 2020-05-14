@@ -1,8 +1,8 @@
 import { App, Dimensions, MonetaryValue, Weight } from "../../common";
 import { Currency, NonDeliveryAction } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { NewLabel } from "../documents/new-label";
 import { Packaging } from "../packaging";
-import { NewLabel } from "./new-label";
 import { NewPackagePOJO } from "./new-package-pojo";
 import { PackageItem } from "./package-item";
 

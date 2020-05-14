@@ -1,6 +1,6 @@
 import { Identifier } from "../../common";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
-import { Document } from "../document";
+import { Document } from "../documents/document";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 import { ManifestConfirmationPOJO } from "./manifest-confirmation-pojo";
 

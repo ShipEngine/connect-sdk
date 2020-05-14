@@ -63,6 +63,15 @@ export enum DocumentSize {
 }
 
 /**
+ * The types of digital documents that can be returned
+ */
+export enum DocumentType {
+  Label = "label",
+  CustomsForm = "customs_form",
+  ScanForm = "scan_form",
+}
+
+/**
  * Types of delivery confirmations
  */
 export enum DeliveryConfirmationType {

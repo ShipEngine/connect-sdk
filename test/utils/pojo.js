@@ -105,6 +105,7 @@ const pojo = module.exports = {
 
   document (props = {}) {
     return {
+      type: "label",
       size: "letter",
       format: "pdf",
       data: Buffer.from("data"),
@@ -172,7 +173,7 @@ const pojo = module.exports = {
   packageConfirmation (props = {}) {
     return {
       ...pojo.packageIdentifier(),
-      label: pojo.document(),
+      documents: [pojo.document()],
       ...props,
     };
   },

@@ -1,6 +1,8 @@
+import { DocumentType } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { URLString } from "../../types";
-import { Document, DocumentPOJO } from "../document";
+import { createDocument, Document, Label } from "../documents/document";
+import { DocumentPOJO, LabelPOJO } from "../documents/document-pojo";
 import { PackageIdentifier, packageIdentifierMixin, PackageIdentifierPOJO } from "./package-identifier";
 
 /**
@@ -13,14 +15,9 @@ export interface PackageConfirmationPOJO extends PackageIdentifierPOJO {
   trackingURL?: URLString | URL;
 
   /**
-   * The shipping label for this package
+   * The documents for this package, such as shipping labels, customs forms, etc.
    */
-  label: DocumentPOJO;
-
-  /**
-   * The customs form for this package
-   */
-  customsForm?: DocumentPOJO;
+  documents: Array<DocumentPOJO | LabelPOJO>;
 
   /**
    * Arbitrary data about this package that will be persisted by the ShipEngine Integration Platform.
@@ -41,8 +38,12 @@ export class PackageConfirmation extends packageIdentifierMixin() {
     label: "package",
     schema: PackageIdentifier[_internal].schema.keys({
       trackingURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
-      label: Document[_internal].schema.required(),
-      customsForm: Document[_internal].schema,
+      documents: Joi.array().min(1).items(
+        Joi.alternatives(
+          Document[_internal].schema,
+          Label[_internal].schema,
+        )
+      ).required(),
       metadata: Joi.object(),
     }),
   };
@@ -56,14 +57,9 @@ export class PackageConfirmation extends packageIdentifierMixin() {
   public readonly trackingURL?: URL;
 
   /**
-   * The shipping label for this package
+   * The documents for this package, such as shipping labels, customs forms, etc.
    */
-  public readonly label: Document;
-
-  /**
-   * The customs form for this package
-   */
-  public readonly customsForm?: Document;
+  public readonly documents: ReadonlyArray<Document | Label>;
 
   /**
    * Arbitrary data about this package that will be persisted by the ShipEngine Integration Platform.
@@ -72,20 +68,30 @@ export class PackageConfirmation extends packageIdentifierMixin() {
   public readonly metadata?: object;
 
   //#endregion
+  //#region Helper Properties
+
+  /**
+   * The first document of type "label" in the `documents` array
+   */
+  public get label(): Label | undefined {
+    return this.documents.find((doc) => doc.type === DocumentType.Label) as Label | undefined;
+  }
+
+  /**
+   * The first document of type "customs_form" in the `documents` array
+   */
+  public get customsForm(): Document | undefined {
+    return this.documents.find((doc) => doc.type === DocumentType.CustomsForm);
+  }
+
+  //#endregion
 
   public constructor(pojo: PackageConfirmationPOJO) {
     super(pojo);
 
     this.trackingURL = pojo.trackingURL ? new URL(pojo.trackingURL as string) : undefined;
-    this.label = new Document({
-      ...pojo.label,
-      name: pojo.label.name || "Label"
-    });
-    this.customsForm = pojo.customsForm && new Document({
-      ...pojo.customsForm,
-      name: pojo.customsForm.name || "Customs Form",
-    });
     this.metadata = pojo.metadata;
+    this.documents = pojo.documents.map(createDocument);
 
     // Make this object immutable
     hideAndFreeze(this);

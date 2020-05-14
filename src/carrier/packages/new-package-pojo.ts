@@ -1,7 +1,7 @@
 import { DimensionsPOJO, MonetaryValuePOJO, WeightPOJO } from "../../common";
 import { NonDeliveryAction } from "../../enums";
 import { UUID } from "../../types";
-import { NewLabelPOJO } from "./new-label";
+import { NewLabelPOJO } from "../documents/new-label-pojo";
 import { PackageItemPOJO } from "./package-item-pojo";
 
 /**

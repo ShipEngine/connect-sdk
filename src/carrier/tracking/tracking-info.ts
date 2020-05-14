@@ -1,4 +1,5 @@
 import { App, DateTimeZone, DateTimeZonePOJO } from "../../common";
+import { ShipmentStatus } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { shipmentIdentifierMixin, ShipmentIdentifierPOJO } from "../shipments/shipment-identifier";
 import { PackageTrackingInfo, PackageTrackingInfoPOJO } from "./package-tracking-info";
@@ -61,6 +62,48 @@ export class TrackingInfo extends shipmentIdentifierMixin() {
    * The events and status changes that have occured for this shipment
    */
   public readonly events: ReadonlyArray<TrackingEvent>;
+
+  //#endregion
+  //#region Helper Properties
+
+  /**
+   * The latest event in the `events` array
+   */
+  public get latestEvent(): TrackingEvent {
+    let events = this.events;
+    let latestEvent = events[0];
+    for (let i = 1; i < events.length; i++) {
+      if (events[i].dateTime.getTime() > latestEvent.dateTime.getTime()) {
+        latestEvent = events[i];
+      }
+    }
+    return latestEvent;
+  }
+
+  /**
+   * The latest status
+   */
+  public get status(): ShipmentStatus {
+    return this.latestEvent.status;
+  }
+
+  /**
+   * Indicates whether the `events` array contains any error events
+   */
+  public get hasError(): boolean {
+    return this.events.some((event) => event.isError);
+  }
+
+  /**
+   * The date/time of the first "accepted" event in the `events` array, if any
+   */
+  public get shipDateTime(): DateTimeZone | undefined {
+    for (let event of this.events) {
+      if (event.status === ShipmentStatus.Accepted) {
+        return event.dateTime;
+      }
+    }
+  }
 
   //#endregion
 

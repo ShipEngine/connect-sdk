@@ -6,9 +6,14 @@ import { ShipmentIdentifier, shipmentIdentifierMixin, ShipmentIdentifierPOJO } f
  */
 export interface TrackingCriteriaPOJO extends ShipmentIdentifierPOJO {
   /**
-   * Indicates whether this is a return shipment
+   * Return shipment details. If `undefined`, then it is assumed that the shipment is not a return.
    */
-  isReturn?: boolean;
+  returns?: {
+    /**
+     * Indicates whether this is a return shipment
+     */
+    isReturn?: boolean;
+  };
 
   /**
    * Arbitrary data about this shipment that was previously persisted by the ShipEngine Platform.
@@ -27,7 +32,9 @@ export class TrackingCriteria extends shipmentIdentifierMixin() {
   public static readonly [_internal] = {
     label: "shipment",
     schema: ShipmentIdentifier[_internal].schema.keys({
-      isReturn: Joi.boolean(),
+      returns: Joi.object({
+        isReturn: Joi.boolean(),
+      }),
       metadata: Joi.object(),
     }),
   };
@@ -36,9 +43,14 @@ export class TrackingCriteria extends shipmentIdentifierMixin() {
   //#region Public Fields
 
   /**
-   * Indicates whether this is a return shipment
+   * Return shipment details
    */
-  public readonly isReturn: boolean;
+  public readonly returns: {
+    /**
+     * Indicates whether this is a return shipment
+     */
+    readonly isReturn: boolean;
+  };
 
   /**
    * Arbitrary data about this shipment that was previously persisted by the ShipEngine Platform.
@@ -50,8 +62,13 @@ export class TrackingCriteria extends shipmentIdentifierMixin() {
   public constructor(pojo: TrackingCriteriaPOJO) {
     super(pojo);
 
-    this.isReturn = pojo.isReturn || false;
     this.metadata = pojo.metadata || {};
+
+    // If there's no return info, then the shipment is not a return
+    let returns = pojo.returns || {};
+    this.returns = {
+      isReturn: returns.isReturn || false,
+    };
 
     // Make this object immutable
     hideAndFreeze(this);

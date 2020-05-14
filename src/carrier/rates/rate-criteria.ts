@@ -25,8 +25,10 @@ export class RateCriteria {
       deliveryDateTime: DateTimeZone[_internal].schema,
       shipFrom: AddressWithContactInfo[_internal].schema.required(),
       shipTo: AddressWithContactInfo[_internal].schema.required(),
-      isReturn: Joi.boolean(),
-      outboundShipment: ShipmentIdentifier[_internal].schema,
+      returns: Joi.object({
+        isReturn: Joi.boolean(),
+        outboundShipment: ShipmentIdentifier[_internal].schema,
+      }),
       packages: Joi.array().min(1).items(PackageRateCriteria[_internal].schema).required(),
     }),
   };
@@ -76,21 +78,26 @@ export class RateCriteria {
   public readonly shipTo: AddressWithContactInfo;
 
   /**
-   * Indicates whether this is a return shipment
-   */
-  public readonly isReturn: boolean;
-
-  /**
-   * The original (outgoing) shipment that this return shipment is for.
-   * This associates the two shipments, which is required by some carriers.
-   */
-  public readonly outboundShipment?: ShipmentIdentifier;
-
-  /**
    * The total insured value of all packages in the shipment.
    * If specified, then rate quotes should include carrier-provided insurance.
    */
   public readonly totalInsuredValue?: MonetaryValue;
+
+  /**
+   * Return shipment details
+   */
+  public readonly returns: {
+    /**
+     * Indicates whether this is a return shipment
+     */
+    readonly isReturn: boolean;
+
+    /**
+     * The original (outgoing) shipment that this return shipment is for.
+     * This associates the two shipments, which is required by some carriers.
+     */
+    readonly outboundShipment?: Readonly<ShipmentIdentifier>;
+  };
 
   /**
    * The list of packages in the shipment
@@ -109,13 +116,20 @@ export class RateCriteria {
     this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;
     this.shipFrom = new AddressWithContactInfo(pojo.shipFrom);
     this.shipTo = new AddressWithContactInfo(pojo.shipTo);
-    this.isReturn = pojo.isReturn || false;
-    this.outboundShipment = pojo.outboundShipment && new ShipmentIdentifier(pojo.outboundShipment);
+
+    // If there's no return info, then the shipment is not a return
+    let returns = pojo.returns || {};
+    this.returns = {
+      isReturn: returns.isReturn || false,
+      outboundShipment: returns.outboundShipment && new ShipmentIdentifier(returns.outboundShipment),
+    };
+
     this.packages = pojo.packages.map((parcel) => new PackageRateCriteria(parcel, app));
     this.totalInsuredValue = calculateTotalInsuranceAmount(this.packages);
 
     // Make this object immutable
     hideAndFreeze(this);
+    Object.freeze(this.returns.outboundShipment);
   }
 }
 

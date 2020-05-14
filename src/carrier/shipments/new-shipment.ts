@@ -26,9 +26,11 @@ export class NewShipment {
       returnTo: AddressWithContactInfo[_internal].schema,
       shipDateTime: DateTimeZone[_internal].schema.required(),
       insuranceProvider: Joi.string().enum(InsuranceProvider),
-      isReturn: Joi.boolean(),
-      rmaNumber: Joi.string().trim().singleLine().min(1).max(100),
-      outboundShipment: ShipmentIdentifier[_internal].schema,
+      returns: Joi.object({
+        isReturn: Joi.boolean(),
+        rmaNumber: Joi.string().trim().singleLine().min(1).max(100),
+        outboundShipment: ShipmentIdentifier[_internal].schema,
+      }),
       billing: Joi.object({
         dutiesPaidBy: Joi.string().enum(BilledParty),
         deliveryPaidBy: Joi.string().enum(BilledParty),
@@ -91,25 +93,6 @@ export class NewShipment {
   public readonly totalInsuredValue: MonetaryValue;
 
   /**
-   * Indicates whether this is a return shipment
-   */
-  public readonly isReturn: boolean;
-
-  /**
-   * A return merchandise authorization (RMA) is an associated number assigned to process the return,
-   * this number is often printed on the label, and used when the original shipper processes the inbound return.
-   */
-  public readonly rmaNumber: string;
-
-  /**
-   * The original (outgoing) shipment that this return shipment is for.
-   * This associates the two shipments, which is required by some carriers.
-   * This field is `undefined` if this is not a return shipment, or if no
-   * outbound shipment was specified.
-   */
-  public readonly outboundShipment?: ShipmentIdentifier;
-
-  /**
    * Indicates whether the shipment cannot be processed automatically due to size, shape, weight, etc.
    * and requires manual handling.
    *
@@ -120,33 +103,57 @@ export class NewShipment {
   }
 
   /**
-   * Billing details.
+   * Return shipment details
    */
-  public billing: {
+  public readonly returns: {
+    /**
+     * Indicates whether this is a return shipment
+     */
+    readonly isReturn: boolean;
+
+    /**
+     * A return merchandise authorization (RMA) is an associated number assigned to process the return,
+     * this number is often printed on the label, and used when the original shipper processes the inbound return.
+     */
+    readonly rmaNumber: string;
+
+    /**
+     * The original (outgoing) shipment that this return shipment is for.
+     * This associates the two shipments, which is required by some carriers.
+     * This field is `undefined` if this is not a return shipment, or if no
+     * outbound shipment was specified.
+     */
+    readonly outboundShipment?: Readonly<ShipmentIdentifier>;
+  };
+
+  /**
+   * Billing details
+   */
+  public readonly billing: {
     /**
      * Indicates who customs duties are billed to. Defaults to the sender
      */
-    dutiesPaidBy: BilledParty;
+    readonly dutiesPaidBy: BilledParty;
 
     /**
      * Indicates who delivery charges are billed to. Defaults to the sender
      */
-    deliveryPaidBy: BilledParty;
+    readonly deliveryPaidBy: BilledParty;
 
     /**
      * The account number of the third-party that is responsible for shipping costs
      */
-    account: string;
+    readonly account: string;
 
     /**
      * The postal code of the third-party that is responsible for shipping costs
      */
-    postalCode: string;
+    readonly postalCode: string;
 
     /**
      * The country of the third-party that is responsible for shipping costs
      */
-    country?: Country;
+    readonly country?: Country;
   };
 
   /**
@@ -166,11 +173,16 @@ export class NewShipment {
       : new AddressWithContactInfo(pojo.shipFrom);
     this.shipDateTime = new DateTimeZone(pojo.shipDateTime);
     this.insuranceProvider = pojo.insuranceProvider || InsuranceProvider.Carrier;
-    this.isReturn = pojo.isReturn || false;
-    this.rmaNumber = pojo.rmaNumber || "";
-    this.outboundShipment = pojo.outboundShipment && new ShipmentIdentifier(pojo.outboundShipment);
 
-    // If there is no billing info, then the sender is billed by default.
+    // If there's no return info, then the shipment is not a return
+    let returns = pojo.returns || {};
+    this.returns = {
+      isReturn: returns.isReturn || false,
+      rmaNumber: returns.rmaNumber || "",
+      outboundShipment: returns.outboundShipment && new ShipmentIdentifier(returns.outboundShipment),
+    };
+
+    // If there is no billing info, then the sender is billed by default
     let billing = pojo.billing || {};
     this.billing = {
       dutiesPaidBy: billing.dutiesPaidBy || BilledParty.Sender,
@@ -185,6 +197,7 @@ export class NewShipment {
 
     // Make this object immutable
     hideAndFreeze(this);
+    Object.freeze(this.returns.outboundShipment);
   }
 }
 

@@ -45,21 +45,26 @@ export interface NewShipmentPOJO {
   insuranceProvider?: InsuranceProvider;
 
   /**
-   * Indicates whether this is a return shipment
+   * Return shipment details. If `undefined`, then it is assumed that the shipment is not a return.
    */
-  isReturn?: boolean;
+  returns?: {
+    /**
+     * Indicates whether this is a return shipment
+     */
+    isReturn?: boolean;
 
-  /**
-   * A return merchandise authorization (RMA) is an associated number assigned to process the return,
-   * this number is often printed on the label, and used when the original shipper processes the inbound return.
-   */
-  rmaNumber?: string;
+    /**
+     * A return merchandise authorization (RMA) is an associated number assigned to process the return,
+     * this number is often printed on the label, and used when the original shipper processes the inbound return.
+     */
+    rmaNumber?: string;
 
-  /**
-   * The original (outgoing) shipment that this return shipment is for.
-   * This associates the two shipments, which is required by some carriers.
-   */
-  outboundShipment?: ShipmentIdentifierPOJO;
+    /**
+     * The original (outgoing) shipment that this return shipment is for.
+     * This associates the two shipments, which is required by some carriers.
+     */
+    outboundShipment?: ShipmentIdentifierPOJO;
+  };
 
   /**
    * Billing details. If `undefined`, then the sender is billed for all shipping costs.

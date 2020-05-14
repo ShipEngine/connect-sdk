@@ -1,6 +1,6 @@
 {
   "name": "@shipengine/integration-platform-sdk",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "The official SDK for building ShipEngine Integration Platform apps",
   "keywords": [
     "shipengine",

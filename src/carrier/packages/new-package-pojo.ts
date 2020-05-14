@@ -1,4 +1,5 @@
 import { DimensionsPOJO, MonetaryValuePOJO, WeightPOJO } from "../../common";
+import { NonDeliveryAction } from "../../enums";
 import { UUID } from "../../types";
 import { NewLabelPOJO } from "./new-label";
 import { PackageItemPOJO } from "./package-item-pojo";
@@ -26,6 +27,12 @@ export interface NewPackagePOJO {
    * The insured value of this package
    */
   insuredValue?: MonetaryValuePOJO;
+
+  /**
+   * Indicates how a non-deliverable package should be handled. If `undefined`, the carrier's
+   * default behavior applies, which may incur charges.
+   */
+  nonDeliveryAction?: NonDeliveryAction;
 
   /**
    * Indicates whether the package contains alcohol

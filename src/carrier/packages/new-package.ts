@@ -1,5 +1,5 @@
 import { App, Dimensions, MonetaryValue, Weight } from "../../common";
-import { Currency } from "../../enums";
+import { Currency, NonDeliveryAction } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { Packaging } from "../packaging";
 import { NewLabel } from "./new-label";
@@ -21,6 +21,7 @@ export class NewPackage {
       dimensions: Dimensions[_internal].schema,
       weight: Weight[_internal].schema,
       insuredValue: MonetaryValue[_internal].schema,
+      nonDeliveryAction: Joi.string().enum(NonDeliveryAction),
       containsAlcohol: Joi.boolean(),
       isNonMachinable: Joi.boolean(),
       label: NewLabel[_internal].schema.required(),
@@ -52,6 +53,12 @@ export class NewPackage {
   public readonly insuredValue: MonetaryValue;
 
   /**
+   * Indicates how a non-deliverable package should be handled. If `undefined`,
+   * the carrier's default behavior applies, which may incur charges.
+   */
+  public readonly nonDeliveryAction?: NonDeliveryAction;
+
+  /**
    * Indicates whether the package contains alcohol
    */
   public readonly containsAlcohol: boolean;
@@ -79,6 +86,7 @@ export class NewPackage {
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
     this.insuredValue = new MonetaryValue(pojo.insuredValue || { value: 0, currency: Currency.UnitedStatesDollar });
+    this.nonDeliveryAction = pojo.nonDeliveryAction;
     this.containsAlcohol = pojo.containsAlcohol || false;
     this.isNonMachinable = pojo.isNonMachinable || false;
     this.label = new NewLabel(pojo.label);

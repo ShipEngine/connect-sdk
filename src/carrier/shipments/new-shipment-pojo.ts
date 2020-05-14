@@ -1,5 +1,5 @@
 import { AddressWithContactInfoPOJO, DateTimeZonePOJO } from "../../common";
-import { BilledParty, Country, InsuranceProvider, NonDeliveryAction } from "../../enums";
+import { BilledParty, Country, InsuranceProvider } from "../../enums";
 import { UUID } from "../../types";
 import { NewPackagePOJO } from "../packages/new-package-pojo";
 import { ShipmentIdentifierPOJO } from "./shipment-identifier";
@@ -38,12 +38,6 @@ export interface NewShipmentPOJO {
    * This is not guaranteed to be in the future.
    */
   shipDateTime: DateTimeZonePOJO | Date | string;
-
-  /**
-   * Indicates how a non-deliverable package should be handled. If `undefined`, the carrier's
-   * default behavior applies, which may incur charges.
-   */
-  nonDeliveryAction?: NonDeliveryAction;
 
   /**
    * Which party will be insuring the shipment. Defaults to carrier-provided insurance.

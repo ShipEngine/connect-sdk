@@ -1,5 +1,5 @@
 import { AddressWithContactInfo, App, DateTimeZone, MonetaryValue } from "../../common";
-import { BilledParty, Country, InsuranceProvider, NonDeliveryAction } from "../../enums";
+import { BilledParty, Country, InsuranceProvider } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
@@ -25,7 +25,6 @@ export class NewShipment {
       shipTo: AddressWithContactInfo[_internal].schema.required(),
       returnTo: AddressWithContactInfo[_internal].schema,
       shipDateTime: DateTimeZone[_internal].schema.required(),
-      nonDeliveryAction: Joi.string().enum(NonDeliveryAction),
       insuranceProvider: Joi.string().enum(InsuranceProvider),
       isReturn: Joi.boolean(),
       rmaNumber: Joi.string().trim().singleLine().min(1).max(100),
@@ -80,12 +79,6 @@ export class NewShipment {
    * This is not guaranteed to be in the future.
    */
   public readonly shipDateTime: DateTimeZone;
-
-  /**
-   * Indicates how a non-deliverable package should be handled. If `undefined`,
-   * the carrier's default behavior applies, which may incur charges.
-   */
-  public readonly nonDeliveryAction?: NonDeliveryAction;
 
   /**
    * Which party will be insuring the shipment
@@ -172,7 +165,6 @@ export class NewShipment {
       ? new AddressWithContactInfo(pojo.returnTo)
       : new AddressWithContactInfo(pojo.shipFrom);
     this.shipDateTime = new DateTimeZone(pojo.shipDateTime);
-    this.nonDeliveryAction = pojo.nonDeliveryAction;
     this.insuranceProvider = pojo.insuranceProvider || InsuranceProvider.Carrier;
     this.isReturn = pojo.isReturn || false;
     this.rmaNumber = pojo.rmaNumber || "";

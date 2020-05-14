@@ -35,5 +35,5 @@ export interface PackageRateCriteriaPOJO {
   /**
    * Indicates whether the
    */
-  isNonMachineable?: boolean;
+  isNonMachinable?: boolean;
 }

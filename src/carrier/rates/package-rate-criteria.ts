@@ -19,7 +19,7 @@ export class PackageRateCriteria {
       weight: Weight[_internal].schema,
       insuredValue: MonetaryValue[_internal].schema,
       containsAlcohol: Joi.boolean(),
-      isNonMachineable: Joi.boolean(),
+      isNonMachinable: Joi.boolean(),
     }),
   };
 
@@ -56,7 +56,7 @@ export class PackageRateCriteria {
    * Indicates whether the package cannot be processed automatically due to size, shape, weight, etc.
    * and requires manual handling.
    */
-  public readonly isNonMachineable: boolean;
+  public readonly isNonMachinable: boolean;
 
   //#endregion
 
@@ -67,7 +67,7 @@ export class PackageRateCriteria {
     this.weight = pojo.weight && new Weight(pojo.weight);
     this.insuredValue = pojo.insuredValue && new MonetaryValue(pojo.insuredValue);
     this.containsAlcohol = pojo.containsAlcohol || false;
-    this.isNonMachineable = pojo.isNonMachineable || false;
+    this.isNonMachinable = pojo.isNonMachinable || false;
 
     // Make this object immutable
     hideAndFreeze(this);

@@ -35,7 +35,7 @@ export interface NewPackagePOJO {
   /**
    * Indicates whether the
    */
-  isNonMachineable?: boolean;
+  isNonMachinable?: boolean;
 
   /**
    * Label preferences for this package

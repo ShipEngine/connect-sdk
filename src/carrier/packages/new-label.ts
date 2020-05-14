@@ -16,11 +16,18 @@ export interface NewLabelPOJO {
   format: DocumentFormat;
 
   /**
-   * Customized strings the end user expects to appear on their label.
-   * The exact location on the label depends on the carrier. Some carriers
-   * may limit the number of allowed label messages, or not support them at all.
+   * Some carriers provide general-purpose fields on their labels for custom text.
+   * This is sometimes used for messages, like "Thank you for shopping with us!",
+   * or may be used to store reference data, such as account numbers, warehouse codes, etc.
+   *
+   * The exact location on the label depends on the carrier, as does the maximum length
+   * of each field.
+   *
+   * NOTE: These fields should NOT be used to set **named** fields on the label,
+   *       such as "RMA Number" or "Order ID". Those should be set using the correspond
+   *       properties of the shipment.
    */
-  messages?: string[];
+  referenceFields?: string[];
 }
 
 
@@ -36,7 +43,7 @@ export class NewLabel {
     schema: Joi.object({
       format: Joi.string().enum(DocumentFormat).required(),
       size: Joi.string().enum(DocumentSize).required(),
-      messages: Joi.array().items(
+      referenceFields: Joi.array().items(
         Joi.string().trim().singleLine().allow("").max(100)
       ),
     }),
@@ -58,18 +65,25 @@ export class NewLabel {
   public readonly size: DocumentSize;
 
   /**
-   * Customized strings the end user expects to appear on their label.
-   * The exact location on the label depends on the carrier. Some carriers
-   * may limit the number of allowed label messages, or not support them at all.
+   * Some carriers provide general-purpose fields on their labels for custom text.
+   * This is sometimes used for messages, like "Thank you for shopping with us!",
+   * or may be used to store reference data, such as account numbers, warehouse codes, etc.
+   *
+   * The exact location on the label depends on the carrier, as does the maximum length
+   * of each field.
+   *
+   * NOTE: These fields should NOT be used to set **named** fields on the label,
+   *       such as "RMA Number" or "Order ID". Those should be set using the correspond
+   *       properties of the shipment.
    */
-  public readonly messages: ReadonlyArray<string>;
+  public readonly referenceFields: ReadonlyArray<string>;
 
   //#endregion
 
   public constructor(pojo: NewLabelPOJO) {
     this.format = pojo.format;
     this.size = pojo.size;
-    this.messages = pojo.messages || [];
+    this.referenceFields = pojo.referenceFields || [];
 
     // Make this object immutable
     hideAndFreeze(this);

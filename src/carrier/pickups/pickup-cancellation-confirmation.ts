@@ -13,7 +13,7 @@ export class PickupCancellationConfirmation {
     schema: Joi.object({
       pickupID: Joi.string().trim().singleLine().min(1).max(100).required(),
       cancellationNumber: Joi.string().trim().singleLine().allow("").max(100),
-      isError: Joi.boolean().required(),
+      isError: Joi.boolean(),
       errorCode: Joi.string().trim().singleLine().min(1).max(100),
       errorDescription: Joi.string().trim().singleLine().allow("").max(1000),
       notes: Joi.string().allow("").max(5000),

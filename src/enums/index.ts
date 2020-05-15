@@ -126,9 +126,22 @@ export enum InsuranceProvider {
 /**
  * Indicates how a non-deliverable package should be handled
  */
-export enum NonDeliveryAction {
-  ReturnToSender = "return_to_sender",
-  TreatAsAbandoned = "treat_as_abandoned",
+export enum NonDeliveryOption {
+  Return = "return",
+  Abandon = "abandon",
+}
+
+/**
+ * The customs type category of an item in a package
+ */
+export enum CustomsItemType {
+  Gift = "gift",
+  Documents = "documents",
+  Merchandise = "merchandise",
+  ReturnedGoods = "returned_goods",
+  CommercialSample = "commercial_sample",
+  HumanitarianDonation = "humanitarian_donation",
+  Other = "other",
 }
 
 /**

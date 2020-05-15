@@ -14,6 +14,8 @@ export * from "./manifests/manifest-confirmation-pojo";
 export * from "./manifests/new-manifest";
 export * from "./manifests/new-manifest-pojo";
 export * from "./methods";
+export * from "./packages/customs-item";
+export * from "./packages/customs-item-pojo";
 export { NewPackage } from "./packages/new-package";
 export * from "./packages/new-package-pojo";
 export * from "./packages/package-confirmation";

@@ -1,5 +1,4 @@
 import { IdentifierPOJO, MonetaryValuePOJO, QuantityPOJO } from "../../common";
-import { Country } from "../../enums";
 import { SalesOrderIdentifierPOJO } from "../../order";
 
 /**
@@ -17,11 +16,6 @@ export interface PackageItemPOJO {
   identifiers?: IdentifierPOJO[];
 
   /**
-   * A description of the item. Often used for customs declarations.
-   */
-  description?: string;
-
-  /**
    * The sales order associated with this item
    */
   salesOrder?: SalesOrderIdentifierPOJO;
@@ -32,24 +26,7 @@ export interface PackageItemPOJO {
   quantity: QuantityPOJO;
 
   /**
-   * The monetary value of each item
+   * The sale price of each item
    */
-  unitValue: MonetaryValuePOJO;
-
-  /**
-   * The country of origin, for customs declarations purposes
-   */
-  countryOfOrigin?: Country;
-
-  /**
-   * The country of manufacture, for customs declarations purposes
-   */
-  countryOfManufacture?: Country;
-
-  /**
-   * The Harmonized Tariff Code for the item.
-   *
-   * @see https://hts.usitc.gov/
-   */
-  harmonizedTariffCode?: string;
+  unitPrice: MonetaryValuePOJO;
 }

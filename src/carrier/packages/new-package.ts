@@ -1,8 +1,9 @@
 import { App, Dimensions, MonetaryValue, Weight } from "../../common";
-import { Currency, NonDeliveryAction } from "../../enums";
+import { Currency, NonDeliveryOption } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { NewLabel } from "../documents/new-label";
 import { Packaging } from "../packaging";
+import { CustomsItem } from "./customs-item";
 import { NewPackagePOJO } from "./new-package-pojo";
 import { PackageItem } from "./package-item";
 
@@ -21,11 +22,14 @@ export class NewPackage {
       dimensions: Dimensions[_internal].schema,
       weight: Weight[_internal].schema,
       insuredValue: MonetaryValue[_internal].schema,
-      nonDeliveryAction: Joi.string().enum(NonDeliveryAction),
       containsAlcohol: Joi.boolean(),
       isNonMachinable: Joi.boolean(),
       label: NewLabel[_internal].schema.required(),
       contents: Joi.array().items(PackageItem[_internal].schema),
+      customs: Joi.object({
+        nonDeliveryOption: Joi.string().enum(NonDeliveryOption),
+        contents: Joi.array().items(CustomsItem[_internal].schema),
+      }),
     }),
   };
 
@@ -53,12 +57,6 @@ export class NewPackage {
   public readonly insuredValue: MonetaryValue;
 
   /**
-   * Indicates how a non-deliverable package should be handled. If `undefined`,
-   * the carrier's default behavior applies, which may incur charges.
-   */
-  public readonly nonDeliveryAction?: NonDeliveryAction;
-
-  /**
    * Indicates whether the package contains alcohol
    */
   public readonly containsAlcohol: boolean;
@@ -79,6 +77,29 @@ export class NewPackage {
    */
   public readonly contents: ReadonlyArray<PackageItem>;
 
+  /**
+   * Customs declarations for this package
+   */
+  public readonly customs: {
+    /**
+     * Indicates what should be done if the package cannot be delivered.
+     * If `undefined`, the default behavior of the receiving country's customs department applies,
+     * which may incur charges.
+     */
+    nonDeliveryOption?: NonDeliveryOption;
+
+    /**
+     * Describes the contents of the package for customs purposes.
+     *
+     * NOTE: Customs contents may not correspond one-to-one with the package contents.
+     * Package contents usually include one item per unique merchandise SKU
+     * (e.g. one red t-shirt and one blue t-shirt), whereas customs contentsare often grouped by
+     * product type (e.g. two t-shirts). In addition, some package contents don't need to be dclared
+     * for customs purposes.
+     */
+    contents?: ReadonlyArray<CustomsItem>;
+  };
+
   //#endregion
 
   public constructor(pojo: NewPackagePOJO, app: App) {
@@ -86,14 +107,20 @@ export class NewPackage {
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
     this.insuredValue = new MonetaryValue(pojo.insuredValue || { value: 0, currency: Currency.UnitedStatesDollar });
-    this.nonDeliveryAction = pojo.nonDeliveryAction;
     this.containsAlcohol = pojo.containsAlcohol || false;
     this.isNonMachinable = pojo.isNonMachinable || false;
     this.label = new NewLabel(pojo.label);
     this.contents = (pojo.contents || []).map((item) => new PackageItem(item));
 
+    let customs = pojo.customs || {};
+    this.customs = {
+      nonDeliveryOption: customs.nonDeliveryOption,
+      contents: customs.contents ? customs.contents.map((item) => new CustomsItem(item)) : undefined,
+    };
+
     // Make this object immutable
     hideAndFreeze(this);
+    Object.freeze(this.customs.contents);
   }
 }
 

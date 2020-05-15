@@ -1,6 +1,5 @@
 import * as currency from "currency.js";
 import { Identifier, MonetaryValue, Quantity } from "../../common";
-import { Country } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { SalesOrderIdentifier } from "../../order";
 import { PackageItemPOJO } from "./package-item-pojo";
@@ -17,13 +16,9 @@ export class PackageItem {
     schema: Joi.object({
       sku: Joi.string().trim().singleLine().allow("").max(100),
       identifiers: Joi.array().items(Identifier[_internal].schema),
-      description: Joi.string().trim().singleLine().allow("").max(1000),
       salesOrder: SalesOrderIdentifier[_internal].schema,
       quantity: Quantity[_internal].schema.required(),
-      unitValue: MonetaryValue[_internal].schema.required(),
-      countryOfOrigin: Joi.string().enum(Country),
-      countryOfManufacture: Joi.string().enum(Country),
-      harmonizedTariffCode: Joi.string().trim().singleLine().allow("").max(30),
+      unitPrice: MonetaryValue[_internal].schema.required(),
     }),
   };
 
@@ -41,11 +36,6 @@ export class PackageItem {
   public readonly identifiers: ReadonlyArray<Identifier>;
 
   /**
-   * A description of the item. Often used for customs declarations.
-   */
-  public readonly description: string;
-
-  /**
    * The sales order associated with this item
    */
   public readonly salesOrder?: SalesOrderIdentifier;
@@ -56,49 +46,28 @@ export class PackageItem {
   public readonly quantity: Quantity;
 
   /**
-   * The monetary value of each item
+   * The sale price of each item
    */
-  public readonly unitValue: MonetaryValue;
+  public readonly unitPrice: MonetaryValue;
 
   /**
-   * The total value of this item. This is `unitValue` multiplied by `quantity`.
+   * The total price of this item. This is `unitPrice` multiplied by `quantity`.
    */
-  public get totalValue(): MonetaryValue {
+  public get totalPrice(): MonetaryValue {
     return new MonetaryValue({
-      value: currency(this.unitValue.value).multiply(this.quantity.value).toString(),
-      currency: this.unitValue.currency,
+      value: currency(this.unitPrice.value).multiply(this.quantity.value).toString(),
+      currency: this.unitPrice.currency,
     });
   }
-
-  /**
-   * The country of origin, for customs declarations purposes
-   */
-  public readonly countryOfOrigin?: Country;
-
-  /**
-   * The country of manufacture, for customs declarations purposes
-   */
-  public readonly countryOfManufacture?: Country;
-
-  /**
-   * The Harmonized Tariff Code for the item.
-   *
-   * @see https://hts.usitc.gov/
-   */
-  public readonly harmonizedTariffCode: string;
 
   //#endregion
 
   public constructor(pojo: PackageItemPOJO) {
     this.sku = pojo.sku || "";
     this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];
-    this.description = pojo.description || "";
     this.salesOrder = pojo.salesOrder && new SalesOrderIdentifier(pojo.salesOrder);
     this.quantity = new Quantity(pojo.quantity);
-    this.unitValue = new MonetaryValue(pojo.unitValue);
-    this.countryOfOrigin = pojo.countryOfOrigin;
-    this.countryOfManufacture = pojo.countryOfManufacture;
-    this.harmonizedTariffCode = pojo.harmonizedTariffCode || "";
+    this.unitPrice = new MonetaryValue(pojo.unitPrice);
 
     // Make this object immutable
     hideAndFreeze(this);

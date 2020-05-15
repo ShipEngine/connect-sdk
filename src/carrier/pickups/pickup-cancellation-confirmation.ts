@@ -12,8 +12,10 @@ export class PickupCancellationConfirmation {
     label: "pickup",
     schema: Joi.object({
       pickupID: Joi.string().trim().singleLine().min(1).max(100).required(),
-      successful: Joi.boolean().required(),
       cancellationNumber: Joi.string().trim().singleLine().allow("").max(100),
+      isError: Joi.boolean().required(),
+      errorCode: Joi.string().trim().singleLine().min(1).max(100),
+      errorDescription: Joi.string().trim().singleLine().allow("").max(1000),
       notes: Joi.string().allow("").max(5000),
       metadata: Joi.object(),
     }),
@@ -29,16 +31,25 @@ export class PickupCancellationConfirmation {
   public readonly pickupID: string;
 
   /**
-   * Indicates whether the pickup was successfully canceled.
-   * If the pickup was _not_ canceled, then the `notes` field should contain
-   * information and/or instructions for the customer. (e.g. "Please call ###-#### to cancel")
-   */
-  public readonly successful: boolean;
-
-  /**
    * The carrier's cancellation number, if any
    */
   public readonly cancellationNumber: string;
+
+  /**
+   * Indicates whether the cancellation failed or was successful
+   */
+  public readonly isError: boolean;
+
+  /**
+   * The carrier's error code
+   */
+  public readonly errorCode: string;
+
+  /**
+   * The carrier's description of the error code.
+   * This description should not be specific to this particular pickup
+   */
+  public readonly errorDescription: string;
 
   /**
    * Additional information/instructions regarding the cancellation
@@ -56,8 +67,10 @@ export class PickupCancellationConfirmation {
 
   public constructor(pojo: PickupCancellationConfirmationPOJO) {
     this.pickupID = pojo.pickupID;
-    this.successful = pojo.successful;
     this.cancellationNumber = pojo.cancellationNumber || "";
+    this.isError = pojo.isError || false;
+    this.errorCode = pojo.errorCode || "";
+    this.errorDescription = pojo.errorDescription || "";
     this.notes = pojo.notes || "";
     this.metadata = pojo.metadata;
 

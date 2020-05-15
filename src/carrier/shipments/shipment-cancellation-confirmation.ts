@@ -13,8 +13,10 @@ export class ShipmentCancellationConfirmation {
     label: "shipment",
     schema: ShipmentIdentifier[_internal].schema.keys({
       shipmentID: Joi.string().trim().singleLine().min(1).max(100).required(),
-      successful: Joi.boolean().required(),
       cancellationNumber: Joi.string().trim().singleLine().allow("").max(100),
+      isError: Joi.boolean().required(),
+      errorCode: Joi.string().trim().singleLine().min(1).max(100),
+      errorDescription: Joi.string().trim().singleLine().allow("").max(1000),
       notes: Joi.string().allow("").max(5000),
       metadata: Joi.object(),
     }),
@@ -30,16 +32,25 @@ export class ShipmentCancellationConfirmation {
   public readonly shipmentID: string;
 
   /**
-   * Indicates whether the shipment was successfully canceled.
-   * If the shipment was _not_ canceled, then the `notes` field should contain
-   * information and/or instructions for the customer. (e.g. "Please call ###-#### to cancel")
-   */
-  public readonly successful: boolean;
-
-  /**
    * The carrier's cancellation number, if any
    */
   public readonly cancellationNumber: string;
+
+  /**
+   * Indicates whether the cancellation failed or was successful
+   */
+  public readonly isError: boolean;
+
+  /**
+   * The carrier's error code
+   */
+  public readonly errorCode: string;
+
+  /**
+   * The carrier's description of the error code.
+   * This description should not be specific to this particular shipment
+   */
+  public readonly errorDescription: string;
 
   /**
    * Human-readable information/instructions regarding the cancellation
@@ -57,8 +68,10 @@ export class ShipmentCancellationConfirmation {
 
   public constructor(pojo: ShipmentCancellationConfirmationPOJO) {
     this.shipmentID = pojo.shipmentID;
-    this.successful = pojo.successful;
     this.cancellationNumber = pojo.cancellationNumber || "";
+    this.isError = pojo.isError || false;
+    this.errorCode = pojo.errorCode || "";
+    this.errorDescription = pojo.errorDescription || "";
     this.notes = pojo.notes || "";
     this.metadata = pojo.metadata;
 

@@ -9,16 +9,25 @@ export interface PickupCancellationConfirmationPOJO {
   pickupID: string;
 
   /**
-   * Indicates whether the pickup was successfully canceled.
-   * If the pickup was _not_ canceled, then the `notes` field should contain
-   * information and/or instructions for the customer. (e.g. "Please call ###-#### to cancel")
-   */
-  successful: boolean;
-
-  /**
    * The carrier's cancellation number, if any
    */
   cancellationNumber?: string;
+
+  /**
+   * Indicates whether the cancellation failed or was successful
+   */
+  isError?: boolean;
+
+  /**
+   * The carrier's error code
+   */
+  errorCode?: string;
+
+  /**
+   * The carrier's description of the error code.
+   * This description should not be specific to this particular pickup
+   */
+  errorDescription?: string;
 
   /**
    * Human-readable information/instructions regarding the cancellation

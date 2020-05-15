@@ -6,7 +6,7 @@ import { ShipmentIdentifier, shipmentIdentifierMixin, ShipmentIdentifierPOJO } f
  */
 export interface ShipmentCancellationPOJO extends ShipmentIdentifierPOJO {
   /**
-   * ShipEngine's unique identifier for the shipment. This ID must be returned, along with a flag
+   * A value that uniquely identifies the shipment. This ID must be returned, along with a flag
    * indicating whether it was successfully canceled.
    */
   shipmentID: string;

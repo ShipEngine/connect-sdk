@@ -1,5 +1,5 @@
 import { App, LocalizedBrandingPOJO, Transaction, TransactionPOJO } from "../common";
-import { Country, DocumentFormat, DocumentSize, ServiceArea } from "../enums";
+import { Country, DocumentFormat, DocumentSize, ManifestLocation, ManifestShipment, ServiceArea } from "../enums";
 import { error, ErrorCode } from "../errors";
 import { hideAndFreeze, Joi, Localization, localize, validate, validateArray, _internal } from "../internal";
 import { FilePath, UUID } from "../types";
@@ -47,6 +47,10 @@ export class Carrier {
       description: Joi.string().trim().singleLine().allow("").max(1000),
       websiteURL: Joi.string().website().required(),
       logo: Joi.string().filePath({ ext: ".svg" }).required(),
+      manifestLocations: Joi.string().enum(ManifestLocation)
+        .when("createManifest", { is: Joi.function().required(), then: Joi.required() }),
+      manifestShipments: Joi.string().enum(ManifestShipment)
+        .when("createManifest", { is: Joi.function().required(), then: Joi.required() }),
       deliveryServices: Joi.array().min(1).items(DeliveryService[_internal].schema).required(),
       pickupServices: Joi.array().items(PickupService[_internal].schema),
       localization: Joi.object().localization({
@@ -105,6 +109,18 @@ export class Carrier {
    * The carrier's logo image
    */
   public readonly logo: FilePath;
+
+  /**
+   * Indicates which locations are included in end-of-day manifests.
+   * This field is required if the `createManifest` method is implemented.
+   */
+  public readonly manifestLocations?: ManifestLocation;
+
+  /**
+   * Indicates which shipments are included in end-of-day manifests.
+   * This field is required if the `createManifest` method is implemented.
+   */
+  public readonly manifestShipments?: ManifestShipment;
 
   /**
    * The delivery services that are offered by this carrier
@@ -261,6 +277,8 @@ export class Carrier {
     this.description = pojo.description || "";
     this.websiteURL = new URL(pojo.websiteURL);
     this.logo =  pojo.logo;
+    this.manifestLocations = pojo.manifestLocations;
+    this.manifestShipments = pojo.manifestShipments;
     this.deliveryServices = pojo.deliveryServices.map((svc) => new DeliveryService(svc, app));
     this.pickupServices = pojo.pickupServices
       ? pojo.pickupServices.map((svc) => new PickupService(svc, app)) : [];

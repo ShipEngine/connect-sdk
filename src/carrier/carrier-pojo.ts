@@ -1,4 +1,5 @@
 import { LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO } from "../common";
+import { ManifestLocation, ManifestShipment } from "../enums";
 import { FilePath, InlineOrReference, InlineOrReferenceArray, URLString, UUID } from "../types";
 import { DeliveryServiceDefinition, DeliveryServicePOJO } from "./delivery-service-pojo";
 import { CancelPickups, CancelShipments, CreateManifest, CreateShipment, RateShipment, SchedulePickup, TrackShipment } from "./methods";
@@ -51,6 +52,18 @@ export interface CarrierDefinition {
    * The carrier's logo image
    */
   logo: FilePath;
+
+  /**
+   * Indicates which locations are included in end-of-day manifests.
+   * This field is required if the `createManifest` method is implemented.
+   */
+  manifestLocations?: ManifestLocation;
+
+  /**
+   * Indicates which shipments are included in end-of-day manifests.
+   * This field is required if the `createManifest` method is implemented.
+   */
+  manifestShipments?: ManifestShipment;
 
   /**
    * The delivery services that are offered by the carrier

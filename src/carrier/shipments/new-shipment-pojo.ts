@@ -1,5 +1,5 @@
 import { AddressWithContactInfoPOJO, DateTimeZonePOJO } from "../../common";
-import { BilledParty, Country, InsuranceProvider } from "../../enums";
+import { BilledParty, Country } from "../../enums";
 import { UUID } from "../../types";
 import { NewPackagePOJO } from "../packages/new-package-pojo";
 import { ShipmentIdentifierPOJO } from "./shipment-identifier";
@@ -38,11 +38,6 @@ export interface NewShipmentPOJO {
    * This is not guaranteed to be in the future.
    */
   shipDateTime: DateTimeZonePOJO | Date | string;
-
-  /**
-   * Which party will be insuring the shipment. Defaults to carrier-provided insurance.
-   */
-  insuranceProvider?: InsuranceProvider;
 
   /**
    * Return shipment details. If `undefined`, then it is assumed that the shipment is not a return.

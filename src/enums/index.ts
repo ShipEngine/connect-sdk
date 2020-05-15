@@ -115,15 +115,6 @@ export enum ServiceArea {
 }
 
 /**
- * Indicates which party is insuring a shipment
- */
-export enum InsuranceProvider {
-  ShipEngine = "shipengine",
-  Carrier = "carrier",
-  ThirdParty = "third_party",
-}
-
-/**
  * Indicates how a non-deliverable package should be handled
  */
 export enum NonDeliveryOption {

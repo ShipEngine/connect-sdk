@@ -3,9 +3,9 @@ import { DocumentPOJO } from "../documents/document-pojo";
 import { ShipmentIdentifierPOJO } from "../shipments/shipment-identifier";
 
 /**
- * Confirmation that an end-of-day manifest has been created
+ * An end-of-day manifest
  */
-export interface ManifestConfirmationPOJO {
+export interface ManifestPOJO {
   /**
    * The carrier's manifest number, if any
    */
@@ -18,9 +18,8 @@ export interface ManifestConfirmationPOJO {
 
   /**
    * The shipments that are included on this manifest.
-   * If not specified, the assumption is that the manifest includes all of the shipments.
    */
-  shipments?: ShipmentIdentifierPOJO[];
+  shipments: ShipmentIdentifierPOJO[];
 
   /**
    * The digital manifst document, such as a PDF SCAN form

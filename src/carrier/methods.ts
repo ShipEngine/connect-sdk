@@ -1,5 +1,5 @@
 import { Transaction } from "../common";
-import { ManifestConfirmationPOJO } from "./manifests/manifest-confirmation-pojo";
+import { ManifestConfirmationPOJO } from "./manifests/manifest-confirmation";
 import { NewManifest } from "./manifests/new-manifest";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
 import { PickupCancellationConfirmationPOJO } from "./pickups/pickup-cancellation-confirmation-pojo";
@@ -41,7 +41,7 @@ export type TrackShipment = (transaction: Transaction, shipment: TrackingCriteri
  * Creates an end-of-day manifest
  */
 export type CreateManifest = (transaction: Transaction, manifest: NewManifest)
-  => void | ManifestConfirmationPOJO | Promise<void | ManifestConfirmationPOJO>;
+  => ManifestConfirmationPOJO | Promise<ManifestConfirmationPOJO>;
 
 /**
  * Schedules a package pickup at a time and place

@@ -1,5 +1,8 @@
 import { Address, DateTimeZone } from "../../common";
+import { ManifestLocation } from "../../enums";
+import { error, ErrorCode } from "../../errors";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { Carrier } from "../carrier";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 import { NewManifestPOJO } from "./new-manifest-pojo";
 
@@ -17,8 +20,7 @@ export class NewManifest {
       shipFrom: Address[_internal].schema.required(),
       openDateTime: DateTimeZone[_internal].schema.required(),
       closeDateTime: DateTimeZone[_internal].schema.required(),
-      includedShipments: Joi.array().min(1).items(ShipmentIdentifier[_internal].schema).required(),
-      excludedShipments: Joi.array().min(1).items(ShipmentIdentifier[_internal].schema),
+      shipments: Joi.array().items(ShipmentIdentifier[_internal].schema).required(),
     }),
   };
 
@@ -26,9 +28,11 @@ export class NewManifest {
   //#region Public Fields
 
   /**
-   * The address where all the shipments are being shipped from
+   * The address of the location that is performaing end-of-day manifesting.
+   *
+   * NOTE: This field is required if the carrier's `manifestLocations` setting is `single_location`.
    */
-  public readonly shipFrom: Address;
+  public readonly shipFrom?: Address;
 
   /**
    * The start-of-day time, or the `shipmentDateTime` of the earliest shipment being manifested.
@@ -41,26 +45,40 @@ export class NewManifest {
   public readonly closeDateTime: DateTimeZone;
 
   /**
-   * The shipments to be manifested
+   * The meaning of this field varies depending on the carrier's `manifestShipments` setting.
+   *
+   * `all_shipments`: This field must include all shipments that have not yet been manifested.
+   *
+   * `explicit_shipments`: This field specifies which shipments should be manifested.
+   *
+   * `exclude_shipments`: This field specifies which shipments should _not_ be manifested.
+   * All other shipments will be manifested.
    */
-  public readonly includedShipments: ReadonlyArray<ShipmentIdentifier>;
-
-  /**
-   * Shipments that should explicitly be excluded from the manifest.
-   * This is necessary for carriers that auto-manifest all of the day's shipments.
-   */
-  public readonly excludedShipments?: ReadonlyArray<ShipmentIdentifier>;
-
+  public readonly shipments: ReadonlyArray<ShipmentIdentifier>;
 
   //#endregion
 
-  public constructor(pojo: NewManifestPOJO) {
-    this.shipFrom = new Address(pojo.shipFrom);
+  public constructor(pojo: NewManifestPOJO, carrier: Carrier) {
+    this.shipFrom = pojo.shipFrom && new Address(pojo.shipFrom);
     this.openDateTime = new DateTimeZone(pojo.openDateTime);
     this.closeDateTime = new DateTimeZone(pojo.closeDateTime);
-    this.includedShipments = pojo.includedShipments.map((shipment) => new ShipmentIdentifier(shipment));
-    this.excludedShipments = pojo.excludedShipments
-      && pojo.excludedShipments.map((shipment) => new ShipmentIdentifier(shipment));
+    this.shipments = pojo.shipments.map((shipment) => new ShipmentIdentifier(shipment));
+
+    switch (carrier.manifestLocations) {
+      case ManifestLocation.AllLocations:
+        if (pojo.shipFrom) {
+          throw error(ErrorCode.InvalidInput,
+            `manifest.shipFrom is not allowed because carrier.manifestLocations is ${ManifestLocation.AllLocations}`);
+        }
+        break;
+
+      case ManifestLocation.SingleLocation:
+      default:
+        if (!pojo.shipFrom) {
+          throw error(ErrorCode.InvalidInput,
+            `manifest.shipFrom is required because carrier.manifestLocations is ${ManifestLocation.SingleLocation}`);
+        }
+    }
 
     // Make this object immutable
     hideAndFreeze(this);

@@ -6,9 +6,11 @@ import { ShipmentIdentifierPOJO } from "../shipments/shipment-identifier";
  */
 export interface NewManifestPOJO {
   /**
-   * The address where all the shipments are being shipped from
+   * The address of the location that is performaing end-of-day manifesting.
+   *
+   * NOTE: This field is required if the carrier's `manifestLocations` setting is `single_location`.
    */
-  shipFrom: AddressPOJO;
+  shipFrom?: AddressPOJO;
 
   /**
    * The start-of-day time, or the `shipmentDateTime` of the earliest shipment being manifested.
@@ -21,13 +23,14 @@ export interface NewManifestPOJO {
   closeDateTime: DateTimeZonePOJO | Date | string;
 
   /**
-   * The shipments to be manifested
+   * The meaning of this field varies depending on the carrier's `manifestShipments` setting.
+   *
+   * `all_shipments`: This field must include all shipments that have not yet been manifested.
+   *
+   * `explicit_shipments`: This field specifies which shipments should be manifested.
+   *
+   * `exclude_shipments`: This field specifies which shipments should _not_ be manifested.
+   * All other shipments will be manifested.
    */
-  includedShipments: ShipmentIdentifierPOJO[];
-
-  /**
-   * Shipments that should explicitly be excluded from the manifest.
-   * This is necessary for carriers that auto-manifest all of the day's shipments.
-   */
-  excludedShipments?: ShipmentIdentifierPOJO[];
+  shipments: ShipmentIdentifierPOJO[];
 }

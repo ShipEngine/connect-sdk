@@ -1,26 +1,37 @@
-import { Identifier } from "../../common";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
-import { Document } from "../documents/document";
-import { ShipmentIdentifier } from "../shipments/shipment-identifier";
-import { ManifestConfirmationPOJO } from "./manifest-confirmation-pojo";
+import { Manifest } from "./manifest";
+import { ManifestPOJO } from "./manifest-pojo";
+import { NonManifestedShipment, NonManifestedShipmentPOJO } from "./non-manifested-shipment";
+
+/**
+ * Confirmation that an end-of-day manifest has been created
+ */
+export interface ManifestConfirmationPOJO {
+  /**
+   * The shipments that are included on this manifest.
+   * If not specified, the assumption is that the manifest includes all of the shipments.
+   */
+  manifests: ManifestPOJO[];
+
+  /**
+   * An array of the shipments that could not be manifested, and why
+   */
+  notManifested?: NonManifestedShipmentPOJO[];
+}
 
 
 /**
- * The information needed to create an end-of-day manifest
+ * Confirmation that an end-of-day manifest has been created
  */
 export class ManifestConfirmation {
   //#region Private/Internal Fields
 
   /** @internal */
   public static readonly [_internal] = {
-    label: "manifest",
+    label: "manifest confirmation",
     schema: Joi.object({
-      manifestNumber: Joi.string().trim().singleLine().allow("").max(100),
-      identifiers: Joi.array().items(Identifier[_internal].schema),
-      shipments: Joi.array().min(1).items(ShipmentIdentifier[_internal].schema.unknown(true)).required(),
-      document: Document[_internal].schema,
-      notes: Joi.string().allow("").max(5000),
-      metadata: Joi.object(),
+      manifetsts: Joi.array().min(1).items(Manifest[_internal].schema).required(),
+      notManifested: Joi.array().items(NonManifestedShipment[_internal].schema),
     }),
   };
 
@@ -28,49 +39,22 @@ export class ManifestConfirmation {
   //#region Public Fields
 
   /**
-   * The carrier's manifest number, if any
-   */
-  public readonly manifestNumber: string;
-
-  /**
-   * Alternative identifiers associated with this manifest
-   */
-  public readonly identifiers: ReadonlyArray<Identifier>;
-
-  /**
    * The shipments that are included on this manifest.
    * If not specified, the assumption is that the manifest includes all of the shipments.
    */
-  public readonly shipments: ReadonlyArray<ShipmentIdentifier>;
+  public readonly manifests: ReadonlyArray<Manifest>;
 
   /**
-   * The digital manifst document, such as a PDF SCAN form
+   * An array of the shipments that could not be manifested, and why
    */
-  public readonly document?: Document;
-
-  /**
-   * Human-readable information about the manifest
-   */
-  public readonly notes: string;
-
-  /**
-   * Arbitrary data about this manifest that will be persisted by the ShipEngine Integration Platform.
-   * Must be JSON serializable.
-   */
-  public readonly metadata?: object;
+  public readonly notManifested: ReadonlyArray<NonManifestedShipment>;
 
   //#endregion
 
   public constructor(pojo: ManifestConfirmationPOJO) {
-    this.manifestNumber = pojo.manifestNumber || "";
-    this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];
-    this.shipments = pojo.shipments!.map((shipment) => new ShipmentIdentifier(shipment));
-    this.document = pojo.document && new Document({
-      ...pojo.document,
-      name: pojo.document.name || "SCAN Form",
-    });
-    this.notes = pojo.notes || "";
-    this.metadata = pojo.metadata;
+    this.manifests = pojo.manifests.map((manifest) => new Manifest(manifest));
+    this.notManifested = pojo.notManifested
+      ? pojo.notManifested.map((shipment) => new NonManifestedShipment(shipment)) : [];
 
     // Make this object immutable
     hideAndFreeze(this);

@@ -456,11 +456,11 @@ export class Carrier {
    */
   public async createManifest?(transaction: TransactionPOJO, manifest: NewManifestPOJO): Promise<ManifestConfirmation> {
     let _transaction, _manifest;
-    let { app, createManifest } = this[_private];
+    let { createManifest } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
-      _manifest = new NewManifest(validate(manifest, NewManifest));
+      _manifest = new NewManifest(validate(manifest, NewManifest), this);
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the createManifest method.", { originalError });
@@ -468,17 +468,6 @@ export class Carrier {
 
     try {
       let confirmation = await createManifest!(_transaction, _manifest);
-
-      if (confirmation === undefined) {
-        confirmation = {
-          shipments: manifest.includedShipments,
-        };
-      }
-      else if (confirmation && confirmation.shipments === undefined) {
-        // By default, all shipments are included in the manifest
-        confirmation.shipments = manifest.includedShipments;
-      }
-
       return new ManifestConfirmation(validate(confirmation, ManifestConfirmation));
     }
     catch (originalError) {

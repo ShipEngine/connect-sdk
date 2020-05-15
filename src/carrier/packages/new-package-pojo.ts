@@ -15,6 +15,11 @@ export interface NewPackagePOJO {
   packagingID: UUID;
 
   /**
+   * The ID of the requested delivery confirmation
+   */
+  deliveryConfirmationID?: UUID;
+
+  /**
    * The package dimensions
    */
   dimensions?: DimensionsPOJO;

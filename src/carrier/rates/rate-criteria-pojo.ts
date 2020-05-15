@@ -13,13 +13,7 @@ export interface RateCriteriaPOJO {
    * `fulfillmentServices` are specified, then rate quotes should be returned for all
    * applicable services.
    */
-  deliveryServices?: UUID[];
-
-  /**
-   * The IDs of the delivery confirmations that may be used. If not specified, then rate quotes
-   * should be returned for all applicable delivery confirmations.
-   */
-  deliveryConfirmations?: UUID[];
+  deliveryServiceIDs?: UUID[];
 
   /**
    * Well-known carrier services that may be used to fulfill the shipment.

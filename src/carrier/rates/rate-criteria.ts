@@ -1,7 +1,6 @@
 import { AddressWithContactInfo, App, DateTimeZone, MonetaryValue } from "../../common";
 import { FulfillmentService } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
-import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 import { calculateTotalInsuranceAmount } from "../utils";
@@ -18,8 +17,7 @@ export class RateCriteria {
   public static readonly [_internal] = {
     label: "shipment",
     schema: Joi.object({
-      deliveryServices: Joi.array().items(Joi.string().uuid()),
-      deliveryConfirmations: Joi.array().items(Joi.string().uuid()),
+      deliveryServiceIDs: Joi.array().items(Joi.string().uuid()),
       fulfillmentServices: Joi.array().items(Joi.string().enum(FulfillmentService)),
       shipDateTime: DateTimeZone[_internal].schema.required(),
       deliveryDateTime: DateTimeZone[_internal].schema,
@@ -42,12 +40,6 @@ export class RateCriteria {
    * applicable services.
    */
   public readonly deliveryServices: ReadonlyArray<DeliveryService>;
-
-  /**
-   * The delivery confirmations that may be used. If not specified, then rate quotes
-   * should be returned for all applicable delivery confirmations.
-   */
-  public readonly deliveryConfirmations: ReadonlyArray<DeliveryConfirmation>;
 
   /**
    * Well-known carrier services that may be used to fulfill the shipment.
@@ -107,10 +99,8 @@ export class RateCriteria {
   //#endregion
 
   public constructor(pojo: RateCriteriaPOJO, app: App) {
-    this.deliveryServices = (pojo.deliveryServices || [])
+    this.deliveryServices = (pojo.deliveryServiceIDs || [])
       .map((id) => app[_internal].references.lookup(id, DeliveryService));
-    this.deliveryConfirmations = (pojo.deliveryConfirmations || [])
-      .map((id) => app[_internal].references.lookup(id, DeliveryConfirmation));
     this.fulfillmentServices = pojo.fulfillmentServices || [];
     this.shipDateTime = new DateTimeZone(pojo.shipDateTime);
     this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;

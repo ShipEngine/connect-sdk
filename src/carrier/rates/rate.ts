@@ -2,7 +2,6 @@ import { App, DateTimeZone, MonetaryValue } from "../../common";
 import { FulfillmentService } from "../../enums";
 import { error, ErrorCode } from "../../errors";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
-import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
 import { ShippingCharge } from "../shipping-charge";
 import { calculateTotalCharges } from "../utils";
@@ -20,7 +19,6 @@ export class Rate {
     label: "rate",
     schema: Joi.object({
       deliveryServiceID: Joi.string().uuid().required(),
-      deliveryConfirmationID: Joi.string().uuid(),
       fulfillmentService: Joi.string().enum(FulfillmentService),
       shipDateTime: DateTimeZone[_internal].schema,
       deliveryDateTime: DateTimeZone[_internal].schema,
@@ -43,11 +41,6 @@ export class Rate {
    * The delivery service this rate is for
    */
   public readonly deliveryService: DeliveryService;
-
-  /**
-   * The delivery confirmation included in this rate
-   */
-  public readonly deliveryConfirmation?: DeliveryConfirmation;
 
   /**
    * The well-known third-party carrier service that will be used to fulfill the shipment
@@ -123,7 +116,6 @@ export class Rate {
 
   public constructor(pojo: RatePOJO, app: App) {
     this.deliveryService = app[_internal].references.lookup(pojo.deliveryServiceID, DeliveryService);
-    this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmationID, DeliveryConfirmation);
     this.fulfillmentService = pojo.fulfillmentService;
     this.shipDateTime = pojo.shipDateTime ? new DateTimeZone(pojo.shipDateTime) : undefined;
     this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;

@@ -1,7 +1,6 @@
 import { AddressWithContactInfo, App, DateTimeZone, MonetaryValue } from "../../common";
 import { BilledParty, Country } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
-import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
 import { NewPackage } from "../packages/new-package";
 import { calculateTotalInsuranceAmount } from "../utils";
@@ -20,7 +19,6 @@ export class NewShipment {
     label: "shipment",
     schema: Joi.object({
       deliveryServiceID: Joi.string().uuid().required(),
-      deliveryConfirmationID: Joi.string().uuid(),
       shipFrom: AddressWithContactInfo[_internal].schema.required(),
       shipTo: AddressWithContactInfo[_internal].schema.required(),
       returnTo: AddressWithContactInfo[_internal].schema,
@@ -54,11 +52,6 @@ export class NewShipment {
    * The delivery service to use
    */
   public readonly deliveryService: DeliveryService;
-
-  /**
-   * The requested delivery confirmation
-   */
-  public readonly deliveryConfirmation?: DeliveryConfirmation;
 
   /**
    * The sender's contact info and address
@@ -159,7 +152,6 @@ export class NewShipment {
 
   public constructor(pojo: NewShipmentPOJO, app: App) {
     this.deliveryService = app[_internal].references.lookup(pojo.deliveryServiceID, DeliveryService);
-    this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmationID, DeliveryConfirmation);
     this.shipFrom = new AddressWithContactInfo(pojo.shipFrom);
     this.shipTo = new AddressWithContactInfo(pojo.shipTo);
     this.returnTo = pojo.returnTo

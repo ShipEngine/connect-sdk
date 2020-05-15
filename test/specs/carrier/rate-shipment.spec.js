@@ -32,7 +32,6 @@ describe("rateShipment", () => {
         ...rates[0].deliveryService,
         id: "22222222-2222-2222-2222-222222222222",
       },
-      deliveryConfirmation: undefined,
       fulfillmentService: undefined,
       shipDateTime: undefined,
       deliveryDateTime: undefined,
@@ -63,6 +62,7 @@ describe("rateShipment", () => {
           ...rates[0].packages[0].packaging,
           id: "44444444-4444-4444-4444-444444444444",
         },
+        deliveryConfirmation: undefined,
       }],
     }]);
   });
@@ -77,7 +77,6 @@ describe("rateShipment", () => {
         ],
         rateShipment: () => [{
           deliveryServiceID: "22222222-2222-2222-2222-222222222222",
-          deliveryConfirmationID: "55555555-5555-5555-5555-555555555555",
           fulfillmentService: "ups_ground",
           shipDateTime: "2005-05-05T05:05:05.005+00:30",
           deliveryDateTime: new Date("2005-05-05T05:05:05.005-07:00"),
@@ -114,6 +113,7 @@ describe("rateShipment", () => {
           ],
           packages: [{
             packagingID: "44444444-4444-4444-4444-444444444444",
+            deliveryConfirmationID: "55555555-5555-5555-5555-555555555555",
           }]
         }]
       }),
@@ -125,10 +125,6 @@ describe("rateShipment", () => {
       deliveryService: {
         ...rates[0].deliveryService,
         id: "22222222-2222-2222-2222-222222222222",
-      },
-      deliveryConfirmation: {
-        ...rates[0].deliveryConfirmation,
-        id: "55555555-5555-5555-5555-555555555555",
       },
       fulfillmentService: "ups_ground",
       shipDateTime: {
@@ -180,6 +176,10 @@ describe("rateShipment", () => {
         packaging: {
           ...rates[0].packages[0].packaging,
           id: "44444444-4444-4444-4444-444444444444",
+        },
+        deliveryConfirmation: {
+          ...rates[0].packages[0].deliveryConfirmation,
+          id: "55555555-5555-5555-5555-555555555555",
         },
       }]
     }]);
@@ -236,7 +236,7 @@ describe("rateShipment", () => {
 
       try {
         await app.carrier.rateShipment(pojo.transaction(), {
-          deliveryServices: "12345678-1234-1234-1234-123456789012",
+          deliveryServiceIDs: "12345678-1234-1234-1234-123456789012",
           deliveryDateTime: "9999-99-99T99:99:99.999Z",
           packages: [],
         });
@@ -246,7 +246,7 @@ describe("rateShipment", () => {
         expect(error.message).to.equal(
           "Invalid input to the rateShipment method. \n" +
           "Invalid shipment: \n" +
-          "  deliveryServices must be an array \n" +
+          "  deliveryServiceIDs must be an array \n" +
           "  shipDateTime is required \n" +
           "  deliveryDateTime must be a valid date/time \n" +
           "  shipFrom is required \n" +
@@ -280,11 +280,15 @@ describe("rateShipment", () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
           rateShipment: () => [{
-            deliveryConfirmationID: "Handshake",
             deliveryDateTime: "9999-99-99T99:99:99.999Z",
             isNegotiatedRate: "no",
             charges: [],
             notes: false,
+            packages: [
+              {
+                deliveryConfirmationID: "Handshake",
+              }
+            ]
           }]
         }),
       }));
@@ -298,12 +302,12 @@ describe("rateShipment", () => {
           "Error in rateShipment method. \n" +
           "Invalid rate: \n" +
           "  [0].deliveryServiceID is required \n" +
-          "  [0].deliveryConfirmationID must be a valid GUID \n" +
           "  [0].deliveryDateTime must be a valid date/time \n" +
           "  [0].isNegotiatedRate must be a boolean \n" +
           "  [0].charges must contain at least 1 items \n" +
           "  [0].notes must be a string \n" +
-          "  [0].packages is required"
+          "  [0].packages[0].packagingID is required \n" +
+          "  [0].packages[0].deliveryConfirmationID must be a valid GUID"
         );
       }
     });
@@ -361,7 +365,11 @@ describe("rateShipment", () => {
         carrier: pojo.carrier({
           rateShipment: () => [
             pojo.rate({
-              deliveryConfirmationID: "22222222-2222-2222-2222-222222222222",
+              packages: [
+                pojo.ratePackage({
+                  deliveryConfirmationID: "22222222-2222-2222-2222-222222222222",
+                })
+              ]
             })
           ]
         }),

@@ -1,6 +1,7 @@
 import { App, Dimensions, MonetaryValue, Weight } from "../../common";
 import { Currency, NonDeliveryOption } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { DeliveryConfirmation } from "../delivery-confirmation";
 import { NewLabel } from "../documents/new-label";
 import { Packaging } from "../packaging";
 import { CustomsItem } from "./customs-item";
@@ -19,6 +20,7 @@ export class NewPackage {
     label: "package",
     schema: Joi.object({
       packagingID: Joi.string().uuid().required(),
+      deliveryConfirmationID: Joi.string().uuid(),
       dimensions: Dimensions[_internal].schema,
       weight: Weight[_internal].schema,
       insuredValue: MonetaryValue[_internal].schema,
@@ -40,6 +42,11 @@ export class NewPackage {
    * The packaging used
    */
   public readonly packaging: Packaging;
+
+  /**
+   * The requested delivery confirmation
+   */
+  public readonly deliveryConfirmation?: DeliveryConfirmation;
 
   /**
    * The package dimensions
@@ -104,6 +111,7 @@ export class NewPackage {
 
   public constructor(pojo: NewPackagePOJO, app: App) {
     this.packaging = app[_internal].references.lookup(pojo.packagingID, Packaging);
+    this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmationID, DeliveryConfirmation);
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
     this.insuredValue = new MonetaryValue(pojo.insuredValue || { value: 0, currency: Currency.UnitedStatesDollar });

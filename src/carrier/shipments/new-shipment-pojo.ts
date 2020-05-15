@@ -14,11 +14,6 @@ export interface NewShipmentPOJO {
   deliveryServiceID: UUID;
 
   /**
-   * The ID of the requested delivery confirmation
-   */
-  deliveryConfirmationID?: UUID;
-
-  /**
    * The sender's contact info and address
    */
   shipFrom: AddressWithContactInfoPOJO;

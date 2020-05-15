@@ -14,11 +14,6 @@ export interface RatePOJO {
   deliveryServiceID: UUID;
 
   /**
-   * The ID of the delivery confirmation included in this rate
-   */
-  deliveryConfirmationID?: UUID;
-
-  /**
    * If the rate will be fulfilled using a well-known third-party carrier, such as UPS, FedEx, DHL, etc.
    * then specify the carrier service here.
    */

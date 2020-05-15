@@ -264,9 +264,14 @@ const pojo = module.exports = {
     return {
       deliveryServiceID: "22222222-2222-2222-2222-222222222222",
       charges: [pojo.charge()],
-      packages: [{
-        packagingID: "44444444-4444-4444-4444-444444444444",
-      }],
+      packages: [pojo.ratePackage()],
+      ...props,
+    };
+  },
+
+  ratePackage (props = {}) {
+    return {
+      packagingID: "44444444-4444-4444-4444-444444444444",
       ...props,
     };
   },

@@ -1,4 +1,5 @@
 import { DocumentFormat, DocumentSize, DocumentType } from "../../enums";
+import { error, ErrorCode } from "../../errors";
 import { Constructor, hideAndFreeze, Joi, _internal } from "../../internal";
 import { DocumentPOJO, LabelPOJO } from "./document-pojo";
 
@@ -134,7 +135,7 @@ export function documentMixin(base: Constructor = Object) {
       this.data = pojo.data;
 
       if (this.data.length === 0) {
-        throw new Error(`${this.name} data cannot be empty`);
+        throw error(ErrorCode.InvalidInput, `${this.name} data cannot be empty`);
       }
     }
   };

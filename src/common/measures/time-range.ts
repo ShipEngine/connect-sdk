@@ -1,3 +1,4 @@
+import { error, ErrorCode } from "../../errors";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { DateTimeZone, DateTimeZonePOJO } from "./date-time-zone";
 
@@ -52,7 +53,8 @@ export class TimeRange {
     this.endDateTime = new DateTimeZone(pojo.endDateTime);
 
     if (this.endDateTime.getTime() < this.startDateTime.getTime()) {
-      throw new RangeError(`Invalid time range: ${this.toString()}. The start date occurs after the end date.`);
+      throw error(ErrorCode.InvalidInput,
+        `Invalid time range: ${this.toString()}. The start date occurs after the end date.`);
     }
 
     // Make this object immutable

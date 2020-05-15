@@ -1,5 +1,6 @@
 import { App, DateTimeZone, MonetaryValue } from "../../common";
 import { FulfillmentService } from "../../enums";
+import { error, ErrorCode } from "../../errors";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { DeliveryService } from "../delivery-service";
@@ -141,7 +142,8 @@ export class Rate {
     if (minimumDeliveryDays !== undefined
     && maximumDeliveryDays !== undefined
     && minimumDeliveryDays > maximumDeliveryDays) {
-      throw new RangeError("Invalid delivery time range: minimumDeliveryDays must be less than or equal to maximumDeliveryDays");
+      throw error(ErrorCode.InvalidInput,
+        "Invalid delivery time range: minimumDeliveryDays must be less than or equal to maximumDeliveryDays");
     }
 
     // Make this object immutable

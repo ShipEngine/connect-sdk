@@ -10,9 +10,9 @@ export interface ShipmentCancellationConfirmationPOJO {
   shipmentID: string;
 
   /**
-   * The carrier's cancellation number, if any
+   * The carrier's cancellation ID, if any
    */
-  cancellationNumber?: string;
+  cancellationID?: string;
 
   /**
    * Indicates whether the cancellation failed or was successful

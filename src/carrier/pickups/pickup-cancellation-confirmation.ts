@@ -12,7 +12,7 @@ export class PickupCancellationConfirmation {
     label: "pickup",
     schema: Joi.object({
       pickupID: Joi.string().trim().singleLine().min(1).max(100).required(),
-      cancellationNumber: Joi.string().trim().singleLine().allow("").max(100),
+      cancellationID: Joi.string().trim().singleLine().allow("").max(100),
       isError: Joi.boolean(),
       errorCode: Joi.string().trim().singleLine().min(1).max(100),
       errorDescription: Joi.string().trim().singleLine().allow("").max(1000),
@@ -31,9 +31,9 @@ export class PickupCancellationConfirmation {
   public readonly pickupID: string;
 
   /**
-   * The carrier's cancellation number, if any
+   * The carrier's cancellation ID, if any
    */
-  public readonly cancellationNumber: string;
+  public readonly cancellationID: string;
 
   /**
    * Indicates whether the cancellation failed or was successful
@@ -67,7 +67,7 @@ export class PickupCancellationConfirmation {
 
   public constructor(pojo: PickupCancellationConfirmationPOJO) {
     this.pickupID = pojo.pickupID;
-    this.cancellationNumber = pojo.cancellationNumber || "";
+    this.cancellationID = pojo.cancellationID || "";
     this.isError = pojo.isError || false;
     this.errorCode = pojo.errorCode || "";
     this.errorDescription = pojo.errorDescription || "";

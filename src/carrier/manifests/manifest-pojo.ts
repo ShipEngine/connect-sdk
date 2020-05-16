@@ -7,9 +7,9 @@ import { ShipmentIdentifierPOJO } from "../shipments/shipment-identifier";
  */
 export interface ManifestPOJO {
   /**
-   * The carrier's manifest number, if any
+   * The carrier's manifest ID, if any
    */
-  manifestNumber?: string;
+  manifestID?: string;
 
   /**
    * Custom identifiers for this manifest

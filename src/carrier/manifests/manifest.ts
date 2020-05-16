@@ -15,7 +15,7 @@ export class Manifest {
   public static readonly [_internal] = {
     label: "manifest",
     schema: Joi.object({
-      manifestNumber: Joi.string().trim().singleLine().allow("").max(100),
+      manifestID: Joi.string().trim().singleLine().allow("").max(100),
       identifiers: Identifiers[_internal].schema,
       shipments: Joi.array().min(1).items(
         ShipmentIdentifier[_internal].schema.unknown(true)).required(),
@@ -29,9 +29,9 @@ export class Manifest {
   //#region Public Fields
 
   /**
-   * The carrier's manifest number, if any
+   * The carrier's manifest ID, if any
    */
-  public readonly manifestNumber: string;
+  public readonly manifestID: string;
 
   /**
    * Custom identifiers for this manifest
@@ -62,7 +62,7 @@ export class Manifest {
   //#endregion
 
   public constructor(pojo: ManifestPOJO) {
-    this.manifestNumber = pojo.manifestNumber || "";
+    this.manifestID = pojo.manifestID || "";
     this.identifiers = new Identifiers(pojo.identifiers);
     this.shipments = pojo.shipments.map((shipment) => new ShipmentIdentifier(shipment));
     this.document = pojo.document && new Document({

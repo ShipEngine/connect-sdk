@@ -37,7 +37,7 @@ describe("createShipment", () => {
       identifiers: {},
       fulfillmentService: undefined,
       deliveryDateTime: undefined,
-      metadata: undefined,
+      metadata: {},
       charges: [{
         name: "",
         description: "",
@@ -57,7 +57,7 @@ describe("createShipment", () => {
         trackingNumber: "",
         trackingURL: undefined,
         identifiers: {},
-        metadata: undefined,
+        metadata: {},
         documents: [{
           name: "Label",
           type: "label",

@@ -106,7 +106,7 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
    * Arbitrary data about this shipment that will be persisted by the ShipEngine Integration Platform.
    * Must be JSON serializable.
    */
-  public readonly metadata?: object;
+  public readonly metadata: object;
 
   //#endregion
 
@@ -119,7 +119,7 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
     this.charges = pojo.charges.map((charge) => new ShippingCharge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);
     this.packages = pojo.packages.map((parcel) => new PackageConfirmation(parcel));
-    this.metadata = pojo.metadata;
+    this.metadata = pojo.metadata || {};
 
     // Make this object immutable
     hideAndFreeze(this);

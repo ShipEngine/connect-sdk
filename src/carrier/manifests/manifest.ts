@@ -57,7 +57,7 @@ export class Manifest {
    * Arbitrary data about this manifest that will be persisted by the ShipEngine Integration Platform.
    * Must be JSON serializable.
    */
-  public readonly metadata?: object;
+  public readonly metadata: object;
 
   //#endregion
 
@@ -70,7 +70,7 @@ export class Manifest {
       name: pojo.document.name || "SCAN Form",
     });
     this.notes = pojo.notes || "";
-    this.metadata = pojo.metadata;
+    this.metadata = pojo.metadata || {};
 
     // Make this object immutable
     hideAndFreeze(this);

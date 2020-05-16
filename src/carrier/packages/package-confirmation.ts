@@ -65,7 +65,7 @@ export class PackageConfirmation extends packageIdentifierMixin() {
    * Arbitrary data about this package that will be persisted by the ShipEngine Integration Platform.
    * Must be JSON serializable.
    */
-  public readonly metadata?: object;
+  public readonly metadata: object;
 
   //#endregion
   //#region Helper Properties
@@ -90,7 +90,7 @@ export class PackageConfirmation extends packageIdentifierMixin() {
     super(pojo);
 
     this.trackingURL = pojo.trackingURL ? new URL(pojo.trackingURL as string) : undefined;
-    this.metadata = pojo.metadata;
+    this.metadata = pojo.metadata || {};
     this.documents = pojo.documents.map(createDocument);
 
     // Make this object immutable

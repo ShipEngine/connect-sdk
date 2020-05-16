@@ -33,7 +33,7 @@ describe("schedulePickup", () => {
       confirmationNumber: "ABCDEF-123456",
       identifiers: {},
       notes: "",
-      metadata: undefined,
+      metadata: {},
       timeWindows: [{
         startDateTime: {
           value: "2005-05-05T05:05:05.005",

@@ -62,7 +62,7 @@ export class ShipmentCancellationConfirmation {
    * Arbitrary data about this shipment that will be persisted by the ShipEngine Integration Platform.
    * Must be JSON serializable.
    */
-  public readonly metadata?: object;
+  public readonly metadata: object;
 
   //#endregion
 
@@ -73,7 +73,7 @@ export class ShipmentCancellationConfirmation {
     this.errorCode = pojo.errorCode || "";
     this.errorDescription = pojo.errorDescription || "";
     this.notes = pojo.notes || "";
-    this.metadata = pojo.metadata;
+    this.metadata = pojo.metadata || {};
 
     // Make this object immutable
     hideAndFreeze(this);

@@ -16,7 +16,7 @@ export class PickupCancellation {
     label: "pickup cancellation",
     schema: Joi.object({
       pickupID: Joi.string().trim().singleLine().min(1).max(100).required(),
-      confirmationNumber: Joi.string().trim().singleLine().min(1).max(100),
+      confirmationID: Joi.string().trim().singleLine().min(1).max(100),
       pickupServiceID: Joi.string().uuid().required(),
       identifiers: Identifiers[_internal].schema,
       reason: Joi.string().enum(PickupCancellationReason).required(),
@@ -41,7 +41,7 @@ export class PickupCancellation {
   /**
    * The confirmation ID of the pickup request to be canceled
    */
-  public readonly confirmationNumber: string;
+  public readonly confirmationID: string;
 
   /**
    * The requested pickup service
@@ -92,7 +92,7 @@ export class PickupCancellation {
 
   public constructor(pojo: PickupCancellationPOJO, app: App) {
     this.pickupID = pojo.pickupID;
-    this.confirmationNumber = pojo.confirmationNumber || "";
+    this.confirmationID = pojo.confirmationID || "";
     this.pickupService = app[_internal].references.lookup(pojo.pickupServiceID, PickupService);
     this.identifiers = new Identifiers(pojo.identifiers);
     this.reason = pojo.reason;

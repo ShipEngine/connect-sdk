@@ -11,7 +11,7 @@ describe("schedulePickup", () => {
       carrier: pojo.carrier({
         pickupServices: [pojo.pickupService()],
         schedulePickup: () => ({
-          confirmationNumber: "ABCDEF-123456",
+          confirmationID: "ABCDEF-123456",
           timeWindows: [{
             startDateTime: "2005-05-05T05:05:05.005+05:00",
             endDateTime: new Date("2005-05-05T05:05:05.005+05:00"),
@@ -30,7 +30,7 @@ describe("schedulePickup", () => {
     let confirmation = await app.carrier.schedulePickup(pojo.transaction(), pojo.pickupRequest());
 
     expect(confirmation).to.deep.equal({
-      confirmationNumber: "ABCDEF-123456",
+      confirmationID: "ABCDEF-123456",
       identifiers: {},
       note: "",
       metadata: {},
@@ -70,7 +70,7 @@ describe("schedulePickup", () => {
       carrier: pojo.carrier({
         pickupServices: [pojo.pickupService()],
         schedulePickup: () => ({
-          confirmationNumber: "ABCDEF-123456",
+          confirmationID: "ABCDEF-123456",
           identifiers: {
             myPickupID: "123456-ABCDEFG",
           },
@@ -123,7 +123,7 @@ describe("schedulePickup", () => {
     let confirmation = await app.carrier.schedulePickup(pojo.transaction(), pojo.pickupRequest());
 
     expect(confirmation).to.deep.equal({
-      confirmationNumber: "ABCDEF-123456",
+      confirmationID: "ABCDEF-123456",
       identifiers: {
         myPickupID: "123456-ABCDEFG",
       },
@@ -304,7 +304,7 @@ describe("schedulePickup", () => {
         carrier: pojo.carrier({
           pickupServices: [pojo.pickupService()],
           schedulePickup: () => ({
-            confirmationNumber: 12345,
+            confirmationID: 12345,
             timeWindows: [],
             note: true,
             metadata: false
@@ -320,7 +320,7 @@ describe("schedulePickup", () => {
         expect(error.message).to.equal(
           "Error in schedulePickup method. \n" +
           "Invalid pickup confirmation: \n" +
-          "  confirmationNumber must be a string \n" +
+          "  confirmationID must be a string \n" +
           "  timeWindows must contain at least 1 items \n" +
           "  charges is required \n" +
           "  note must be a string \n" +

@@ -14,9 +14,9 @@ export interface PickupCancellationPOJO {
   pickupID: string;
 
   /**
-   * The confirmation number of the pickup request to be canceled
+   * The confirmation ID of the pickup request to be canceled
    */
-  confirmationNumber?: string;
+  confirmationID?: string;
 
   /**
    * Custom identifiers for this confirmation

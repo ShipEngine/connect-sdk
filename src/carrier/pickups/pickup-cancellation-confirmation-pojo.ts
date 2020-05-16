@@ -3,7 +3,7 @@
  */
 export interface PickupCancellationConfirmationPOJO {
   /**
-   * ShipEngine's unique identifier for the pickup. Indicates which pickup this cancellation
+   * The unique identifier for the pickup. Indicates which pickup this cancellation
    * confirmation is for.
    */
   pickupID: string;

@@ -11,7 +11,7 @@ describe("schedulePickup", () => {
       carrier: pojo.carrier({
         pickupServices: [pojo.pickupService()],
         schedulePickup: () => ({
-          confirmationID: "ABCDEF-123456",
+          pickupID: "ABCDEF-123456",
           timeWindows: [{
             startDateTime: "2005-05-05T05:05:05.005+05:00",
             endDateTime: new Date("2005-05-05T05:05:05.005+05:00"),
@@ -30,7 +30,7 @@ describe("schedulePickup", () => {
     let confirmation = await app.carrier.schedulePickup(pojo.transaction(), pojo.pickupRequest());
 
     expect(confirmation).to.deep.equal({
-      confirmationID: "ABCDEF-123456",
+      pickupID: "ABCDEF-123456",
       identifiers: {},
       notes: [],
       metadata: {},
@@ -70,7 +70,7 @@ describe("schedulePickup", () => {
       carrier: pojo.carrier({
         pickupServices: [pojo.pickupService()],
         schedulePickup: () => ({
-          confirmationID: "ABCDEF-123456",
+          pickupID: "ABCDEF-123456",
           identifiers: {
             myPickupID: "123456-ABCDEFG",
           },
@@ -123,7 +123,7 @@ describe("schedulePickup", () => {
     let confirmation = await app.carrier.schedulePickup(pojo.transaction(), pojo.pickupRequest());
 
     expect(confirmation).to.deep.equal({
-      confirmationID: "ABCDEF-123456",
+      pickupID: "ABCDEF-123456",
       identifiers: {
         myPickupID: "123456-ABCDEFG",
       },
@@ -319,7 +319,7 @@ describe("schedulePickup", () => {
         carrier: pojo.carrier({
           pickupServices: [pojo.pickupService()],
           schedulePickup: () => ({
-            confirmationID: 12345,
+            pickupID: 12345,
             timeWindows: [],
             notes: [12345],
             metadata: false
@@ -335,7 +335,7 @@ describe("schedulePickup", () => {
         expect(error.message).to.equal(
           "Error in schedulePickup method. \n" +
           "Invalid pickup confirmation: \n" +
-          "  confirmationID must be a string \n" +
+          "  pickupID must be a string \n" +
           "  timeWindows must contain at least 1 items \n" +
           "  charges is required \n" +
           "  notes[0] does not match any of the allowed types \n" +

@@ -7,10 +7,9 @@ import { ShipmentIdentifier, shipmentIdentifierMixin, ShipmentIdentifierPOJO } f
  */
 export interface ShipmentCancellationPOJO extends ShipmentIdentifierPOJO {
   /**
-   * The unique ID of this cancellation request. This ID is used to correlate
-   * requested cancellations with cancellation confirmations.
+   * The unique ID of this cancellation. This ID is used to correlate cancellations with outcomes.
    */
-  cancellationRequestID: UUID;
+  cancellationID: UUID;
 
   /**
    * Arbitrary data about this shipment that was previously persisted by the ShipEngine Platform.
@@ -29,7 +28,7 @@ export class ShipmentCancellation extends shipmentIdentifierMixin() {
   public static readonly [_internal] = {
     label: "shipment",
     schema: ShipmentIdentifier[_internal].schema.keys({
-      cancellationRequestID: Joi.string().uuid().required(),
+      cancellationID: Joi.string().uuid().required(),
       metadata: Joi.object(),
     }),
   };
@@ -38,10 +37,9 @@ export class ShipmentCancellation extends shipmentIdentifierMixin() {
   //#region Public Fields
 
   /**
-   * The unique ID of this cancellation request. This ID is used to correlate
-   * requested cancellations with cancellation confirmations.
+   * The unique ID of this cancellation. This ID is used to correlate cancellations with outcomes.
    */
-  public readonly cancellationRequestID: UUID;
+  public readonly cancellationID: UUID;
 
   /**
    * Arbitrary data about this shipment that will be persisted by the ShipEngine Integration Platform.
@@ -54,7 +52,7 @@ export class ShipmentCancellation extends shipmentIdentifierMixin() {
   public constructor(pojo: ShipmentCancellationPOJO) {
     super(pojo);
 
-    this.cancellationRequestID = pojo.cancellationRequestID;
+    this.cancellationID = pojo.cancellationID;
     this.metadata = pojo.metadata || {};
 
     // Make this object immutable

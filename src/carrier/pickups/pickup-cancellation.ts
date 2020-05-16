@@ -16,7 +16,7 @@ export class PickupCancellation {
   public static readonly [_internal] = {
     label: "pickup cancellation",
     schema: Joi.object({
-      cancellationRequestID: Joi.string().uuid().required(),
+      cancellationID: Joi.string().uuid().required(),
       confirmationID: Joi.string().trim().singleLine().min(1).max(100),
       pickupServiceID: Joi.string().uuid().required(),
       identifiers: Identifiers[_internal].schema,
@@ -34,10 +34,9 @@ export class PickupCancellation {
   //#region Public Fields
 
   /**
-   * The unique ID of this cancellation request. This ID is used to correlate
-   * requested cancellations with cancellation confirmations.
+   * The unique ID of this cancellation. This ID is used to correlate cancellations with outcomes.
    */
-  public readonly cancellationRequestID: UUID;
+  public readonly cancellationID: UUID;
 
   /**
    * The confirmation ID of the pickup request to be canceled
@@ -92,7 +91,7 @@ export class PickupCancellation {
   //#endregion
 
   public constructor(pojo: PickupCancellationPOJO, app: App) {
-    this.cancellationRequestID = pojo.cancellationRequestID;
+    this.cancellationID = pojo.cancellationID;
     this.confirmationID = pojo.confirmationID || "";
     this.pickupService = app[_internal].references.lookup(pojo.pickupServiceID, PickupService);
     this.identifiers = new Identifiers(pojo.identifiers);

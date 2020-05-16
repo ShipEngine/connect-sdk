@@ -2,14 +2,14 @@ import { Transaction } from "../common";
 import { ManifestConfirmationPOJO } from "./manifests/manifest-confirmation";
 import { NewManifest } from "./manifests/new-manifest";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
-import { PickupCancellationConfirmationPOJO } from "./pickups/pickup-cancellation-confirmation-pojo";
+import { PickupCancellationOutcomePOJO } from "./pickups/pickup-cancellation-outcome-pojo";
 import { PickupConfirmationPOJO } from "./pickups/pickup-confirmation-pojo";
 import { PickupRequest } from "./pickups/pickup-request";
 import { RateCriteria } from "./rates/rate-criteria";
 import { RatePOJO } from "./rates/rate-pojo";
 import { NewShipment } from "./shipments/new-shipment";
 import { ShipmentCancellation } from "./shipments/shipment-cancellation";
-import { ShipmentCancellationConfirmationPOJO } from "./shipments/shipment-cancellation-confirmation-pojo";
+import { ShipmentCancellationOutcomePOJO } from "./shipments/shipment-cancellation-outcome-pojo";
 import { ShipmentConfirmationPOJO } from "./shipments/shipment-confirmation";
 import { TrackingCriteria } from "./tracking/tracking-criteria";
 import { TrackingInfoPOJO } from "./tracking/tracking-info";
@@ -25,7 +25,7 @@ export type CreateShipment = (transaction: Transaction, shipment: NewShipment)
  * this may include voiding labels, refunding charges, and/or removing the shipment from the day's manifest.
  */
 export type CancelShipments = (transaction: Transaction, shipments: ShipmentCancellation[])
-  => void | ShipmentCancellationConfirmationPOJO[] | Promise<void | ShipmentCancellationConfirmationPOJO[]>;
+  => void | ShipmentCancellationOutcomePOJO[] | Promise<void | ShipmentCancellationOutcomePOJO[]>;
 
 /**
  * Calculates the shipping costs for a shipment, or multiple permutations of a shipment
@@ -53,4 +53,4 @@ export type SchedulePickup = (transaction: Transaction, request: PickupRequest)
  * Cancels one or more previously-requested package pickups
  */
 export type CancelPickups = (transaction: Transaction, pickups: PickupCancellation[])
-  => void | PickupCancellationConfirmationPOJO[] | Promise<PickupCancellationConfirmationPOJO[] | void>;
+  => void | PickupCancellationOutcomePOJO[] | Promise<PickupCancellationOutcomePOJO[] | void>;

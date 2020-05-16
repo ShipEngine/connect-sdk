@@ -1,4 +1,16 @@
 /**
+ * The status of a cancellation request
+ */
+export enum CancellationStatus {
+  Success = "success",
+  Error = "error",
+  Timeout = "timeout",
+  Skipped = "skipped",
+  Throttled = "throttled",
+}
+
+
+/**
  * The types of notes that can be returned
  */
 export enum NoteType {

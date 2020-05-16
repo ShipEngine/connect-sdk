@@ -8,10 +8,9 @@ import { PickupShipmentPOJO } from "./pickup-shipment-pojo";
  */
 export interface PickupCancellationPOJO {
   /**
-   * The unique ID of this cancellation request. This ID is used to correlate
-   * requested cancellations with cancellation confirmations.
+   * The unique ID of this cancellation. This ID is used to correlate cancellations with outcomes.
    */
-  cancellationRequestID: UUID;
+  cancellationID: UUID;
 
   /**
    * The confirmation ID of the pickup request to be canceled

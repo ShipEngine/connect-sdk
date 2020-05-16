@@ -9,13 +9,13 @@ export interface NonManifestedShipmentPOJO extends ShipmentIdentifierPOJO {
   /**
    * The carrier's error code
    */
-  errorCode?: string;
+  code?: string;
 
   /**
    * The carrier's description of the error code.
-   * This description should not be specific to this particular shipment
+   * This description should not be specific to this particular shipment.
    */
-  errorDescription?: string;
+  description?: string;
 
   /**
    * Human-readable information regarding the error, such as details that are specific
@@ -35,8 +35,8 @@ export class NonManifestedShipment {
   public static readonly [_internal] = {
     label: "manifest confirmation",
     schema: ShipmentIdentifier[_internal].schema.keys({
-      errorCode: Joi.string().trim().singleLine().min(1).max(100),
-      errorDescription: Joi.string().trim().singleLine().allow("").max(1000),
+      code: Joi.string().trim().singleLine().min(1).max(100),
+      description: Joi.string().trim().singleLine().allow("").max(1000),
       notes: Note[_internal].notesSchema,
     }),
   };
@@ -47,13 +47,13 @@ export class NonManifestedShipment {
   /**
    * The carrier's error code
    */
-  public readonly errorCode: string;
+  public readonly code: string;
 
   /**
    * The carrier's description of the error code.
    * This description should not be specific to this particular shipment
    */
-  public readonly errorDescription: string;
+  public readonly description: string;
 
   /**
    * Human-readable information regarding the error, such as details that are specific
@@ -64,8 +64,8 @@ export class NonManifestedShipment {
   //#endregion
 
   public constructor(pojo: NonManifestedShipmentPOJO) {
-    this.errorCode = pojo.errorCode || "";
-    this.errorDescription = pojo.errorDescription || "";
+    this.code = pojo.code || "";
+    this.description = pojo.description || "";
     this.notes = createNotes(pojo.notes);
 
     // Make this object immutable

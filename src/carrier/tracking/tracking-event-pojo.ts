@@ -22,31 +22,20 @@ export interface TrackingEventPOJO {
   status: ShipmentStatus;
 
   /**
+   * Indicates whether this event represents an error state, such as a lost package or failed delivery.
+   */
+  isError?: boolean;
+
+  /**
    * The carrier's event or status code
    */
   code?: string;
 
   /**
    * The carrier's description of the event or status code.
-   * This description should not be specific to this particular shipment
+   * This description should not be specific to this particular shipment.
    */
   description?: string;
-
-  /**
-   * Indicates whether this event represents an error state, such as a lost package or failed delivery.
-   */
-  isError?: boolean;
-
-  /**
-   * The carrier's error code
-   */
-  errorCode?: string;
-
-  /**
-   * The carrier's description of the error code.
-   * This description should not be specific to this particular shipment
-   */
-  errorDescription?: string;
 
   /**
    * The address (or as much of it as is known) where the event occurred

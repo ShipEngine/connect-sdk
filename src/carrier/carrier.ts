@@ -1,4 +1,4 @@
-import { App, Country, LocalizedBrandingPOJO, Transaction, TransactionPOJO } from "../common";
+import { App, CancellationStatus, Country, LocalizedBrandingPOJO, Transaction, TransactionPOJO } from "../common";
 import { error, ErrorCode } from "../errors";
 import { hideAndFreeze, Joi, Localization, localize, validate, validateArray, _internal } from "../internal";
 import { FilePath, UUID } from "../types";
@@ -14,7 +14,7 @@ import { NewManifestPOJO } from "./manifests/new-manifest-pojo";
 import { CancelPickups, CancelShipments, CreateManifest, CreateShipment, RateShipment, SchedulePickup, TrackShipment } from "./methods";
 import { Packaging } from "./packaging";
 import { PickupCancellation } from "./pickups/pickup-cancellation";
-import { PickupCancellationConfirmation } from "./pickups/pickup-cancellation-confirmation";
+import { PickupCancellationOutcome } from "./pickups/pickup-cancellation-outcome";
 import { PickupCancellationPOJO } from "./pickups/pickup-cancellation-pojo";
 import { PickupConfirmation } from "./pickups/pickup-confirmation";
 import { PickupRequest } from "./pickups/pickup-request";
@@ -26,7 +26,7 @@ import { RateCriteriaPOJO } from "./rates/rate-criteria-pojo";
 import { NewShipment } from "./shipments/new-shipment";
 import { NewShipmentPOJO } from "./shipments/new-shipment-pojo";
 import { ShipmentCancellation, ShipmentCancellationPOJO } from "./shipments/shipment-cancellation";
-import { ShipmentCancellationConfirmation } from "./shipments/shipment-cancellation-confirmation";
+import { ShipmentCancellationOutcome } from "./shipments/shipment-cancellation-outcome";
 import { ShipmentConfirmation } from "./shipments/shipment-confirmation";
 import { TrackingCriteria, TrackingCriteriaPOJO } from "./tracking/tracking-criteria";
 import { TrackingInfo } from "./tracking/tracking-info";
@@ -388,11 +388,14 @@ export class Carrier {
 
       if (!confirmations) {
         // Nothing was returned, so assume all shipments were canceled successfully
-        confirmations = _shipments.map((shipment) => ({ cancellationRequestID: shipment.cancellationRequestID }));
+        confirmations = _shipments.map((shipment) => ({
+          cancellationID: shipment.cancellationID,
+          status: CancellationStatus.Success,
+        }));
       }
 
-      return validateArray(confirmations, ShipmentCancellationConfirmation)
-        .map((confirmation) => new ShipmentCancellationConfirmation(confirmation));
+      return validateArray(confirmations, ShipmentCancellationOutcome)
+        .map((confirmation) => new ShipmentCancellationOutcome(confirmation));
     }
     catch (originalError) {
       let transactionID = _transaction.id;
@@ -510,7 +513,7 @@ export class Carrier {
    * Cancels one or more previously-requested package pickups
    */
   public async cancelPickups?(transaction: TransactionPOJO, pickups: PickupCancellationPOJO[])
-  : Promise<PickupCancellationConfirmation[]> {
+  : Promise<PickupCancellationOutcome[]> {
     let _transaction, _pickups;
     let { app, cancelPickups } = this[_private];
 
@@ -528,11 +531,14 @@ export class Carrier {
 
       if (!confirmations) {
         // Nothing was returned, so assume all pickups were canceled successfully
-        confirmations = _pickups.map((pickup) => ({ cancellationRequestID: pickup.cancellationRequestID }));
+        confirmations = _pickups.map((pickup) => ({
+          cancellationID: pickup.cancellationID,
+          status: CancellationStatus.Success,
+        }));
       }
 
-      return validateArray(confirmations, PickupCancellationConfirmation)
-        .map((confirmation) => new PickupCancellationConfirmation(confirmation));
+      return validateArray(confirmations, PickupCancellationOutcome)
+        .map((confirmation) => new PickupCancellationOutcome(confirmation));
     }
     catch (originalError) {
       let transactionID = _transaction.id;

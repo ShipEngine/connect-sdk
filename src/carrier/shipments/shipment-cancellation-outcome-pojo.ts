@@ -1,35 +1,35 @@
-import { NotePOJO } from "../../common";
+import { CancellationStatus, NotePOJO } from "../../common";
 import { UUID } from "../../types";
 
 /**
- * Confirmation that a shipment has been canceled
+ * The outcome of a shipment cancellation
  */
-export interface ShipmentCancellationConfirmationPOJO {
+export interface ShipmentCancellationOutcomePOJO {
   /**
    * Indicates which cancellation request this confirmation is for.
    */
-  cancellationRequestID: UUID;
+  cancellationID: UUID;
 
   /**
-   * The carrier's cancellation ID, if any
+   * The status of the cancellation
    */
-  cancellationID?: string;
+  status: CancellationStatus;
 
   /**
-   * Indicates whether the cancellation failed or was successful
+   * The confirmation ID of the cancellation
    */
-  isError?: boolean;
+  confirmationID?: string;
 
   /**
-   * The carrier's error code
+   * The carrier's code for this cancellation outcome
    */
-  errorCode?: string;
+  code?: string;
 
   /**
-   * The carrier's description of the error code.
-   * This description should not be specific to this particular shipment
+   * The carrier's description of the cancellation outcome.
+   * This description should not be specific to this particular shipment.
    */
-  errorDescription?: string;
+  description?: string;
 
   /**
    * Human-readable information/instructions regarding the cancellation

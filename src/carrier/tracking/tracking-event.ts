@@ -16,11 +16,9 @@ export class TrackingEvent {
       name: Joi.string().trim().singleLine().min(1).max(100),
       dateTime: DateTimeZone[_internal].schema.required(),
       status: Joi.string().enum(ShipmentStatus).required(),
+      isError: Joi.boolean(),
       code: Joi.string().trim().singleLine().min(1).max(100),
       description: Joi.string().trim().singleLine().allow("").max(1000),
-      isError: Joi.boolean(),
-      errorCode: Joi.string().trim().singleLine().min(1).max(100),
-      errorDescription: Joi.string().trim().singleLine().allow("").max(1000),
       address: PartialAddress[_internal].schema,
       signer: Joi.alternatives(
         Joi.string().trim().singleLine().min(1).max(100),
@@ -49,6 +47,11 @@ export class TrackingEvent {
   public readonly status: ShipmentStatus;
 
   /**
+   * Indicates whether this event represents an error state, such as a lost package or failed delivery.
+   */
+  public readonly isError: boolean;
+
+  /**
    * The carrier's event or status code
    */
   public readonly code: string;
@@ -58,22 +61,6 @@ export class TrackingEvent {
    * This description should not be specific to this particular shipment
    */
   public readonly description: string;
-
-  /**
-   * Indicates whether this event represents an error state, such as a lost package or failed delivery.
-   */
-  public readonly isError: boolean;
-
-  /**
-   * The carrier's error code
-   */
-  public readonly errorCode: string;
-
-  /**
-   * The carrier's description of the error code.
-   * This description should not be specific to this particular shipment
-   */
-  public readonly errorDescription: string;
 
   /**
    * The address (or as much of it as is known) where the event occurred
@@ -101,8 +88,6 @@ export class TrackingEvent {
     this.code = pojo.code || "";
     this.description = pojo.description || "";
     this.isError = pojo.isError || false;
-    this.errorCode = pojo.errorCode || "";
-    this.errorDescription = pojo.errorDescription || "";
     this.address = pojo.address && new PartialAddress(pojo.address);
     this.signer = pojo.signer ? new PersonName(pojo.signer) : undefined;
     this.notes = createNotes(pojo.notes);

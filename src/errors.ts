@@ -1,11 +1,12 @@
 import { ono } from "@jsdevtools/ono";
+import { UUID } from "./types";
 
 /**
  * An error thrown by the ShipEngine Integration Platform SDK
  */
 export interface ShipEngineError {
   code: ErrorCode;
-  transactionID?: string;
+  transactionID?: UUID;
 }
 
 /**
@@ -24,7 +25,7 @@ export enum ErrorCode {
  */
 export interface ErrorProps {
   originalError?: unknown;
-  transactionID?: string;
+  transactionID?: UUID;
   [key: string]: unknown;
 }
 

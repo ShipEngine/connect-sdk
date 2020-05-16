@@ -1,6 +1,7 @@
 import { Address, App, ContactInfo, Identifiers, TimeRange } from "../../common";
 import { PickupCancellationReason } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { UUID } from "../../types";
 import { PickupCancellationPOJO } from "./pickup-cancellation-pojo";
 import { PickupService } from "./pickup-service";
 import { PickupShipment } from "./pickup-shipment";
@@ -15,7 +16,7 @@ export class PickupCancellation {
   public static readonly [_internal] = {
     label: "pickup cancellation",
     schema: Joi.object({
-      pickupID: Joi.string().trim().singleLine().min(1).max(100).required(),
+      cancellationRequestID: Joi.string().uuid().required(),
       confirmationID: Joi.string().trim().singleLine().min(1).max(100),
       pickupServiceID: Joi.string().uuid().required(),
       identifiers: Identifiers[_internal].schema,
@@ -33,10 +34,10 @@ export class PickupCancellation {
   //#region Public Fields
 
   /**
-   * ShipEngine's unique identifier for the pickup. This ID must be returned, along with a flag
-   * indicating whether it was successfully canceled.
+   * The unique ID of this cancellation request. This ID is used to correlate
+   * requested cancellations with cancellation confirmations.
    */
-  public readonly pickupID: string;
+  public readonly cancellationRequestID: UUID;
 
   /**
    * The confirmation ID of the pickup request to be canceled
@@ -91,7 +92,7 @@ export class PickupCancellation {
   //#endregion
 
   public constructor(pojo: PickupCancellationPOJO, app: App) {
-    this.pickupID = pojo.pickupID;
+    this.cancellationRequestID = pojo.cancellationRequestID;
     this.confirmationID = pojo.confirmationID || "";
     this.pickupService = app[_internal].references.lookup(pojo.pickupServiceID, PickupService);
     this.identifiers = new Identifiers(pojo.identifiers);

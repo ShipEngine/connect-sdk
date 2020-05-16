@@ -1,4 +1,5 @@
 import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { UUID } from "../../types";
 import { ShipmentIdentifier, shipmentIdentifierMixin, ShipmentIdentifierPOJO } from "./shipment-identifier";
 
 /**
@@ -6,10 +7,10 @@ import { ShipmentIdentifier, shipmentIdentifierMixin, ShipmentIdentifierPOJO } f
  */
 export interface ShipmentCancellationPOJO extends ShipmentIdentifierPOJO {
   /**
-   * A value that uniquely identifies the shipment. This ID must be returned, along with a flag
-   * indicating whether it was successfully canceled.
+   * The unique ID of this cancellation request. This ID is used to correlate
+   * requested cancellations with cancellation confirmations.
    */
-  shipmentID: string;
+  cancellationRequestID: UUID;
 
   /**
    * Arbitrary data about this shipment that was previously persisted by the ShipEngine Platform.
@@ -28,7 +29,7 @@ export class ShipmentCancellation extends shipmentIdentifierMixin() {
   public static readonly [_internal] = {
     label: "shipment",
     schema: ShipmentIdentifier[_internal].schema.keys({
-      shipmentID: Joi.string().trim().singleLine().min(1).max(100).required(),
+      cancellationRequestID: Joi.string().uuid().required(),
       metadata: Joi.object(),
     }),
   };
@@ -37,10 +38,10 @@ export class ShipmentCancellation extends shipmentIdentifierMixin() {
   //#region Public Fields
 
   /**
-   * ShipEngine's unique identifier for the shipment. This ID must be returned, along with a flag
-   * indicating whether it was successfully canceled.
+   * The unique ID of this cancellation request. This ID is used to correlate
+   * requested cancellations with cancellation confirmations.
    */
-  public readonly shipmentID: string;
+  public readonly cancellationRequestID: UUID;
 
   /**
    * Arbitrary data about this shipment that will be persisted by the ShipEngine Integration Platform.
@@ -53,7 +54,7 @@ export class ShipmentCancellation extends shipmentIdentifierMixin() {
   public constructor(pojo: ShipmentCancellationPOJO) {
     super(pojo);
 
-    this.shipmentID = pojo.shipmentID;
+    this.cancellationRequestID = pojo.cancellationRequestID;
     this.metadata = pojo.metadata || {};
 
     // Make this object immutable

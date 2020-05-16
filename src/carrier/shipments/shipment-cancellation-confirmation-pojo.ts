@@ -1,13 +1,13 @@
+import { UUID } from "../../types";
 
 /**
  * Confirmation that a shipment has been canceled
  */
 export interface ShipmentCancellationConfirmationPOJO {
   /**
-   * The unique identifier for the shipment. Indicates which shipment this cancellation
-   * confirmation is for.
+   * Indicates which cancellation request this confirmation is for.
    */
-  shipmentID: string;
+  cancellationRequestID: UUID;
 
   /**
    * The carrier's cancellation ID, if any

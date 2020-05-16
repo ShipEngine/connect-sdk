@@ -1,4 +1,5 @@
 import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { UUID } from "../../types";
 import { PickupCancellationConfirmationPOJO } from "./pickup-cancellation-confirmation-pojo";
 
 /**
@@ -11,7 +12,7 @@ export class PickupCancellationConfirmation {
   public static readonly [_internal] = {
     label: "pickup",
     schema: Joi.object({
-      pickupID: Joi.string().trim().singleLine().min(1).max(100).required(),
+      cancellationRequestID: Joi.string().uuid().required(),
       cancellationID: Joi.string().trim().singleLine().allow("").max(100),
       isError: Joi.boolean(),
       errorCode: Joi.string().trim().singleLine().min(1).max(100),
@@ -25,10 +26,9 @@ export class PickupCancellationConfirmation {
   //#region Public Fields
 
   /**
-   * ShipEngine's unique identifier for the pickup. Indicates which pickup this cancellation
-   * confirmation is for.
+   * Indicates which pickup this cancellation request this confirmation is for.
    */
-  public readonly pickupID: string;
+  public readonly cancellationRequestID: UUID;
 
   /**
    * The carrier's cancellation ID, if any
@@ -66,7 +66,7 @@ export class PickupCancellationConfirmation {
   //#endregion
 
   public constructor(pojo: PickupCancellationConfirmationPOJO) {
-    this.pickupID = pojo.pickupID;
+    this.cancellationRequestID = pojo.cancellationRequestID;
     this.cancellationID = pojo.cancellationID || "";
     this.isError = pojo.isError || false;
     this.errorCode = pojo.errorCode || "";

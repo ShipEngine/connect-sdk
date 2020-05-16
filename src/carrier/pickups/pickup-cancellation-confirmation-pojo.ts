@@ -1,12 +1,13 @@
+import { UUID } from "../../types";
+
 /**
  * Confirmation that a package pickup has been canceled
  */
 export interface PickupCancellationConfirmationPOJO {
   /**
-   * The unique identifier for the pickup. Indicates which pickup this cancellation
-   * confirmation is for.
+   * Indicates which pickup this cancellation request this confirmation is for.
    */
-  pickupID: string;
+  cancellationRequestID: UUID;
 
   /**
    * The carrier's cancellation ID, if any

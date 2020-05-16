@@ -1,4 +1,5 @@
 import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { UUID } from "../../types";
 import { ShipmentCancellationConfirmationPOJO } from "./shipment-cancellation-confirmation-pojo";
 import { ShipmentIdentifier } from "./shipment-identifier";
 
@@ -12,7 +13,7 @@ export class ShipmentCancellationConfirmation {
   public static readonly [_internal] = {
     label: "shipment",
     schema: ShipmentIdentifier[_internal].schema.keys({
-      shipmentID: Joi.string().trim().singleLine().min(1).max(100).required(),
+      cancellationRequestID: Joi.string().uuid().required(),
       cancellationID: Joi.string().trim().singleLine().allow("").max(100),
       isError: Joi.boolean(),
       errorCode: Joi.string().trim().singleLine().min(1).max(100),
@@ -26,10 +27,9 @@ export class ShipmentCancellationConfirmation {
   //#region Public Fields
 
   /**
-   * ShipEngine's unique identifier for the shipment. Indicates which shipment this cancellation
-   * confirmation is for.
+   * Indicates which cancellation request this confirmation is for.
    */
-  public readonly shipmentID: string;
+  public readonly cancellationRequestID: UUID;
 
   /**
    * The carrier's cancellation ID, if any
@@ -67,7 +67,7 @@ export class ShipmentCancellationConfirmation {
   //#endregion
 
   public constructor(pojo: ShipmentCancellationConfirmationPOJO) {
-    this.shipmentID = pojo.shipmentID;
+    this.cancellationRequestID = pojo.cancellationRequestID;
     this.cancellationID = pojo.cancellationID || "";
     this.isError = pojo.isError || false;
     this.errorCode = pojo.errorCode || "";

@@ -386,7 +386,7 @@ export class Carrier {
 
       if (!confirmations) {
         // Nothing was returned, so assume all shipments were canceled successfully
-        confirmations = _shipments.map((shipment) => ({ shipmentID: shipment.shipmentID }));
+        confirmations = _shipments.map((shipment) => ({ cancellationRequestID: shipment.cancellationRequestID }));
       }
 
       return validateArray(confirmations, ShipmentCancellationConfirmation)
@@ -526,7 +526,7 @@ export class Carrier {
 
       if (!confirmations) {
         // Nothing was returned, so assume all pickups were canceled successfully
-        confirmations = _pickups.map((pickup) => ({ pickupID: pickup.pickupID }));
+        confirmations = _pickups.map((pickup) => ({ cancellationRequestID: pickup.cancellationRequestID }));
       }
 
       return validateArray(confirmations, PickupCancellationConfirmation)

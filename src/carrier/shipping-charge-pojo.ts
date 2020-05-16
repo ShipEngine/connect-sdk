@@ -1,4 +1,4 @@
-import { MonetaryValuePOJO } from "../common";
+import { MonetaryValuePOJO, NotePOJO } from "../common";
 import { ShippingChargeType } from "./enums";
 
 /**
@@ -33,5 +33,5 @@ export interface ShippingChargePOJO {
   /**
    * Human-readable information regarding this charge, such as an explanation or reference number
    */
-  note?: string;
+  notes?: string | Array<string | NotePOJO>;
 }

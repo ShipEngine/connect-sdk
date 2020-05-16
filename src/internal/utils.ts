@@ -1,8 +1,11 @@
+import { Note, NotePOJO } from "../common";
+
 /**
  * Fields that should only be accessed within the ShipEngine Integration Platform SDK
  * @internal
  */
 export const _internal = Symbol("internal fields");
+
 
 /**
  * Regular expression patterns
@@ -17,6 +20,7 @@ export const regex = {
   protocol: /^https?:\/\//,
   locale: /^[a-z]{2}(-[A-Z]{2})?$/,
 };
+
 
 /**
  * Hides private/internal symbol fields and freezes all object/function fields.
@@ -49,4 +53,19 @@ export function hideAndFreeze<T extends object>(obj: T, ...omit: Array<keyof T>)
 
   // Freeze the top-level object
   Object.freeze(obj);
+}
+
+
+/**
+ * Normalizes any form of notes as an array of Note objects
+ */
+export function createNotes(notes?: string | Array<string | NotePOJO>): Note[] {
+  if (!notes) {
+    return [];
+  }
+  else if (typeof notes === "string") {
+    notes = [notes];
+  }
+
+  return notes.map((note) => new Note(note));
 }

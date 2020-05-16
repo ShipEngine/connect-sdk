@@ -1,4 +1,4 @@
-import { AddressPOJO, ContactInfoPOJO, TimeRangePOJO } from "../../common";
+import { AddressPOJO, ContactInfoPOJO, NotePOJO, TimeRangePOJO } from "../../common";
 import { UUID } from "../../types";
 import { PickupShipmentPOJO } from "./pickup-shipment-pojo";
 
@@ -29,7 +29,7 @@ export interface PickupRequestPOJO {
   /**
    * Human-readable information about the pickup
    */
-  note?: string;
+  notes?: string | Array<string | NotePOJO>;
 
   /**
    * The shipments to be picked up

@@ -1,4 +1,4 @@
-import { IdentifiersPOJO, TimeRangePOJO } from "../../common";
+import { IdentifiersPOJO, NotePOJO, TimeRangePOJO } from "../../common";
 import { ShipmentIdentifierPOJO } from "../shipments/shipment-identifier";
 import { ShippingChargePOJO } from "../shipping-charge-pojo";
 
@@ -37,7 +37,7 @@ export interface PickupConfirmationPOJO {
   /**
    * Human-readable information about the pickup confirmation
    */
-  note?: string;
+  notes?: string | Array<string | NotePOJO>;
 
   /**
    * Arbitrary data about this pickup that will be persisted by the ShipEngine Integration Platform.

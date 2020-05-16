@@ -1,5 +1,5 @@
-import { Identifiers, MonetaryValue, TimeRange } from "../../common";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { Identifiers, MonetaryValue, Note, TimeRange } from "../../common";
+import { createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 import { ShippingCharge } from "../shipping-charge";
 import { calculateTotalCharges } from "../utils";
@@ -20,7 +20,7 @@ export class PickupConfirmation {
       timeWindows: Joi.array().min(1).items(TimeRange[_internal].schema).required(),
       charges: Joi.array().min(1).items(ShippingCharge[_internal].schema).required(),
       shipments: Joi.array().min(1).items(ShipmentIdentifier[_internal].schema.unknown(true)),
-      note: Joi.string().allow("").max(5000),
+      notes: Note[_internal].notesSchema,
       metadata: Joi.object(),
     }),
   };
@@ -63,7 +63,7 @@ export class PickupConfirmation {
   /**
    * Additional information about the pickup confirmation
    */
-  public readonly note: string;
+  public readonly notes: ReadonlyArray<Note>;
 
   /**
    * Arbitrary data about this pickup that will be persisted by the ShipEngine Integration Platform.
@@ -80,7 +80,7 @@ export class PickupConfirmation {
     this.charges = pojo.charges.map((charge) => new ShippingCharge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);
     this.shipments = pojo.shipments!.map((shipment) => new ShipmentIdentifier(shipment));
-    this.note = pojo.note || "";
+    this.notes = createNotes(pojo.notes);
     this.metadata = pojo.metadata || {};
 
     // Make this object immutable

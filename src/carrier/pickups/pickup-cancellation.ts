@@ -1,5 +1,5 @@
-import { Address, App, ContactInfo, Identifiers, TimeRange } from "../../common";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { Address, App, ContactInfo, Identifiers, Note, TimeRange } from "../../common";
+import { createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
 import { UUID } from "../../types";
 import { PickupCancellationReason } from "../enums";
 import { PickupCancellationPOJO } from "./pickup-cancellation-pojo";
@@ -21,7 +21,7 @@ export class PickupCancellation {
       pickupServiceID: Joi.string().uuid().required(),
       identifiers: Identifiers[_internal].schema,
       reason: Joi.string().enum(PickupCancellationReason).required(),
-      note: Joi.string().allow("").max(5000),
+      notes: Note[_internal].notesSchema,
       address: Address[_internal].schema.required(),
       contact: ContactInfo[_internal].schema.required(),
       timeWindows: Joi.array().min(1).items(TimeRange[_internal].schema).required(),
@@ -62,7 +62,7 @@ export class PickupCancellation {
   /**
    * Information about why the customer is cancelling the pickup
    */
-  public readonly note: string;
+  public readonly notes: ReadonlyArray<Note>;
 
   /**
    * The address where the pickup was requested
@@ -97,7 +97,7 @@ export class PickupCancellation {
     this.pickupService = app[_internal].references.lookup(pojo.pickupServiceID, PickupService);
     this.identifiers = new Identifiers(pojo.identifiers);
     this.reason = pojo.reason;
-    this.note = pojo.note || "";
+    this.notes = createNotes(pojo.notes);
     this.address = new Address(pojo.address);
     this.contact = new ContactInfo(pojo.contact);
     this.timeWindows = pojo.timeWindows.map((window) => new TimeRange(window));

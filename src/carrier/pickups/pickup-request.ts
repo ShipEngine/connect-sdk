@@ -1,5 +1,5 @@
-import { Address, App, ContactInfo, TimeRange } from "../../common";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { Address, App, ContactInfo, Note, TimeRange } from "../../common";
+import { createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
 import { PickupRequestPOJO } from "./pickup-request-pojo";
 import { PickupService } from "./pickup-service";
 import { PickupShipment } from "./pickup-shipment";
@@ -18,7 +18,7 @@ export class PickupRequest {
       timeWindow: TimeRange[_internal].schema.required(),
       address: Address[_internal].schema.required(),
       contact: ContactInfo[_internal].schema.required(),
-      note: Joi.string().allow("").max(5000),
+      notes: Note[_internal].notesSchema,
       shipments: Joi.array().min(1).items(PickupShipment[_internal].schema).required(),
     }),
   };
@@ -49,7 +49,7 @@ export class PickupRequest {
   /**
    * Additional information about the pickup
    */
-  public readonly note: string;
+  public readonly notes: ReadonlyArray<Note>;
 
   /**
    * The shipments to be picked up
@@ -63,7 +63,7 @@ export class PickupRequest {
     this.timeWindow = new TimeRange(pojo.timeWindow);
     this.address = new Address(pojo.address);
     this.contact = new ContactInfo(pojo.contact);
-    this.note = pojo.note || "";
+    this.notes = createNotes(pojo.notes);
     this.shipments = pojo.shipments.map((shipment) => new PickupShipment(shipment, app));
 
     // Make this object immutable

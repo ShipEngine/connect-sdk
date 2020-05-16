@@ -1,4 +1,5 @@
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { Note } from "../../common";
+import { createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
 import { UUID } from "../../types";
 import { ShipmentCancellationConfirmationPOJO } from "./shipment-cancellation-confirmation-pojo";
 import { ShipmentIdentifier } from "./shipment-identifier";
@@ -18,7 +19,7 @@ export class ShipmentCancellationConfirmation {
       isError: Joi.boolean(),
       errorCode: Joi.string().trim().singleLine().min(1).max(100),
       errorDescription: Joi.string().trim().singleLine().allow("").max(1000),
-      note: Joi.string().allow("").max(5000),
+      notes: Note[_internal].notesSchema,
       metadata: Joi.object(),
     }),
   };
@@ -56,7 +57,7 @@ export class ShipmentCancellationConfirmation {
    * Human-readable information/instructions regarding the cancellation
    * (e.g. "Please call ###-#### to cancel", "Cannot cancel because driver is en-route")
    */
-  public readonly note: string;
+  public readonly notes: ReadonlyArray<Note>;
 
   /**
    * Arbitrary data about this shipment that will be persisted by the ShipEngine Integration Platform.
@@ -72,7 +73,7 @@ export class ShipmentCancellationConfirmation {
     this.isError = pojo.isError || false;
     this.errorCode = pojo.errorCode || "";
     this.errorDescription = pojo.errorDescription || "";
-    this.note = pojo.note || "";
+    this.notes = createNotes(pojo.notes);
     this.metadata = pojo.metadata || {};
 
     // Make this object immutable

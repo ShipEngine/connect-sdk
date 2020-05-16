@@ -1,4 +1,5 @@
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { Note, NotePOJO } from "../../common";
+import { createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
 import { ShipmentIdentifier, ShipmentIdentifierPOJO } from "../shipments/shipment-identifier";
 
 /**
@@ -20,7 +21,7 @@ export interface NonManifestedShipmentPOJO extends ShipmentIdentifierPOJO {
    * Human-readable information regarding the error, such as details that are specific
    * to this particular shipment
    */
-  note?: string;
+  notes?: string | Array<string | NotePOJO>;
 }
 
 
@@ -36,7 +37,7 @@ export class NonManifestedShipment {
     schema: ShipmentIdentifier[_internal].schema.keys({
       errorCode: Joi.string().trim().singleLine().min(1).max(100),
       errorDescription: Joi.string().trim().singleLine().allow("").max(1000),
-      note: Joi.string().allow("").max(5000),
+      notes: Note[_internal].notesSchema,
     }),
   };
 
@@ -58,14 +59,14 @@ export class NonManifestedShipment {
    * Human-readable information regarding the error, such as details that are specific
    * to this particular shipment
    */
-  public readonly note: string;
+  public readonly notes: ReadonlyArray<Note>;
 
   //#endregion
 
   public constructor(pojo: NonManifestedShipmentPOJO) {
     this.errorCode = pojo.errorCode || "";
     this.errorDescription = pojo.errorDescription || "";
-    this.note = pojo.note || "";
+    this.notes = createNotes(pojo.notes);
 
     // Make this object immutable
     hideAndFreeze(this);

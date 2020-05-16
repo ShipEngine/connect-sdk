@@ -1,4 +1,4 @@
-import { DateTimeZonePOJO } from "../../common";
+import { DateTimeZonePOJO, NotePOJO } from "../../common";
 import { UUID } from "../../types";
 import { FulfillmentService } from "../fulfillment-service";
 import { ShippingChargePOJO } from "../shipping-charge-pojo";
@@ -72,7 +72,7 @@ export interface RatePOJO {
   /**
    * Human-readable information regarding this rate quote, such as limitations or restrictions
    */
-  note?: string;
+  notes?: string | Array<string | NotePOJO>;
 
   /**
    * The list of packages in the shipment

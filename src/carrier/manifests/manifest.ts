@@ -1,5 +1,5 @@
-import { Identifiers } from "../../common";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { Identifiers, Note } from "../../common";
+import { createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
 import { Document } from "../documents/document";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 import { ManifestPOJO } from "./manifest-pojo";
@@ -20,7 +20,7 @@ export class Manifest {
       shipments: Joi.array().min(1).items(
         ShipmentIdentifier[_internal].schema.unknown(true)).required(),
       document: Document[_internal].schema,
-      note: Joi.string().allow("").max(5000),
+      notes: Note[_internal].notesSchema,
       metadata: Joi.object(),
     }),
   };
@@ -51,7 +51,7 @@ export class Manifest {
   /**
    * Human-readable information about the manifest
    */
-  public readonly note: string;
+  public readonly notes: ReadonlyArray<Note>;
 
   /**
    * Arbitrary data about this manifest that will be persisted by the ShipEngine Integration Platform.
@@ -69,7 +69,7 @@ export class Manifest {
       ...pojo.document,
       name: pojo.document.name || "SCAN Form",
     });
-    this.note = pojo.note || "";
+    this.notes = createNotes(pojo.notes);
     this.metadata = pojo.metadata || {};
 
     // Make this object immutable

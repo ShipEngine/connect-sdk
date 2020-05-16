@@ -1,4 +1,4 @@
-import { AddressPOJO, ContactInfoPOJO, IdentifiersPOJO, TimeRangePOJO } from "../../common";
+import { AddressPOJO, ContactInfoPOJO, IdentifiersPOJO, NotePOJO, TimeRangePOJO } from "../../common";
 import { UUID } from "../../types";
 import { PickupCancellationReason } from "../enums";
 import { PickupShipmentPOJO } from "./pickup-shipment-pojo";
@@ -36,7 +36,7 @@ export interface PickupCancellationPOJO {
   /**
    * Human-readable information about why the customer is cancelling the pickup
    */
-  note?: string;
+  notes?: string | Array<string | NotePOJO>;
 
   /**
    * The address where the pickup was requested

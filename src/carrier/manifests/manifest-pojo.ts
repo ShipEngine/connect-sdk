@@ -1,4 +1,4 @@
-import { IdentifiersPOJO } from "../../common";
+import { IdentifiersPOJO, NotePOJO } from "../../common";
 import { DocumentPOJO } from "../documents/document-pojo";
 import { ShipmentIdentifierPOJO } from "../shipments/shipment-identifier";
 
@@ -29,7 +29,7 @@ export interface ManifestPOJO {
   /**
    * Human-readable information about the manifest
    */
-  note?: string;
+  notes?: string | Array<string | NotePOJO>;
 
   /**
    * Arbitrary data about this manifest that will be persisted by the ShipEngine Integration Platform.

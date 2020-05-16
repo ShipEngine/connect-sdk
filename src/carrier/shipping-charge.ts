@@ -1,5 +1,5 @@
-import { MonetaryValue } from "../common";
-import { hideAndFreeze, Joi, _internal } from "../internal";
+import { MonetaryValue, Note } from "../common";
+import { createNotes, hideAndFreeze, Joi, _internal } from "../internal";
 import { ShippingChargeType } from "./enums";
 import { ShippingChargePOJO } from "./shipping-charge-pojo";
 
@@ -18,7 +18,7 @@ export class ShippingCharge {
       code: Joi.string().trim().singleLine().min(1).max(100),
       type: Joi.string().enum(ShippingChargeType).required(),
       amount: MonetaryValue[_internal].schema.required(),
-      note: Joi.string().allow("").max(5000),
+      notes: Note[_internal].notesSchema,
     }),
   };
 
@@ -53,7 +53,7 @@ export class ShippingCharge {
   /**
    * Human-readable information regarding this charge, such as an explanation or reference number
    */
-  public readonly note: string;
+  public readonly notes: ReadonlyArray<Note>;
 
   //#endregion
 
@@ -63,7 +63,7 @@ export class ShippingCharge {
     this.code = pojo.code || "";
     this.type = pojo.type;
     this.amount = new MonetaryValue(pojo.amount);
-    this.note = pojo.note || "";
+    this.notes = createNotes(pojo.notes);
 
     // Make this object immutable
     hideAndFreeze(this);

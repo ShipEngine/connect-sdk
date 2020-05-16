@@ -32,7 +32,7 @@ describe("schedulePickup", () => {
     expect(confirmation).to.deep.equal({
       confirmationID: "ABCDEF-123456",
       identifiers: {},
-      note: "",
+      notes: [],
       metadata: {},
       timeWindows: [{
         startDateTime: {
@@ -50,7 +50,7 @@ describe("schedulePickup", () => {
         name: "",
         description: "",
         code: "",
-        note: "",
+        notes: [],
         type: "pickup",
         amount: {
           value: "12.34",
@@ -86,7 +86,7 @@ describe("schedulePickup", () => {
               name: "Pickup Charge",
               description: "Charge for pickup",
               code: "PIK",
-              note: "This is a note",
+              notes: "This is a note",
               type: "pickup",
               amount: {
                 value: 12.34,
@@ -97,7 +97,7 @@ describe("schedulePickup", () => {
               name: "Pickup Tax",
               description: "Taxes for pickup",
               code: "TAX",
-              note: "This is a note",
+              notes: "This is a note",
               type: "tax",
               amount: {
                 value: 2.5,
@@ -111,7 +111,7 @@ describe("schedulePickup", () => {
               myShipmentID: "1234567890-ABCDEFG",
             }
           }],
-          note: "this is a note",
+          notes: "this is a note",
           metadata: {
             foo: "bar",
             biz: "baz",
@@ -144,7 +144,12 @@ describe("schedulePickup", () => {
           name: "Pickup Charge",
           description: "Charge for pickup",
           code: "PIK",
-          note: "This is a note",
+          notes: [
+            {
+              type: "other",
+              text: "This is a note",
+            }
+          ],
           type: "pickup",
           amount: {
             value: "12.34",
@@ -155,7 +160,12 @@ describe("schedulePickup", () => {
           name: "Pickup Tax",
           description: "Taxes for pickup",
           code: "TAX",
-          note: "This is a note",
+          notes: [
+            {
+              type: "other",
+              text: "This is a note",
+            }
+          ],
           type: "tax",
           amount: {
             value: "2.50",
@@ -173,7 +183,12 @@ describe("schedulePickup", () => {
           myShipmentID: "1234567890-ABCDEFG",
         }
       }],
-      note: "this is a note",
+      notes: [
+        {
+          type: "other",
+          text: "this is a note",
+        }
+      ],
       metadata: {
         foo: "bar",
         biz: "baz",
@@ -237,7 +252,7 @@ describe("schedulePickup", () => {
             startDateTime: "9999-99-99T99:99:99.999Z",
             endDateTime: Date.now(),
           },
-          note: 5,
+          notes: 12345,
           shipments: [],
         });
         assert.fail("An error should have been thrown");
@@ -251,7 +266,7 @@ describe("schedulePickup", () => {
           "  timeWindow.endDateTime must be one of date, string, object \n" +
           "  address is required \n" +
           "  contact is required \n" +
-          "  note must be a string \n" +
+          "  notes must be one of string, array \n" +
           "  shipments must contain at least 1 items"
         );
       }
@@ -306,7 +321,7 @@ describe("schedulePickup", () => {
           schedulePickup: () => ({
             confirmationID: 12345,
             timeWindows: [],
-            note: true,
+            notes: [12345],
             metadata: false
           })
         }),
@@ -323,7 +338,7 @@ describe("schedulePickup", () => {
           "  confirmationID must be a string \n" +
           "  timeWindows must contain at least 1 items \n" +
           "  charges is required \n" +
-          "  note must be a string \n" +
+          "  notes[0] does not match any of the allowed types \n" +
           "  metadata must be of type object"
         );
       }

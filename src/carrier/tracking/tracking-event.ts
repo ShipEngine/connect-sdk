@@ -1,5 +1,5 @@
-import { DateTimeZone, PartialAddress, PersonName } from "../../common";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { DateTimeZone, Note, PartialAddress, PersonName } from "../../common";
+import { createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
 import { ShipmentStatus } from "../enums";
 import { TrackingEventPOJO } from "./tracking-event-pojo";
 
@@ -26,7 +26,7 @@ export class TrackingEvent {
         Joi.string().trim().singleLine().min(1).max(100),
         PersonName[_internal].schema
       ),
-      note: Joi.string().allow("").max(5000),
+      notes: Note[_internal].notesSchema,
     }),
   };
 
@@ -90,7 +90,7 @@ export class TrackingEvent {
    * Human-readable information regarding this event, such as details about the error state
    * or a description of where the package was placed upon delivery.
    */
-  public readonly note: string;
+  public readonly notes: ReadonlyArray<Note>;
 
   //#endregion
 
@@ -105,7 +105,7 @@ export class TrackingEvent {
     this.errorDescription = pojo.errorDescription || "";
     this.address = pojo.address && new PartialAddress(pojo.address);
     this.signer = pojo.signer ? new PersonName(pojo.signer) : undefined;
-    this.note = pojo.note || "";
+    this.notes = createNotes(pojo.notes);
 
     // Make this object immutable
     hideAndFreeze(this);

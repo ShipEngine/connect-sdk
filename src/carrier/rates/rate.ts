@@ -1,6 +1,6 @@
-import { App, DateTimeZone, MonetaryValue } from "../../common";
+import { App, DateTimeZone, MonetaryValue, Note } from "../../common";
 import { error, ErrorCode } from "../../errors";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
 import { DeliveryService } from "../delivery-service";
 import { FulfillmentService } from "../fulfillment-service";
 import { ShippingCharge } from "../shipping-charge";
@@ -29,7 +29,7 @@ export class Rate {
       isGuaranteed: Joi.boolean(),
       isTrackable: Joi.boolean(),
       charges: Joi.array().min(1).items(ShippingCharge[_internal].schema).required(),
-      note: Joi.string().allow("").max(5000),
+      notes: Note[_internal].notesSchema,
       packages: Joi.array().min(1).items(RatePackage[_internal].schema).required(),
     }),
   };
@@ -105,7 +105,7 @@ export class Rate {
   /**
    * Additional information regarding this rate quote, such as limitations or restrictions
    */
-  public readonly note: string;
+  public readonly notes: ReadonlyArray<Note>;
 
   /**
    * The list of packages in the shipment
@@ -135,7 +135,7 @@ export class Rate {
     this.isTrackable = pojo.isTrackable || false;
     this.charges = pojo.charges.map((charge) => new ShippingCharge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);
-    this.note = pojo.note || "";
+    this.notes = createNotes(pojo.notes);
     this.packages = pojo.packages.map((parcel) => new RatePackage(parcel, app));
 
     let { minimumDeliveryDays, maximumDeliveryDays } = this;

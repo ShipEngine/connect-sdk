@@ -29,7 +29,7 @@ export class Rate {
       isGuaranteed: Joi.boolean(),
       isTrackable: Joi.boolean(),
       charges: Joi.array().min(1).items(ShippingCharge[_internal].schema).required(),
-      notes: Joi.string().allow("").max(5000),
+      note: Joi.string().allow("").max(5000),
       packages: Joi.array().min(1).items(RatePackage[_internal].schema).required(),
     }),
   };
@@ -105,7 +105,7 @@ export class Rate {
   /**
    * Additional information regarding this rate quote, such as limitations or restrictions
    */
-  public readonly notes: string;
+  public readonly note: string;
 
   /**
    * The list of packages in the shipment
@@ -127,7 +127,7 @@ export class Rate {
     this.isTrackable = pojo.isTrackable || false;
     this.charges = pojo.charges.map((charge) => new ShippingCharge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);
-    this.notes = pojo.notes || "";
+    this.note = pojo.note || "";
     this.packages = pojo.packages.map((parcel) => new RatePackage(parcel, app));
 
     let { minimumDeliveryDays, maximumDeliveryDays } = this;

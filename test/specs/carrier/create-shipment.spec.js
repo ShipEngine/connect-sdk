@@ -42,7 +42,7 @@ describe("createShipment", () => {
         name: "",
         description: "",
         code: "",
-        notes: "",
+        note: "",
         type: "shipping",
         amount: {
           value: "123.46",
@@ -90,7 +90,7 @@ describe("createShipment", () => {
               name: "Shipping Charges",
               description: "charges for shipping",
               code: "SHIP",
-              notes: "extra charge because reasons",
+              note: "extra charge because reasons",
               type: "shipping",
               amount: {
                 value: 8.95,
@@ -101,7 +101,7 @@ describe("createShipment", () => {
               name: "VAT",
               description: "value added tax",
               code: "VAT",
-              notes: "Her majesty the queen demands it",
+              note: "Her majesty the queen demands it",
               type: "tax",
               amount: {
                 value: 2,
@@ -163,7 +163,7 @@ describe("createShipment", () => {
           name: "Shipping Charges",
           description: "charges for shipping",
           code: "SHIP",
-          notes: "extra charge because reasons",
+          note: "extra charge because reasons",
           type: "shipping",
           amount: {
             value: "8.95",
@@ -174,7 +174,7 @@ describe("createShipment", () => {
           name: "VAT",
           description: "value added tax",
           code: "VAT",
-          notes: "Her majesty the queen demands it",
+          note: "Her majesty the queen demands it",
           type: "tax",
           amount: {
             value: "2.00",

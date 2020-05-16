@@ -20,7 +20,7 @@ export class PickupConfirmation {
       timeWindows: Joi.array().min(1).items(TimeRange[_internal].schema).required(),
       charges: Joi.array().min(1).items(ShippingCharge[_internal].schema).required(),
       shipments: Joi.array().min(1).items(ShipmentIdentifier[_internal].schema.unknown(true)),
-      notes: Joi.string().allow("").max(5000),
+      note: Joi.string().allow("").max(5000),
       metadata: Joi.object(),
     }),
   };
@@ -63,7 +63,7 @@ export class PickupConfirmation {
   /**
    * Additional information about the pickup confirmation
    */
-  public readonly notes: string;
+  public readonly note: string;
 
   /**
    * Arbitrary data about this pickup that will be persisted by the ShipEngine Integration Platform.
@@ -80,7 +80,7 @@ export class PickupConfirmation {
     this.charges = pojo.charges.map((charge) => new ShippingCharge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);
     this.shipments = pojo.shipments!.map((shipment) => new ShipmentIdentifier(shipment));
-    this.notes = pojo.notes || "";
+    this.note = pojo.note || "";
     this.metadata = pojo.metadata || {};
 
     // Make this object immutable

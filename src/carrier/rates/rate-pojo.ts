@@ -72,7 +72,7 @@ export interface RatePOJO {
   /**
    * Human-readable information regarding this rate quote, such as limitations or restrictions
    */
-  notes?: string;
+  note?: string;
 
   /**
    * The list of packages in the shipment

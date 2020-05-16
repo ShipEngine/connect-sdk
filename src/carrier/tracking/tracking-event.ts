@@ -26,7 +26,7 @@ export class TrackingEvent {
         Joi.string().trim().singleLine().min(1).max(100),
         PersonName[_internal].schema
       ),
-      notes: Joi.string().allow("").max(5000),
+      note: Joi.string().allow("").max(5000),
     }),
   };
 
@@ -90,7 +90,7 @@ export class TrackingEvent {
    * Human-readable information regarding this event, such as details about the error state
    * or a description of where the package was placed upon delivery.
    */
-  public readonly notes: string;
+  public readonly note: string;
 
   //#endregion
 
@@ -105,7 +105,7 @@ export class TrackingEvent {
     this.errorDescription = pojo.errorDescription || "";
     this.address = pojo.address && new PartialAddress(pojo.address);
     this.signer = pojo.signer ? new PersonName(pojo.signer) : undefined;
-    this.notes = pojo.notes || "";
+    this.note = pojo.note || "";
 
     // Make this object immutable
     hideAndFreeze(this);

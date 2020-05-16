@@ -16,7 +16,7 @@ export class PickupCancellationConfirmation {
       isError: Joi.boolean(),
       errorCode: Joi.string().trim().singleLine().min(1).max(100),
       errorDescription: Joi.string().trim().singleLine().allow("").max(1000),
-      notes: Joi.string().allow("").max(5000),
+      note: Joi.string().allow("").max(5000),
       metadata: Joi.object(),
     }),
   };
@@ -55,7 +55,7 @@ export class PickupCancellationConfirmation {
    * Additional information/instructions regarding the cancellation
    * (e.g. "Please call ###-#### to cancel", "Cannot cancel because driver is en-route")
    */
-  public readonly notes: string;
+  public readonly note: string;
 
   /**
    * Arbitrary data about this pickup that will be persisted by the ShipEngine Integration Platform.
@@ -71,7 +71,7 @@ export class PickupCancellationConfirmation {
     this.isError = pojo.isError || false;
     this.errorCode = pojo.errorCode || "";
     this.errorDescription = pojo.errorDescription || "";
-    this.notes = pojo.notes || "";
+    this.note = pojo.note || "";
     this.metadata = pojo.metadata || {};
 
     // Make this object immutable

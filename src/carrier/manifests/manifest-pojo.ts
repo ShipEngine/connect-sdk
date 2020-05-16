@@ -29,7 +29,7 @@ export interface ManifestPOJO {
   /**
    * Human-readable information about the manifest
    */
-  notes?: string;
+  note?: string;
 
   /**
    * Arbitrary data about this manifest that will be persisted by the ShipEngine Integration Platform.

@@ -20,7 +20,7 @@ export class PickupCancellation {
       pickupServiceID: Joi.string().uuid().required(),
       identifiers: Identifiers[_internal].schema,
       reason: Joi.string().enum(PickupCancellationReason).required(),
-      notes: Joi.string().allow("").max(5000),
+      note: Joi.string().allow("").max(5000),
       address: Address[_internal].schema.required(),
       contact: ContactInfo[_internal].schema.required(),
       timeWindows: Joi.array().min(1).items(TimeRange[_internal].schema).required(),
@@ -61,7 +61,7 @@ export class PickupCancellation {
   /**
    * Information about why the customer is cancelling the pickup
    */
-  public readonly notes: string;
+  public readonly note: string;
 
   /**
    * The address where the pickup was requested
@@ -96,7 +96,7 @@ export class PickupCancellation {
     this.pickupService = app[_internal].references.lookup(pojo.pickupServiceID, PickupService);
     this.identifiers = new Identifiers(pojo.identifiers);
     this.reason = pojo.reason;
-    this.notes = pojo.notes || "";
+    this.note = pojo.note || "";
     this.address = new Address(pojo.address);
     this.contact = new ContactInfo(pojo.contact);
     this.timeWindows = pojo.timeWindows.map((window) => new TimeRange(window));

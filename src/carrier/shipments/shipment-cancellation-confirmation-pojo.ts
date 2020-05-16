@@ -34,7 +34,7 @@ export interface ShipmentCancellationConfirmationPOJO {
    * Human-readable information/instructions regarding the cancellation
    * (e.g. "Please call ###-#### to cancel", "Cannot cancel because driver is en-route")
    */
-  notes?: string;
+  note?: string;
 
   /**
    * Arbitrary data about this shipment that will be persisted by the ShipEngine Integration Platform.

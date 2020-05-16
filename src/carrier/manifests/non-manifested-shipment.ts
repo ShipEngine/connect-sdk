@@ -20,7 +20,7 @@ export interface NonManifestedShipmentPOJO extends ShipmentIdentifierPOJO {
    * Human-readable information regarding the error, such as details that are specific
    * to this particular shipment
    */
-  notes?: string;
+  note?: string;
 }
 
 
@@ -36,7 +36,7 @@ export class NonManifestedShipment {
     schema: ShipmentIdentifier[_internal].schema.keys({
       errorCode: Joi.string().trim().singleLine().min(1).max(100),
       errorDescription: Joi.string().trim().singleLine().allow("").max(1000),
-      notes: Joi.string().allow("").max(5000),
+      note: Joi.string().allow("").max(5000),
     }),
   };
 
@@ -58,14 +58,14 @@ export class NonManifestedShipment {
    * Human-readable information regarding the error, such as details that are specific
    * to this particular shipment
    */
-  public readonly notes: string;
+  public readonly note: string;
 
   //#endregion
 
   public constructor(pojo: NonManifestedShipmentPOJO) {
     this.errorCode = pojo.errorCode || "";
     this.errorDescription = pojo.errorDescription || "";
-    this.notes = pojo.notes || "";
+    this.note = pojo.note || "";
 
     // Make this object immutable
     hideAndFreeze(this);

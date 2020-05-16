@@ -18,7 +18,7 @@ export class PickupRequest {
       timeWindow: TimeRange[_internal].schema.required(),
       address: Address[_internal].schema.required(),
       contact: ContactInfo[_internal].schema.required(),
-      notes: Joi.string().allow("").max(5000),
+      note: Joi.string().allow("").max(5000),
       shipments: Joi.array().min(1).items(PickupShipment[_internal].schema).required(),
     }),
   };
@@ -49,7 +49,7 @@ export class PickupRequest {
   /**
    * Additional information about the pickup
    */
-  public readonly notes: string;
+  public readonly note: string;
 
   /**
    * The shipments to be picked up
@@ -63,7 +63,7 @@ export class PickupRequest {
     this.timeWindow = new TimeRange(pojo.timeWindow);
     this.address = new Address(pojo.address);
     this.contact = new ContactInfo(pojo.contact);
-    this.notes = pojo.notes || "";
+    this.note = pojo.note || "";
     this.shipments = pojo.shipments.map((shipment) => new PickupShipment(shipment, app));
 
     // Make this object immutable

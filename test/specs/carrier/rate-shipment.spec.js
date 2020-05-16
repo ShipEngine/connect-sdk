@@ -41,7 +41,7 @@ describe("rateShipment", () => {
       isNegotiatedRate: false,
       isGuaranteed: false,
       isTrackable: false,
-      notes: "",
+      note: "",
       totalAmount: {
         value: "123.46",
         currency: "CAD",
@@ -50,7 +50,7 @@ describe("rateShipment", () => {
         name: "",
         description: "",
         code: "",
-        notes: "",
+        note: "",
         type: "shipping",
         amount: {
           value: "123.46",
@@ -86,13 +86,13 @@ describe("rateShipment", () => {
           isNegotiatedRate: true,
           isGuaranteed: true,
           isTrackable: true,
-          notes: "This is a note",
+          note: "This is a note",
           charges: [
             {
               name: "Shipping Charge",
               description: "Charge for shipping",
               code: "SHP",
-              notes: "you were charged extra because reasons",
+              note: "you were charged extra because reasons",
               type: "shipping",
               amount: {
                 value: 123.456,
@@ -103,7 +103,7 @@ describe("rateShipment", () => {
               name: "Delivery Confirmation Charge",
               description: "Charge for delivery conirmation",
               code: "DEL",
-              notes: "Signatures cost extra",
+              note: "Signatures cost extra",
               type: "delivery_confirmation",
               amount: {
                 value: 1.5,
@@ -143,7 +143,7 @@ describe("rateShipment", () => {
       isNegotiatedRate: true,
       isGuaranteed: true,
       isTrackable: true,
-      notes: "This is a note",
+      note: "This is a note",
       totalAmount: {
         value: "124.96",
         currency: "CAD",
@@ -153,7 +153,7 @@ describe("rateShipment", () => {
           name: "Shipping Charge",
           description: "Charge for shipping",
           code: "SHP",
-          notes: "you were charged extra because reasons",
+          note: "you were charged extra because reasons",
           type: "shipping",
           amount: {
             value: "123.46",
@@ -164,7 +164,7 @@ describe("rateShipment", () => {
           name: "Delivery Confirmation Charge",
           description: "Charge for delivery conirmation",
           code: "DEL",
-          notes: "Signatures cost extra",
+          note: "Signatures cost extra",
           type: "delivery_confirmation",
           amount: {
             value: "1.50",
@@ -283,7 +283,7 @@ describe("rateShipment", () => {
             deliveryDateTime: "9999-99-99T99:99:99.999Z",
             isNegotiatedRate: "no",
             charges: [],
-            notes: false,
+            note: false,
             packages: [
               {
                 deliveryConfirmationID: "Handshake",
@@ -305,7 +305,7 @@ describe("rateShipment", () => {
           "  [0].deliveryDateTime must be a valid date/time \n" +
           "  [0].isNegotiatedRate must be a boolean \n" +
           "  [0].charges must contain at least 1 items \n" +
-          "  [0].notes must be a string \n" +
+          "  [0].note must be a string \n" +
           "  [0].packages[0].packagingID is required \n" +
           "  [0].packages[0].deliveryConfirmationID must be a valid GUID"
         );

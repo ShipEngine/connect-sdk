@@ -29,7 +29,7 @@ export interface PickupRequestPOJO {
   /**
    * Human-readable information about the pickup
    */
-  notes?: string;
+  note?: string;
 
   /**
    * The shipments to be picked up

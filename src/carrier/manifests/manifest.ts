@@ -20,7 +20,7 @@ export class Manifest {
       shipments: Joi.array().min(1).items(
         ShipmentIdentifier[_internal].schema.unknown(true)).required(),
       document: Document[_internal].schema,
-      notes: Joi.string().allow("").max(5000),
+      note: Joi.string().allow("").max(5000),
       metadata: Joi.object(),
     }),
   };
@@ -51,7 +51,7 @@ export class Manifest {
   /**
    * Human-readable information about the manifest
    */
-  public readonly notes: string;
+  public readonly note: string;
 
   /**
    * Arbitrary data about this manifest that will be persisted by the ShipEngine Integration Platform.
@@ -69,7 +69,7 @@ export class Manifest {
       ...pojo.document,
       name: pojo.document.name || "SCAN Form",
     });
-    this.notes = pojo.notes || "";
+    this.note = pojo.note || "";
     this.metadata = pojo.metadata || {};
 
     // Make this object immutable

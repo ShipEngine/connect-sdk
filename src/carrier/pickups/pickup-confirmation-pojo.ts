@@ -37,7 +37,7 @@ export interface PickupConfirmationPOJO {
   /**
    * Human-readable information about the pickup confirmation
    */
-  notes?: string;
+  note?: string;
 
   /**
    * Arbitrary data about this pickup that will be persisted by the ShipEngine Integration Platform.

@@ -36,7 +36,7 @@ export interface PickupCancellationPOJO {
   /**
    * Human-readable information about why the customer is cancelling the pickup
    */
-  notes?: string;
+  note?: string;
 
   /**
    * The address where the pickup was requested

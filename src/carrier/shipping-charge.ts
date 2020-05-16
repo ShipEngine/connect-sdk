@@ -18,7 +18,7 @@ export class ShippingCharge {
       code: Joi.string().trim().singleLine().min(1).max(100),
       type: Joi.string().enum(ShippingChargeType).required(),
       amount: MonetaryValue[_internal].schema.required(),
-      notes: Joi.string().allow("").max(5000),
+      note: Joi.string().allow("").max(5000),
     }),
   };
 
@@ -53,7 +53,7 @@ export class ShippingCharge {
   /**
    * Human-readable information regarding this charge, such as an explanation or reference number
    */
-  public readonly notes: string;
+  public readonly note: string;
 
   //#endregion
 
@@ -63,7 +63,7 @@ export class ShippingCharge {
     this.code = pojo.code || "";
     this.type = pojo.type;
     this.amount = new MonetaryValue(pojo.amount);
-    this.notes = pojo.notes || "";
+    this.note = pojo.note || "";
 
     // Make this object immutable
     hideAndFreeze(this);

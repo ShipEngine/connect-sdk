@@ -1,7 +1,7 @@
 import { Address, App, ContactInfo, Identifiers, TimeRange } from "../../common";
-import { PickupCancellationReason } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { UUID } from "../../types";
+import { PickupCancellationReason } from "../enums";
 import { PickupCancellationPOJO } from "./pickup-cancellation-pojo";
 import { PickupService } from "./pickup-service";
 import { PickupShipment } from "./pickup-shipment";

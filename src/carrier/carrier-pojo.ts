@@ -1,7 +1,7 @@
 import { LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO } from "../common";
-import { ManifestLocation, ManifestShipment } from "../enums";
 import { FilePath, InlineOrReference, InlineOrReferenceArray, URLString, UUID } from "../types";
 import { DeliveryServiceDefinition, DeliveryServicePOJO } from "./delivery-service-pojo";
+import { ManifestLocation, ManifestShipment } from "./manifests/enums";
 import { CancelPickups, CancelShipments, CreateManifest, CreateShipment, RateShipment, SchedulePickup, TrackShipment } from "./methods";
 import { PickupServiceDefinition, PickupServicePOJO } from "./pickups/pickup-service-pojo";
 

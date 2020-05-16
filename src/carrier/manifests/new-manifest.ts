@@ -1,9 +1,9 @@
 import { Address, DateTimeZone } from "../../common";
-import { ManifestLocation } from "../../enums";
 import { error, ErrorCode } from "../../errors";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { Carrier } from "../carrier";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
+import { ManifestLocation } from "./enums";
 import { NewManifestPOJO } from "./new-manifest-pojo";
 
 

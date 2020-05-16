@@ -1,6 +1,6 @@
 import { LocalizationDefinition, LocalizationPOJO, LocalizedInfoPOJO } from "../common";
-import { DeliveryConfirmationType } from "../enums";
 import { InlineOrReference, UUID } from "../types";
+import { DeliveryConfirmationType } from "./enums";
 
 /**
  * Delivery confirmation options offered by a carrier

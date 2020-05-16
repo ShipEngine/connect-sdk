@@ -1,5 +1,5 @@
-import { QuantityUnit } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { QuantityUnit } from "./enums";
 
 /**
  * The quantity of items in a package

@@ -1,11 +1,13 @@
-import { App, LocalizedBrandingPOJO, Transaction, TransactionPOJO } from "../common";
-import { Country, DocumentFormat, DocumentSize, ManifestLocation, ManifestShipment, ServiceArea } from "../enums";
+import { App, Country, LocalizedBrandingPOJO, Transaction, TransactionPOJO } from "../common";
 import { error, ErrorCode } from "../errors";
 import { hideAndFreeze, Joi, Localization, localize, validate, validateArray, _internal } from "../internal";
 import { FilePath, UUID } from "../types";
 import { CarrierPOJO } from "./carrier-pojo";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
+import { DocumentFormat, DocumentSize } from "./documents/enums";
+import { ServiceArea } from "./enums";
+import { ManifestLocation, ManifestShipment } from "./manifests/enums";
 import { ManifestConfirmation } from "./manifests/manifest-confirmation";
 import { NewManifest } from "./manifests/new-manifest";
 import { NewManifestPOJO } from "./manifests/new-manifest-pojo";

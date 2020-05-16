@@ -1,8 +1,8 @@
 import { App, DateTimeZone, MonetaryValue } from "../../common";
-import { FulfillmentService } from "../../enums";
 import { error, ErrorCode } from "../../errors";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { DeliveryService } from "../delivery-service";
+import { FulfillmentService } from "../fulfillment-service";
 import { ShippingCharge } from "../shipping-charge";
 import { calculateTotalCharges } from "../utils";
 import { RatePackage } from "./rate-package";

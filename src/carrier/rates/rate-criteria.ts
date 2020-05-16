@@ -1,7 +1,7 @@
 import { AddressWithContactInfo, App, DateTimeZone, MonetaryValue } from "../../common";
-import { FulfillmentService } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { DeliveryService } from "../delivery-service";
+import { FulfillmentService } from "../fulfillment-service";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 import { calculateTotalInsuranceAmount } from "../utils";
 import { PackageRateCriteria } from "./package-rate-criteria";

@@ -1,7 +1,7 @@
 import * as currency from "currency.js";
-import { MonetaryValue, Quantity } from "../../common";
-import { Country, CustomsItemType } from "../../enums";
+import { Country, MonetaryValue, Quantity } from "../../common";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { CustomsItemType } from "../enums";
 import { CustomsItemPOJO } from "./customs-item-pojo";
 
 /**

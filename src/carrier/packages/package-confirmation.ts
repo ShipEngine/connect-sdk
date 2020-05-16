@@ -1,8 +1,8 @@
-import { DocumentType } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { URLString } from "../../types";
 import { createDocument, Document, Label } from "../documents/document";
 import { DocumentPOJO, LabelPOJO } from "../documents/document-pojo";
+import { DocumentType } from "../documents/enums";
 import { PackageIdentifier, packageIdentifierMixin, PackageIdentifierPOJO } from "./package-identifier";
 
 /**

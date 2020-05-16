@@ -1,5 +1,5 @@
-import { Country } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { Country } from "../country";
 import { GeoCoordinatePOJO } from "./geo-coordinate";
 import { BaseAddress, PartialAddress } from "./partial-address";
 

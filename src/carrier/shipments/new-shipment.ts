@@ -1,7 +1,7 @@
-import { AddressWithContactInfo, App, DateTimeZone, MonetaryValue } from "../../common";
-import { BilledParty, Country } from "../../enums";
+import { AddressWithContactInfo, App, Country, DateTimeZone, MonetaryValue } from "../../common";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { DeliveryService } from "../delivery-service";
+import { BilledParty } from "../enums";
 import { NewPackage } from "../packages/new-package";
 import { calculateTotalInsuranceAmount } from "../utils";
 import { NewShipmentPOJO } from "./new-shipment-pojo";

@@ -1,6 +1,6 @@
 import { MonetaryValue } from "../common";
-import { ShippingChargeType } from "../enums";
 import { hideAndFreeze, Joi, _internal } from "../internal";
+import { ShippingChargeType } from "./enums";
 import { ShippingChargePOJO } from "./shipping-charge-pojo";
 
 /**

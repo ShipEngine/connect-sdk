@@ -1,7 +1,7 @@
 import { DateTimeZone, DateTimeZonePOJO, MonetaryValue } from "../../common";
-import { FulfillmentService } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { URLString } from "../../types";
+import { FulfillmentService } from "../fulfillment-service";
 import { PackageConfirmation, PackageConfirmationPOJO } from "../packages/package-confirmation";
 import { ShippingCharge } from "../shipping-charge";
 import { ShippingChargePOJO } from "../shipping-charge-pojo";

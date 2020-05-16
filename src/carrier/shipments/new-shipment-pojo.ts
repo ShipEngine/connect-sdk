@@ -1,6 +1,6 @@
-import { AddressWithContactInfoPOJO, DateTimeZonePOJO } from "../../common";
-import { BilledParty, Country } from "../../enums";
+import { AddressWithContactInfoPOJO, Country, DateTimeZonePOJO } from "../../common";
 import { UUID } from "../../types";
+import { BilledParty } from "../enums";
 import { NewPackagePOJO } from "../packages/new-package-pojo";
 import { ShipmentIdentifierPOJO } from "./shipment-identifier";
 

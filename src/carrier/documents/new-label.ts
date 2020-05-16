@@ -1,5 +1,5 @@
-import { DocumentFormat, DocumentSize } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { DocumentFormat, DocumentSize } from "./enums";
 import { NewLabelPOJO } from "./new-label-pojo";
 
 /**

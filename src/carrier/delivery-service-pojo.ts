@@ -1,7 +1,9 @@
-import { LocalizationDefinition, LocalizationPOJO, LocalizedInfoPOJO } from "../common";
-import { Country, DeliveryServiceClass, DeliveryServiceGrade, DocumentFormat, DocumentSize, FulfillmentService, ServiceArea } from "../enums";
+import { Country, LocalizationDefinition, LocalizationPOJO, LocalizedInfoPOJO } from "../common";
 import { InlineOrReference, InlineOrReferenceArray, UUID } from "../types";
 import { DeliveryConfirmationDefinition, DeliveryConfirmationPOJO } from "./delivery-confirmation-pojo";
+import { DocumentFormat, DocumentSize } from "./documents/enums";
+import { DeliveryServiceClass, DeliveryServiceGrade, ServiceArea } from "./enums";
+import { FulfillmentService } from "./fulfillment-service";
 import { PackagingDefinition, PackagingPOJO } from "./packaging-pojo";
 
 /**

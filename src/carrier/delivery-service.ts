@@ -1,9 +1,11 @@
-import { App, LocalizedInfoPOJO } from "../common";
-import { Country, DeliveryServiceClass, DeliveryServiceGrade, DocumentFormat, DocumentSize, FulfillmentService, ServiceArea } from "../enums";
+import { App, Country, LocalizedInfoPOJO } from "../common";
 import { hideAndFreeze, Joi, Localization, localize, _internal } from "../internal";
 import { UUID } from "../types";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryServicePOJO } from "./delivery-service-pojo";
+import { DocumentFormat, DocumentSize } from "./documents/enums";
+import { DeliveryServiceClass, DeliveryServiceGrade, ServiceArea } from "./enums";
+import { FulfillmentService } from "./fulfillment-service";
 import { Packaging } from "./packaging";
 
 const _private = Symbol("private fields");

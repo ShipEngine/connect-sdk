@@ -1,6 +1,6 @@
 import { DateTimeZone, PartialAddress, PersonName } from "../../common";
-import { ShipmentStatus } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { ShipmentStatus } from "../enums";
 import { TrackingEventPOJO } from "./tracking-event-pojo";
 
 /**

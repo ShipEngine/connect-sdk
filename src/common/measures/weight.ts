@@ -1,5 +1,5 @@
-import { WeightUnit } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { WeightUnit } from "./enums";
 
 /**
  * The weight of a package

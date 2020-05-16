@@ -1,93 +1,3 @@
-export * from "./country";
-export * from "./fulfillment-service";
-
-/**
- * A length measurement unit
- */
-export enum LengthUnit {
-  Inches = "in",
-  Centimeters = "cm"
-}
-
-/**
- * A weight measurement unit
- */
-export enum WeightUnit {
-  Grams = "g",
-  Ounces = "oz",
-  Kilograms = "kg",
-  Pounds = "lb"
-}
-
-/**
- * A quantity measurement unit
- */
-export enum QuantityUnit {
-  Each = "ea",
-}
-
-/**
- * An ISO 4217 currency code that is supported by ShipEngine
- *
- * @see https://en.wikipedia.org/wiki/ISO_4217
- */
-export enum Currency {
-  UnitedStatesDollar = "USD",
-  CanadianDollar = "CAD",
-  AustralianDollar = "AUD",
-  GreatBritishPound = "GBP",
-  Euro = "EUR",
-  NewZealandDollar = "NZD",
-}
-
-/**
- * The digital file format of a document,
- * such as a shipping label, customs form, or SCAN form.
- */
-export enum DocumentFormat {
-  PDF = "pdf",
-  HTML = "html",
-  ZPL = "zpl",
-  PNG = "png"
-}
-
-/**
- * The dimensions of a document,
- * such as a shipping label, customs form, or SCAN form.
- */
-export enum DocumentSize {
-  A4 = "A4",
-  Letter = "letter",
-  Inches4x6 = "4x6",
-  Inches4x8 = "4x8",
-}
-
-/**
- * The types of digital documents that can be returned
- */
-export enum DocumentType {
-  Label = "label",
-  CustomsForm = "customs_form",
-  ScanForm = "scan_form",
-}
-
-/**
- * Indicates which locations are included in end-of-day manifests
- */
-export enum ManifestLocation {
-  AllLocations = "all_locations",
-  SingleLocation = "single_location",
-}
-
-/**
- * Indicates which shipments are included in end-of-day manifests
- */
-export enum ManifestShipment {
-  AllShipments = "all_shipments",
-  ExplicitShipments = "explicit_shipments",
-  ExcludeShipments = "exclude_shipments",
-}
-
 /**
  * Types of delivery confirmations
  */
@@ -151,7 +61,6 @@ export enum CustomsItemType {
   HumanitarianDonation = "humanitarian_donation",
   Other = "other",
 }
-
 /**
  * The reason the customer is cancelling their pickup request
  */

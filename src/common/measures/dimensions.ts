@@ -1,5 +1,5 @@
-import { LengthUnit } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { LengthUnit } from "./enums";
 
 /**
  * The dimensions of a package

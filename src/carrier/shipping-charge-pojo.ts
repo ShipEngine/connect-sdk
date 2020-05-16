@@ -1,5 +1,5 @@
 import { MonetaryValuePOJO } from "../common";
-import { ShippingChargeType } from "../enums";
+import { ShippingChargeType } from "./enums";
 
 /**
  * An itemized shipping charge in the total cost of a shipment

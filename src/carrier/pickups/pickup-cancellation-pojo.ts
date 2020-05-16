@@ -1,6 +1,6 @@
 import { AddressPOJO, ContactInfoPOJO, IdentifiersPOJO, TimeRangePOJO } from "../../common";
-import { PickupCancellationReason } from "../../enums";
 import { UUID } from "../../types";
+import { PickupCancellationReason } from "../enums";
 import { PickupShipmentPOJO } from "./pickup-shipment-pojo";
 
 /**

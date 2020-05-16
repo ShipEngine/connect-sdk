@@ -1,7 +1,7 @@
-import { DocumentFormat, DocumentSize, DocumentType } from "../../enums";
 import { error, ErrorCode } from "../../errors";
 import { Constructor, hideAndFreeze, Joi, _internal } from "../../internal";
 import { DocumentPOJO, LabelPOJO } from "./document-pojo";
+import { DocumentFormat, DocumentSize, DocumentType } from "./enums";
 
 /**
  * A factory function that instantiates the correct document class based on the document type.

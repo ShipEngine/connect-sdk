@@ -1,6 +1,6 @@
 import { DateTimeZonePOJO } from "../../common";
-import { FulfillmentService } from "../../enums";
 import { UUID } from "../../types";
+import { FulfillmentService } from "../fulfillment-service";
 import { ShippingChargePOJO } from "../shipping-charge-pojo";
 import { RatePackagePOJO } from "./rate-package";
 

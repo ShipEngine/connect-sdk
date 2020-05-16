@@ -1,7 +1,7 @@
 import * as currency from "currency.js";
-import { Currency } from "../../enums";
 import { error, ErrorCode } from "../../errors";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { Currency } from "./enums";
 
 /**
  * A monetary value in a supported currency

@@ -51,10 +51,6 @@ describe("package exports", () => {
     assertFileExports("src/connection", true);
   });
 
-  it("should export enumerations", () => {
-    assertFileExports("src/enums", true);
-  });
-
   it("should export order classes", () => {
     assertFileExports("src/order", true);
   });

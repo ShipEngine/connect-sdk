@@ -1,4 +1,4 @@
-import { DocumentFormat, DocumentSize } from "../../enums";
+import { DocumentFormat, DocumentSize } from "./enums";
 
 /**
  * The information needed to create a new label

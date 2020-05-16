@@ -1,4 +1,4 @@
-import { IdentifierPOJO, MonetaryValuePOJO, QuantityPOJO } from "../../common";
+import { IdentifiersPOJO, MonetaryValuePOJO, QuantityPOJO } from "../../common";
 import { SalesOrderIdentifierPOJO } from "../../order";
 
 /**
@@ -11,9 +11,9 @@ export interface PackageItemPOJO {
   sku?: string;
 
   /**
-   * Alternative identifiers associated with this item
+   * Custom identifiers for this item
    */
-  identifiers?: IdentifierPOJO[];
+  identifiers?: IdentifiersPOJO;
 
   /**
    * The sales order associated with this item

@@ -34,7 +34,7 @@ describe("createShipment", () => {
     expect(confirmation).to.deep.equal({
       trackingNumber: "",
       trackingURL: undefined,
-      identifiers: [],
+      identifiers: {},
       fulfillmentService: undefined,
       deliveryDateTime: undefined,
       metadata: undefined,
@@ -56,7 +56,7 @@ describe("createShipment", () => {
       packages: [{
         trackingNumber: "",
         trackingURL: undefined,
-        identifiers: [],
+        identifiers: {},
         metadata: undefined,
         documents: [{
           name: "Label",
@@ -76,10 +76,9 @@ describe("createShipment", () => {
         createShipment: () => ({
           trackingNumber: "123456-ABCDEF",
           trackingURL: "http://example.com/",
-          identifiers: [{
-            name: "Shipment ID",
-            id: "123456-ABCDEF",
-          }],
+          identifiers: {
+            myShipmentID: "123456-ABCDEF",
+          },
           fulfillmentService: "ups_ground",
           deliveryDateTime: "2005-05-05T05:05:05.0005Z",
           metadata: {
@@ -113,10 +112,9 @@ describe("createShipment", () => {
           packages: [{
             trackingNumber: "ABCDEF-123456",
             trackingURL: new URL("https://example.com"),
-            identifiers: [{
-              name: "Package ID",
-              id: "123456-ABCDEF-1",
-            }],
+            identifiers: {
+              myPackageID: "123456-ABCDEF-1",
+            },
             documents: [
               {
                 name: "Shipping Label",
@@ -147,10 +145,9 @@ describe("createShipment", () => {
     expect(confirmation).to.deep.equal({
       trackingNumber: "123456-ABCDEF",
       trackingURL: new URL("http://example.com"),
-      identifiers: [{
-        name: "Shipment ID",
-        id: "123456-ABCDEF",
-      }],
+      identifiers: {
+        myShipmentID: "123456-ABCDEF",
+      },
       fulfillmentService: "ups_ground",
       deliveryDateTime: {
         value: "2005-05-05T05:05:05.0005",
@@ -192,10 +189,9 @@ describe("createShipment", () => {
       packages: [{
         trackingNumber: "ABCDEF-123456",
         trackingURL: new URL("https://example.com"),
-        identifiers: [{
-          name: "Package ID",
-          id: "123456-ABCDEF-1",
-        }],
+        identifiers: {
+          myPackageID: "123456-ABCDEF-1",
+        },
         documents: [
           {
             name: "Shipping Label",

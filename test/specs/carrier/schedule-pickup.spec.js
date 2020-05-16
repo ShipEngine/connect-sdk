@@ -31,7 +31,7 @@ describe("schedulePickup", () => {
 
     expect(confirmation).to.deep.equal({
       confirmationNumber: "ABCDEF-123456",
-      identifiers: [],
+      identifiers: {},
       notes: "",
       metadata: undefined,
       timeWindows: [{
@@ -71,10 +71,9 @@ describe("schedulePickup", () => {
         pickupServices: [pojo.pickupService()],
         schedulePickup: () => ({
           confirmationNumber: "ABCDEF-123456",
-          identifiers: [{
-            name: "Pickup ID",
-            id: "123456-ABCDEFG",
-          }],
+          identifiers: {
+            myPickupID: "123456-ABCDEFG",
+          },
           timeWindows: [{
             startDateTime: "2005-05-05T05:05:05.005+07:30",
             endDateTime: {
@@ -108,10 +107,9 @@ describe("schedulePickup", () => {
           ],
           shipments: [{
             trackingNumber: "1234567890",
-            identifiers: [{
-              name: "Shipment ID",
-              id: "1234567890-ABCDEFG",
-            }]
+            identifiers: {
+              myShipmentID: "1234567890-ABCDEFG",
+            }
           }],
           notes: "this is a note",
           metadata: {
@@ -126,10 +124,9 @@ describe("schedulePickup", () => {
 
     expect(confirmation).to.deep.equal({
       confirmationNumber: "ABCDEF-123456",
-      identifiers: [{
-        name: "Pickup ID",
-        id: "123456-ABCDEFG",
-      }],
+      identifiers: {
+        myPickupID: "123456-ABCDEFG",
+      },
       timeWindows: [{
         startDateTime: {
           value: "2005-05-05T05:05:05.005",
@@ -172,10 +169,9 @@ describe("schedulePickup", () => {
       },
       shipments: [{
         trackingNumber: "1234567890",
-        identifiers: [{
-          name: "Shipment ID",
-          id: "1234567890-ABCDEFG",
-        }]
+        identifiers: {
+          myShipmentID: "1234567890-ABCDEFG",
+        }
       }],
       notes: "this is a note",
       metadata: {

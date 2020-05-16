@@ -1,4 +1,4 @@
-import { Identifier, IdentifierPOJO } from "../common";
+import { Identifiers, IdentifiersPOJO } from "../common";
 import { hideAndFreeze, Joi, _internal } from "../internal";
 
 
@@ -9,12 +9,12 @@ export interface SalesOrderIdentifierPOJO {
   /**
    * The vendor's unique ID for the order
    */
-  salesOrderID: string;
+  orderNumber: string;
 
   /**
-   * Alternative identifiers associated with this shipment
+   * Custom identifiers for this shipment
    */
-  identifiers?: IdentifierPOJO[];
+  identifiers?: IdentifiersPOJO;
 }
 
 
@@ -29,7 +29,7 @@ export class SalesOrderIdentifier {
     label: "sales order",
     schema: Joi.object({
       salesOrderID: Joi.string().trim().singleLine().min(1).max(100).required(),
-      identifiers: Joi.array().items(Identifier[_internal].schema),
+      identifiers: Identifiers[_internal].schema,
     }),
   };
 
@@ -39,18 +39,18 @@ export class SalesOrderIdentifier {
   /**
    * The vendor's unique ID for the order
    */
-  public readonly salesOrderID: string;
+  public readonly orderNumber: string;
 
   /**
-   * Alternative identifiers associated with this sales order
+   * Custom identifiers for this sales order
    */
-  public readonly identifiers: ReadonlyArray<Identifier>;
+  public readonly identifiers: Identifiers;
 
   //#endregion
 
   public constructor(pojo: SalesOrderIdentifierPOJO) {
-    this.salesOrderID = pojo.salesOrderID;
-    this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];
+    this.orderNumber = pojo.orderNumber;
+    this.identifiers = new Identifiers(pojo.identifiers);
 
     // Make this object immutable
     hideAndFreeze(this);

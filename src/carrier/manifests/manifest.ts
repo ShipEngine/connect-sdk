@@ -1,4 +1,4 @@
-import { Identifier } from "../../common";
+import { Identifiers } from "../../common";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { Document } from "../documents/document";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
@@ -16,7 +16,7 @@ export class Manifest {
     label: "manifest",
     schema: Joi.object({
       manifestNumber: Joi.string().trim().singleLine().allow("").max(100),
-      identifiers: Joi.array().items(Identifier[_internal].schema),
+      identifiers: Identifiers[_internal].schema,
       shipments: Joi.array().min(1).items(
         ShipmentIdentifier[_internal].schema.unknown(true)).required(),
       document: Document[_internal].schema,
@@ -34,9 +34,9 @@ export class Manifest {
   public readonly manifestNumber: string;
 
   /**
-   * Alternative identifiers associated with this manifest
+   * Custom identifiers for this manifest
    */
-  public readonly identifiers: ReadonlyArray<Identifier>;
+  public readonly identifiers: Identifiers;
 
   /**
    * The shipments that are included on this manifest.
@@ -63,7 +63,7 @@ export class Manifest {
 
   public constructor(pojo: ManifestPOJO) {
     this.manifestNumber = pojo.manifestNumber || "";
-    this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];
+    this.identifiers = new Identifiers(pojo.identifiers);
     this.shipments = pojo.shipments.map((shipment) => new ShipmentIdentifier(shipment));
     this.document = pojo.document && new Document({
       ...pojo.document,

@@ -1,4 +1,4 @@
-import { IdentifierPOJO, TimeRangePOJO } from "../../common";
+import { IdentifiersPOJO, TimeRangePOJO } from "../../common";
 import { ShipmentIdentifierPOJO } from "../shipments/shipment-identifier";
 import { ShippingChargePOJO } from "../shipping-charge-pojo";
 
@@ -12,9 +12,9 @@ export interface PickupConfirmationPOJO {
   confirmationNumber?: string;
 
   /**
-   * Alternative identifiers associated with this pickup
+   * Custom identifiers for this pickup
    */
-  identifiers?: IdentifierPOJO[];
+  identifiers?: IdentifiersPOJO;
 
   /**
    * A list of dates and times when the carrier intends to be available to pickup

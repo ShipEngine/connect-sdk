@@ -1,4 +1,4 @@
-import { Identifier, IdentifierPOJO } from "../../common";
+import { Identifiers, IdentifiersPOJO } from "../../common";
 import { Constructor, hideAndFreeze, Joi, _internal } from "../../internal";
 
 /**
@@ -14,9 +14,9 @@ export interface ShipmentIdentifierPOJO {
   trackingNumber?: string;
 
   /**
-   * Alternative identifiers associated with this shipment
+   * Custom identifiers for this shipment
    */
-  identifiers?: IdentifierPOJO[];
+  identifiers?: IdentifiersPOJO;
 }
 
 
@@ -31,7 +31,7 @@ export class ShipmentIdentifier extends shipmentIdentifierMixin() {
     label: "shipment",
     schema: Joi.object({
       trackingNumber: Joi.string().trim().singleLine().min(1).max(100),
-      identifiers: Joi.array().items(Identifier[_internal].schema),
+      identifiers: Identifiers[_internal].schema,
     }),
   };
 
@@ -66,9 +66,9 @@ export function shipmentIdentifierMixin(base: Constructor = Object) {
     public readonly trackingNumber: string;
 
     /**
-     * Alternative identifiers associated with this shipment
+     * Custom identifiers for this shipment
      */
-    public readonly identifiers: ReadonlyArray<Identifier>;
+    public readonly identifiers: Identifiers;
 
     //#endregion
 
@@ -76,7 +76,7 @@ export function shipmentIdentifierMixin(base: Constructor = Object) {
       base === Object ? super() : super(pojo);
 
       this.trackingNumber = pojo.trackingNumber || "";
-      this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];
+      this.identifiers = new Identifiers(pojo.identifiers);
     }
   };
 }

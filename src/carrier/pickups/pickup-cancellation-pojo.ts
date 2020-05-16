@@ -1,4 +1,4 @@
-import { AddressPOJO, ContactInfoPOJO, IdentifierPOJO, TimeRangePOJO } from "../../common";
+import { AddressPOJO, ContactInfoPOJO, IdentifiersPOJO, TimeRangePOJO } from "../../common";
 import { PickupCancellationReason } from "../../enums";
 import { UUID } from "../../types";
 import { PickupShipmentPOJO } from "./pickup-shipment-pojo";
@@ -19,9 +19,9 @@ export interface PickupCancellationPOJO {
   confirmationNumber?: string;
 
   /**
-   * Alternative identifiers associated with this confirmation
+   * Custom identifiers for this confirmation
    */
-  identifiers?: IdentifierPOJO[];
+  identifiers?: IdentifiersPOJO;
 
   /**
    * The ID of the requested pickup service

@@ -5,7 +5,7 @@ export * from "./addresses/geo-coordinate";
 export { PartialAddress } from "./addresses/partial-address";
 export * from "./addresses/person-name";
 export * from "./app";
-export * from "./identifier";
+export * from "./identifiers";
 export * from "./localization-pojo";
 export * from "./measures/date-time-zone";
 export * from "./measures/dimensions";

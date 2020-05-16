@@ -1,4 +1,4 @@
-import { IdentifierPOJO } from "../../common";
+import { IdentifiersPOJO } from "../../common";
 import { DocumentPOJO } from "../documents/document-pojo";
 import { ShipmentIdentifierPOJO } from "../shipments/shipment-identifier";
 
@@ -12,9 +12,9 @@ export interface ManifestPOJO {
   manifestNumber?: string;
 
   /**
-   * Alternative identifiers associated with this manifest
+   * Custom identifiers for this manifest
    */
-  identifiers?: IdentifierPOJO[];
+  identifiers?: IdentifiersPOJO;
 
   /**
    * The shipments that are included on this manifest.

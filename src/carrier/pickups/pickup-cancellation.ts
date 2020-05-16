@@ -1,4 +1,4 @@
-import { Address, App, ContactInfo, Identifier, TimeRange } from "../../common";
+import { Address, App, ContactInfo, Identifiers, TimeRange } from "../../common";
 import { PickupCancellationReason } from "../../enums";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { PickupCancellationPOJO } from "./pickup-cancellation-pojo";
@@ -18,7 +18,7 @@ export class PickupCancellation {
       pickupID: Joi.string().trim().singleLine().min(1).max(100).required(),
       confirmationNumber: Joi.string().trim().singleLine().min(1).max(100),
       pickupServiceID: Joi.string().uuid().required(),
-      identifiers: Joi.array().items(Identifier[_internal].schema),
+      identifiers: Identifiers[_internal].schema,
       reason: Joi.string().enum(PickupCancellationReason).required(),
       notes: Joi.string().allow("").max(5000),
       address: Address[_internal].schema.required(),
@@ -49,9 +49,9 @@ export class PickupCancellation {
   public readonly pickupService: PickupService;
 
   /**
-   * Alternative identifiers associated with this confirmation
+   * Custom identifiers for this confirmation
    */
-  public readonly identifiers: ReadonlyArray<Identifier>;
+  public readonly identifiers: Identifiers;
 
   /**
    * The reason for the cancellation
@@ -94,7 +94,7 @@ export class PickupCancellation {
     this.pickupID = pojo.pickupID;
     this.confirmationNumber = pojo.confirmationNumber || "";
     this.pickupService = app[_internal].references.lookup(pojo.pickupServiceID, PickupService);
-    this.identifiers = pojo.identifiers ? pojo.identifiers.map((id) => new Identifier(id)) : [];
+    this.identifiers = new Identifiers(pojo.identifiers);
     this.reason = pojo.reason;
     this.notes = pojo.notes || "";
     this.address = new Address(pojo.address);

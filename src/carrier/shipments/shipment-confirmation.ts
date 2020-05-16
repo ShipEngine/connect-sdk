@@ -103,6 +103,14 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
   public readonly packages: ReadonlyArray<PackageConfirmation>;
 
   /**
+   * Returns the first package in the `packages` array.
+   * Useful for carriers that only support single-piece shipments.
+   */
+  public get package(): PackageConfirmation {
+    return this.packages[0];
+  }
+
+  /**
    * Arbitrary data about this shipment that will be persisted by the ShipEngine Integration Platform.
    * Must be JSON serializable.
    */

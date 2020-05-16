@@ -40,6 +40,14 @@ export class PickupShipment extends shipmentIdentifierMixin() {
    */
   public readonly packages: ReadonlyArray<PickupPackage>;
 
+  /**
+   * Returns the first package in the `packages` array.
+   * Useful for carriers that only support single-piece shipments.
+   */
+  public get package(): PickupPackage {
+    return this.packages[0];
+  }
+
   //#endregion
 
   public constructor(pojo: PickupShipmentPOJO, app: App) {

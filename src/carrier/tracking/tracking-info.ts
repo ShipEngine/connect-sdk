@@ -59,6 +59,14 @@ export class TrackingInfo extends shipmentIdentifierMixin() {
   public readonly packages: ReadonlyArray<PackageTrackingInfo>;
 
   /**
+   * Returns the first package in the `packages` array.
+   * Useful for carriers that only support single-piece shipments.
+   */
+  public get package(): PackageTrackingInfo {
+    return this.packages[0];
+  }
+
+  /**
    * The events and status changes that have occured for this shipment
    */
   public readonly events: ReadonlyArray<TrackingEvent>;

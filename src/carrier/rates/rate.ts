@@ -112,6 +112,14 @@ export class Rate {
    */
   public readonly packages: ReadonlyArray<RatePackage>;
 
+  /**
+   * Returns the first package in the `packages` array.
+   * Useful for carriers that only support single-piece shipments.
+   */
+  public get package(): RatePackage {
+    return this.packages[0];
+  }
+
   //#endregion
 
   public constructor(pojo: RatePOJO, app: App) {

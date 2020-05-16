@@ -96,6 +96,14 @@ export class RateCriteria {
    */
   public readonly packages: ReadonlyArray<PackageRateCriteria>;
 
+  /**
+   * Returns the first package in the `packages` array.
+   * Useful for carriers that only support single-piece shipments.
+   */
+  public get package(): PackageRateCriteria {
+    return this.packages[0];
+  }
+
   //#endregion
 
   public constructor(pojo: RateCriteriaPOJO, app: App) {

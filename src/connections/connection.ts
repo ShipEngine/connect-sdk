@@ -154,7 +154,7 @@ export class Connection {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in connect method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in the connect method.`, { originalError, transactionID });
     }
   }
 

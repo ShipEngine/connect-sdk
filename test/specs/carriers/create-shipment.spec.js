@@ -342,7 +342,7 @@ describe("createShipment", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in createShipment method. \n" +
+          "Error in the createShipment method. \n" +
           "Invalid shipment: \n" +
           "  A value is required"
         );
@@ -366,7 +366,7 @@ describe("createShipment", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in createShipment method. \n" +
+          "Error in the createShipment method. \n" +
           "Invalid shipment: \n" +
           "  fulfillmentService must be a string \n" +
           "  deliveryDateTime must be one of date, string, object \n" +
@@ -400,7 +400,7 @@ describe("createShipment", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in createShipment method. \n" +
+          "Error in the createShipment method. \n" +
           "Invalid shipment: \n" +
           "  packages[0].documents[0] does not match any of the allowed types"
         );
@@ -430,7 +430,7 @@ describe("createShipment", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in createShipment method. \n" +
+          "Error in the createShipment method. \n" +
           "Label data cannot be empty"
         );
       }

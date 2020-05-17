@@ -307,7 +307,7 @@ describe("schedulePickup", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in schedulePickup method. \n" +
+          "Error in the schedulePickup method. \n" +
           "Invalid pickup confirmation: \n" +
           "  A value is required"
         );
@@ -333,7 +333,7 @@ describe("schedulePickup", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in schedulePickup method. \n" +
+          "Error in the schedulePickup method. \n" +
           "Invalid pickup confirmation: \n" +
           "  pickupID must be a string \n" +
           "  timeWindows must contain at least 1 items \n" +

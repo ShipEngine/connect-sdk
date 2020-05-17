@@ -363,7 +363,7 @@ export class Carrier {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in createShipment method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in the createShipment method.`, { originalError, transactionID });
     }
   }
 
@@ -399,7 +399,7 @@ export class Carrier {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in cancelShipments method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in the cancelShipments method.`, { originalError, transactionID });
     }
   }
 
@@ -424,7 +424,7 @@ export class Carrier {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in rateShipment method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in the rateShipment method.`, { originalError, transactionID });
     }
   }
 
@@ -449,7 +449,7 @@ export class Carrier {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in trackShipment method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in the trackShipment method.`, { originalError, transactionID });
     }
   }
 
@@ -474,7 +474,7 @@ export class Carrier {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in createManifest method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in the createManifest method.`, { originalError, transactionID });
     }
   }
 
@@ -505,7 +505,7 @@ export class Carrier {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in schedulePickup method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in the schedulePickup method.`, { originalError, transactionID });
     }
   }
 
@@ -542,7 +542,7 @@ export class Carrier {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in cancelPickups method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, `Error in the cancelPickups method.`, { originalError, transactionID });
     }
   }
 

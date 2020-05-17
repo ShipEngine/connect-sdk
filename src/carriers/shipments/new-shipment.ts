@@ -64,7 +64,7 @@ export class NewShipment {
   public readonly shipTo: AddressWithContactInfo;
 
   /**
-   * The return address. Defautls to the `shipFrom` address
+   * The return address
    */
   public readonly returnTo: AddressWithContactInfo;
 
@@ -162,9 +162,7 @@ export class NewShipment {
     this.deliveryService = app[_internal].references.lookup(pojo.deliveryServiceID, DeliveryService);
     this.shipFrom = new AddressWithContactInfo(pojo.shipFrom);
     this.shipTo = new AddressWithContactInfo(pojo.shipTo);
-    this.returnTo = pojo.returnTo
-      ? new AddressWithContactInfo(pojo.returnTo)
-      : new AddressWithContactInfo(pojo.shipFrom);
+    this.returnTo = pojo.returnTo ? new AddressWithContactInfo(pojo.returnTo) : this.shipFrom;
     this.shipDateTime = new DateTimeZone(pojo.shipDateTime);
 
     // If there's no return info, then the shipment is not a return

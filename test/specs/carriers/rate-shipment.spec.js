@@ -301,7 +301,7 @@ describe("rateShipment", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in rateShipment method. \n" +
+          "Error in the rateShipment method. \n" +
           "Invalid rate: \n" +
           "  A value is required"
         );
@@ -331,7 +331,7 @@ describe("rateShipment", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in rateShipment method. \n" +
+          "Error in the rateShipment method. \n" +
           "Invalid rate: \n" +
           "  [0].deliveryServiceID is required \n" +
           "  [0].deliveryDateTime must be a valid date/time \n" +
@@ -361,7 +361,7 @@ describe("rateShipment", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in rateShipment method. \n" +
+          "Error in the rateShipment method. \n" +
           "Unable to find delivery service ID: 12345678-1234-1234-1234-123456789012"
         );
       }
@@ -386,7 +386,7 @@ describe("rateShipment", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in rateShipment method. \n" +
+          "Error in the rateShipment method. \n" +
           "Unable to find packaging ID: 12345678-1234-1234-1234-123456789012"
         );
       }
@@ -413,7 +413,7 @@ describe("rateShipment", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in rateShipment method. \n" +
+          "Error in the rateShipment method. \n" +
           "22222222-2222-2222-2222-222222222222 is a delivery service ID not a delivery confirmation ID"
         );
       }
@@ -437,7 +437,7 @@ describe("rateShipment", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in rateShipment method. \n" +
+          "Error in the rateShipment method. \n" +
           "Invalid delivery time range: minimumDeliveryDays must be less than or equal to maximumDeliveryDays"
         );
       }

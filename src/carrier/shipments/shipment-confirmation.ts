@@ -1,52 +1,11 @@
-import { DateTimeZone, DateTimeZonePOJO, MonetaryValue } from "../../common";
+import { DateTimeZone, MonetaryValue, TimeRange } from "../../common";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
-import { URLString } from "../../types";
 import { FulfillmentService } from "../fulfillment-service";
-import { PackageConfirmation, PackageConfirmationPOJO } from "../packages/package-confirmation";
+import { PackageConfirmation } from "../packages/package-confirmation";
 import { ShippingCharge } from "../shipping-charge";
-import { ShippingChargePOJO } from "../shipping-charge-pojo";
 import { calculateTotalCharges } from "../utils";
-import { ShipmentIdentifier, shipmentIdentifierMixin, ShipmentIdentifierPOJO } from "./shipment-identifier";
-
-/**
- * Confirmation that a shipment has been created
- */
-export interface ShipmentConfirmationPOJO extends ShipmentIdentifierPOJO {
-  /**
-   * The URL of a webpage where the customer can track the shipment
-   */
-  trackingURL?: URLString | URL;
-
-  /**
-   * If the shipment is being fulfilled using a well-known third-party carrier, such as UPS, FedEx, DHL, etc.
-   * then specify the carrier service here.
-   */
-  fulfillmentService?: FulfillmentService;
-
-  /**
-   * The estimated date and time the shipment will be delivered
-   */
-  deliveryDateTime?: DateTimeZonePOJO | Date | string;
-
-  /**
-   * The breakdown of charges for this shipment.
-   * If the carrier does not provide a detailed breakdown, then just use a single
-   * charge of type "shipping".
-   */
-  charges: ShippingChargePOJO[];
-
-  /**
-   * Confirmation details about each package in the shipment
-   */
-  packages: PackageConfirmationPOJO[];
-
-  /**
-   * Arbitrary data about this shipment that will be persisted by the ShipEngine Integration Platform.
-   * Must be JSON serializable.
-   */
-  metadata?: object;
-}
-
+import { ShipmentConfirmationPOJO } from "./shipment-confirmation-pojo";
+import { ShipmentIdentifier, shipmentIdentifierMixin } from "./shipment-identifier";
 
 /**
  * Confirmation that a shipment has been created
@@ -61,6 +20,12 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
       trackingURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
       fulfillmentService: Joi.string().enum(FulfillmentService),
       deliveryDateTime: DateTimeZone[_internal].schema,
+      minimumDeliveryDays: Joi.number().integer().min(0),
+      maximumDeliveryDays: Joi.number().integer().min(0),
+      deliveryWindow: TimeRange[_internal].schema,
+      zone: Joi.number().integer().min(1),
+      isNegotiatedRate: Joi.boolean(),
+      isGuaranteed: Joi.boolean(),
       charges: Joi.array().min(1).items(ShippingCharge[_internal].schema).required(),
       packages: Joi.array().min(1).items(PackageConfirmation[_internal].schema).required(),
       metadata: Joi.object(),
@@ -84,6 +49,45 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
    * The estimated date and time the shipment will be delivered
    */
   public readonly deliveryDateTime?: DateTimeZone;
+
+  /**
+   * The minimum number of days delivery will take
+   */
+  public readonly minimumDeliveryDays?: number;
+
+  /**
+   * The maximum number of days delivery will take
+   */
+  public readonly maximumDeliveryDays?: number;
+
+  /**
+   * The expected delivery window
+   */
+  public readonly deliveryWindow?: TimeRange;
+
+  /**
+   * Certain carriers base their rates off of zone numbers that vary based on the origin and destination
+   *
+   * @see https://stamps.custhelp.com/app/answers/detail/a_id/6118/~/all-about-usps-postal-zones
+   */
+  public readonly zone?: number;
+
+  /**
+   * Indicates whether this shipment used a pre-negotiated terms
+   */
+  public readonly isNegotiatedRate: boolean;
+
+  /**
+   * Indicates whether the carrier guarantees delivery by the `deliveryDateTime`
+   */
+  public readonly isGuaranteed: boolean;
+
+  /**
+   * Indicates whether tracking numbers are provided
+   */
+  public get isTrackable(): boolean {
+    return Boolean(this.trackingNumber || this.trackingURL);
+  }
 
   /**
    * The breakdown of charges for this shipment.
@@ -124,6 +128,12 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
     this.trackingURL = pojo.trackingURL ? new URL(pojo.trackingURL as string) : undefined;
     this.fulfillmentService = pojo.fulfillmentService;
     this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;
+    this.minimumDeliveryDays = pojo.minimumDeliveryDays;
+    this.maximumDeliveryDays = pojo.maximumDeliveryDays;
+    this.deliveryWindow = pojo.deliveryWindow && new TimeRange(pojo.deliveryWindow);
+    this.zone = pojo.zone;
+    this.isNegotiatedRate = pojo.isNegotiatedRate || false;
+    this.isGuaranteed = pojo.isGuaranteed || false;
     this.charges = pojo.charges.map((charge) => new ShippingCharge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);
     this.packages = pojo.packages.map((parcel) => new PackageConfirmation(parcel));

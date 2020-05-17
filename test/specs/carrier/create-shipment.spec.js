@@ -37,6 +37,12 @@ describe("createShipment", () => {
       identifiers: {},
       fulfillmentService: undefined,
       deliveryDateTime: undefined,
+      minimumDeliveryDays: undefined,
+      maximumDeliveryDays: undefined,
+      deliveryWindow: undefined,
+      zone: undefined,
+      isNegotiatedRate: false,
+      isGuaranteed: false,
       metadata: {},
       charges: [{
         name: "",
@@ -81,6 +87,15 @@ describe("createShipment", () => {
           },
           fulfillmentService: "ups_ground",
           deliveryDateTime: "2005-05-05T05:05:05.0005Z",
+          minimumDeliveryDays: 2,
+          maximumDeliveryDays: 5,
+          deliveryWindow: {
+            startDateTime: "2005-05-02T05:05:05.0005Z",
+            endDateTime: "2005-05-06T05:05:05.0005Z",
+          },
+          zone: 3,
+          isNegotiatedRate: true,
+          isGuaranteed: true,
           metadata: {
             foo: "bar",
             biz: "baz",
@@ -154,6 +169,23 @@ describe("createShipment", () => {
         offset: "+00:00",
         timeZone: "UTC",
       },
+      minimumDeliveryDays: 2,
+      maximumDeliveryDays: 5,
+      deliveryWindow: {
+        startDateTime: {
+          value: "2005-05-02T05:05:05.0005",
+          offset: "+00:00",
+          timeZone: "UTC",
+        },
+        endDateTime: {
+          value: "2005-05-06T05:05:05.0005",
+          offset: "+00:00",
+          timeZone: "UTC",
+        },
+      },
+      zone: 3,
+      isNegotiatedRate: true,
+      isGuaranteed: true,
       metadata: {
         foo: "bar",
         biz: "baz",

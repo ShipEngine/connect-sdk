@@ -10,7 +10,7 @@ import { RatePOJO } from "./rates/rate-pojo";
 import { NewShipment } from "./shipments/new-shipment";
 import { ShipmentCancellation } from "./shipments/shipment-cancellation";
 import { ShipmentCancellationOutcomePOJO } from "./shipments/shipment-cancellation-outcome-pojo";
-import { ShipmentConfirmationPOJO } from "./shipments/shipment-confirmation";
+import { ShipmentConfirmationPOJO } from "./shipments/shipment-confirmation-pojo";
 import { TrackingCriteria } from "./tracking/tracking-criteria";
 import { TrackingInfoPOJO } from "./tracking/tracking-info";
 

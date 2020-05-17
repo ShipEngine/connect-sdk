@@ -1,4 +1,4 @@
-import { DateTimeZonePOJO, NotePOJO } from "../../common";
+import { DateTimeZonePOJO, NotePOJO, TimeRangePOJO } from "../../common";
 import { UUID } from "../../types";
 import { FulfillmentService } from "../fulfillment-service";
 import { ShippingChargePOJO } from "../shipping-charge-pojo";
@@ -39,6 +39,11 @@ export interface RatePOJO {
    * The maximum number of days delivery will take
    */
   maximumDeliveryDays?: number;
+
+  /**
+   * The expected delivery window
+   */
+  deliveryWindow?: TimeRangePOJO;
 
   /**
    * Certain carriers base their rates off of zone numbers that vary based on the origin and destination

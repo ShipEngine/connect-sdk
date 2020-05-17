@@ -1,4 +1,4 @@
-import { App, DateTimeZone, MonetaryValue, Note } from "../../common";
+import { App, DateTimeZone, MonetaryValue, Note, TimeRange } from "../../common";
 import { error, ErrorCode } from "../../errors";
 import { createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
 import { DeliveryService } from "../delivery-service";
@@ -24,6 +24,7 @@ export class Rate {
       deliveryDateTime: DateTimeZone[_internal].schema,
       minimumDeliveryDays: Joi.number().integer().min(0),
       maximumDeliveryDays: Joi.number().integer().min(0),
+      deliveryWindow: TimeRange[_internal].schema,
       zone: Joi.number().integer().min(1),
       isNegotiatedRate: Joi.boolean(),
       isGuaranteed: Joi.boolean(),
@@ -67,6 +68,11 @@ export class Rate {
    * The maximum number of days delivery will take
    */
   public readonly maximumDeliveryDays?: number;
+
+  /**
+   * The expected delivery window
+   */
+  public readonly deliveryWindow?: TimeRange;
 
   /**
    * Certain carriers base their rates off of zone numbers that vary based on the origin and destination
@@ -129,6 +135,7 @@ export class Rate {
     this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;
     this.minimumDeliveryDays = pojo.minimumDeliveryDays;
     this.maximumDeliveryDays = pojo.maximumDeliveryDays;
+    this.deliveryWindow = pojo.deliveryWindow && new TimeRange(pojo.deliveryWindow);
     this.zone = pojo.zone;
     this.isNegotiatedRate = pojo.isNegotiatedRate || false;
     this.isGuaranteed = pojo.isGuaranteed || false;

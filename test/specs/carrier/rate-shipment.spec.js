@@ -37,6 +37,7 @@ describe("rateShipment", () => {
       deliveryDateTime: undefined,
       minimumDeliveryDays: undefined,
       maximumDeliveryDays: undefined,
+      deliveryWindow: undefined,
       zone: undefined,
       isNegotiatedRate: false,
       isGuaranteed: false,
@@ -82,6 +83,10 @@ describe("rateShipment", () => {
           deliveryDateTime: new Date("2005-05-05T05:05:05.005-07:00"),
           minimumDeliveryDays: 0,
           maximumDeliveryDays: 1,
+          deliveryWindow: {
+            startDateTime: "2005-05-02T05:05:05.0005Z",
+            endDateTime: "2005-05-06T05:05:05.0005Z",
+          },
           zone: 1,
           isNegotiatedRate: true,
           isGuaranteed: true,
@@ -139,6 +144,18 @@ describe("rateShipment", () => {
       },
       minimumDeliveryDays: 0,
       maximumDeliveryDays: 1,
+      deliveryWindow: {
+        startDateTime: {
+          value: "2005-05-02T05:05:05.0005",
+          offset: "+00:00",
+          timeZone: "UTC",
+        },
+        endDateTime: {
+          value: "2005-05-06T05:05:05.0005",
+          offset: "+00:00",
+          timeZone: "UTC",
+        },
+      },
       zone: 1,
       isNegotiatedRate: true,
       isGuaranteed: true,

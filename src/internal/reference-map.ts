@@ -38,13 +38,13 @@ export class ReferenceMap {
       // We already have a reference to this instance. Just make sure the types match.
       if (existing.type !== type) {
         // There are two different objects with the same UUID
-        throw error(ErrorCode.InvalidInput, `Duplicate UUID: ${instance.id}`);
+        throw error(ErrorCode.Validation, `Duplicate UUID: ${instance.id}`);
       }
     }
     else {
       if (isFinishedLoading) {
         // The app has already finished loading, so no new objects can be added.
-        throw error(ErrorCode.InvalidInput, `Cannot add new ${type[_internal].label} after the app has loaded`);
+        throw error(ErrorCode.Validation, `Cannot add new ${type[_internal].label} after the app has loaded`);
       }
 
       // Add this new reference
@@ -65,7 +65,7 @@ export class ReferenceMap {
     let reference = map.get(id);
 
     if (reference && reference.type !== type) {
-      throw error(ErrorCode.InvalidInput, `${id} is a ${reference.type[_internal].label} ID not a ${type[_internal].label} ID`);
+      throw error(ErrorCode.Validation, `${id} is a ${reference.type[_internal].label} ID not a ${type[_internal].label} ID`);
     }
 
     return reference && reference.instance as T;
@@ -83,7 +83,7 @@ export class ReferenceMap {
     let value = this.get<T>(id, type);
 
     if (!value) {
-      throw error(ErrorCode.InvalidInput, `Unable to find ${type[_internal].label} ID: ${id}`);
+      throw error(ErrorCode.Validation, `Unable to find ${type[_internal].label} ID: ${id}`);
     }
 
     return value;

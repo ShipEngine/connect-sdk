@@ -53,7 +53,7 @@ export class TimeRange {
     this.endDateTime = new DateTimeZone(pojo.endDateTime);
 
     if (this.endDateTime.getTime() < this.startDateTime.getTime()) {
-      throw error(ErrorCode.InvalidInput,
+      throw error(ErrorCode.Validation,
         `Invalid time range: ${this.toString()}. The start date occurs after the end date.`);
     }
 

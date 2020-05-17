@@ -135,7 +135,7 @@ export function documentMixin(base: Constructor = Object) {
       this.data = pojo.data;
 
       if (this.data.length === 0) {
-        throw error(ErrorCode.InvalidInput, `${this.name} data cannot be empty`);
+        throw error(ErrorCode.Validation, `${this.name} data cannot be empty`);
       }
     }
   };

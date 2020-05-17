@@ -149,7 +149,7 @@ export class Rate {
     if (minimumDeliveryDays !== undefined
     && maximumDeliveryDays !== undefined
     && minimumDeliveryDays > maximumDeliveryDays) {
-      throw error(ErrorCode.InvalidInput,
+      throw error(ErrorCode.Validation,
         "Invalid delivery time range: minimumDeliveryDays must be less than or equal to maximumDeliveryDays");
     }
 

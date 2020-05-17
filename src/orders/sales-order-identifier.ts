@@ -1,5 +1,5 @@
 import { Identifiers, IdentifiersPOJO } from "../common";
-import { hideAndFreeze, Joi, _internal } from "../internal";
+import { Constructor, hideAndFreeze, Joi, _internal } from "../internal";
 
 
 /**
@@ -7,7 +7,7 @@ import { hideAndFreeze, Joi, _internal } from "../internal";
  */
 export interface SalesOrderIdentifierPOJO {
   /**
-   * The marketplace's unique ID for the order
+   * The marketplace's unique ID for the sales order
    */
   salesOrderID: string;
 
@@ -21,7 +21,7 @@ export interface SalesOrderIdentifierPOJO {
 /**
  * Identifies a sales order
  */
-export class SalesOrderIdentifier {
+export class SalesOrderIdentifier extends salesOrderIdentifierMixin() {
   //#region Private/Internal Fields
 
   /** @internal */
@@ -34,23 +34,9 @@ export class SalesOrderIdentifier {
   };
 
   //#endregion
-  //#region Public Fields
-
-  /**
-   * The marketplace's unique ID for the sales order
-   */
-  public readonly salesOrderID: string;
-
-  /**
-   * Custom identifiers for this sales order
-   */
-  public readonly identifiers: Identifiers;
-
-  //#endregion
 
   public constructor(pojo: SalesOrderIdentifierPOJO) {
-    this.salesOrderID = pojo.salesOrderID;
-    this.identifiers = new Identifiers(pojo.identifiers);
+    super(pojo);
 
     // Make this object immutable
     hideAndFreeze(this);
@@ -59,3 +45,32 @@ export class SalesOrderIdentifier {
 
 // Prevent modifications to the class
 hideAndFreeze(SalesOrderIdentifier);
+
+/**
+ * Extends a base class with the fields of a sales order identifier
+ * @internal
+ */
+export function salesOrderIdentifierMixin(base: Constructor = Object) {
+  return class SalesOrderIdentifierMixin extends base {
+    //#region Public Fields
+
+    /**
+     * The marketplace's unique ID for the sales order
+     */
+    public readonly salesOrderID: string;
+
+    /**
+     * Custom identifiers for this sales order
+     */
+    public readonly identifiers: Identifiers;
+
+    //#endregion
+
+    public constructor(pojo: SalesOrderIdentifierPOJO) {
+      base === Object ? super() : super(pojo);
+
+      this.salesOrderID = pojo.salesOrderID;
+      this.identifiers = new Identifiers(pojo.identifiers);
+    }
+  };
+}

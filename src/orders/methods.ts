@@ -1,9 +1,11 @@
 import { Transaction } from "../common";
+import { SellerPOJO } from "./sellers/seller";
+import { SellerIdentifier } from "./sellers/seller-identifier";
 
 /**
  * Returns detailed information about a seller on the marketplace
  */
-export type GetSeller = (transaction: Transaction, arg2: unknown) => void | Promise<void>;
+export type GetSeller = (transaction: Transaction, seller: SellerIdentifier) => SellerPOJO | Promise<SellerPOJO>;
 
 /**
  * Returns a specific sales order
@@ -13,7 +15,7 @@ export type GetSalesOrder = (transaction: Transaction, arg2: unknown) => void | 
 /**
  * Returns all orders that were created and/or modified within a given timeframe
  */
-export type GetSalesOrderByDate = (transaction: Transaction, arg2: unknown) => void | Promise<void>;
+export type GetSalesOrdersByDate = (transaction: Transaction, arg2: unknown) => void | Promise<void>;
 
 /**
  * Called when a shipment is created for one or more items in one or more sales orders.

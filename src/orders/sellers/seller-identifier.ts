@@ -1,9 +1,9 @@
 import { Identifiers, IdentifiersPOJO } from "../../common";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { Constructor, hideAndFreeze, Joi, _internal } from "../../internal";
 
 
 /**
- * Identifies a seller who sells goods on a marketplace
+ * Identifies a seller who sells goods in a marketplace
  */
 export interface SellerIdentifierPOJO {
   /**
@@ -19,9 +19,9 @@ export interface SellerIdentifierPOJO {
 
 
 /**
- * Identifies a seller who sells goods on a marketplace
+ * Identifies a seller who sells goods in a marketplace
  */
-export class SellerIdentifier {
+export class SellerIdentifier extends sellerIdentifierMixin() {
   //#region Private/Internal Fields
 
   /** @internal */
@@ -34,23 +34,9 @@ export class SellerIdentifier {
   };
 
   //#endregion
-  //#region Public Fields
-
-  /**
-   * The marketplace's unique ID for the seller
-   */
-  public readonly sellerID: string;
-
-  /**
-   * Custom identifiers for this seller
-   */
-  public readonly identifiers: Identifiers;
-
-  //#endregion
 
   public constructor(pojo: SellerIdentifierPOJO) {
-    this.sellerID = pojo.sellerID;
-    this.identifiers = new Identifiers(pojo.identifiers);
+    super(pojo);
 
     // Make this object immutable
     hideAndFreeze(this);
@@ -59,3 +45,32 @@ export class SellerIdentifier {
 
 // Prevent modifications to the class
 hideAndFreeze(SellerIdentifier);
+
+/**
+ * Extends a base class with the fields of a seller identifier
+ * @internal
+ */
+export function sellerIdentifierMixin(base: Constructor = Object) {
+  return class SellerIdentifierMixin extends base {
+    //#region Public Fields
+
+    /**
+     * The marketplace's unique ID for the seller
+     */
+    public readonly sellerID: string;
+
+    /**
+     * Custom identifiers for this seller
+     */
+    public readonly identifiers: Identifiers;
+
+    //#endregion
+
+    public constructor(pojo: SellerIdentifierPOJO) {
+      base === Object ? super() : super(pojo);
+
+      this.sellerID = pojo.sellerID;
+      this.identifiers = new Identifiers(pojo.identifiers);
+    }
+  };
+}

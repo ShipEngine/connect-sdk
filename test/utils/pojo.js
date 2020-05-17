@@ -11,6 +11,14 @@ const pojo = module.exports = {
     };
   },
 
+  connectionApp (props = {}) {
+    return {
+      ...pojo.app(),
+      connection: pojo.connection(),
+      ...props,
+    };
+  },
+
   carrierApp (props = {}) {
     return {
       ...pojo.app(),
@@ -19,10 +27,10 @@ const pojo = module.exports = {
     };
   },
 
-  connectionApp (props = {}) {
+  orderApp (props = {}) {
     return {
       ...pojo.app(),
-      connection: pojo.connection(),
+      marketplace: pojo.marketplace(),
       ...props,
     };
   },
@@ -302,6 +310,61 @@ const pojo = module.exports = {
     return {
       startDateTime: new Date(),
       endDateTime: new Date(),
+      ...props,
+    };
+  },
+
+  marketplace (props = {}) {
+    return {
+      id: "77777777-7777-7777-7777-777777777777",
+      name: "Dummy Marketplace",
+      websiteURL: "https://example.com/",
+      logo: path.resolve("logo.svg"),
+      getSeller () {},
+      getSalesOrder () {},
+      getSalesOrdersByDate () {},
+      ...props,
+    };
+  },
+
+  sellerIdentifier (props = {}) {
+    return {
+      sellerID: "DUMMY_SELLER_ID",
+      ...props,
+    };
+  },
+
+  storeIdentifier (props = {}) {
+    return {
+      storeID: "DUMMY_STORE_ID",
+      ...props,
+    };
+  },
+
+  warehouseIdentifier (props = {}) {
+    return {
+      warehouseID: "DUMMY_WAREHOUSE_ID",
+      ...props,
+    };
+  },
+
+  salesOrderIdentifier (props = {}) {
+    return {
+      salesOrderID: "DUMMY_SALES_ORDER_ID",
+      ...props,
+    };
+  },
+
+  salesOrderItemIdentifier (props = {}) {
+    return {
+      salesOrderItemID: "DUMMY_SALES_ORDER_ITEM_ID",
+      ...props,
+    };
+  },
+
+  productIdentifier (props = {}) {
+    return {
+      productID: "DUMMY_PRODUCT_ID",
       ...props,
     };
   },

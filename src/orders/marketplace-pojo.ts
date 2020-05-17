@@ -1,6 +1,6 @@
 import { LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO } from "../common";
 import { FilePath, InlineOrReference, URLString, UUID } from "../types";
-import { GetSalesOrder, GetSalesOrderByDate, GetSeller, ShipmentCanceled, ShipmentCreated } from "./methods";
+import { GetSalesOrder, GetSalesOrdersByDate, GetSeller, ShipmentCanceled, ShipmentCreated } from "./methods";
 
 /**
  * A marketplace where orders originate
@@ -9,7 +9,7 @@ export interface MarketplacePOJO extends MarketplaceDefinition {
   localization?: LocalizationPOJO<LocalizedBrandingPOJO>;
   getSeller: GetSeller;
   getSalesOrder: GetSalesOrder;
-  getSalesOrderByDate: GetSalesOrderByDate;
+  getSalesOrdersByDate: GetSalesOrdersByDate;
   shipmentCreated: ShipmentCreated;
   shipmentCanceled: ShipmentCanceled;
 }
@@ -67,7 +67,7 @@ export interface MarketplaceDefinition {
   /**
    * Returns all orders that were created and/or modified within a given timeframe
    */
-  getSalesOrderByDate: InlineOrReference<GetSalesOrderByDate>;
+  getSalesOrdersByDate: InlineOrReference<GetSalesOrdersByDate>;
 
   /**
    * Called when a shipment is created for one or more items in one or more sales orders.

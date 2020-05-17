@@ -1,6 +1,6 @@
 import { IdentifiersPOJO, MonetaryValuePOJO, QuantityPOJO } from "../../common";
-import { SalesOrderIdentifierPOJO, SalesOrderItemIdentifierPOJO } from "../../order";
-import { ProductIdentifierPOJO } from "../../product";
+import { SalesOrderIdentifierPOJO, SalesOrderItemIdentifierPOJO } from "../../orders";
+import { ProductIdentifierPOJO } from "../../products";
 
 /**
  * An item inside a package

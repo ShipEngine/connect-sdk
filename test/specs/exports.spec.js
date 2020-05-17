@@ -40,7 +40,7 @@ describe("package exports", () => {
   });
 
   it("should export carrier classes", () => {
-    assertFileExports("src/carrier", true, ["utils.ts"]);
+    assertFileExports("src/carriers", true, ["utils.ts"]);
   });
 
   it("should export common classes", () => {
@@ -48,15 +48,15 @@ describe("package exports", () => {
   });
 
   it("should export connection classes", () => {
-    assertFileExports("src/connection", true);
+    assertFileExports("src/connections", true);
   });
 
   it("should export order classes", () => {
-    assertFileExports("src/order", true);
+    assertFileExports("src/orders", true);
   });
 
   it("should export product classes", () => {
-    assertFileExports("src/product", true);
+    assertFileExports("src/products", true);
   });
 
 });

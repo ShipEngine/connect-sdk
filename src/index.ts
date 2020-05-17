@@ -1,6 +1,6 @@
-export * from "./carrier";
+export * from "./carriers";
 export * from "./common";
-export * from "./connection";
+export * from "./connections";
 export { ErrorCode, ShipEngineError } from "./errors";
-export * from "./order";
+export * from "./orders";
 export * from "./types";

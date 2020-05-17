@@ -3,32 +3,32 @@ import { hideAndFreeze, Joi, _internal } from "../internal";
 
 
 /**
- * Identifies a product
+ * Identifies a sales order
  */
-export interface ProductIdentifierPOJO {
+export interface SalesOrderIdentifierPOJO {
   /**
-   * The vendor's unique ID for the order
+   * The marketplace's unique ID for the order
    */
-  productID: string;
+  salesOrderID: string;
 
   /**
-   * Custom identifiers for this product
+   * Custom identifiers for this sales order
    */
   identifiers?: IdentifiersPOJO;
 }
 
 
 /**
- * Identifies a product
+ * Identifies a sales order
  */
-export class ProductIdentifier {
+export class SalesOrderIdentifier {
   //#region Private/Internal Fields
 
   /** @internal */
   public static readonly [_internal] = {
-    label: "product",
+    label: "sales order",
     schema: Joi.object({
-      productID: Joi.string().trim().singleLine().min(1).max(100).required(),
+      salesOrderID: Joi.string().trim().singleLine().min(1).max(100).required(),
       identifiers: Identifiers[_internal].schema,
     }),
   };
@@ -37,19 +37,19 @@ export class ProductIdentifier {
   //#region Public Fields
 
   /**
-   * The vendor's unique ID for the product
+   * The marketplace's unique ID for the sales order
    */
-  public readonly productID: string;
+  public readonly salesOrderID: string;
 
   /**
-   * Custom identifiers for this product
+   * Custom identifiers for this sales order
    */
   public readonly identifiers: Identifiers;
 
   //#endregion
 
-  public constructor(pojo: ProductIdentifierPOJO) {
-    this.productID = pojo.productID;
+  public constructor(pojo: SalesOrderIdentifierPOJO) {
+    this.salesOrderID = pojo.salesOrderID;
     this.identifiers = new Identifiers(pojo.identifiers);
 
     // Make this object immutable
@@ -58,4 +58,4 @@ export class ProductIdentifier {
 }
 
 // Prevent modifications to the class
-hideAndFreeze(ProductIdentifier);
+hideAndFreeze(SalesOrderIdentifier);

@@ -1,7 +1,7 @@
 import * as currency from "currency.js";
 import { Identifiers, MonetaryValue, Quantity } from "../../common";
 import { hideAndFreeze, Joi, _internal } from "../../internal";
-import { SalesOrderIdentifier } from "../../order";
+import { SalesOrderIdentifier } from "../../orders";
 import { PackageItemPOJO } from "./package-item-pojo";
 
 /**

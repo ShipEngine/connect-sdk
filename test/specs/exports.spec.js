@@ -55,6 +55,10 @@ describe("package exports", () => {
     assertFileExports("src/order", true);
   });
 
+  it("should export product classes", () => {
+    assertFileExports("src/product", true);
+  });
+
 });
 
 function assertFileExports (dir, deep = false, exceptions = []) {

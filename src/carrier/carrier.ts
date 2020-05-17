@@ -1,6 +1,6 @@
-import { App, CancellationStatus, Country, LocalizedBrandingPOJO, Transaction, TransactionPOJO } from "../common";
+import { CancellationStatus, Country, LocalizedBrandingPOJO, Transaction, TransactionPOJO } from "../common";
 import { error, ErrorCode } from "../errors";
-import { hideAndFreeze, Joi, Localization, localize, validate, validateArray, _internal } from "../internal";
+import { App, hideAndFreeze, Joi, Localization, localize, validate, validateArray, _internal } from "../internal";
 import { FilePath, UUID } from "../types";
 import { CarrierPOJO } from "./carrier-pojo";
 import { DeliveryConfirmation } from "./delivery-confirmation";

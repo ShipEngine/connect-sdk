@@ -1,5 +1,4 @@
-import { App } from "../../common";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { App, hideAndFreeze, Joi, _internal } from "../../internal";
 import { DeliveryService } from "../delivery-service";
 import { ShipmentIdentifier, shipmentIdentifierMixin } from "../shipments/shipment-identifier";
 import { PickupPackage } from "./pickup-package";

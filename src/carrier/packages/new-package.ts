@@ -1,5 +1,5 @@
-import { App, Currency, Dimensions, MonetaryValue, Weight } from "../../common";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { Currency, Dimensions, MonetaryValue, Weight } from "../../common";
+import { App, hideAndFreeze, Joi, _internal } from "../../internal";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { NewLabel } from "../documents/new-label";
 import { NonDeliveryOption } from "../enums";

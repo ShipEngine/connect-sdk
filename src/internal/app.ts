@@ -1,17 +1,7 @@
-import { Joi, ReferenceMap, _internal } from "../internal";
-
-/**
- * A ShipEngine Integration Platform app manifest (package.json file)
- */
-export interface AppPOJO {
-  name: string;
-  version: string;
-  description?: string;
-  dependencies?: Record<string, string>;
-  devDependencies?: Record<string, string>;
-  [key: string]: unknown;
-}
-
+import { AppPOJO } from "../common";
+import { ReferenceMap } from "./reference-map";
+import { _internal } from "./utils";
+import { Joi } from "./validation";
 
 /**
  * A ShipEngine Integration Platform app

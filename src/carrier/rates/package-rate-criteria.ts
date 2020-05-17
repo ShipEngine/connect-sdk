@@ -1,5 +1,5 @@
-import { App, Dimensions, MonetaryValue, Weight } from "../../common";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { Dimensions, MonetaryValue, Weight } from "../../common";
+import { App, hideAndFreeze, Joi, _internal } from "../../internal";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { Packaging } from "../packaging";
 import { PackageRateCriteriaPOJO } from "./package-rate-criteria-pojo";

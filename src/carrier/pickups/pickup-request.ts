@@ -1,5 +1,5 @@
-import { Address, App, ContactInfo, Note, TimeRange } from "../../common";
-import { createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
+import { Address, ContactInfo, Note, TimeRange } from "../../common";
+import { App, createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
 import { PickupRequestPOJO } from "./pickup-request-pojo";
 import { PickupService } from "./pickup-service";
 import { PickupShipment } from "./pickup-shipment";

@@ -4,7 +4,7 @@ export { ContactInfo, ContactInfoPOJO } from "./addresses/contact-info";
 export * from "./addresses/geo-coordinate";
 export { PartialAddress } from "./addresses/partial-address";
 export * from "./addresses/person-name";
-export * from "./app";
+export * from "./app-pojo";
 export * from "./country";
 export * from "./enums";
 export * from "./identifiers";

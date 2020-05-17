@@ -1,5 +1,4 @@
-import { App } from "../../common";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { App, hideAndFreeze, Joi, _internal } from "../../internal";
 import { UUID } from "../../types";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { Packaging } from "../packaging";

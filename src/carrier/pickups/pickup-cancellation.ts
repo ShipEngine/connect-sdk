@@ -1,5 +1,5 @@
-import { Address, App, ContactInfo, Identifiers, Note, TimeRange } from "../../common";
-import { createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
+import { Address, ContactInfo, Identifiers, Note, TimeRange } from "../../common";
+import { App, createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
 import { UUID } from "../../types";
 import { PickupCancellationReason } from "../enums";
 import { PickupCancellationPOJO } from "./pickup-cancellation-pojo";

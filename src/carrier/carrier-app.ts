@@ -1,5 +1,5 @@
-import { App, AppPOJO } from "../common";
-import { hideAndFreeze, localize, validate, _internal } from "../internal";
+import { AppPOJO } from "../common";
+import { App, hideAndFreeze, localize, validate, _internal } from "../internal";
 import { Carrier } from "./carrier";
 import { CarrierPOJO } from "./carrier-pojo";
 

@@ -1,7 +1,7 @@
-import { App, LocalizedBrandingPOJO, Transaction, TransactionPOJO } from "../common";
+import { LocalizedBrandingPOJO, Transaction, TransactionPOJO } from "../common";
 import { ConnectionPOJO } from "../connection";
 import { error, ErrorCode } from "../errors";
-import { hideAndFreeze, Joi, Localization, localize, validate, _internal } from "../internal";
+import { App, hideAndFreeze, Joi, Localization, localize, validate, _internal } from "../internal";
 import { FilePath, UUID } from "../types";
 import { Form } from "./form";
 import { Connect } from "./methods";

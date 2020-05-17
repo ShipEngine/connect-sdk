@@ -1,5 +1,5 @@
-import { App, DateTimeZone, DateTimeZonePOJO } from "../../common";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { DateTimeZone, DateTimeZonePOJO } from "../../common";
+import { App, hideAndFreeze, Joi, _internal } from "../../internal";
 import { ShipmentStatus } from "../enums";
 import { shipmentIdentifierMixin, ShipmentIdentifierPOJO } from "../shipments/shipment-identifier";
 import { PackageTrackingInfo, PackageTrackingInfoPOJO } from "./package-tracking-info";

@@ -1,5 +1,5 @@
-import { AddressWithContactInfo, App, DateTimeZone, MonetaryValue } from "../../common";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { AddressWithContactInfo, DateTimeZone, MonetaryValue } from "../../common";
+import { App, hideAndFreeze, Joi, _internal } from "../../internal";
 import { DeliveryService } from "../delivery-service";
 import { FulfillmentService } from "../fulfillment-service";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";

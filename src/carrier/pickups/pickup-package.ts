@@ -1,5 +1,5 @@
-import { App, Dimensions, Weight } from "../../common";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { Dimensions, Weight } from "../../common";
+import { App, hideAndFreeze, Joi, _internal } from "../../internal";
 import { PackageIdentifier, packageIdentifierMixin } from "../packages/package-identifier";
 import { Packaging } from "../packaging";
 import { PickupPackagePOJO } from "./pickup-shipment-pojo";

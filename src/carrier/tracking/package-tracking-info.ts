@@ -1,5 +1,5 @@
-import { App, Dimensions, DimensionsPOJO, Weight, WeightPOJO } from "../../common";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { Dimensions, DimensionsPOJO, Weight, WeightPOJO } from "../../common";
+import { App, hideAndFreeze, Joi, _internal } from "../../internal";
 import { UUID } from "../../types";
 import { Packaging } from "../packaging";
 

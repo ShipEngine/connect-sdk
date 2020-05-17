@@ -1,5 +1,5 @@
-import { App, Country, LocalizedInfoPOJO } from "../common";
-import { hideAndFreeze, Joi, Localization, localize, _internal } from "../internal";
+import { Country, LocalizedInfoPOJO } from "../common";
+import { App, hideAndFreeze, Joi, Localization, localize, _internal } from "../internal";
 import { UUID } from "../types";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryServicePOJO } from "./delivery-service-pojo";

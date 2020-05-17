@@ -1,5 +1,5 @@
-import { App, AppPOJO } from "../common";
-import { hideAndFreeze, localize, validate, _internal } from "../internal";
+import { AppPOJO } from "../common";
+import { App, hideAndFreeze, localize, validate, _internal } from "../internal";
 import { Connection } from "./connection";
 import { ConnectionPOJO } from "./connection-pojo";
 

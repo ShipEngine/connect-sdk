@@ -1,7 +1,8 @@
 import * as currency from "currency.js";
 import { Identifiers, MonetaryValue, Quantity } from "../../common";
 import { hideAndFreeze, Joi, _internal } from "../../common/internal";
-import { SalesOrderIdentifier } from "../../orders";
+import { SalesOrderIdentifier, SalesOrderItemIdentifier } from "../../orders";
+import { ProductIdentifier } from "../../products";
 import { PackageItemPOJO } from "./package-item-pojo";
 
 /**
@@ -16,7 +17,9 @@ export class PackageItem {
     schema: Joi.object({
       sku: Joi.string().trim().singleLine().allow("").max(100),
       identifiers: Identifiers[_internal].schema,
-      salesOrder: SalesOrderIdentifier[_internal].schema,
+      salesOrder: SalesOrderIdentifier[_internal].schema.unknown(true),
+      salesOrderItem: SalesOrderItemIdentifier[_internal].schema.unknown(true),
+      product: ProductIdentifier[_internal].schema.unknown(true),
       quantity: Quantity[_internal].schema.required(),
       unitPrice: MonetaryValue[_internal].schema.required(),
     }),
@@ -39,6 +42,16 @@ export class PackageItem {
    * The sales order associated with this item
    */
   public readonly salesOrder?: SalesOrderIdentifier;
+
+  /**
+   * The sales order item associated with this item
+   */
+  public readonly salesOrderItem?: SalesOrderItemIdentifier;
+
+  /**
+   * The product associated with this item
+   */
+  public readonly product?: ProductIdentifier;
 
   /**
    * The quantity of this item in the package. May be zero.
@@ -66,6 +79,8 @@ export class PackageItem {
     this.sku = pojo.sku || "";
     this.identifiers = new Identifiers(pojo.identifiers);
     this.salesOrder = pojo.salesOrder && new SalesOrderIdentifier(pojo.salesOrder);
+    this.salesOrderItem = pojo.salesOrderItem && new SalesOrderItemIdentifier(pojo.salesOrderItem);
+    this.product = pojo.product && new ProductIdentifier(pojo.product);
     this.quantity = new Quantity(pojo.quantity);
     this.unitPrice = new MonetaryValue(pojo.unitPrice);
 

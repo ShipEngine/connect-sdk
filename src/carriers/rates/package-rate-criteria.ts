@@ -15,8 +15,8 @@ export class PackageRateCriteria {
   public static readonly [_internal] = {
     label: "package",
     schema: Joi.object({
-      packaging: Joi.array().items(DefinitionIdentifier[_internal].schema),
-      deliveryConfirmations: Joi.array().items(DefinitionIdentifier[_internal].schema),
+      packaging: Joi.array().items(DefinitionIdentifier[_internal].schema.unknown(true)),
+      deliveryConfirmations: Joi.array().items(DefinitionIdentifier[_internal].schema.unknown(true)),
       dimensions: Dimensions[_internal].schema,
       weight: Weight[_internal].schema,
       insuredValue: MonetaryValue[_internal].schema,

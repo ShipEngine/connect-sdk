@@ -17,7 +17,7 @@ export class Rate {
   public static readonly [_internal] = {
     label: "rate",
     schema: Joi.object({
-      deliveryService: DefinitionIdentifier[_internal].schema.required(),
+      deliveryService: DefinitionIdentifier[_internal].schema.unknown(true).required(),
       fulfillmentService: Joi.string().enum(FulfillmentService),
       shipDateTime: DateTimeZone[_internal].schema,
       deliveryDateTime: DateTimeZone[_internal].schema,

@@ -18,7 +18,7 @@ export class NewShipment {
   public static readonly [_internal] = {
     label: "shipment",
     schema: Joi.object({
-      deliveryService: DefinitionIdentifier[_internal].schema.required(),
+      deliveryService: DefinitionIdentifier[_internal].schema.unknown(true).required(),
       shipFrom: AddressWithContactInfo[_internal].schema.required(),
       shipTo: AddressWithContactInfo[_internal].schema.required(),
       returnTo: AddressWithContactInfo[_internal].schema,
@@ -26,7 +26,7 @@ export class NewShipment {
       returns: Joi.object({
         isReturn: Joi.boolean(),
         rmaNumber: Joi.string().trim().singleLine().allow("").max(100),
-        outboundShipment: ShipmentIdentifier[_internal].schema,
+        outboundShipment: ShipmentIdentifier[_internal].schema.unknown(true),
       }),
       billing: Joi.object({
         dutiesPaidBy: Joi.string().enum(BilledParty),

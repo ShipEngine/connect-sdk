@@ -14,7 +14,7 @@ export class PickupRequest {
   public static readonly [_internal] = {
     label: "pickup request",
     schema: Joi.object({
-      pickupService: DefinitionIdentifier[_internal].schema.required(),
+      pickupService: DefinitionIdentifier[_internal].schema.unknown(true).required(),
       timeWindow: TimeRange[_internal].schema.required(),
       address: Address[_internal].schema.required(),
       contact: ContactInfo[_internal].schema.required(),

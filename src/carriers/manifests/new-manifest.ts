@@ -19,7 +19,7 @@ export class NewManifest {
       shipFrom: Address[_internal].schema.required(),
       openDateTime: DateTimeZone[_internal].schema.required(),
       closeDateTime: DateTimeZone[_internal].schema.required(),
-      shipments: Joi.array().items(ShipmentIdentifier[_internal].schema).required(),
+      shipments: Joi.array().items(ShipmentIdentifier[_internal].schema.unknown(true)).required(),
     }),
   };
 

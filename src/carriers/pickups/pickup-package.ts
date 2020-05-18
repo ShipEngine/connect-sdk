@@ -15,7 +15,7 @@ export class PickupPackage extends packageIdentifierMixin() {
   public static readonly [_internal] = {
     label: "package",
     schema: PackageIdentifier[_internal].schema.keys({
-      packaging: DefinitionIdentifier[_internal].schema.required(),
+      packaging: DefinitionIdentifier[_internal].schema.unknown(true).required(),
       dimensions: Dimensions[_internal].schema,
       weight: Weight[_internal].schema,
       metadata: Joi.object(),

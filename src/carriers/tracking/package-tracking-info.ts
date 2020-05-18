@@ -34,7 +34,7 @@ export class PackageTrackingInfo {
   public static readonly [_internal] = {
     label: "package",
     schema: Joi.object({
-      packaging: DefinitionIdentifier[_internal].schema,
+      packaging: DefinitionIdentifier[_internal].schema.unknown(true),
       dimensions: Dimensions[_internal].schema,
       weight: Weight[_internal].schema,
     }),

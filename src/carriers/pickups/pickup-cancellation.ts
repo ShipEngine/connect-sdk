@@ -17,7 +17,7 @@ export class PickupCancellation {
     schema: Joi.object({
       cancellationID: Joi.string().uuid().required(),
       id: Joi.string().trim().singleLine().min(1).max(100).required(),
-      pickupService: DefinitionIdentifier[_internal].schema.required(),
+      pickupService: DefinitionIdentifier[_internal].schema.unknown(true).required(),
       identifiers: Identifiers[_internal].schema,
       reason: Joi.string().enum(PickupCancellationReason).required(),
       notes: Note[_internal].notesSchema,

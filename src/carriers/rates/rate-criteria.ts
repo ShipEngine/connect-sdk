@@ -17,7 +17,7 @@ export class RateCriteria {
   public static readonly [_internal] = {
     label: "shipment",
     schema: Joi.object({
-      deliveryServices: Joi.array().items(DefinitionIdentifier[_internal].schema),
+      deliveryServices: Joi.array().items(DefinitionIdentifier[_internal].schema.unknown(true)),
       fulfillmentServices: Joi.array().items(Joi.string().enum(FulfillmentService)),
       shipDateTime: DateTimeZone[_internal].schema.required(),
       deliveryDateTime: DateTimeZone[_internal].schema,
@@ -25,7 +25,7 @@ export class RateCriteria {
       shipTo: AddressWithContactInfo[_internal].schema.required(),
       returns: Joi.object({
         isReturn: Joi.boolean(),
-        outboundShipment: ShipmentIdentifier[_internal].schema,
+        outboundShipment: ShipmentIdentifier[_internal].schema.unknown(true),
       }),
       packages: Joi.array().min(1).items(PackageRateCriteria[_internal].schema).required(),
     }),

@@ -28,10 +28,10 @@ export class RatePackage {
 
   /** @internal */
   public static readonly [_internal] = {
-    label: "label",
+    label: "package",
     schema: Joi.object({
-      packaging: DefinitionIdentifier[_internal].schema.required(),
-      deliveryConfirmation: DefinitionIdentifier[_internal].schema,
+      packaging: DefinitionIdentifier[_internal].schema.unknown(true).required(),
+      deliveryConfirmation: DefinitionIdentifier[_internal].schema.unknown(true),
     }),
   };
 

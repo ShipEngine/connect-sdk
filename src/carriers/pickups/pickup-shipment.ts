@@ -15,7 +15,7 @@ export class PickupShipment extends shipmentIdentifierMixin() {
   public static readonly [_internal] = {
     label: "shipment",
     schema: ShipmentIdentifier[_internal].schema.keys({
-      deliveryService: DefinitionIdentifier[_internal].schema.required(),
+      deliveryService: DefinitionIdentifier[_internal].schema.unknown(true).required(),
       metadata: Joi.object(),
       packages: Joi.array().min(1).items(PickupPackage[_internal].schema).required(),
     }),

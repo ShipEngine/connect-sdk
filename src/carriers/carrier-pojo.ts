@@ -1,5 +1,4 @@
-import { LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO } from "../common";
-import { FilePath, InlineOrReference, InlineOrReferenceArray, URLString, UUID } from "../types";
+import { FilePath, InlineOrReference, InlineOrReferenceArray, LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO, URLString, UUID } from "../common";
 import { DeliveryServiceDefinition, DeliveryServicePOJO } from "./delivery-service-pojo";
 import { ManifestLocation, ManifestShipment } from "./manifests/enums";
 import { CancelPickups, CancelShipments, CreateManifest, CreateShipment, RateShipment, SchedulePickup, TrackShipment } from "./methods";
@@ -10,8 +9,8 @@ import { PickupServiceDefinition, PickupServicePOJO } from "./pickups/pickup-ser
  * A carrier that provides delivery services
  */
 export interface CarrierPOJO extends CarrierDefinition {
-  deliveryServices: DeliveryServicePOJO[];
-  pickupServices?: PickupServicePOJO[];
+  deliveryServices: ReadonlyArray<DeliveryServicePOJO>;
+  pickupServices?: ReadonlyArray<PickupServicePOJO>;
   localization?: LocalizationPOJO<LocalizedBrandingPOJO>;
   createShipment?: CreateShipment;
   cancelShipments?: CancelShipments;

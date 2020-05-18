@@ -1,4 +1,6 @@
-import { Constructor, hideAndFreeze, Joi, _internal } from "../../internal";
+import { Constructor } from "../internal/types";
+import { hideAndFreeze, _internal } from "../internal/utils";
+import { Joi } from "../internal/validation";
 import { PersonName, PersonNamePOJO } from "./person-name";
 
 /**
@@ -22,10 +24,7 @@ export class ContactInfo extends contactInfoMixin() {
   public static readonly [_internal] = {
     label: "contact info",
     schema: Joi.object({
-      name: Joi.alternatives(
-        Joi.string().trim().singleLine().min(1).max(100),
-        PersonName[_internal].schema
-      ).required(),
+      name: PersonName[_internal].schema.required(),
       email: Joi.string().email().allow(""),
       phoneNumber: Joi.string().trim().singleLine().allow("").max(30),
       phoneNumberExtension: Joi.string().trim().singleLine().allow("").max(30),

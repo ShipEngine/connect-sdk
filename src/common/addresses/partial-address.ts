@@ -1,6 +1,7 @@
 // tslint:disable: max-classes-per-file
-import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { Country } from "../country";
+import { hideAndFreeze, _internal } from "../internal/utils";
+import { Joi } from "../internal/validation";
 import { AddressPOJO } from "./address";
 import { GeoCoordinate } from "./geo-coordinate";
 

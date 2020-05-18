@@ -28,6 +28,7 @@ describe("DeliveryConfirmation", () => {
 
     expect(confirmation).to.deep.equal({
       id: "12345678-1234-1234-1234-123456789012",
+      identifiers: {},
       name: "Handshake",
       type: "signature",
       description: "",
@@ -44,6 +45,7 @@ describe("DeliveryConfirmation", () => {
 
     expect(confirmation).to.deep.equal({
       id: "12345678-1234-1234-1234-123456789012",
+      identifiers: {},
       name: "Handshake",
       type: "signature",
       description: "A firm handshake",
@@ -60,6 +62,7 @@ describe("DeliveryConfirmation", () => {
 
     expect(confirmation).to.deep.equal({
       id: "12345678-1234-1234-1234-123456789012",
+      identifiers: {},
       name: "Handshake",
       type: "signature",
       description: "",

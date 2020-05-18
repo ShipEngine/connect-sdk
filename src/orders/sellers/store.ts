@@ -1,5 +1,5 @@
 import { Identifiers, IdentifiersPOJO } from "../../common";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { Warehouse, WarehousePOJO } from "./warehouse";
 
 
@@ -10,10 +10,10 @@ export interface StorePOJO {
   /**
    * The marketplace's unique ID for the store
    */
-  storeID: string;
+  id: string;
 
   /**
-   * Custom identifiers for this store
+   * Your own identifiers for this store
    */
   identifiers?: IdentifiersPOJO;
 
@@ -25,7 +25,7 @@ export interface StorePOJO {
   /**
    * The store's warehouse locations
    */
-  warehouses?: WarehousePOJO[];
+  warehouses?: ReadonlyArray<WarehousePOJO>;
 }
 
 
@@ -39,7 +39,7 @@ export class Store {
   public static readonly [_internal] = {
     label: "store",
     schema: Joi.object({
-      storeID: Joi.string().trim().singleLine().min(1).max(100).required(),
+      id: Joi.string().trim().singleLine().min(1).max(100).required(),
       identifiers: Identifiers[_internal].schema,
       name: Joi.string().trim().singleLine().min(1).max(100).required(),
       warehouses: Joi.array().items(Warehouse[_internal].schema),
@@ -52,10 +52,10 @@ export class Store {
   /**
    * The marketplace's unique ID for the store
    */
-  public readonly storeID: string;
+  public readonly id: string;
 
   /**
-   * Custom identifiers for this store
+   * Your own identifiers for this store
    */
   public readonly identifiers: Identifiers;
 
@@ -72,7 +72,7 @@ export class Store {
   //#endregion
 
   public constructor(pojo: StorePOJO) {
-    this.storeID = pojo.storeID;
+    this.id = pojo.id;
     this.identifiers = new Identifiers(pojo.identifiers);
     this.name = pojo.name;
     this.warehouses = pojo.warehouses ? pojo.warehouses.map((wh) => new Warehouse(wh)) : [];

@@ -1,7 +1,5 @@
-import { CancellationStatus, Country, LocalizedBrandingPOJO, Transaction, TransactionPOJO } from "../common";
-import { error, ErrorCode } from "../errors";
-import { App, hideAndFreeze, Joi, Localization, localize, validate, validateArray, _internal } from "../internal";
-import { FilePath, UUID } from "../types";
+import { CancellationStatus, Country, ErrorCode, FilePath, LocalizedBrandingPOJO, Transaction, TransactionPOJO, UUID } from "../common";
+import { App, error, hideAndFreeze, Joi, Localization, localize, validate, validateArray, _internal } from "../common/internal";
 import { CarrierPOJO } from "./carrier-pojo";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
@@ -56,7 +54,7 @@ export class Carrier {
       deliveryServices: Joi.array().min(1).items(DeliveryService[_internal].schema).required(),
       pickupServices: Joi.array().items(PickupService[_internal].schema),
       localization: Joi.object().localization({
-        name: Joi.string().trim().singleLine().min(1).max(100),
+        name: Joi.string().trim().singleLine().allow("").max(100),
         description: Joi.string().trim().singleLine().allow("").max(1000),
         websiteURL: Joi.string().website(),
       }),
@@ -345,7 +343,9 @@ export class Carrier {
   /**
    * Creates a new shipment, including its labels, tracking numbers, customs forms, etc.
    */
-  public async createShipment?(transaction: TransactionPOJO, shipment: NewShipmentPOJO): Promise<ShipmentConfirmation> {
+  public async createShipment?(
+    transaction: TransactionPOJO, shipment: NewShipmentPOJO): Promise<ShipmentConfirmation> {
+
     let _transaction, _shipment;
     let { app, createShipment } = this[_private];
 
@@ -371,13 +371,16 @@ export class Carrier {
    * Cancels one or more shipments that were previously created. Depending on the carrier,
    * this may include voiding labels, refunding charges, and/or removing the shipment from the day's manifest.
    */
-  public async cancelShipments?(transaction: TransactionPOJO, shipments: ShipmentCancellationPOJO[]): Promise<unknown> {
+  public async cancelShipments?(
+    transaction: TransactionPOJO, shipments: ShipmentCancellationPOJO[]): Promise<unknown> {
+
     let _transaction, _shipments;
     let { app, cancelShipments } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
-      _shipments = validateArray(shipments, ShipmentCancellation).map((shipment) => new ShipmentCancellation(shipment));
+      _shipments = validateArray(shipments, ShipmentCancellation)
+        .map((shipment) => new ShipmentCancellation(shipment));
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the cancelShipments method.", { originalError });
@@ -406,7 +409,9 @@ export class Carrier {
   /**
    * Calculates the shipping costs for a shipment, or multiple permutations of a shipment
    */
-  public async rateShipment?(transaction: TransactionPOJO, shipment: RateCriteriaPOJO): Promise<Rate[]> {
+  public async rateShipment?(
+    transaction: TransactionPOJO, shipment: RateCriteriaPOJO): Promise<Rate[]> {
+
     let _transaction, _shipment;
     let { app, rateShipment } = this[_private];
 
@@ -431,7 +436,9 @@ export class Carrier {
   /**
    * Returns tracking details for a shipment
    */
-  public async trackShipment?(transaction: TransactionPOJO, shipment: TrackingCriteriaPOJO): Promise<TrackingInfo> {
+  public async trackShipment?(
+    transaction: TransactionPOJO, shipment: TrackingCriteriaPOJO): Promise<TrackingInfo> {
+
     let _transaction, _shipment;
     let { app, trackShipment } = this[_private];
 
@@ -456,7 +463,9 @@ export class Carrier {
   /**
    * Creates an end-of-day manifest
    */
-  public async createManifest?(transaction: TransactionPOJO, manifest: NewManifestPOJO): Promise<ManifestConfirmation> {
+  public async createManifest?(
+    transaction: TransactionPOJO, manifest: NewManifestPOJO): Promise<ManifestConfirmation> {
+
     let _transaction, _manifest;
     let { createManifest } = this[_private];
 
@@ -481,24 +490,26 @@ export class Carrier {
   /**
    * Schedules a package pickup at a time and place
    */
-  public async schedulePickup?(transaction: TransactionPOJO, request: PickupRequestPOJO): Promise<PickupConfirmation> {
-    let _transaction, _request;
+  public async schedulePickup?(
+    transaction: TransactionPOJO, pickup: PickupRequestPOJO): Promise<PickupConfirmation> {
+
+    let _transaction, _pickup;
     let { app, schedulePickup } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
-      _request = new PickupRequest(validate(request, PickupRequest), app);
+      _pickup = new PickupRequest(validate(pickup, PickupRequest), app);
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the schedulePickup method.", { originalError });
     }
 
     try {
-      let confirmation = await schedulePickup!(_transaction, _request);
+      let confirmation = await schedulePickup!(_transaction, _pickup);
 
       if (confirmation && confirmation.shipments === undefined) {
         // By default, all shipments will be picked up
-        confirmation.shipments = request.shipments;
+        confirmation.shipments = _pickup.shipments;
       }
 
       return new PickupConfirmation(validate(confirmation, PickupConfirmation));
@@ -512,15 +523,15 @@ export class Carrier {
   /**
    * Cancels one or more previously-requested package pickups
    */
-  public async cancelPickups?(transaction: TransactionPOJO, pickups: PickupCancellationPOJO[])
-  : Promise<PickupCancellationOutcome[]> {
+  public async cancelPickups?(
+    transaction: TransactionPOJO, pickups: PickupCancellationPOJO[]): Promise<PickupCancellationOutcome[]> {
+
     let _transaction, _pickups;
     let { app, cancelPickups } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
-      _pickups = validateArray(pickups, PickupCancellation)
-        .map((pickup) => new PickupCancellation(pickup, app));
+      _pickups = validateArray(pickups, PickupCancellation).map((pickup) => new PickupCancellation(pickup, app));
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the cancelPickups method.", { originalError });

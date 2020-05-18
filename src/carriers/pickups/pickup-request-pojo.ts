@@ -1,5 +1,5 @@
 import { AddressPOJO, ContactInfoPOJO, NotePOJO, TimeRangePOJO } from "../../common";
-import { UUID } from "../../types";
+import { PickupServiceIdentifierPOJO } from "./pickup-service-pojo";
 import { PickupShipmentPOJO } from "./pickup-shipment-pojo";
 
 /**
@@ -7,9 +7,9 @@ import { PickupShipmentPOJO } from "./pickup-shipment-pojo";
  */
 export interface PickupRequestPOJO {
   /**
-   * The ID of the requested pickup service
+   * The requested pickup service
    */
-  pickupServiceID: UUID;
+  pickupService: PickupServiceIdentifierPOJO;
 
   /**
    * The requested window of time for the carrier to arrive.
@@ -29,10 +29,10 @@ export interface PickupRequestPOJO {
   /**
    * Human-readable information about the pickup
    */
-  notes?: string | Array<string | NotePOJO>;
+  notes?: string | ReadonlyArray<string | NotePOJO>;
 
   /**
    * The shipments to be picked up
    */
-  shipments: PickupShipmentPOJO[];
+  shipments: ReadonlyArray<PickupShipmentPOJO>;
 }

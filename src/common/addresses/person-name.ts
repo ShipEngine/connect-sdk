@@ -1,4 +1,5 @@
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { hideAndFreeze, _internal } from "../internal/utils";
+import { Joi } from "../internal/validation";
 
 /**
  * A person's name that has been parsed into separate fields.
@@ -21,13 +22,16 @@ export class PersonName {
   /** @internal */
   public static readonly [_internal] = {
     label: "name",
-    schema: Joi.object({
-      title: Joi.string().trim().singleLine().min(1).max(100),
-      given: Joi.string().trim().singleLine().min(1).max(100).required(),
-      middle: Joi.string().trim().singleLine().min(1).max(100),
-      family: Joi.string().trim().singleLine().min(1).max(100),
-      suffix: Joi.string().trim().singleLine().min(1).max(100),
-    }),
+    schema: Joi.alternatives(
+      Joi.string().trim().singleLine().min(1).max(100),
+      Joi.object({
+        title: Joi.string().trim().singleLine().allow("").max(100),
+        given: Joi.string().trim().singleLine().min(1).max(100).required(),
+        middle: Joi.string().trim().singleLine().allow("").max(100),
+        family: Joi.string().trim().singleLine().allow("").max(100),
+        suffix: Joi.string().trim().singleLine().allow("").max(100),
+      })
+    ),
   };
 
   //#endregion

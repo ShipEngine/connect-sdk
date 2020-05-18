@@ -1,5 +1,4 @@
-import { LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO } from "../common";
-import { FilePath, InlineOrReference, URLString, UUID } from "../types";
+import { FilePath, InlineOrReference, LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO, URLString, UUID } from "../common";
 import { GetSalesOrder, GetSalesOrdersByDate, GetSeller, ShipmentCanceled, ShipmentCreated } from "./methods";
 
 /**
@@ -10,8 +9,8 @@ export interface MarketplacePOJO extends MarketplaceDefinition {
   getSeller: GetSeller;
   getSalesOrder: GetSalesOrder;
   getSalesOrdersByDate: GetSalesOrdersByDate;
-  shipmentCreated: ShipmentCreated;
-  shipmentCanceled: ShipmentCanceled;
+  shipmentCreated?: ShipmentCreated;
+  shipmentCanceled?: ShipmentCanceled;
 }
 
 

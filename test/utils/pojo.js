@@ -137,7 +137,9 @@ const pojo = module.exports = {
 
   newShipment (props = {}) {
     return {
-      deliveryServiceID: "22222222-2222-2222-2222-222222222222",
+      deliveryService: {
+        id: "22222222-2222-2222-2222-222222222222",
+      },
       shipFrom: pojo.addressWithContactInfo(),
       shipTo: pojo.addressWithContactInfo(),
       shipDateTime: new Date(),
@@ -158,7 +160,9 @@ const pojo = module.exports = {
   pickupShipment (props = {}) {
     return {
       ...pojo.shipmentIdentifier(),
-      deliveryServiceID: "22222222-2222-2222-2222-222222222222",
+      deliveryService: {
+        id: "22222222-2222-2222-2222-222222222222",
+      },
       packages: [pojo.pickupPackage()],
       ...props,
     };
@@ -188,7 +192,9 @@ const pojo = module.exports = {
 
   newPackage (props = {}) {
     return {
-      packagingID: "44444444-4444-4444-4444-444444444444",
+      packaging: {
+        id: "44444444-4444-4444-4444-444444444444",
+      },
       label: pojo.newLabel(),
       ...props,
     };
@@ -196,7 +202,9 @@ const pojo = module.exports = {
 
   pickupPackage (props = {}) {
     return {
-      packagingID: "44444444-4444-4444-4444-444444444444",
+      packaging: {
+        id: "44444444-4444-4444-4444-444444444444",
+      },
       ...props,
     };
   },
@@ -270,7 +278,9 @@ const pojo = module.exports = {
 
   rate (props = {}) {
     return {
-      deliveryServiceID: "22222222-2222-2222-2222-222222222222",
+      deliveryService: {
+        id: "22222222-2222-2222-2222-222222222222",
+      },
       charges: [pojo.charge()],
       packages: [pojo.ratePackage()],
       ...props,
@@ -279,7 +289,9 @@ const pojo = module.exports = {
 
   ratePackage (props = {}) {
     return {
-      packagingID: "44444444-4444-4444-4444-444444444444",
+      packaging: {
+        id: "44444444-4444-4444-4444-444444444444",
+      },
       ...props,
     };
   },
@@ -297,7 +309,9 @@ const pojo = module.exports = {
 
   pickupRequest (props = {}) {
     return {
-      pickupServiceID: "33333333-3333-3333-3333-333333333333",
+      pickupService: {
+        id: "33333333-3333-3333-3333-333333333333",
+      },
       timeWindow: pojo.timeRange(),
       address: pojo.address(),
       contact: pojo.contactInfo(),
@@ -329,42 +343,42 @@ const pojo = module.exports = {
 
   sellerIdentifier (props = {}) {
     return {
-      sellerID: "DUMMY_SELLER_ID",
+      id: "DUMMY_SELLER_ID",
       ...props,
     };
   },
 
   storeIdentifier (props = {}) {
     return {
-      storeID: "DUMMY_STORE_ID",
+      id: "DUMMY_STORE_ID",
       ...props,
     };
   },
 
   warehouseIdentifier (props = {}) {
     return {
-      warehouseID: "DUMMY_WAREHOUSE_ID",
+      id: "DUMMY_WAREHOUSE_ID",
       ...props,
     };
   },
 
   salesOrderIdentifier (props = {}) {
     return {
-      salesOrderID: "DUMMY_SALES_ORDER_ID",
+      id: "DUMMY_SALES_ORDER_ID",
       ...props,
     };
   },
 
   salesOrderItemIdentifier (props = {}) {
     return {
-      salesOrderItemID: "DUMMY_SALES_ORDER_ITEM_ID",
+      id: "DUMMY_SALES_ORDER_ITEM_ID",
       ...props,
     };
   },
 
   productIdentifier (props = {}) {
     return {
-      productID: "DUMMY_PRODUCT_ID",
+      id: "DUMMY_PRODUCT_ID",
       ...props,
     };
   },

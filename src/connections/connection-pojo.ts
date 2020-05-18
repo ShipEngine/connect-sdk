@@ -1,5 +1,4 @@
-import { LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO } from "../common";
-import { FilePath, InlineOrReference, URLString, UUID } from "../types";
+import { FilePath, InlineOrReference, LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO, URLString, UUID } from "../common";
 import { FormDefinition, FormPOJO } from "./form-pojo";
 import { Connect } from "./methods";
 

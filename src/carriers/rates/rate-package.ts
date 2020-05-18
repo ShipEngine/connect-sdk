@@ -1,21 +1,22 @@
-import { App, hideAndFreeze, Joi, _internal } from "../../internal";
-import { UUID } from "../../types";
+import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { DeliveryConfirmation } from "../delivery-confirmation";
+import { DeliveryConfirmationIdentifierPOJO } from "../delivery-confirmation-pojo";
 import { Packaging } from "../packaging";
+import { PackagingIdentifierPOJO } from "../packaging-pojo";
 
 /**
  * The package information for a rate
  */
 export interface RatePackagePOJO {
   /**
-   * The ID of the packaging this rate is for
+   * The packaging this rate is for
    */
-  packagingID: UUID;
+  packaging: PackagingIdentifierPOJO;
 
   /**
-   * The ID of the delivery confirmation included in this rate
+   * The delivery confirmation included in this rate
    */
-  deliveryConfirmationID?: UUID;
+  deliveryConfirmation?: DeliveryConfirmationIdentifierPOJO;
 }
 
 
@@ -29,8 +30,8 @@ export class RatePackage {
   public static readonly [_internal] = {
     label: "label",
     schema: Joi.object({
-      packagingID: Joi.string().uuid().required(),
-      deliveryConfirmationID: Joi.string().uuid(),
+      packaging: DefinitionIdentifier[_internal].schema.required(),
+      deliveryConfirmation: DefinitionIdentifier[_internal].schema,
     }),
   };
 
@@ -50,8 +51,9 @@ export class RatePackage {
   //#endregion
 
   public constructor(pojo: RatePackagePOJO, app: App) {
-    this.packaging = app[_internal].references.lookup(pojo.packagingID, Packaging);
-    this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmationID, DeliveryConfirmation);
+    this.packaging = app[_internal].references.lookup(pojo.packaging, Packaging);
+    this.deliveryConfirmation =
+      app[_internal].references.lookup(pojo.deliveryConfirmation, DeliveryConfirmation);
 
     // Make this object immutable
     hideAndFreeze(this);

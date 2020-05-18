@@ -1,6 +1,7 @@
-import { hideAndFreeze, Joi, validate, _internal } from "../internal";
-import { UUID } from "../types";
+import { hideAndFreeze, _internal } from "./internal/utils";
+import { Joi, validate } from "./internal/validation";
 import { TransactionPOJO } from "./transaction-pojo";
+import { UUID } from "./types";
 
 const _private = Symbol("private fields");
 

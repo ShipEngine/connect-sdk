@@ -10,9 +10,9 @@ describe("getSeller", () => {
     let app = new OrderApp(pojo.orderApp({
       marketplace: pojo.marketplace({
         getSeller: () => ({
-          sellerID: "SELLER_123456",
+          id: "SELLER_123456",
           store: {
-            storeID: "STORE_123456",
+            id: "STORE_123456",
             name: "My Store",
           }
         })
@@ -22,12 +22,12 @@ describe("getSeller", () => {
     let confirmation = await app.marketplace.getSeller(pojo.transaction(), pojo.sellerIdentifier());
 
     expect(confirmation).to.deep.equal({
-      sellerID: "SELLER_123456",
+      id: "SELLER_123456",
       identifiers: {},
       contact: undefined,
       metadata: {},
       store: {
-        storeID: "STORE_123456",
+        id: "STORE_123456",
         identifiers: {},
         name: "My Store",
         warehouses: [],
@@ -39,7 +39,7 @@ describe("getSeller", () => {
     let app = new OrderApp(pojo.orderApp({
       marketplace: pojo.marketplace({
         getSeller: () => ({
-          sellerID: "SELLER_123456",
+          id: "SELLER_123456",
           identifiers: {
             mySellerID: "seller-123456",
           },
@@ -56,13 +56,13 @@ describe("getSeller", () => {
             }
           },
           store: {
-            storeID: "STORE_123456",
+            id: "STORE_123456",
             identifiers: {
               myStoreID: "store-123456",
             },
             name: "My Store",
             warehouses: [{
-              warehouseID: "WAREHOUSE-123456",
+              id: "WAREHOUSE-123456",
               identifiers: {
                 myWarehouseID: "warehouse-123456",
               },
@@ -108,7 +108,7 @@ describe("getSeller", () => {
     let confirmation = await app.marketplace.getSeller(pojo.transaction(), pojo.sellerIdentifier());
 
     expect(confirmation).to.deep.equal({
-      sellerID: "SELLER_123456",
+      id: "SELLER_123456",
       identifiers: {
         mySellerID: "seller-123456",
       },
@@ -131,13 +131,13 @@ describe("getSeller", () => {
         }
       },
       store: {
-        storeID: "STORE_123456",
+        id: "STORE_123456",
         identifiers: {
           myStoreID: "store-123456",
         },
         name: "My Store",
         warehouses: [{
-          warehouseID: "WAREHOUSE-123456",
+          id: "WAREHOUSE-123456",
           identifiers: {
             myWarehouseID: "warehouse-123456",
           },
@@ -231,7 +231,7 @@ describe("getSeller", () => {
         expect(error.message).to.equal(
           "Invalid input to the getSeller method. \n" +
           "Invalid seller: \n" +
-          "  sellerID is required \n" +
+          "  id is required \n" +
           "  identifiers must be of type object \n" +
           "  store is not allowed"
         );
@@ -277,9 +277,9 @@ describe("getSeller", () => {
         expect(error.message).to.equal(
           "Error in the getSeller method. \n" +
           "Invalid seller: \n" +
-          "  sellerID is required \n" +
+          "  id is required \n" +
           "  identifiers must be of type object \n" +
-          "  store.storeID is required \n" +
+          "  store.id is required \n" +
           "  store.name is required \n" +
           "  contact must be of type object"
         );

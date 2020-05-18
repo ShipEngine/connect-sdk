@@ -1,5 +1,5 @@
 import { DateTimeZonePOJO, NotePOJO, TimeRangePOJO } from "../../common";
-import { UUID } from "../../types";
+import { DeliveryServiceIdentifierPOJO } from "../delivery-service-pojo";
 import { FulfillmentService } from "../fulfillment-service";
 import { ShippingChargePOJO } from "../shipping-charge-pojo";
 import { RatePackagePOJO } from "./rate-package";
@@ -9,9 +9,9 @@ import { RatePackagePOJO } from "./rate-package";
  */
 export interface RatePOJO {
   /**
-   * The ID of the delivery service this rate is for
+   * The delivery service this rate is for
    */
-  deliveryServiceID: UUID;
+  deliveryService: DeliveryServiceIdentifierPOJO;
 
   /**
    * If the rate will be fulfilled using a well-known third-party carrier, such as UPS, FedEx, DHL, etc.
@@ -72,15 +72,15 @@ export interface RatePOJO {
    * If the carrier does not provide a detailed breakdown, then just use a single
    * charge of type "shipping".
    */
-  charges: ShippingChargePOJO[];
+  charges: ReadonlyArray<ShippingChargePOJO>;
 
   /**
    * Human-readable information regarding this rate quote, such as limitations or restrictions
    */
-  notes?: string | Array<string | NotePOJO>;
+  notes?: string | ReadonlyArray<string | NotePOJO>;
 
   /**
    * The list of packages in the shipment
    */
-  packages: RatePackagePOJO[];
+  packages: ReadonlyArray<RatePackagePOJO>;
 }

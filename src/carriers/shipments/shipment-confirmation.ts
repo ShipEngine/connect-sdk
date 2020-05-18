@@ -1,5 +1,5 @@
 import { DateTimeZone, MonetaryValue, TimeRange } from "../../common";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { FulfillmentService } from "../fulfillment-service";
 import { PackageConfirmation } from "../packages/package-confirmation";
 import { ShippingCharge } from "../shipping-charge";

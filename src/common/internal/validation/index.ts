@@ -1,7 +1,7 @@
 import * as joi from "@hapi/joi";
-import { _internal } from "..";
-import { error, ErrorCode } from "../../errors";
+import { ErrorCode } from "../../errors";
 import { ShipEngineConstructor } from "../types";
+import { error, _internal } from "../utils";
 import { objectValidation, ObjectValidationSchema } from "./object-validation";
 import { stringValidation, StringValidationSchema } from "./string-validation";
 

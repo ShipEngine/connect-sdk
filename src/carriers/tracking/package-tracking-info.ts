@@ -1,16 +1,16 @@
 import { Dimensions, DimensionsPOJO, Weight, WeightPOJO } from "../../common";
-import { App, hideAndFreeze, Joi, _internal } from "../../internal";
-import { UUID } from "../../types";
+import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { Packaging } from "../packaging";
+import { PackagingIdentifierPOJO } from "../packaging-pojo";
 
 /**
  * The actual package info, as determined by the carrier
  */
 export interface PackageTrackingInfoPOJO {
   /**
-   * The ID of the actual packaging that was used, as determined by the carrier
+   * The actual packaging that was used, as determined by the carrier
    */
-  packagingID?: UUID;
+  packaging?: PackagingIdentifierPOJO;
 
   /**
    * The actual package dimensions as measured by the carrier
@@ -34,7 +34,7 @@ export class PackageTrackingInfo {
   public static readonly [_internal] = {
     label: "package",
     schema: Joi.object({
-      packagingID: Joi.string().uuid(),
+      packaging: DefinitionIdentifier[_internal].schema,
       dimensions: Dimensions[_internal].schema,
       weight: Weight[_internal].schema,
     }),
@@ -61,7 +61,7 @@ export class PackageTrackingInfo {
   //#endregion
 
   public constructor(pojo: PackageTrackingInfoPOJO, app: App) {
-    this.packaging = app[_internal].references.lookup(pojo.packagingID, Packaging);
+    this.packaging = app[_internal].references.lookup(pojo.packaging, Packaging);
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
 

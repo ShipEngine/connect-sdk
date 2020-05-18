@@ -1,5 +1,5 @@
 import { Identifiers, IdentifiersPOJO } from "../common";
-import { hideAndFreeze, Joi, _internal } from "../internal";
+import { hideAndFreeze, Joi, _internal } from "../common/internal";
 
 
 /**
@@ -9,10 +9,15 @@ export interface ProductIdentifierPOJO {
   /**
    * The product catalog's unique ID for the order
    */
-  productID: string;
+  id: string;
 
   /**
-   * Custom identifiers for this product
+   * The Stock Keeping Unit code for this item
+   */
+  sku?: string;
+
+  /**
+   * Your own identifiers for this product
    */
   identifiers?: IdentifiersPOJO;
 }
@@ -28,7 +33,8 @@ export class ProductIdentifier {
   public static readonly [_internal] = {
     label: "product",
     schema: Joi.object({
-      productID: Joi.string().trim().singleLine().min(1).max(100).required(),
+      id: Joi.string().trim().singleLine().min(1).max(100).required(),
+      sku: Joi.string().trim().singleLine().allow("").max(100),
       identifiers: Identifiers[_internal].schema,
     }),
   };
@@ -39,17 +45,23 @@ export class ProductIdentifier {
   /**
    * The product catalog's unique ID for the product
    */
-  public readonly productID: string;
+  public readonly id: string;
 
   /**
-   * Custom identifiers for this product
+   * The Stock Keeping Unit code for this item
+   */
+  public readonly sku: string;
+
+  /**
+   * Your own identifiers for this product
    */
   public readonly identifiers: Identifiers;
 
   //#endregion
 
   public constructor(pojo: ProductIdentifierPOJO) {
-    this.productID = pojo.productID;
+    this.id = pojo.id;
+    this.sku = pojo.sku || "";
     this.identifiers = new Identifiers(pojo.identifiers);
 
     // Make this object immutable

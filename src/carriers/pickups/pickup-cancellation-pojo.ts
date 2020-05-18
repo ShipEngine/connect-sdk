@@ -1,6 +1,6 @@
-import { AddressPOJO, ContactInfoPOJO, IdentifiersPOJO, NotePOJO, TimeRangePOJO } from "../../common";
-import { UUID } from "../../types";
+import { AddressPOJO, ContactInfoPOJO, IdentifiersPOJO, NotePOJO, TimeRangePOJO, UUID } from "../../common";
 import { PickupCancellationReason } from "../enums";
+import { PickupServiceIdentifierPOJO } from "./pickup-service-pojo";
 import { PickupShipmentPOJO } from "./pickup-shipment-pojo";
 
 /**
@@ -13,19 +13,19 @@ export interface PickupCancellationPOJO {
   cancellationID: UUID;
 
   /**
-   * The confirmation ID of the pickup request to be canceled
+   * The unique ID of the pickup to be canceled
    */
-  confirmationID?: string;
+  id: string;
 
   /**
-   * Custom identifiers for this confirmation
+   * Your own identifiers for this pickup
    */
   identifiers?: IdentifiersPOJO;
 
   /**
-   * The ID of the requested pickup service
+   * The requested pickup service
    */
-  pickupServiceID: UUID;
+  pickupService: PickupServiceIdentifierPOJO;
 
   /**
    * The reason for the cancellation
@@ -35,7 +35,7 @@ export interface PickupCancellationPOJO {
   /**
    * Human-readable information about why the customer is cancelling the pickup
    */
-  notes?: string | Array<string | NotePOJO>;
+  notes?: string | ReadonlyArray<string | NotePOJO>;
 
   /**
    * The address where the pickup was requested
@@ -50,12 +50,12 @@ export interface PickupCancellationPOJO {
   /**
    * A list of dates and times when the carrier intended to pickup
    */
-  timeWindows: TimeRangePOJO[];
+  timeWindows: ReadonlyArray<TimeRangePOJO>;
 
   /**
    * The shipments to be picked up
    */
-  shipments: PickupShipmentPOJO[];
+  shipments: ReadonlyArray<PickupShipmentPOJO>;
 
   /**
    * Arbitrary data about this pickup that was previously persisted by the ShipEngine Platform.

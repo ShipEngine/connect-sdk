@@ -1,6 +1,5 @@
 import { LocalizedInfoPOJO } from "../../common";
-import { App, hideAndFreeze, Joi, Localization, localize, _internal } from "../../internal";
-import { UUID } from "../../types";
+import { App, DefinitionIdentifier, hideAndFreeze, Joi, Localization, localize, _internal } from "../../common/internal";
 import { PickupServicePOJO } from "./pickup-service-pojo";
 
 const _private = Symbol("private fields");
@@ -8,19 +7,18 @@ const _private = Symbol("private fields");
 /**
  * A package pickup service that is offered by a carrier
  */
-export class PickupService {
+export class PickupService extends DefinitionIdentifier {
   //#region Private/Internal Fields
 
   /** @internal */
   public static readonly [_internal] = {
     label: "pickup service",
-    schema: Joi.object({
-      id: Joi.string().uuid().required(),
+    schema: DefinitionIdentifier[_internal].schema.keys({
       name: Joi.string().trim().singleLine().min(1).max(100).required(),
       description: Joi.string().trim().singleLine().allow("").max(1000),
       hasSandbox: Joi.boolean(),
       localization: Joi.object().localization({
-        name: Joi.string().trim().singleLine().min(1).max(100),
+        name: Joi.string().trim().singleLine().allow("").max(100),
         description: Joi.string().trim().singleLine().allow("").max(1000),
       }),
     }),
@@ -34,12 +32,6 @@ export class PickupService {
 
   //#endregion
   //#region Public Fields
-
-  /**
-   * A UUID that uniquely identifies the pickup service.
-   * This ID should never change, even if the service name changes.
-   */
-  public readonly id: UUID;
 
   /**
    * The user-friendly service name (e.g. "One-Time Pickup", "Recurring Pickup", "Drop-Off")
@@ -61,7 +53,8 @@ export class PickupService {
   //#endregion
 
   public constructor(pojo: PickupServicePOJO, app: App) {
-    this.id = pojo.id;
+    super(pojo);
+
     this.name = pojo.name;
     this.description = pojo.description || "";
     this.hasSandbox = pojo.hasSandbox || false;

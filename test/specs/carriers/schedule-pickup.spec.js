@@ -11,7 +11,7 @@ describe("schedulePickup", () => {
       carrier: pojo.carrier({
         pickupServices: [pojo.pickupService()],
         schedulePickup: () => ({
-          pickupID: "ABCDEF-123456",
+          id: "ABCDEF-123456",
           timeWindows: [{
             startDateTime: "2005-05-05T05:05:05.005+05:00",
             endDateTime: new Date("2005-05-05T05:05:05.005+05:00"),
@@ -30,7 +30,7 @@ describe("schedulePickup", () => {
     let confirmation = await app.carrier.schedulePickup(pojo.transaction(), pojo.pickupRequest());
 
     expect(confirmation).to.deep.equal({
-      pickupID: "ABCDEF-123456",
+      id: "ABCDEF-123456",
       identifiers: {},
       notes: [],
       metadata: {},
@@ -70,7 +70,7 @@ describe("schedulePickup", () => {
       carrier: pojo.carrier({
         pickupServices: [pojo.pickupService()],
         schedulePickup: () => ({
-          pickupID: "ABCDEF-123456",
+          id: "ABCDEF-123456",
           identifiers: {
             myPickupID: "123456-ABCDEFG",
           },
@@ -123,7 +123,7 @@ describe("schedulePickup", () => {
     let confirmation = await app.carrier.schedulePickup(pojo.transaction(), pojo.pickupRequest());
 
     expect(confirmation).to.deep.equal({
-      pickupID: "ABCDEF-123456",
+      id: "ABCDEF-123456",
       identifiers: {
         myPickupID: "123456-ABCDEFG",
       },
@@ -247,7 +247,9 @@ describe("schedulePickup", () => {
 
       try {
         await app.carrier.schedulePickup(pojo.transaction(), {
-          pickupServiceID: "Come get it",
+          pickupService: {
+            id: "Come get it",
+          },
           timeWindow: {
             startDateTime: "9999-99-99T99:99:99.999Z",
             endDateTime: Date.now(),
@@ -261,7 +263,7 @@ describe("schedulePickup", () => {
         expect(error.message).to.equal(
           "Invalid input to the schedulePickup method. \n" +
           "Invalid pickup request: \n" +
-          "  pickupServiceID must be a valid GUID \n" +
+          "  pickupService.id must be a valid GUID \n" +
           "  timeWindow.startDateTime must be a valid date/time \n" +
           "  timeWindow.endDateTime must be one of date, string, object \n" +
           "  address is required \n" +
@@ -272,7 +274,7 @@ describe("schedulePickup", () => {
       }
     });
 
-    it("should throw an error if called with an invalid pickupServiceID", async () => {
+    it("should throw an error if called with an invalid pickupService", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
           schedulePickup () {}
@@ -281,7 +283,9 @@ describe("schedulePickup", () => {
 
       try {
         await app.carrier.schedulePickup(pojo.transaction(), pojo.pickupRequest({
-          pickupServiceID: "22222222-2222-2222-2222-222222222222",
+          pickupService: {
+            id: "22222222-2222-2222-2222-222222222222",
+          }
         }));
         assert.fail("An error should have been thrown");
       }
@@ -308,7 +312,7 @@ describe("schedulePickup", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Error in the schedulePickup method. \n" +
-          "Invalid pickup confirmation: \n" +
+          "Invalid pickup: \n" +
           "  A value is required"
         );
       }
@@ -319,7 +323,7 @@ describe("schedulePickup", () => {
         carrier: pojo.carrier({
           pickupServices: [pojo.pickupService()],
           schedulePickup: () => ({
-            pickupID: 12345,
+            id: 12345,
             timeWindows: [],
             notes: [12345],
             metadata: false
@@ -334,8 +338,8 @@ describe("schedulePickup", () => {
       catch (error) {
         expect(error.message).to.equal(
           "Error in the schedulePickup method. \n" +
-          "Invalid pickup confirmation: \n" +
-          "  pickupID must be a string \n" +
+          "Invalid pickup: \n" +
+          "  id must be a string \n" +
           "  timeWindows must contain at least 1 items \n" +
           "  charges is required \n" +
           "  notes[0] does not match any of the allowed types \n" +

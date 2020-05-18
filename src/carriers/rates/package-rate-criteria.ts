@@ -1,5 +1,5 @@
 import { Dimensions, MonetaryValue, Weight } from "../../common";
-import { App, hideAndFreeze, Joi, _internal } from "../../internal";
+import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { Packaging } from "../packaging";
 import { PackageRateCriteriaPOJO } from "./package-rate-criteria-pojo";
@@ -15,8 +15,8 @@ export class PackageRateCriteria {
   public static readonly [_internal] = {
     label: "package",
     schema: Joi.object({
-      packagingIDs: Joi.array().items(Joi.string().uuid()),
-      deliveryConfirmationIDs: Joi.array().items(Joi.string().uuid()),
+      packaging: Joi.array().items(DefinitionIdentifier[_internal].schema),
+      deliveryConfirmations: Joi.array().items(DefinitionIdentifier[_internal].schema),
       dimensions: Dimensions[_internal].schema,
       weight: Weight[_internal].schema,
       insuredValue: MonetaryValue[_internal].schema,
@@ -69,9 +69,9 @@ export class PackageRateCriteria {
   //#endregion
 
   public constructor(pojo: PackageRateCriteriaPOJO, app: App) {
-    this.packaging = (pojo.packagingIDs || [])
+    this.packaging = (pojo.packaging || [])
       .map((id) => app[_internal].references.lookup(id, Packaging));
-    this.deliveryConfirmations = (pojo.deliveryConfirmationIDs || [])
+    this.deliveryConfirmations = (pojo.deliveryConfirmations || [])
       .map((id) => app[_internal].references.lookup(id, DeliveryConfirmation));
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);

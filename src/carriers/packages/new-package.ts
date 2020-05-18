@@ -1,5 +1,5 @@
 import { Currency, Dimensions, MonetaryValue, Weight } from "../../common";
-import { App, hideAndFreeze, Joi, _internal } from "../../internal";
+import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { NewLabel } from "../documents/new-label";
 import { NonDeliveryOption } from "../enums";
@@ -19,8 +19,8 @@ export class NewPackage {
   public static readonly [_internal] = {
     label: "package",
     schema: Joi.object({
-      packagingID: Joi.string().uuid().required(),
-      deliveryConfirmationID: Joi.string().uuid(),
+      packaging: DefinitionIdentifier[_internal].schema.required(),
+      deliveryConfirmation: DefinitionIdentifier[_internal].schema,
       dimensions: Dimensions[_internal].schema,
       weight: Weight[_internal].schema,
       insuredValue: MonetaryValue[_internal].schema,
@@ -110,8 +110,8 @@ export class NewPackage {
   //#endregion
 
   public constructor(pojo: NewPackagePOJO, app: App) {
-    this.packaging = app[_internal].references.lookup(pojo.packagingID, Packaging);
-    this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmationID, DeliveryConfirmation);
+    this.packaging = app[_internal].references.lookup(pojo.packaging, Packaging);
+    this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmation, DeliveryConfirmation);
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
     this.insuredValue = new MonetaryValue(pojo.insuredValue || { value: 0, currency: Currency.UnitedStatesDollar });

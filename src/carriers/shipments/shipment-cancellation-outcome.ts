@@ -1,6 +1,5 @@
-import { CancellationStatus, Note } from "../../common";
-import { createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
-import { UUID } from "../../types";
+import { CancellationStatus, Note, UUID } from "../../common";
+import { createNotes, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { ShipmentCancellationOutcomePOJO } from "./shipment-cancellation-outcome-pojo";
 import { ShipmentIdentifier } from "./shipment-identifier";
 
@@ -16,8 +15,8 @@ export class ShipmentCancellationOutcome {
     schema: ShipmentIdentifier[_internal].schema.keys({
       cancellationID: Joi.string().uuid().required(),
       status: Joi.string().enum(CancellationStatus).required(),
-      confirmationID: Joi.string().trim().singleLine().allow("").max(100),
-      code: Joi.string().trim().singleLine().min(1).max(100),
+      confirmationNumber: Joi.string().trim().singleLine().allow("").max(100),
+      code: Joi.string().trim().singleLine().allow("").max(100),
       description: Joi.string().trim().singleLine().allow("").max(1000),
       notes: Note[_internal].notesSchema,
       metadata: Joi.object(),
@@ -38,9 +37,9 @@ export class ShipmentCancellationOutcome {
   public readonly status: CancellationStatus;
 
   /**
-   * The confirmation ID of the cancellation
+   * The confirmation number of the cancellation
    */
-  public readonly confirmationID: string;
+  public readonly confirmationNumber: string;
 
   /**
    * The carrier's code for this cancellation outcome
@@ -70,7 +69,7 @@ export class ShipmentCancellationOutcome {
   public constructor(pojo: ShipmentCancellationOutcomePOJO) {
     this.cancellationID = pojo.cancellationID;
     this.status = pojo.status;
-    this.confirmationID = pojo.confirmationID || "";
+    this.confirmationNumber = pojo.confirmationNumber || "";
     this.code = pojo.code || "";
     this.description = pojo.description || "";
     this.notes = createNotes(pojo.notes);

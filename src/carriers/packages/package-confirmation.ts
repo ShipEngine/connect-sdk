@@ -1,8 +1,10 @@
-import { hideAndFreeze, Joi, _internal } from "../../internal";
-import { URLString } from "../../types";
-import { createDocument, Document, Label } from "../documents/document";
-import { DocumentPOJO, LabelPOJO } from "../documents/document-pojo";
+import { URLString } from "../../common";
+import { hideAndFreeze, Joi, _internal } from "../../common/internal";
+import { Document } from "../documents/document";
+import { DocumentPOJO } from "../documents/document-pojo";
 import { DocumentType } from "../documents/enums";
+import { Label, LabelPOJO } from "../documents/label";
+import { createDocument, isLabel } from "../utils";
 import { PackageIdentifier, packageIdentifierMixin, PackageIdentifierPOJO } from "./package-identifier";
 
 /**
@@ -17,7 +19,7 @@ export interface PackageConfirmationPOJO extends PackageIdentifierPOJO {
   /**
    * The documents for this package, such as shipping labels, customs forms, etc.
    */
-  documents: Array<DocumentPOJO | LabelPOJO>;
+  documents: ReadonlyArray<DocumentPOJO | LabelPOJO>;
 
   /**
    * Arbitrary data about this package that will be persisted by the ShipEngine Integration Platform.
@@ -74,7 +76,7 @@ export class PackageConfirmation extends packageIdentifierMixin() {
    * The first document of type "label" in the `documents` array
    */
   public get label(): Label | undefined {
-    return this.documents.find((doc) => doc.type === DocumentType.Label) as Label | undefined;
+    return this.documents.find(isLabel);
   }
 
   /**

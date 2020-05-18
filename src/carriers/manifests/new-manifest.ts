@@ -1,6 +1,5 @@
-import { Address, DateTimeZone } from "../../common";
-import { error, ErrorCode } from "../../errors";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { Address, DateTimeZone, ErrorCode } from "../../common";
+import { error, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { Carrier } from "../carrier";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 import { ManifestLocation } from "./enums";

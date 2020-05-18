@@ -1,5 +1,5 @@
 import { AddressWithContactInfo, Country, DateTimeZone, MonetaryValue } from "../../common";
-import { App, hideAndFreeze, Joi, _internal } from "../../internal";
+import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { DeliveryService } from "../delivery-service";
 import { BilledParty } from "../enums";
 import { NewPackage } from "../packages/new-package";
@@ -18,14 +18,14 @@ export class NewShipment {
   public static readonly [_internal] = {
     label: "shipment",
     schema: Joi.object({
-      deliveryServiceID: Joi.string().uuid().required(),
+      deliveryService: DefinitionIdentifier[_internal].schema.required(),
       shipFrom: AddressWithContactInfo[_internal].schema.required(),
       shipTo: AddressWithContactInfo[_internal].schema.required(),
       returnTo: AddressWithContactInfo[_internal].schema,
       shipDateTime: DateTimeZone[_internal].schema.required(),
       returns: Joi.object({
         isReturn: Joi.boolean(),
-        rmaNumber: Joi.string().trim().singleLine().min(1).max(100),
+        rmaNumber: Joi.string().trim().singleLine().allow("").max(100),
         outboundShipment: ShipmentIdentifier[_internal].schema,
       }),
       billing: Joi.object({
@@ -159,7 +159,7 @@ export class NewShipment {
   //#endregion
 
   public constructor(pojo: NewShipmentPOJO, app: App) {
-    this.deliveryService = app[_internal].references.lookup(pojo.deliveryServiceID, DeliveryService);
+    this.deliveryService = app[_internal].references.lookup(pojo.deliveryService, DeliveryService);
     this.shipFrom = new AddressWithContactInfo(pojo.shipFrom);
     this.shipTo = new AddressWithContactInfo(pojo.shipTo);
     this.returnTo = pojo.returnTo ? new AddressWithContactInfo(pojo.returnTo) : this.shipFrom;

@@ -1,5 +1,5 @@
 import { Address, ContactInfo, Note, TimeRange } from "../../common";
-import { App, createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
+import { App, createNotes, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { PickupRequestPOJO } from "./pickup-request-pojo";
 import { PickupService } from "./pickup-service";
 import { PickupShipment } from "./pickup-shipment";
@@ -14,7 +14,7 @@ export class PickupRequest {
   public static readonly [_internal] = {
     label: "pickup request",
     schema: Joi.object({
-      pickupServiceID: Joi.string().uuid().required(),
+      pickupService: DefinitionIdentifier[_internal].schema.required(),
       timeWindow: TimeRange[_internal].schema.required(),
       address: Address[_internal].schema.required(),
       contact: ContactInfo[_internal].schema.required(),
@@ -59,7 +59,7 @@ export class PickupRequest {
   //#endregion
 
   public constructor(pojo: PickupRequestPOJO, app: App) {
-    this.pickupService = app[_internal].references.lookup(pojo.pickupServiceID, PickupService);
+    this.pickupService = app[_internal].references.lookup(pojo.pickupService, PickupService);
     this.timeWindow = new TimeRange(pojo.timeWindow);
     this.address = new Address(pojo.address);
     this.contact = new ContactInfo(pojo.contact);

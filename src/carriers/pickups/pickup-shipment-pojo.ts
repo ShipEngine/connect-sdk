@@ -1,6 +1,7 @@
 import { DimensionsPOJO, WeightPOJO } from "../../common";
-import { UUID } from "../../types";
+import { DeliveryServiceIdentifierPOJO } from "../delivery-service-pojo";
 import { PackageIdentifierPOJO } from "../packages/package-identifier";
+import { PackagingIdentifierPOJO } from "../packaging-pojo";
 import { ShipmentIdentifierPOJO } from "../shipments/shipment-identifier";
 
 /**
@@ -8,9 +9,9 @@ import { ShipmentIdentifierPOJO } from "../shipments/shipment-identifier";
  */
 export interface PickupShipmentPOJO extends ShipmentIdentifierPOJO {
   /**
-   * The ID of the delivery service to use
+   * The delivery service to use for this shipment
    */
-  deliveryServiceID: UUID;
+  deliveryService: DeliveryServiceIdentifierPOJO;
 
   /**
    * Arbitrary data about this shipment that was previously persisted by the ShipEngine Platform.
@@ -20,7 +21,7 @@ export interface PickupShipmentPOJO extends ShipmentIdentifierPOJO {
   /**
    * The list of packages in the shipment
    */
-  packages: PickupPackagePOJO[];
+  packages: ReadonlyArray<PickupPackagePOJO>;
 }
 
 
@@ -29,9 +30,9 @@ export interface PickupShipmentPOJO extends ShipmentIdentifierPOJO {
  */
 export interface PickupPackagePOJO extends PackageIdentifierPOJO {
   /**
-   * The ID of the packaging used
+   * The packaging used for this package
    */
-  packagingID: UUID;
+  packaging: PackagingIdentifierPOJO;
 
   /**
    * The package dimensions

@@ -1,4 +1,4 @@
-import { UUID } from "../types";
+import { UUID } from "./types";
 
 /**
  * The ShpEngine Integration Platform passes this object to every method call.

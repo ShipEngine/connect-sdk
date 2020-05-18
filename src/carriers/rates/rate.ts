@@ -1,6 +1,5 @@
-import { DateTimeZone, MonetaryValue, Note, TimeRange } from "../../common";
-import { error, ErrorCode } from "../../errors";
-import { App, createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
+import { DateTimeZone, ErrorCode, MonetaryValue, Note, TimeRange } from "../../common";
+import { App, createNotes, DefinitionIdentifier, error, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { DeliveryService } from "../delivery-service";
 import { FulfillmentService } from "../fulfillment-service";
 import { ShippingCharge } from "../shipping-charge";
@@ -18,7 +17,7 @@ export class Rate {
   public static readonly [_internal] = {
     label: "rate",
     schema: Joi.object({
-      deliveryServiceID: Joi.string().uuid().required(),
+      deliveryService: DefinitionIdentifier[_internal].schema.required(),
       fulfillmentService: Joi.string().enum(FulfillmentService),
       shipDateTime: DateTimeZone[_internal].schema,
       deliveryDateTime: DateTimeZone[_internal].schema,
@@ -129,7 +128,7 @@ export class Rate {
   //#endregion
 
   public constructor(pojo: RatePOJO, app: App) {
-    this.deliveryService = app[_internal].references.lookup(pojo.deliveryServiceID, DeliveryService);
+    this.deliveryService = app[_internal].references.lookup(pojo.deliveryService, DeliveryService);
     this.fulfillmentService = pojo.fulfillmentService;
     this.shipDateTime = pojo.shipDateTime ? new DateTimeZone(pojo.shipDateTime) : undefined;
     this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;

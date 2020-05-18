@@ -1,4 +1,4 @@
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { ShipmentIdentifier, shipmentIdentifierMixin, ShipmentIdentifierPOJO } from "../shipments/shipment-identifier";
 
 /**

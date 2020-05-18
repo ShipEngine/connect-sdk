@@ -1,6 +1,6 @@
 import * as currency from "currency.js";
 import { Identifiers, MonetaryValue, Quantity } from "../../common";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { SalesOrderIdentifier } from "../../orders";
 import { PackageItemPOJO } from "./package-item-pojo";
 
@@ -31,7 +31,7 @@ export class PackageItem {
   public readonly sku: string;
 
   /**
-   * Custom identifiers for this item
+   * Your own identifiers for this item
    */
   public readonly identifiers: Identifiers;
 

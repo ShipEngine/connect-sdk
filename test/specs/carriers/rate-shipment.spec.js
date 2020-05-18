@@ -10,7 +10,9 @@ describe("rateShipment", () => {
     let app = new CarrierApp(pojo.carrierApp({
       carrier: pojo.carrier({
         rateShipment: () => [{
-          deliveryServiceID: "22222222-2222-2222-2222-222222222222",
+          deliveryService: {
+            id: "22222222-2222-2222-2222-222222222222"
+          },
           charges: [{
             type: "shipping",
             amount: {
@@ -19,7 +21,9 @@ describe("rateShipment", () => {
             },
           }],
           packages: [{
-            packagingID: "44444444-4444-4444-4444-444444444444",
+            packaging: {
+              id: "44444444-4444-4444-4444-444444444444",
+            }
           }]
         }]
       }),
@@ -77,7 +81,10 @@ describe("rateShipment", () => {
           })
         ],
         rateShipment: () => [{
-          deliveryServiceID: "22222222-2222-2222-2222-222222222222",
+          deliveryService: {
+            id: "22222222-2222-2222-2222-222222222222",
+            identifiers: {},
+          },
           fulfillmentService: "ups_ground",
           shipDateTime: "2005-05-05T05:05:05.005+00:30",
           deliveryDateTime: new Date("2005-05-05T05:05:05.005-07:00"),
@@ -117,8 +124,14 @@ describe("rateShipment", () => {
             },
           ],
           packages: [{
-            packagingID: "44444444-4444-4444-4444-444444444444",
-            deliveryConfirmationID: "55555555-5555-5555-5555-555555555555",
+            packaging: {
+              id: "44444444-4444-4444-4444-444444444444",
+              identifiers: {},
+            },
+            deliveryConfirmation: {
+              id: "55555555-5555-5555-5555-555555555555",
+              identifiers: {},
+            }
           }]
         }]
       }),
@@ -268,7 +281,7 @@ describe("rateShipment", () => {
 
       try {
         await app.carrier.rateShipment(pojo.transaction(), {
-          deliveryServiceIDs: "12345678-1234-1234-1234-123456789012",
+          deliveryServices: "12345678-1234-1234-1234-123456789012",
           deliveryDateTime: "9999-99-99T99:99:99.999Z",
           packages: [],
         });
@@ -278,7 +291,7 @@ describe("rateShipment", () => {
         expect(error.message).to.equal(
           "Invalid input to the rateShipment method. \n" +
           "Invalid shipment: \n" +
-          "  deliveryServiceIDs must be an array \n" +
+          "  deliveryServices must be an array \n" +
           "  shipDateTime is required \n" +
           "  deliveryDateTime must be a valid date/time \n" +
           "  shipFrom is required \n" +
@@ -318,7 +331,9 @@ describe("rateShipment", () => {
             notes: false,
             packages: [
               {
-                deliveryConfirmationID: "Handshake",
+                deliveryConfirmation: {
+                  id: "Handshake",
+                }
               }
             ]
           }]
@@ -333,23 +348,25 @@ describe("rateShipment", () => {
         expect(error.message).to.equal(
           "Error in the rateShipment method. \n" +
           "Invalid rate: \n" +
-          "  [0].deliveryServiceID is required \n" +
+          "  [0].deliveryService is required \n" +
           "  [0].deliveryDateTime must be a valid date/time \n" +
           "  [0].isNegotiatedRate must be a boolean \n" +
           "  [0].charges must contain at least 1 items \n" +
           "  [0].notes must be one of string, array \n" +
-          "  [0].packages[0].packagingID is required \n" +
-          "  [0].packages[0].deliveryConfirmationID must be a valid GUID"
+          "  [0].packages[0].packaging is required \n" +
+          "  [0].packages[0].deliveryConfirmation.id must be a valid GUID"
         );
       }
     });
 
-    it("should throw an error if an invalid deliveryServiceID is returned", async () => {
+    it("should throw an error if an invalid deliveryService is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
           rateShipment: () => [
             pojo.rate({
-              deliveryServiceID: "12345678-1234-1234-1234-123456789012",
+              deliveryService: {
+                id: "12345678-1234-1234-1234-123456789012",
+              }
             })
           ]
         }),
@@ -367,13 +384,15 @@ describe("rateShipment", () => {
       }
     });
 
-    it("should throw an error if an invalid packagingID is returned", async () => {
+    it("should throw an error if an invalid packaging is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
           rateShipment: () => [
             pojo.rate({
               packages: [{
-                packagingID: "12345678-1234-1234-1234-123456789012",
+                packaging: {
+                  id: "12345678-1234-1234-1234-123456789012",
+                }
               }]
             })
           ]
@@ -392,14 +411,16 @@ describe("rateShipment", () => {
       }
     });
 
-    it("should throw an error if an invalid deliveryConfirmationID is returned", async () => {
+    it("should throw an error if an invalid deliveryConfirmation is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         carrier: pojo.carrier({
           rateShipment: () => [
             pojo.rate({
               packages: [
                 pojo.ratePackage({
-                  deliveryConfirmationID: "22222222-2222-2222-2222-222222222222",
+                  deliveryConfirmation: {
+                    id: "22222222-2222-2222-2222-222222222222",
+                  }
                 })
               ]
             })

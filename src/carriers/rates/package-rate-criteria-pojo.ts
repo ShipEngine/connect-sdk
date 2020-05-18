@@ -1,21 +1,22 @@
 import { DimensionsPOJO, MonetaryValuePOJO, WeightPOJO } from "../../common";
-import { UUID } from "../../types";
+import { DeliveryConfirmationIdentifierPOJO } from "../delivery-confirmation-pojo";
+import { PackagingIdentifierPOJO } from "../packaging-pojo";
 
 /**
  * The package details needed for a rate quote
  */
 export interface PackageRateCriteriaPOJO {
   /**
-   * The IDs of the packaging that may be used. If not specified, then rate quotes should be
+   * The packaging that may be used. If not specified, then rate quotes should be
    * returned for all applicable packaging.
    */
-  packagingIDs?: UUID[];
+  packaging?: ReadonlyArray<PackagingIdentifierPOJO>;
 
   /**
-   * The IDs of the delivery confirmations that may be used. If not specified, then rate quotes
+   * The delivery confirmations that may be used. If not specified, then rate quotes
    * should be returned for all applicable delivery confirmations.
    */
-  deliveryConfirmationIDs?: UUID[];
+  deliveryConfirmations?: ReadonlyArray<DeliveryConfirmationIdentifierPOJO>;
 
   /**
    * The package dimensions

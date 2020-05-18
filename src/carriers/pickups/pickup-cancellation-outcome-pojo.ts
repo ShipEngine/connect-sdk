@@ -1,5 +1,4 @@
-import { CancellationStatus, NotePOJO } from "../../common";
-import { UUID } from "../../types";
+import { CancellationStatus, NotePOJO, UUID } from "../../common";
 
 /**
  * The outcome of a pickup cancellation
@@ -16,9 +15,9 @@ export interface PickupCancellationOutcomePOJO {
   status: CancellationStatus;
 
   /**
-   * The confirmation ID of the cancellation
+   * The confirmation number of the cancellation
    */
-  confirmationID?: string;
+  confirmationNumber?: string;
 
   /**
    * The carrier's code for this cancellation outcome
@@ -35,7 +34,7 @@ export interface PickupCancellationOutcomePOJO {
    * Human-readable information/instructions regarding the cancellation
    * (e.g. "Please call ###-#### to cancel", "Cannot cancel because driver is en-route")
    */
-  notes?: string | Array<string | NotePOJO>;
+  notes?: string | ReadonlyArray<string | NotePOJO>;
 
   /**
    * Arbitrary data about this pickup that will be persisted by the ShipEngine Integration Platform.

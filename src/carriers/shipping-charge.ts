@@ -1,5 +1,5 @@
 import { MonetaryValue, Note } from "../common";
-import { createNotes, hideAndFreeze, Joi, _internal } from "../internal";
+import { createNotes, hideAndFreeze, Joi, _internal } from "../common/internal";
 import { ShippingChargeType } from "./enums";
 import { ShippingChargePOJO } from "./shipping-charge-pojo";
 
@@ -13,9 +13,9 @@ export class ShippingCharge {
   public static readonly [_internal] = {
     label: "shipping charge",
     schema: Joi.object({
-      name: Joi.string().trim().singleLine().min(1).max(100),
+      name: Joi.string().trim().singleLine().allow("").max(100),
       description: Joi.string().trim().singleLine().allow("").max(1000),
-      code: Joi.string().trim().singleLine().min(1).max(100),
+      code: Joi.string().trim().singleLine().allow("").max(100),
       type: Joi.string().enum(ShippingChargeType).required(),
       amount: MonetaryValue[_internal].schema.required(),
       notes: Note[_internal].notesSchema,

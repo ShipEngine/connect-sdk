@@ -1,4 +1,6 @@
-import { Note, NotePOJO } from "../common";
+import { ono } from "@jsdevtools/ono";
+import { ErrorCode, ShipEngineError } from "../errors";
+import { UUID } from "../types";
 
 /**
  * Fields that should only be accessed within the ShipEngine Integration Platform SDK
@@ -57,15 +59,21 @@ export function hideAndFreeze<T extends object>(obj: T, ...omit: Array<keyof T>)
 
 
 /**
- * Normalizes any form of notes as an array of Note objects
+ * Additional properties to add to a an error
+ * @internal
  */
-export function createNotes(notes?: string | Array<string | NotePOJO>): Note[] {
-  if (!notes) {
-    return [];
-  }
-  else if (typeof notes === "string") {
-    notes = [notes];
-  }
+export interface ErrorProps {
+  originalError?: unknown;
+  transactionID?: UUID;
+  [key: string]: unknown;
+}
 
-  return notes.map((note) => new Note(note));
+
+/**
+ * Creates a ShipEngine Integration Platform SDK error
+ * @internal
+ */
+export function error(code: ErrorCode, message: string, { originalError, ...props }: ErrorProps = {}): ShipEngineError {
+  let err =  ono(originalError as Error, { ...props, code }, message);
+  return err;
 }

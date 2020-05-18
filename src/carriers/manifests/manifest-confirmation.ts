@@ -1,4 +1,4 @@
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { Manifest } from "./manifest";
 import { ManifestPOJO } from "./manifest-pojo";
 import { NonManifestedShipment, NonManifestedShipmentPOJO } from "./non-manifested-shipment";
@@ -11,12 +11,12 @@ export interface ManifestConfirmationPOJO {
    * The shipments that are included on this manifest.
    * If not specified, the assumption is that the manifest includes all of the shipments.
    */
-  manifests: ManifestPOJO[];
+  manifests: ReadonlyArray<ManifestPOJO>;
 
   /**
    * An array of the shipments that could not be manifested, and why
    */
-  notManifested?: NonManifestedShipmentPOJO[];
+  notManifested?: ReadonlyArray<NonManifestedShipmentPOJO>;
 }
 
 

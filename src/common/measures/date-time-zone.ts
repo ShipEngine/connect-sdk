@@ -1,5 +1,6 @@
 import { format, toDate } from "date-fns-tz";
-import { hideAndFreeze, Joi, regex, _internal } from "../../internal";
+import { hideAndFreeze, regex, _internal } from "../internal/utils";
+import { Joi } from "../internal/validation";
 
 /**
  * A date/time in a specific time zone

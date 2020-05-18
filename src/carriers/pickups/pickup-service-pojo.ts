@@ -1,5 +1,5 @@
-import { LocalizationDefinition, LocalizationPOJO, LocalizedInfoPOJO } from "../../common";
-import { InlineOrReference, UUID } from "../../types";
+import { InlineOrReference, LocalizationDefinition, LocalizationPOJO, LocalizedInfoPOJO } from "../../common";
+import { DefinitionIdentifierPOJO } from "../../common/internal";
 
 /**
  * A package pickup service that is offered by a carrier
@@ -10,15 +10,15 @@ export interface PickupServicePOJO extends PickupServiceDefinition {
 
 
 /**
+ * Identifies a pickup service that is offered by a carrier
+ */
+export type PickupServiceIdentifierPOJO = DefinitionIdentifierPOJO;
+
+
+/**
  * A package pickup service that is offered by a carrier
  */
-export interface PickupServiceDefinition {
-  /**
-   * A UUID that uniquely identifies the pickup service.
-   * This ID should never change, even if the service name changes.
-   */
-  id: UUID;
-
+export interface PickupServiceDefinition extends DefinitionIdentifierPOJO {
   /**
    * The user-friendly service name (e.g. "One-Time Pickup", "Recurring Pickup", "Drop-Off")
    */

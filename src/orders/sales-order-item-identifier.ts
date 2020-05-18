@@ -1,5 +1,5 @@
 import { Identifiers, IdentifiersPOJO } from "../common";
-import { Constructor, hideAndFreeze, Joi, _internal } from "../internal";
+import { Constructor, hideAndFreeze, Joi, _internal } from "../common/internal";
 
 
 /**
@@ -9,7 +9,7 @@ export interface SalesOrderItemIdentifierPOJO {
   /**
    * The marketplace's unique ID for the order item
    */
-  salesOrderItemID: string;
+  id: string;
 
   /**
    * The Stock Keeping Unit code for this item
@@ -17,7 +17,7 @@ export interface SalesOrderItemIdentifierPOJO {
   sku?: string;
 
   /**
-   * Custom identifiers for this item
+   * Your own identifiers for this item
    */
   identifiers?: IdentifiersPOJO;
 }
@@ -33,7 +33,8 @@ export class SalesOrderItemIdentifier extends salesOrderItemIdentifierMixin() {
   public static readonly [_internal] = {
     label: "sales order item",
     schema: Joi.object({
-      salesOrderItemID: Joi.string().trim().singleLine().min(1).max(100).required(),
+      id: Joi.string().trim().singleLine().min(1).max(100).required(),
+      sku: Joi.string().trim().singleLine().allow("").max(100),
       identifiers: Identifiers[_internal].schema,
     }),
   };
@@ -62,7 +63,7 @@ export function salesOrderItemIdentifierMixin(base: Constructor = Object) {
     /**
      * The marketplace's unique ID for the sales order
      */
-    public readonly salesOrderItemID: string;
+    public readonly id: string;
 
     /**
      * The Stock Keeping Unit code for this item
@@ -70,7 +71,7 @@ export function salesOrderItemIdentifierMixin(base: Constructor = Object) {
     public readonly sku: string;
 
     /**
-     * Custom identifiers for this sales order
+     * Your own identifiers for this sales order
      */
     public readonly identifiers: Identifiers;
 
@@ -79,7 +80,7 @@ export function salesOrderItemIdentifierMixin(base: Constructor = Object) {
     public constructor(pojo: SalesOrderItemIdentifierPOJO) {
       base === Object ? super() : super(pojo);
 
-      this.salesOrderItemID = pojo.salesOrderItemID;
+      this.id = pojo.id;
       this.sku = pojo.sku || "";
       this.identifiers = new Identifiers(pojo.identifiers);
     }

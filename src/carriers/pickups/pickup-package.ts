@@ -1,5 +1,5 @@
 import { Dimensions, Weight } from "../../common";
-import { App, hideAndFreeze, Joi, _internal } from "../../internal";
+import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { PackageIdentifier, packageIdentifierMixin } from "../packages/package-identifier";
 import { Packaging } from "../packaging";
 import { PickupPackagePOJO } from "./pickup-shipment-pojo";
@@ -15,7 +15,7 @@ export class PickupPackage extends packageIdentifierMixin() {
   public static readonly [_internal] = {
     label: "package",
     schema: PackageIdentifier[_internal].schema.keys({
-      packagingID: Joi.string().uuid().required(),
+      packaging: DefinitionIdentifier[_internal].schema.required(),
       dimensions: Dimensions[_internal].schema,
       weight: Weight[_internal].schema,
       metadata: Joi.object(),
@@ -50,7 +50,7 @@ export class PickupPackage extends packageIdentifierMixin() {
   public constructor(pojo: PickupPackagePOJO, app: App) {
     super(pojo);
 
-    this.packaging = app[_internal].references.lookup(pojo.packagingID, Packaging);
+    this.packaging = app[_internal].references.lookup(pojo.packaging, Packaging);
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
     this.metadata = pojo.metadata || {};

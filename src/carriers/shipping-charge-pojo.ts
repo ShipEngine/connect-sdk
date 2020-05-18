@@ -33,5 +33,5 @@ export interface ShippingChargePOJO {
   /**
    * Human-readable information regarding this charge, such as an explanation or reference number
    */
-  notes?: string | Array<string | NotePOJO>;
+  notes?: string | ReadonlyArray<string | NotePOJO>;
 }

@@ -1,7 +1,5 @@
-import { LocalizedBrandingPOJO, Transaction, TransactionPOJO } from "../common";
-import { error, ErrorCode } from "../errors";
-import { App, hideAndFreeze, Joi, Localization, localize, validate, _internal } from "../internal";
-import { FilePath, UUID } from "../types";
+import { ErrorCode, FilePath, LocalizedBrandingPOJO, Transaction, TransactionPOJO, UUID } from "../common";
+import { App, error, hideAndFreeze, Joi, Localization, localize, validate, _internal } from "../common/internal";
 import { ConnectionPOJO } from "./connection-pojo";
 import { Form } from "./form";
 import { Connect } from "./methods";
@@ -26,7 +24,7 @@ export class Connection {
       connectionForm: Form[_internal].schema.required(),
       settingsForm: Form[_internal].schema,
       localization: Joi.object().localization({
-        name: Joi.string().trim().singleLine().min(1).max(100),
+        name: Joi.string().trim().singleLine().allow("").max(100),
         description: Joi.string().trim().singleLine().allow("").max(1000),
         websiteURL: Joi.string().website(),
       }),

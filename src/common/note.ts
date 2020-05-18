@@ -1,5 +1,6 @@
-import { hideAndFreeze, Joi, _internal } from "../internal";
 import { NoteType } from "./enums";
+import { hideAndFreeze, _internal } from "./internal/utils";
+import { Joi } from "./internal/validation";
 
 /**
  * A note associated with a resource or result

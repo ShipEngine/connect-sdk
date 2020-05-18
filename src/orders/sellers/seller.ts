@@ -1,5 +1,5 @@
 import { ContactInfo, ContactInfoPOJO } from "../../common";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { SellerIdentifier, sellerIdentifierMixin, SellerIdentifierPOJO } from "./seller-identifier";
 import { Store, StorePOJO } from "./store";
 

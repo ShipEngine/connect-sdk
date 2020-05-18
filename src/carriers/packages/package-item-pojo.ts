@@ -12,7 +12,7 @@ export interface PackageItemPOJO {
   sku?: string;
 
   /**
-   * Custom identifiers for this item
+   * Your own identifiers for this item
    */
   identifiers?: IdentifiersPOJO;
 

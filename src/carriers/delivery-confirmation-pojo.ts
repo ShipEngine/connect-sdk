@@ -1,9 +1,9 @@
-import { LocalizationDefinition, LocalizationPOJO, LocalizedInfoPOJO } from "../common";
-import { InlineOrReference, UUID } from "../types";
+import { InlineOrReference, LocalizationDefinition, LocalizationPOJO, LocalizedInfoPOJO } from "../common";
+import { DefinitionIdentifierPOJO } from "../common/internal";
 import { DeliveryConfirmationType } from "./enums";
 
 /**
- * Delivery confirmation options offered by a carrier
+ * A delivery confirmation option offered by a carrier
  */
 export interface DeliveryConfirmationPOJO extends DeliveryConfirmationDefinition {
   localization?: LocalizationPOJO<LocalizedInfoPOJO>;
@@ -11,15 +11,15 @@ export interface DeliveryConfirmationPOJO extends DeliveryConfirmationDefinition
 
 
 /**
- * Delivery confirmation options offered by a carrier
+ * Identifies a delivery confirmation option offered by a carrier
  */
-export interface DeliveryConfirmationDefinition {
-  /**
-   * A UUID that uniquely identifies the delivery confirmation type.
-   * This ID should never change, even if the name changes.
-   */
-  id: UUID;
+export type DeliveryConfirmationIdentifierPOJO = DefinitionIdentifierPOJO;
 
+
+/**
+ * A delivery confirmation option offered by a carrier
+ */
+export interface DeliveryConfirmationDefinition extends DefinitionIdentifierPOJO {
   /**
    * The user-friendly name for this delivery confirmation (e.g. "Adult Signature", "Authority to Leave")
    */

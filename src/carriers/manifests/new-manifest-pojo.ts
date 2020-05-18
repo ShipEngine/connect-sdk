@@ -32,5 +32,5 @@ export interface NewManifestPOJO {
    * `exclude_shipments`: This field specifies which shipments should _not_ be manifested.
    * All other shipments will be manifested.
    */
-  shipments: ShipmentIdentifierPOJO[];
+  shipments: ReadonlyArray<ShipmentIdentifierPOJO>;
 }

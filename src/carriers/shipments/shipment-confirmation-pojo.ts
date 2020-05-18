@@ -1,5 +1,4 @@
-import { DateTimeZonePOJO, TimeRangePOJO } from "../../common";
-import { URLString } from "../../types";
+import { DateTimeZonePOJO, TimeRangePOJO, URLString } from "../../common";
 import { FulfillmentService } from "../fulfillment-service";
 import { PackageConfirmationPOJO } from "../packages/package-confirmation";
 import { ShippingChargePOJO } from "../shipping-charge-pojo";
@@ -62,12 +61,12 @@ export interface ShipmentConfirmationPOJO extends ShipmentIdentifierPOJO {
    * If the carrier does not provide a detailed breakdown, then just use a single
    * charge of type "shipping".
    */
-  charges: ShippingChargePOJO[];
+  charges: ReadonlyArray<ShippingChargePOJO>;
 
   /**
    * Confirmation details about each package in the shipment
    */
-  packages: PackageConfirmationPOJO[];
+  packages: ReadonlyArray<PackageConfirmationPOJO>;
 
   /**
    * Arbitrary data about this shipment that will be persisted by the ShipEngine Integration Platform.

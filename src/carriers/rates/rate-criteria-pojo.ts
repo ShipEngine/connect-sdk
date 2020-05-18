@@ -1,5 +1,5 @@
 import { AddressWithContactInfoPOJO, DateTimeZonePOJO } from "../../common";
-import { UUID } from "../../types";
+import { DeliveryServiceIdentifierPOJO } from "../delivery-service-pojo";
 import { FulfillmentService } from "../fulfillment-service";
 import { ShipmentIdentifierPOJO } from "../shipments/shipment-identifier";
 import { PackageRateCriteriaPOJO } from "./package-rate-criteria-pojo";
@@ -9,11 +9,11 @@ import { PackageRateCriteriaPOJO } from "./package-rate-criteria-pojo";
  */
 export interface RateCriteriaPOJO {
   /**
-   * The IDs of the delivery services that may be used. If neither `deliveryServices` nor
+   * The delivery services that may be used. If neither `deliveryServices` nor
    * `fulfillmentServices` are specified, then rate quotes should be returned for all
    * applicable services.
    */
-  deliveryServiceIDs?: UUID[];
+  deliveryServices?: ReadonlyArray<DeliveryServiceIdentifierPOJO>;
 
   /**
    * Well-known carrier services that may be used to fulfill the shipment.
@@ -62,5 +62,5 @@ export interface RateCriteriaPOJO {
   /**
    * The list of packages in the shipment
    */
-  packages: PackageRateCriteriaPOJO[];
+  packages: ReadonlyArray<PackageRateCriteriaPOJO>;
 }

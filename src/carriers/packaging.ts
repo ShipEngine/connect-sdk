@@ -1,6 +1,5 @@
 import { LocalizedInfoPOJO } from "../common";
-import { App, hideAndFreeze, Joi, Localization, localize, _internal } from "../internal";
-import { UUID } from "../types";
+import { App, DefinitionIdentifier, hideAndFreeze, Joi, Localization, localize, _internal } from "../common/internal";
 import { PackagingPOJO } from "./packaging-pojo";
 
 const _private = Symbol("private fields");
@@ -8,20 +7,19 @@ const _private = Symbol("private fields");
 /**
  * Describes a type of packaging
  */
-export class Packaging {
+export class Packaging extends DefinitionIdentifier {
   //#region Private/Internal Fields
 
   /** @internal */
   public static readonly [_internal] = {
     label: "packaging",
-    schema: Joi.object({
-      id: Joi.string().uuid().required(),
+    schema: DefinitionIdentifier[_internal].schema.keys({
       name: Joi.string().trim().singleLine().min(1).max(100).required(),
       description: Joi.string().trim().singleLine().allow("").max(1000),
       requiresWeight: Joi.boolean(),
       requiresDimensions: Joi.boolean(),
       localization: Joi.object().localization({
-        name: Joi.string().trim().singleLine().min(1).max(100),
+        name: Joi.string().trim().singleLine().allow("").max(100),
         description: Joi.string().trim().singleLine().allow("").max(1000),
       }),
     }),
@@ -35,12 +33,6 @@ export class Packaging {
 
   //#endregion
   //#region Public Fields
-
-  /**
-   * A UUID that uniquely identifies the packaging.
-   * This ID should never change, even if the packaging name changes.
-   */
-  public readonly id: UUID;
 
   /**
    * The user-friendly name for this packaging (e.g. "Flat-Rate Box", "Large Padded Envelope")
@@ -65,7 +57,8 @@ export class Packaging {
   //#endregion
 
   public constructor(pojo: PackagingPOJO, app: App) {
-    this.id = pojo.id;
+    super(pojo);
+
     this.name = pojo.name;
     this.description = pojo.description || "";
     this.requiresWeight = pojo.requiresWeight || false;

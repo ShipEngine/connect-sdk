@@ -1,5 +1,5 @@
 import { AddressWithContactInfoPOJO, Country, DateTimeZonePOJO } from "../../common";
-import { UUID } from "../../types";
+import { DeliveryServiceIdentifierPOJO } from "../delivery-service-pojo";
 import { BilledParty } from "../enums";
 import { NewPackagePOJO } from "../packages/new-package-pojo";
 import { ShipmentIdentifierPOJO } from "./shipment-identifier";
@@ -9,9 +9,9 @@ import { ShipmentIdentifierPOJO } from "./shipment-identifier";
  */
 export interface NewShipmentPOJO {
   /**
-   * The ID of the delivery service to use
+   * The delivery service to use for the shipment
    */
-  deliveryServiceID: UUID;
+  deliveryService: DeliveryServiceIdentifierPOJO;
 
   /**
    * The sender's contact info and address
@@ -89,5 +89,5 @@ export interface NewShipmentPOJO {
   /**
    * The list of packages in the shipment
    */
-  packages: NewPackagePOJO[];
+  packages: ReadonlyArray<NewPackagePOJO>;
 }

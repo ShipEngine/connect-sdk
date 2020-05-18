@@ -1,5 +1,5 @@
 import { AppPOJO } from "../common";
-import { App, hideAndFreeze, localize, validate, _internal } from "../internal";
+import { App, hideAndFreeze, localize, validate, _internal } from "../common/internal";
 import { Marketplace } from "./marketplace";
 import { MarketplacePOJO } from "./marketplace-pojo";
 

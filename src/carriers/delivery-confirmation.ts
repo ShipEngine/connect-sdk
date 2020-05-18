@@ -1,6 +1,5 @@
 import { LocalizedInfoPOJO } from "../common";
-import { App, hideAndFreeze, Joi, Localization, localize, _internal } from "../internal";
-import { UUID } from "../types";
+import { App, DefinitionIdentifier, hideAndFreeze, Joi, Localization, localize, _internal } from "../common/internal";
 import { DeliveryConfirmationPOJO } from "./delivery-confirmation-pojo";
 import { DeliveryConfirmationType } from "./enums";
 
@@ -9,19 +8,18 @@ const _private = Symbol("private fields");
 /**
  * Delivery confirmation options offered by a carrier
  */
-export class DeliveryConfirmation {
+export class DeliveryConfirmation extends DefinitionIdentifier {
   //#region Private/Internal Fields
 
   /** @internal */
   public static readonly [_internal] = {
     label: "delivery confirmation",
-    schema: Joi.object({
-      id: Joi.string().uuid().required(),
+    schema: DefinitionIdentifier[_internal].schema.keys({
       name: Joi.string().trim().singleLine().min(1).max(100).required(),
       description: Joi.string().trim().singleLine().allow("").max(1000),
       type: Joi.string().enum(DeliveryConfirmationType).required(),
       localization: Joi.object().localization({
-        name: Joi.string().trim().singleLine().min(1).max(100),
+        name: Joi.string().trim().singleLine().allow("").max(100),
         description: Joi.string().trim().singleLine().allow("").max(1000),
       }),
     }),
@@ -35,12 +33,6 @@ export class DeliveryConfirmation {
 
   //#endregion
   //#region Public Fields
-
-  /**
-   * A UUID that uniquely identifies the delivery confirmation type.
-   * This ID should never change, even if the name changes.
-   */
-  public readonly id: UUID;
 
   /**
    * The user-friendly name for this delivery confirmation (e.g. "Adult Signature", "Authority to Leave")
@@ -60,7 +52,8 @@ export class DeliveryConfirmation {
   //#endregion
 
   public constructor(pojo: DeliveryConfirmationPOJO, app: App) {
-    this.id = pojo.id;
+    super(pojo);
+
     this.name = pojo.name;
     this.description = pojo.description || "";
     this.type = pojo.type;

@@ -1,6 +1,5 @@
-import { Address, ContactInfo, Identifiers, Note, TimeRange } from "../../common";
-import { App, createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
-import { UUID } from "../../types";
+import { Address, ContactInfo, Identifiers, Note, TimeRange, UUID } from "../../common";
+import { App, createNotes, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { PickupCancellationReason } from "../enums";
 import { PickupCancellationPOJO } from "./pickup-cancellation-pojo";
 import { PickupService } from "./pickup-service";
@@ -14,11 +13,11 @@ export class PickupCancellation {
 
   /** @internal */
   public static readonly [_internal] = {
-    label: "pickup cancellation",
+    label: "pickup",
     schema: Joi.object({
       cancellationID: Joi.string().uuid().required(),
-      confirmationID: Joi.string().trim().singleLine().min(1).max(100),
-      pickupServiceID: Joi.string().uuid().required(),
+      id: Joi.string().trim().singleLine().min(1).max(100).required(),
+      pickupService: DefinitionIdentifier[_internal].schema.required(),
       identifiers: Identifiers[_internal].schema,
       reason: Joi.string().enum(PickupCancellationReason).required(),
       notes: Note[_internal].notesSchema,
@@ -39,19 +38,19 @@ export class PickupCancellation {
   public readonly cancellationID: UUID;
 
   /**
-   * The confirmation ID of the pickup request to be canceled
+   * The unique ID of the pickup to be canceled
    */
-  public readonly confirmationID: string;
+  public readonly id: string;
+
+  /**
+   * Your own identifiers for this pickup
+   */
+  public readonly identifiers: Identifiers;
 
   /**
    * The requested pickup service
    */
   public readonly pickupService: PickupService;
-
-  /**
-   * Custom identifiers for this confirmation
-   */
-  public readonly identifiers: Identifiers;
 
   /**
    * The reason for the cancellation
@@ -92,8 +91,8 @@ export class PickupCancellation {
 
   public constructor(pojo: PickupCancellationPOJO, app: App) {
     this.cancellationID = pojo.cancellationID;
-    this.confirmationID = pojo.confirmationID || "";
-    this.pickupService = app[_internal].references.lookup(pojo.pickupServiceID, PickupService);
+    this.id = pojo.id;
+    this.pickupService = app[_internal].references.lookup(pojo.pickupService, PickupService);
     this.identifiers = new Identifiers(pojo.identifiers);
     this.reason = pojo.reason;
     this.notes = createNotes(pojo.notes);

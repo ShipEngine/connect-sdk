@@ -1,7 +1,8 @@
 import { DimensionsPOJO, MonetaryValuePOJO, WeightPOJO } from "../../common";
-import { UUID } from "../../types";
+import { DeliveryConfirmationIdentifierPOJO } from "../delivery-confirmation-pojo";
 import { NewLabelPOJO } from "../documents/new-label-pojo";
 import { NonDeliveryOption } from "../enums";
+import { PackagingIdentifierPOJO } from "../packaging-pojo";
 import { CustomsItemPOJO } from "./customs-item-pojo";
 import { PackageItemPOJO } from "./package-item-pojo";
 
@@ -10,14 +11,14 @@ import { PackageItemPOJO } from "./package-item-pojo";
  */
 export interface NewPackagePOJO {
   /**
-   * The ID of the packaging used
+   * The packaging used for this package
    */
-  packagingID: UUID;
+  packaging: PackagingIdentifierPOJO;
 
   /**
-   * The ID of the requested delivery confirmation
+   * The requested delivery confirmation
    */
-  deliveryConfirmationID?: UUID;
+  deliveryConfirmation?: DeliveryConfirmationIdentifierPOJO;
 
   /**
    * The package dimensions
@@ -52,7 +53,7 @@ export interface NewPackagePOJO {
   /**
    * Describes the items inside the package
    */
-  contents?: PackageItemPOJO[];
+  contents?: ReadonlyArray<PackageItemPOJO>;
 
   /**
    * Customs declarations for this package. Usually only needed for international shipments.
@@ -74,6 +75,6 @@ export interface NewPackagePOJO {
      * product type (e.g. two t-shirts). In addition, some package contents don't need to be dclared
      * for customs purposes.
      */
-    contents?: CustomsItemPOJO[];
+    contents?: ReadonlyArray<CustomsItemPOJO>;
   };
 }

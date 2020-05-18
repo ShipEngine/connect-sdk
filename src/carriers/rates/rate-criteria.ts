@@ -1,5 +1,5 @@
 import { AddressWithContactInfo, DateTimeZone, MonetaryValue } from "../../common";
-import { App, hideAndFreeze, Joi, _internal } from "../../internal";
+import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { DeliveryService } from "../delivery-service";
 import { FulfillmentService } from "../fulfillment-service";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
@@ -17,7 +17,7 @@ export class RateCriteria {
   public static readonly [_internal] = {
     label: "shipment",
     schema: Joi.object({
-      deliveryServiceIDs: Joi.array().items(Joi.string().uuid()),
+      deliveryServices: Joi.array().items(DefinitionIdentifier[_internal].schema),
       fulfillmentServices: Joi.array().items(Joi.string().enum(FulfillmentService)),
       shipDateTime: DateTimeZone[_internal].schema.required(),
       deliveryDateTime: DateTimeZone[_internal].schema,
@@ -107,7 +107,7 @@ export class RateCriteria {
   //#endregion
 
   public constructor(pojo: RateCriteriaPOJO, app: App) {
-    this.deliveryServices = (pojo.deliveryServiceIDs || [])
+    this.deliveryServices = (pojo.deliveryServices || [])
       .map((id) => app[_internal].references.lookup(id, DeliveryService));
     this.fulfillmentServices = pojo.fulfillmentServices || [];
     this.shipDateTime = new DateTimeZone(pojo.shipDateTime);

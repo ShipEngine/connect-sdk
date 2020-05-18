@@ -1,5 +1,5 @@
 import { Identifiers, MonetaryValue, Note, TimeRange } from "../../common";
-import { createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
+import { createNotes, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 import { ShippingCharge } from "../shipping-charge";
 import { calculateTotalCharges } from "../utils";
@@ -13,9 +13,9 @@ export class PickupConfirmation {
 
   /** @internal */
   public static readonly [_internal] = {
-    label: "pickup confirmation",
+    label: "pickup",
     schema: Joi.object({
-      pickupID: Joi.string().trim().singleLine().allow("").max(100),
+      id: Joi.string().trim().singleLine().min(1).max(100).required(),
       identifiers: Identifiers[_internal].schema,
       timeWindows: Joi.array().min(1).items(TimeRange[_internal].schema).required(),
       charges: Joi.array().min(1).items(ShippingCharge[_internal].schema).required(),
@@ -29,12 +29,12 @@ export class PickupConfirmation {
   //#region Public Fields
 
   /**
-   * The carrier's pickup ID or confirmation ID
+   * The unique ID of the pickup
    */
-  public readonly pickupID: string;
+  public readonly id: string;
 
   /**
-   * Custom identifiers for this pickup
+   * Your own identifiers for this pickup
    */
   public readonly identifiers: Identifiers;
 
@@ -74,7 +74,7 @@ export class PickupConfirmation {
   //#endregion
 
   public constructor(pojo: PickupConfirmationPOJO) {
-    this.pickupID = pojo.pickupID || "";
+    this.id = pojo.id;
     this.identifiers = new Identifiers(pojo.identifiers);
     this.timeWindows = pojo.timeWindows.map((window) => new TimeRange(window));
     this.charges = pojo.charges.map((charge) => new ShippingCharge(charge));

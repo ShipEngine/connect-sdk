@@ -1,6 +1,5 @@
 import { Country, LocalizedInfoPOJO } from "../common";
-import { App, hideAndFreeze, Joi, Localization, localize, _internal } from "../internal";
-import { UUID } from "../types";
+import { App, DefinitionIdentifier, hideAndFreeze, Joi, Localization, localize, _internal } from "../common/internal";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryServicePOJO } from "./delivery-service-pojo";
 import { DocumentFormat, DocumentSize } from "./documents/enums";
@@ -13,14 +12,13 @@ const _private = Symbol("private fields");
 /**
  * A delivery service that is offered by a carrier
  */
-export class DeliveryService {
+export class DeliveryService extends DefinitionIdentifier {
   //#region Private/Internal Fields
 
   /** @internal */
   public static readonly [_internal] = {
     label: "delivery service",
-    schema: Joi.object({
-      id: Joi.string().uuid().required(),
+    schema: DefinitionIdentifier[_internal].schema.keys({
       name: Joi.string().trim().singleLine().min(1).max(100).required(),
       description: Joi.string().trim().singleLine().allow("").max(1000),
       class: Joi.string().enum(DeliveryServiceClass).required(),
@@ -39,7 +37,7 @@ export class DeliveryService {
       packaging: Joi.array().items(Packaging[_internal].schema).required(),
       deliveryConfirmations: Joi.array().items(DeliveryConfirmation[_internal].schema),
       localization: Joi.object().localization({
-        name: Joi.string().trim().singleLine().min(1).max(100),
+        name: Joi.string().trim().singleLine().allow("").max(100),
         description: Joi.string().trim().singleLine().allow("").max(1000),
       }),
     }),
@@ -53,12 +51,6 @@ export class DeliveryService {
 
   //#endregion
   //#region Public Fields
-
-  /**
-   * A UUID that uniquely identifies the delivery service.
-   * This ID should never change, even if the service name changes.
-   */
-  public readonly id: UUID;
 
   /**
    * The user-friendly service name (e.g. "Priority Overnight", "2-Day Air")
@@ -178,7 +170,8 @@ export class DeliveryService {
   //#endregion
 
   public constructor(pojo: DeliveryServicePOJO, app: App) {
-    this.id = pojo.id;
+    super(pojo);
+
     this.name = pojo.name;
     this.description = pojo.description || "";
     this.class = pojo.class;

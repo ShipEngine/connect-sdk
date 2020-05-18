@@ -1,7 +1,5 @@
-import { LocalizedBrandingPOJO, Transaction, TransactionPOJO } from "../common";
-import { error, ErrorCode } from "../errors";
-import { App, hideAndFreeze, Joi, Localization, localize, validate, _internal } from "../internal";
-import { FilePath, UUID } from "../types";
+import { ErrorCode, FilePath, LocalizedBrandingPOJO, Transaction, TransactionPOJO, UUID } from "../common";
+import { App, error, hideAndFreeze, Joi, Localization, localize, validate, _internal } from "../common/internal";
 import { MarketplacePOJO } from "./marketplace-pojo";
 import { GetSalesOrder, GetSalesOrdersByDate, GetSeller, ShipmentCanceled, ShipmentCreated } from "./methods";
 import { Seller } from "./sellers/seller";
@@ -25,7 +23,7 @@ export class Marketplace {
       websiteURL: Joi.string().website().required(),
       logo: Joi.string().filePath({ ext: ".svg" }).required(),
       localization: Joi.object().localization({
-        name: Joi.string().trim().singleLine().min(1).max(100),
+        name: Joi.string().trim().singleLine().allow("").max(100),
         description: Joi.string().trim().singleLine().allow("").max(1000),
         websiteURL: Joi.string().website(),
       }),
@@ -44,8 +42,8 @@ export class Marketplace {
     readonly getSeller: GetSeller;
     readonly getSalesOrder: GetSalesOrder;
     readonly getSalesOrdersByDate: GetSalesOrdersByDate;
-    readonly shipmentCreated: ShipmentCreated;
-    readonly shipmentCanceled: ShipmentCanceled;
+    readonly shipmentCreated?: ShipmentCreated;
+    readonly shipmentCanceled?: ShipmentCanceled;
   };
 
   //#endregion
@@ -162,20 +160,20 @@ export class Marketplace {
   /**
    * Returns a specific sales order
    */
-  public async getSalesOrder(transaction: TransactionPOJO, arg2: unknown): Promise<void> {
+  public async getSalesOrder(transaction: TransactionPOJO): Promise<void> {
     let _transaction, _arg2;
     let { getSalesOrder } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
-      // _arg2 = new Arg2(validate(arg2, Arg2));
+      // _arg2 = new Arg2(validate(_arg2, Arg2));
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the getSalesOrder method.", { originalError });
     }
 
     try {
-      await getSalesOrder(_transaction, _arg2);
+      await getSalesOrder(_transaction);
     }
     catch (originalError) {
       let transactionID = _transaction.id;
@@ -186,20 +184,20 @@ export class Marketplace {
   /**
    * Returns all orders that were created and/or modified within a given timeframe
    */
-  public async getSalesOrdersByDate(transaction: TransactionPOJO, arg2: unknown): Promise<void> {
+  public async getSalesOrdersByDate(transaction: TransactionPOJO): Promise<void> {
     let _transaction, _arg2;
     let { getSalesOrdersByDate } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
-      // _arg2 = new Arg2(validate(arg2, Arg2));
+      // _arg2 = new Arg2(validate(_arg2, Arg2));
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the getSalesOrdersByDate method.", { originalError });
     }
 
     try {
-      await getSalesOrdersByDate(_transaction, _arg2);
+      await getSalesOrdersByDate(_transaction);
     }
     catch (originalError) {
       let transactionID = _transaction.id;
@@ -213,20 +211,20 @@ export class Marketplace {
    * A single shipment may contain items from multiple sales orders, and a single sales order
    * may be fulfilled by multiple shipments.
    */
-  public async shipmentCreated(transaction: TransactionPOJO, arg2: unknown): Promise<void> {
+  public async shipmentCreated?(transaction: TransactionPOJO): Promise<void> {
     let _transaction, _arg2;
     let { shipmentCreated } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
-      // _arg2 = new Arg2(validate(arg2, Arg2));
+      // _arg2 = new Arg2(validate(_arg2, Arg2));
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the shipmentCreated method.", { originalError });
     }
 
     try {
-      await shipmentCreated(_transaction, _arg2);
+      await shipmentCreated!(_transaction);
     }
     catch (originalError) {
       let transactionID = _transaction.id;
@@ -240,20 +238,20 @@ export class Marketplace {
    * A single shipment may contain items from multiple sales orders, and a single sales order
    * may be fulfilled by multiple shipments.
    */
-  public async shipmentCanceled(transaction: TransactionPOJO, arg2: unknown): Promise<void> {
+  public async shipmentCanceled?(transaction: TransactionPOJO): Promise<void> {
     let _transaction, _arg2;
     let { shipmentCanceled } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
-      // _arg2 = new Arg2(validate(arg2, Arg2));
+      // _arg2 = new Arg2(validate(_arg2, Arg2));
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the shipmentCanceled method.", { originalError });
     }
 
     try {
-      await shipmentCanceled(_transaction, _arg2);
+      await shipmentCanceled!(_transaction);
     }
     catch (originalError) {
       let transactionID = _transaction.id;

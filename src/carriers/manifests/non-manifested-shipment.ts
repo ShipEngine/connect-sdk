@@ -1,5 +1,5 @@
 import { Note, NotePOJO } from "../../common";
-import { createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
+import { createNotes, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { ShipmentIdentifier, ShipmentIdentifierPOJO } from "../shipments/shipment-identifier";
 
 /**
@@ -21,7 +21,7 @@ export interface NonManifestedShipmentPOJO extends ShipmentIdentifierPOJO {
    * Human-readable information regarding the error, such as details that are specific
    * to this particular shipment
    */
-  notes?: string | Array<string | NotePOJO>;
+  notes?: string | ReadonlyArray<string | NotePOJO>;
 }
 
 
@@ -35,7 +35,7 @@ export class NonManifestedShipment {
   public static readonly [_internal] = {
     label: "manifest confirmation",
     schema: ShipmentIdentifier[_internal].schema.keys({
-      code: Joi.string().trim().singleLine().min(1).max(100),
+      code: Joi.string().trim().singleLine().allow("").max(100),
       description: Joi.string().trim().singleLine().allow("").max(1000),
       notes: Note[_internal].notesSchema,
     }),

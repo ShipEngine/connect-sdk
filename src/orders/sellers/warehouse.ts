@@ -1,5 +1,5 @@
 import { Address, AddressPOJO, Identifiers, IdentifiersPOJO } from "../../common";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { hideAndFreeze, Joi, _internal } from "../../common/internal";
 
 
 /**
@@ -9,10 +9,10 @@ export interface WarehousePOJO {
   /**
    * The marketplace's unique ID for the warehouse
    */
-  warehouseID: string;
+  id: string;
 
   /**
-   * Custom identifiers for this warehouse
+   * Your own identifiers for this warehouse
    */
   identifiers?: IdentifiersPOJO;
 
@@ -43,9 +43,9 @@ export class Warehouse {
   public static readonly [_internal] = {
     label: "warehouse",
     schema: Joi.object({
-      warehouseID: Joi.string().trim().singleLine().min(1).max(100).required(),
+      id: Joi.string().trim().singleLine().min(1).max(100).required(),
       identifiers: Identifiers[_internal].schema,
-      name: Joi.string().trim().singleLine().min(1).max(100),
+      name: Joi.string().trim().singleLine().allow("").max(100),
       shipFrom: Address[_internal].schema.required(),
       returnTo: Address[_internal].schema,
     }),
@@ -57,10 +57,10 @@ export class Warehouse {
   /**
    * The marketplace's unique ID for the warehouse
    */
-  public readonly warehouseID: string;
+  public readonly id: string;
 
   /**
-   * Custom identifiers for this warehouse
+   * Your own identifiers for this warehouse
    */
   public readonly identifiers: Identifiers;
 
@@ -82,7 +82,7 @@ export class Warehouse {
   //#endregion
 
   public constructor(pojo: WarehousePOJO) {
-    this.warehouseID = pojo.warehouseID;
+    this.id = pojo.id;
     this.identifiers = new Identifiers(pojo.identifiers);
     this.name = pojo.name || "";
     this.shipFrom = new Address(pojo.shipFrom);

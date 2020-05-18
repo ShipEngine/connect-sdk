@@ -44,7 +44,7 @@ describe("package exports", () => {
   });
 
   it("should export common classes", () => {
-    assertFileExports("src/common", true);
+    assertFileExports("src/common", true, ["internal"]);
   });
 
   it("should export connection classes", () => {
@@ -73,7 +73,7 @@ function assertFileExports (dir, deep = false, exceptions = []) {
   for (let file of files) {
     let moduleName = path.posix.join(path.dirname(file), path.basename(file, ".ts"));
     let isExported = exports.includes(`from "./${moduleName}"`);
-    let shouldBeExported = !exceptions.includes(file);
+    let shouldBeExported = !exceptions.some((ex) => file.startsWith(ex));
 
     if (isExported && !shouldBeExported) {
       extraFiles.push(file);

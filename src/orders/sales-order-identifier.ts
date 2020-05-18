@@ -1,5 +1,5 @@
 import { Identifiers, IdentifiersPOJO } from "../common";
-import { Constructor, hideAndFreeze, Joi, _internal } from "../internal";
+import { Constructor, hideAndFreeze, Joi, _internal } from "../common/internal";
 
 
 /**
@@ -9,10 +9,10 @@ export interface SalesOrderIdentifierPOJO {
   /**
    * The marketplace's unique ID for the sales order
    */
-  salesOrderID: string;
+  id: string;
 
   /**
-   * Custom identifiers for this sales order
+   * Your own identifiers for this sales order
    */
   identifiers?: IdentifiersPOJO;
 }
@@ -28,7 +28,7 @@ export class SalesOrderIdentifier extends salesOrderIdentifierMixin() {
   public static readonly [_internal] = {
     label: "sales order",
     schema: Joi.object({
-      salesOrderID: Joi.string().trim().singleLine().min(1).max(100).required(),
+      id: Joi.string().trim().singleLine().min(1).max(100).required(),
       identifiers: Identifiers[_internal].schema,
     }),
   };
@@ -57,10 +57,10 @@ export function salesOrderIdentifierMixin(base: Constructor = Object) {
     /**
      * The marketplace's unique ID for the sales order
      */
-    public readonly salesOrderID: string;
+    public readonly id: string;
 
     /**
-     * Custom identifiers for this sales order
+     * Your own identifiers for this sales order
      */
     public readonly identifiers: Identifiers;
 
@@ -69,7 +69,7 @@ export function salesOrderIdentifierMixin(base: Constructor = Object) {
     public constructor(pojo: SalesOrderIdentifierPOJO) {
       base === Object ? super() : super(pojo);
 
-      this.salesOrderID = pojo.salesOrderID;
+      this.id = pojo.id;
       this.identifiers = new Identifiers(pojo.identifiers);
     }
   };

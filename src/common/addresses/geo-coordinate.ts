@@ -1,4 +1,5 @@
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { hideAndFreeze, _internal } from "../internal/utils";
+import { Joi } from "../internal/validation";
 
 /**
  * The geo coordinates of a location on Earth

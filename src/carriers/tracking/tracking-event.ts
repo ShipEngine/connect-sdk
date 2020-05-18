@@ -1,5 +1,5 @@
 import { DateTimeZone, Note, PartialAddress, PersonName } from "../../common";
-import { createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
+import { createNotes, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { ShipmentStatus } from "../enums";
 import { TrackingEventPOJO } from "./tracking-event-pojo";
 
@@ -13,17 +13,14 @@ export class TrackingEvent {
   public static readonly [_internal] = {
     label: "tracking event",
     schema: Joi.object({
-      name: Joi.string().trim().singleLine().min(1).max(100),
+      name: Joi.string().trim().singleLine().allow("").max(100),
       dateTime: DateTimeZone[_internal].schema.required(),
       status: Joi.string().enum(ShipmentStatus).required(),
       isError: Joi.boolean(),
-      code: Joi.string().trim().singleLine().min(1).max(100),
+      code: Joi.string().trim().singleLine().allow("").max(100),
       description: Joi.string().trim().singleLine().allow("").max(1000),
       address: PartialAddress[_internal].schema,
-      signer: Joi.alternatives(
-        Joi.string().trim().singleLine().min(1).max(100),
-        PersonName[_internal].schema
-      ),
+      signer: PersonName[_internal].schema,
       notes: Note[_internal].notesSchema,
     }),
   };

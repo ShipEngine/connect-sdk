@@ -1,5 +1,5 @@
 import { Identifiers, IdentifiersPOJO } from "../../common";
-import { Constructor, hideAndFreeze, Joi, _internal } from "../../internal";
+import { Constructor, hideAndFreeze, Joi, _internal } from "../../common/internal";
 
 /**
  * Identifies a package
@@ -11,7 +11,7 @@ export interface PackageIdentifierPOJO {
   trackingNumber?: string;
 
   /**
-   * Custom identifiers for this package
+   * Your own identifiers for this package
    */
   identifiers?: IdentifiersPOJO;
 }
@@ -27,7 +27,7 @@ export class PackageIdentifier extends packageIdentifierMixin() {
   public static readonly [_internal] = {
     label: "package",
     schema: Joi.object({
-      trackingNumber: Joi.string().trim().singleLine().min(1).max(100),
+      trackingNumber: Joi.string().trim().singleLine().allow("").max(100),
       identifiers: Identifiers[_internal].schema,
     }),
   };
@@ -59,7 +59,7 @@ export function packageIdentifierMixin(base: Constructor = Object) {
     public readonly trackingNumber: string;
 
     /**
-     * Custom identifiers for this package
+     * Your own identifiers for this package
      */
     public readonly identifiers: Identifiers;
 

@@ -320,7 +320,7 @@ describe("createShipment", () => {
         expect(error.message).to.equal(
           "Invalid input to the createShipment method. \n" +
           "Invalid shipment: \n" +
-          "  deliveryServiceID is required \n" +
+          "  deliveryService is required \n" +
           "  shipFrom must be of type object \n" +
           "  shipTo must be of type object \n" +
           "  shipDateTime must be one of date, string, object \n" +

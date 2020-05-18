@@ -52,5 +52,5 @@ export interface TrackingEventPOJO {
    * Human-readable information regarding this event, such as details about the error state
    * or a description of where the package was placed upon delivery.
    */
-  notes?: string | Array<string | NotePOJO>;
+  notes?: string | ReadonlyArray<string | NotePOJO>;
 }

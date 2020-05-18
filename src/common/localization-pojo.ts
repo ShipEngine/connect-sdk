@@ -1,4 +1,4 @@
-import { InlineOrReference, URLString } from "../types";
+import { InlineOrReference, URLString } from "./types";
 
 /**
  * A map of BCP 47 language tags and localized values.

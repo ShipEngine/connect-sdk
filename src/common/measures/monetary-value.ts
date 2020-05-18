@@ -1,6 +1,7 @@
 import * as currency from "currency.js";
-import { error, ErrorCode } from "../../errors";
-import { hideAndFreeze, Joi, _internal } from "../../internal";
+import { ErrorCode } from "../errors";
+import { error, hideAndFreeze, _internal } from "../internal/utils";
+import { Joi } from "../internal/validation";
 import { Currency } from "./enums";
 
 /**

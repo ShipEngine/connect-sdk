@@ -1,4 +1,4 @@
-import { AppPOJO } from "../common";
+import { AppPOJO } from "../app-pojo";
 import { ReferenceMap } from "./reference-map";
 import { _internal } from "./utils";
 import { Joi } from "./validation";

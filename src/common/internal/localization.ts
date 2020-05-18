@@ -1,4 +1,4 @@
-import { LocalizationPOJO } from "../common";
+import { LocalizationPOJO } from "../localization-pojo";
 import { hideAndFreeze } from "./utils";
 import { Joi, validate } from "./validation";
 

@@ -1,7 +1,6 @@
 import { JSONSchema6 } from "json-schema";
 import { UiSchema } from "react-jsonschema-form";
-import { LocalizationDefinition, LocalizationPOJO } from "../common";
-import { InlineOrReference } from "../types";
+import { InlineOrReference, LocalizationDefinition, LocalizationPOJO } from "../common";
 
 /**
  * Defines a user-interface form that collects data from the user.

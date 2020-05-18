@@ -7,37 +7,37 @@ import { ShippingChargePOJO } from "../shipping-charge-pojo";
  */
 export interface PickupConfirmationPOJO {
   /**
-   * The carrier's pickup ID or confirmation ID
+   * The unique ID of the pickup
    */
-  pickupID?: string;
+  id: string;
 
   /**
-   * Custom identifiers for this pickup
+   * Your own identifiers for this pickup
    */
   identifiers?: IdentifiersPOJO;
 
   /**
    * A list of dates and times when the carrier intends to be available to pickup
    */
-  timeWindows: TimeRangePOJO[];
+  timeWindows: ReadonlyArray<TimeRangePOJO>;
 
   /**
    * The breakdown of charges for this pickup.
    * If the carrier does not provide a detailed breakdown, then just use a single
    * charge of type "pickup".
    */
-  charges: ShippingChargePOJO[];
+  charges: ReadonlyArray<ShippingChargePOJO>;
 
   /**
    * The shipments to be picked-up.
    * If not specified, the assumption is that all of the shipments will be picked up.
    */
-  shipments?: ShipmentIdentifierPOJO[];
+  shipments?: ReadonlyArray<ShipmentIdentifierPOJO>;
 
   /**
    * Human-readable information about the pickup confirmation
    */
-  notes?: string | Array<string | NotePOJO>;
+  notes?: string | ReadonlyArray<string | NotePOJO>;
 
   /**
    * Arbitrary data about this pickup that will be persisted by the ShipEngine Integration Platform.

@@ -9,17 +9,17 @@ export interface ManifestPOJO {
   /**
    * The carrier's manifest ID, if any
    */
-  manifestID?: string;
+  id?: string;
 
   /**
-   * Custom identifiers for this manifest
+   * Your own identifiers for this manifest
    */
   identifiers?: IdentifiersPOJO;
 
   /**
    * The shipments that are included on this manifest.
    */
-  shipments: ShipmentIdentifierPOJO[];
+  shipments: ReadonlyArray<ShipmentIdentifierPOJO>;
 
   /**
    * The digital manifst document, such as a PDF SCAN form
@@ -29,7 +29,7 @@ export interface ManifestPOJO {
   /**
    * Human-readable information about the manifest
    */
-  notes?: string | Array<string | NotePOJO>;
+  notes?: string | ReadonlyArray<string | NotePOJO>;
 
   /**
    * Arbitrary data about this manifest that will be persisted by the ShipEngine Integration Platform.

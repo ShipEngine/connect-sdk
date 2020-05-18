@@ -1,5 +1,5 @@
-import { LocalizationDefinition, LocalizationPOJO, LocalizedInfoPOJO } from "../common";
-import { InlineOrReference, UUID } from "../types";
+import { InlineOrReference, LocalizationDefinition, LocalizationPOJO, LocalizedInfoPOJO } from "../common";
+import { DefinitionIdentifierPOJO } from "../common/internal";
 
 /**
  * Describes a type of packaging
@@ -10,15 +10,15 @@ export interface PackagingPOJO extends PackagingDefinition {
 
 
 /**
+ * Identifies a type of packaging
+ */
+export type PackagingIdentifierPOJO = DefinitionIdentifierPOJO;
+
+
+/**
  * Describes a type of packaging
  */
-export interface PackagingDefinition {
-  /**
-   * A UUID that uniquely identifies the packaging.
-   * This ID should never change, even if the packaging name changes.
-   */
-  id: UUID;
-
+export interface PackagingDefinition extends DefinitionIdentifierPOJO {
   /**
    * The user-friendly name for this packaging (e.g. "Flat-Rate Box", "Large Padded Envelope")
    */

@@ -1,5 +1,5 @@
 import { Identifiers, IdentifiersPOJO } from "../../common";
-import { Constructor, hideAndFreeze, Joi, _internal } from "../../internal";
+import { Constructor, hideAndFreeze, Joi, _internal } from "../../common/internal";
 
 /**
  * Identifies a shipment
@@ -14,7 +14,7 @@ export interface ShipmentIdentifierPOJO {
   trackingNumber?: string;
 
   /**
-   * Custom identifiers for this shipment
+   * Your own identifiers for this shipment
    */
   identifiers?: IdentifiersPOJO;
 }
@@ -30,7 +30,7 @@ export class ShipmentIdentifier extends shipmentIdentifierMixin() {
   public static readonly [_internal] = {
     label: "shipment",
     schema: Joi.object({
-      trackingNumber: Joi.string().trim().singleLine().min(1).max(100),
+      trackingNumber: Joi.string().trim().singleLine().allow("").max(100),
       identifiers: Identifiers[_internal].schema,
     }),
   };
@@ -66,7 +66,7 @@ export function shipmentIdentifierMixin(base: Constructor = Object) {
     public readonly trackingNumber: string;
 
     /**
-     * Custom identifiers for this shipment
+     * Your own identifiers for this shipment
      */
     public readonly identifiers: Identifiers;
 

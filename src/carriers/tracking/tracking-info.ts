@@ -1,5 +1,5 @@
 import { DateTimeZone, DateTimeZonePOJO } from "../../common";
-import { App, hideAndFreeze, Joi, _internal } from "../../internal";
+import { App, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { ShipmentStatus } from "../enums";
 import { shipmentIdentifierMixin, ShipmentIdentifierPOJO } from "../shipments/shipment-identifier";
 import { PackageTrackingInfo, PackageTrackingInfoPOJO } from "./package-tracking-info";
@@ -19,12 +19,12 @@ export interface TrackingInfoPOJO extends ShipmentIdentifierPOJO {
   /**
    * The list of packages in the shipment
    */
-  packages: PackageTrackingInfoPOJO[];
+  packages: ReadonlyArray<PackageTrackingInfoPOJO>;
 
   /**
    * The events and status changes that have occured for this shipment
    */
-  events: TrackingEventPOJO[];
+  events: ReadonlyArray<TrackingEventPOJO>;
 }
 
 

@@ -1,5 +1,5 @@
 import { Identifiers, Note } from "../../common";
-import { createNotes, hideAndFreeze, Joi, _internal } from "../../internal";
+import { createNotes, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { Document } from "../documents/document";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 import { ManifestPOJO } from "./manifest-pojo";
@@ -15,7 +15,7 @@ export class Manifest {
   public static readonly [_internal] = {
     label: "manifest",
     schema: Joi.object({
-      manifestID: Joi.string().trim().singleLine().allow("").max(100),
+      id: Joi.string().trim().singleLine().allow("").max(100),
       identifiers: Identifiers[_internal].schema,
       shipments: Joi.array().min(1).items(
         ShipmentIdentifier[_internal].schema.unknown(true)).required(),
@@ -31,10 +31,10 @@ export class Manifest {
   /**
    * The carrier's manifest ID, if any
    */
-  public readonly manifestID: string;
+  public readonly id: string;
 
   /**
-   * Custom identifiers for this manifest
+   * Your own identifiers for this manifest
    */
   public readonly identifiers: Identifiers;
 
@@ -62,7 +62,7 @@ export class Manifest {
   //#endregion
 
   public constructor(pojo: ManifestPOJO) {
-    this.manifestID = pojo.manifestID || "";
+    this.id = pojo.id || "";
     this.identifiers = new Identifiers(pojo.identifiers);
     this.shipments = pojo.shipments.map((shipment) => new ShipmentIdentifier(shipment));
     this.document = pojo.document && new Document({

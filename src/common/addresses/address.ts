@@ -1,5 +1,6 @@
-import { hideAndFreeze, Joi, _internal } from "../../internal";
 import { Country } from "../country";
+import { hideAndFreeze, _internal } from "../internal/utils";
+import { Joi } from "../internal/validation";
 import { GeoCoordinatePOJO } from "./geo-coordinate";
 import { BaseAddress, PartialAddress } from "./partial-address";
 

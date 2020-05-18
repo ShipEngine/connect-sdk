@@ -1,4 +1,4 @@
-import { hideAndFreeze, Joi, _internal } from "../internal";
+import { hideAndFreeze, Joi, _internal } from "../common/internal";
 import { SalesOrderItemIdentifier, salesOrderItemIdentifierMixin, SalesOrderItemIdentifierPOJO } from "./sales-order-item-identifier";
 
 

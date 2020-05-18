@@ -1,5 +1,5 @@
-import { Country, LocalizationDefinition, LocalizationPOJO, LocalizedInfoPOJO } from "../common";
-import { InlineOrReference, InlineOrReferenceArray, UUID } from "../types";
+import { Country, InlineOrReference, InlineOrReferenceArray, LocalizationDefinition, LocalizationPOJO, LocalizedInfoPOJO } from "../common";
+import { DefinitionIdentifierPOJO } from "../common/internal";
 import { DeliveryConfirmationDefinition, DeliveryConfirmationPOJO } from "./delivery-confirmation-pojo";
 import { DocumentFormat, DocumentSize } from "./documents/enums";
 import { DeliveryServiceClass, DeliveryServiceGrade, ServiceArea } from "./enums";
@@ -12,21 +12,22 @@ import { PackagingDefinition, PackagingPOJO } from "./packaging-pojo";
 export interface DeliveryServicePOJO extends DeliveryServiceDefinition {
   originCountries: Country[];
   destinationCountries: Country[];
-  packaging: PackagingPOJO[];
-  deliveryConfirmations?: DeliveryConfirmationPOJO[];
+  packaging: ReadonlyArray<PackagingPOJO>;
+  deliveryConfirmations?: ReadonlyArray<DeliveryConfirmationPOJO>;
   localization?: LocalizationPOJO<LocalizedInfoPOJO>;
 }
+
+
+/**
+ * Identifies a delivery service that is offered by a carrier
+ */
+export type DeliveryServiceIdentifierPOJO = DefinitionIdentifierPOJO;
+
 
 /**
  * A delivery service that is offered by a carrier
  */
-export interface DeliveryServiceDefinition {
-  /**
-   * A UUID that uniquely identifies the delivery service.
-   * This ID should never change, even if the service name changes.
-   */
-  id: UUID;
-
+export interface DeliveryServiceDefinition extends DefinitionIdentifierPOJO {
   /**
    * The user-friendly service name (e.g. "Priority Overnight", "2-Day Air")
    */

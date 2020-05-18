@@ -23,7 +23,13 @@ const joiOptions = {
  * @internal
  */
 export function validateArray<T>(value: T[], type: ShipEngineConstructor, schema?: ValidationSchema): T[];
+
+/**
+ * Validates an array of values against a Joi schema. If validation fails, an error is thrown.
+ * @internal
+ */
 export function validateArray<T>(value: T[], type: string, schema: ValidationSchema): T[];
+
 export function validateArray<T>(value: T[], arg2: ShipEngineConstructor | string, arg3?: ValidationSchema): T[] {
   let label = typeof arg2 === "string" ? arg2 : arg2[_internal].label;
   let itemSchema = arg3 || (arg2 as ShipEngineConstructor)[_internal].schema;
@@ -37,7 +43,13 @@ export function validateArray<T>(value: T[], arg2: ShipEngineConstructor | strin
  * @internal
  */
 export function validate<T>(value: T, type: ShipEngineConstructor, schema?: ValidationSchema): T;
+
+/**
+ * Validates a value against a Joi schema. If validation fails, an error is thrown.
+ * @internal
+ */
 export function validate<T>(value: T, type: string, schema: ValidationSchema): T;
+
 export function validate<T>(value: T, arg2: ShipEngineConstructor | string, arg3?: ValidationSchema): T {
   let label = typeof arg2 === "string" ? arg2 : arg2[_internal].label;
   let schema = arg3 || (arg2 as ShipEngineConstructor)[_internal].schema;

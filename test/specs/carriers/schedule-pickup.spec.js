@@ -146,7 +146,7 @@ describe("schedulePickup", () => {
           code: "PIK",
           notes: [
             {
-              type: "other",
+              type: "uncategorized",
               text: "This is a note",
             }
           ],
@@ -162,7 +162,7 @@ describe("schedulePickup", () => {
           code: "TAX",
           notes: [
             {
-              type: "other",
+              type: "uncategorized",
               text: "This is a note",
             }
           ],
@@ -185,7 +185,7 @@ describe("schedulePickup", () => {
       }],
       notes: [
         {
-          type: "other",
+          type: "uncategorized",
           text: "this is a note",
         }
       ],

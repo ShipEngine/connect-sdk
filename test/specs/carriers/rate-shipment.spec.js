@@ -175,7 +175,7 @@ describe("rateShipment", () => {
       isTrackable: true,
       notes: [
         {
-          type: "other",
+          type: "uncategorized",
           text: "This is a note",
         }
       ],
@@ -190,7 +190,7 @@ describe("rateShipment", () => {
           code: "SHP",
           notes: [
             {
-              type: "other",
+              type: "uncategorized",
               text: "you were charged extra because reasons",
             }
           ],
@@ -206,7 +206,7 @@ describe("rateShipment", () => {
           code: "DEL",
           notes: [
             {
-              type: "other",
+              type: "uncategorized",
               text: "Signatures cost extra",
             }
           ],

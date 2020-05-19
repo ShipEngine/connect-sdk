@@ -60,7 +60,7 @@ export class Note {
 
   public constructor(pojo: string | NotePOJO) {
     if (typeof pojo === "string") {
-      pojo = { type: NoteType.Other, text: pojo };
+      pojo = { type: NoteType.Uncategorized, text: pojo };
     }
 
     this.type = pojo.type;

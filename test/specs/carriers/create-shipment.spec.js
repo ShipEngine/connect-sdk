@@ -197,7 +197,7 @@ describe("createShipment", () => {
           code: "SHIP",
           notes: [
             {
-              type: "other",
+              type: "uncategorized",
               text: "extra charge because reasons",
             }
           ],
@@ -213,7 +213,7 @@ describe("createShipment", () => {
           code: "VAT",
           notes: [
             {
-              type: "other",
+              type: "uncategorized",
               text: "Her majesty the queen demands it",
             }
           ],

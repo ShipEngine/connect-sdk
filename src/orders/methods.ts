@@ -1,4 +1,6 @@
 import { Transaction } from "../common";
+import { SalesOrderIdentifier } from "./sales-order-identifier";
+import { SalesOrderPOJO } from "./sales-order-pojo";
 import { SellerPOJO } from "./sellers/seller";
 import { SellerIdentifier } from "./sellers/seller-identifier";
 
@@ -12,8 +14,8 @@ export type GetSeller = (transaction: Transaction, seller: SellerIdentifier)
 /**
  * Returns a specific sales order
  */
-export type GetSalesOrder = (transaction: Transaction)
-  => void | Promise<void>;
+export type GetSalesOrder = (transaction: Transaction, salesOrder: SalesOrderIdentifier)
+  => SalesOrderPOJO | Promise<SalesOrderPOJO>;
 
 
 /**

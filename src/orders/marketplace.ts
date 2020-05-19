@@ -2,6 +2,8 @@ import { ErrorCode, FilePath, LocalizedBrandingPOJO, Transaction, TransactionPOJ
 import { App, error, hideAndFreeze, Joi, Localization, localize, validate, _internal } from "../common/internal";
 import { MarketplacePOJO } from "./marketplace-pojo";
 import { GetSalesOrder, GetSalesOrdersByDate, GetSeller, ShipmentCancelled, ShipmentCreated } from "./methods";
+import { SalesOrder } from "./sales-order";
+import { SalesOrderIdentifier } from "./sales-order-identifier";
 import { Seller } from "./sellers/seller";
 import { SellerIdentifier, SellerIdentifierPOJO } from "./sellers/seller-identifier";
 
@@ -160,20 +162,21 @@ export class Marketplace {
   /**
    * Returns a specific sales order
    */
-  public async getSalesOrder(transaction: TransactionPOJO): Promise<void> {
-    let _transaction, _arg2;
+  public async getSalesOrder(transaction: TransactionPOJO, id: SalesOrderIdentifier): Promise<SalesOrder> {
+    let _transaction, _id;
     let { getSalesOrder } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
-      // _arg2 = new Arg2(validate(_arg2, Arg2));
+      _id = new SalesOrderIdentifier(validate(id, SalesOrderIdentifier));
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the getSalesOrder method.", { originalError });
     }
 
     try {
-      await getSalesOrder(_transaction);
+      let salesOrder = await getSalesOrder(_transaction, _id);
+      return new SalesOrder(validate(salesOrder, SalesOrder));
     }
     catch (originalError) {
       let transactionID = _transaction.id;
@@ -190,7 +193,7 @@ export class Marketplace {
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
-      // _arg2 = new Arg2(validate(_arg2, Arg2));
+      // _arg2 = new Arg2(validate(arg2, Arg2));
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the getSalesOrdersByDate method.", { originalError });
@@ -217,7 +220,7 @@ export class Marketplace {
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
-      // _arg2 = new Arg2(validate(_arg2, Arg2));
+      // _arg2 = new Arg2(validate(arg2, Arg2));
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the shipmentCreated method.", { originalError });
@@ -244,7 +247,7 @@ export class Marketplace {
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
-      // _arg2 = new Arg2(validate(_arg2, Arg2));
+      // _arg2 = new Arg2(validate(arg2, Arg2));
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the shipmentCancelled method.", { originalError });

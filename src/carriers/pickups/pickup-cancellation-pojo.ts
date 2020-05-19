@@ -13,7 +13,7 @@ export interface PickupCancellationPOJO {
   cancellationID: UUID;
 
   /**
-   * The unique ID of the pickup to be canceled
+   * The unique ID of the pickup to be cancelled
    */
   id: string;
 
@@ -43,7 +43,7 @@ export interface PickupCancellationPOJO {
   address: AddressPOJO;
 
   /**
-   * The contact information of the person who scheduled/canceled the pickup
+   * The contact information of the person who scheduled/cancelled the pickup
    */
   contact: ContactInfoPOJO;
 

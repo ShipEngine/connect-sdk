@@ -1,5 +1,5 @@
 import { FilePath, InlineOrReference, LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO, URLString, UUID } from "../common";
-import { GetSalesOrder, GetSalesOrdersByDate, GetSeller, ShipmentCanceled, ShipmentCreated } from "./methods";
+import { GetSalesOrder, GetSalesOrdersByDate, GetSeller, ShipmentCancelled, ShipmentCreated } from "./methods";
 
 /**
  * A marketplace where orders originate
@@ -10,7 +10,7 @@ export interface MarketplacePOJO extends MarketplaceDefinition {
   getSalesOrder: GetSalesOrder;
   getSalesOrdersByDate: GetSalesOrdersByDate;
   shipmentCreated?: ShipmentCreated;
-  shipmentCanceled?: ShipmentCanceled;
+  shipmentCancelled?: ShipmentCancelled;
 }
 
 
@@ -77,10 +77,10 @@ export interface MarketplaceDefinition {
   shipmentCreated?: InlineOrReference<ShipmentCreated>;
 
   /**
-   * Called when a shipment is canceled for one or more items in one or more sales orders.
+   * Called when a shipment is cancelled for one or more items in one or more sales orders.
    *
    * A single shipment may contain items from multiple sales orders, and a single sales order
    * may be fulfilled by multiple shipments.
    */
-  shipmentCanceled?: InlineOrReference<ShipmentCanceled>;
+  shipmentCancelled?: InlineOrReference<ShipmentCancelled>;
 }

@@ -34,10 +34,10 @@ export type ShipmentCreated = (transaction: Transaction)
 
 
 /**
- * Called when a shipment is canceled for one or more items in one or more sales orders.
+ * Called when a shipment is cancelled for one or more items in one or more sales orders.
  *
  * A single shipment may contain items from multiple sales orders, and a single sales order
  * may be fulfilled by multiple shipments.
  */
-export type ShipmentCanceled = (transaction: Transaction)
+export type ShipmentCancelled = (transaction: Transaction)
   => void | Promise<void>;

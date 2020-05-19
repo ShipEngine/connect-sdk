@@ -1,7 +1,7 @@
 import { ErrorCode, FilePath, LocalizedBrandingPOJO, Transaction, TransactionPOJO, UUID } from "../common";
 import { App, error, hideAndFreeze, Joi, Localization, localize, validate, _internal } from "../common/internal";
 import { MarketplacePOJO } from "./marketplace-pojo";
-import { GetSalesOrder, GetSalesOrdersByDate, GetSeller, ShipmentCanceled, ShipmentCreated } from "./methods";
+import { GetSalesOrder, GetSalesOrdersByDate, GetSeller, ShipmentCancelled, ShipmentCreated } from "./methods";
 import { Seller } from "./sellers/seller";
 import { SellerIdentifier, SellerIdentifierPOJO } from "./sellers/seller-identifier";
 
@@ -31,7 +31,7 @@ export class Marketplace {
       getSalesOrder: Joi.function().required(),
       getSalesOrdersByDate: Joi.function().required(),
       shipmentCreated: Joi.function(),
-      shipmentCanceled: Joi.function(),
+      shipmentCancelled: Joi.function(),
     }),
   };
 
@@ -43,7 +43,7 @@ export class Marketplace {
     readonly getSalesOrder: GetSalesOrder;
     readonly getSalesOrdersByDate: GetSalesOrdersByDate;
     readonly shipmentCreated?: ShipmentCreated;
-    readonly shipmentCanceled?: ShipmentCanceled;
+    readonly shipmentCancelled?: ShipmentCancelled;
   };
 
   //#endregion
@@ -91,7 +91,7 @@ export class Marketplace {
       getSalesOrder: pojo.getSalesOrder,
       getSalesOrdersByDate: pojo.getSalesOrdersByDate,
       shipmentCreated: pojo.shipmentCreated,
-      shipmentCanceled: pojo.shipmentCanceled,
+      shipmentCancelled: pojo.shipmentCancelled,
     };
 
     // Make this object immutable
@@ -124,7 +124,7 @@ export class Marketplace {
       getSalesOrder: methods.getSalesOrder,
       getSalesOrdersByDate: methods.getSalesOrdersByDate,
       shipmentCreated: methods.shipmentCreated,
-      shipmentCanceled: methods.shipmentCanceled,
+      shipmentCancelled: methods.shipmentCancelled,
       localization: localization.toJSON(),
       ...localizedValues,
     };
@@ -233,29 +233,29 @@ export class Marketplace {
   }
 
   /**
-   * Called when a shipment is canceled for one or more items in one or more sales orders.
+   * Called when a shipment is cancelled for one or more items in one or more sales orders.
    *
    * A single shipment may contain items from multiple sales orders, and a single sales order
    * may be fulfilled by multiple shipments.
    */
-  public async shipmentCanceled?(transaction: TransactionPOJO): Promise<void> {
+  public async shipmentCancelled?(transaction: TransactionPOJO): Promise<void> {
     let _transaction, _arg2;
-    let { shipmentCanceled } = this[_private];
+    let { shipmentCancelled } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
       // _arg2 = new Arg2(validate(_arg2, Arg2));
     }
     catch (originalError) {
-      throw error(ErrorCode.InvalidInput, "Invalid input to the shipmentCanceled method.", { originalError });
+      throw error(ErrorCode.InvalidInput, "Invalid input to the shipmentCancelled method.", { originalError });
     }
 
     try {
-      await shipmentCanceled!(_transaction);
+      await shipmentCancelled!(_transaction);
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the shipmentCanceled method.", { originalError, transactionID });
+      throw error(ErrorCode.AppError, "Error in the shipmentCancelled method.", { originalError, transactionID });
     }
   }
 

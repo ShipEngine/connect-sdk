@@ -390,7 +390,7 @@ export class Carrier {
       let confirmations = await cancelShipments!(_transaction, _shipments);
 
       if (!confirmations) {
-        // Nothing was returned, so assume all shipments were canceled successfully
+        // Nothing was returned, so assume all shipments were cancelled successfully
         confirmations = _shipments.map((shipment) => ({
           cancellationID: shipment.cancellationID,
           status: CancellationStatus.Success,
@@ -541,7 +541,7 @@ export class Carrier {
       let confirmations = await cancelPickups!(_transaction, _pickups);
 
       if (!confirmations) {
-        // Nothing was returned, so assume all pickups were canceled successfully
+        // Nothing was returned, so assume all pickups were cancelled successfully
         confirmations = _pickups.map((pickup) => ({
           cancellationID: pickup.cancellationID,
           status: CancellationStatus.Success,

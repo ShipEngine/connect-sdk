@@ -38,7 +38,7 @@ export class PickupCancellation {
   public readonly cancellationID: UUID;
 
   /**
-   * The unique ID of the pickup to be canceled
+   * The unique ID of the pickup to be cancelled
    */
   public readonly id: string;
 
@@ -68,7 +68,7 @@ export class PickupCancellation {
   public readonly address: Address;
 
   /**
-   * The contact information of the person who scheduled/canceled the pickup
+   * The contact information of the person who scheduled/cancelled the pickup
    */
   public readonly contact: ContactInfo;
 

@@ -1,22 +1,60 @@
-import { MonetaryValue, Note } from "../common";
-import { createNotes, hideAndFreeze, Joi, _internal } from "../common/internal";
-import { ShippingChargeType } from "./enums";
-import { ShippingChargePOJO } from "./shipping-charge-pojo";
+import { ChargeType } from "./enums";
+import { createNotes } from "./internal/create-note";
+import { hideAndFreeze, _internal } from "./internal/utils";
+import { Joi } from "./internal/validation";
+import { MonetaryValue, MonetaryValuePOJO } from "./measures/monetary-value";
+import { Note, NotePOJO } from "./note";
 
 /**
- * An itemized shipping charge in the total cost of a shipment
+ * An itemized charge or credit for a shipment or sales order
  */
-export class ShippingCharge {
+export interface ChargePOJO {
+  /**
+   * The user-friendly name of the charge (e.g. "Fuel Charge", "Oversize Package Fee")
+   */
+  name?: string;
+
+  /**
+   * The carrier's description of the charge, not specific to the user
+   */
+  description?: string;
+
+  /**
+   * The carrier's code for this charge
+   */
+  code?: string;
+
+  /**
+   * The type of charge
+   */
+  type: ChargeType;
+
+  /**
+   * The amount of the charge (negative amount for a credit)
+   */
+  amount: MonetaryValuePOJO;
+
+  /**
+   * Human-readable information regarding this charge, such as an explanation or reference number
+   */
+  notes?: string | ReadonlyArray<string | NotePOJO>;
+}
+
+
+/**
+ * An itemized charge or credit for a shipment or sales order
+ */
+export class Charge {
   //#region Private/Internal Fields
 
   /** @internal */
   public static readonly [_internal] = {
-    label: "shipping charge",
+    label: "charge",
     schema: Joi.object({
       name: Joi.string().trim().singleLine().allow("").max(100),
       description: Joi.string().trim().singleLine().allow("").max(1000),
       code: Joi.string().trim().singleLine().allow("").max(100),
-      type: Joi.string().enum(ShippingChargeType).required(),
+      type: Joi.string().enum(ChargeType).required(),
       amount: MonetaryValue[_internal].schema.required(),
       notes: Note[_internal].notesSchema,
     }),
@@ -43,10 +81,10 @@ export class ShippingCharge {
   /**
    * The type of charge
    */
-  public readonly type: ShippingChargeType;
+  public readonly type: ChargeType;
 
   /**
-   * The amount of the charge
+   * The amount of the charge (negative amount for a credit)
    */
   public readonly amount: MonetaryValue;
 
@@ -57,7 +95,7 @@ export class ShippingCharge {
 
   //#endregion
 
-  public constructor(pojo: ShippingChargePOJO) {
+  public constructor(pojo: ChargePOJO) {
     this.name = pojo.name || "";
     this.description = pojo.description || "";
     this.code = pojo.code || "";
@@ -71,4 +109,4 @@ export class ShippingCharge {
 }
 
 // Prevent modifications to the class
-hideAndFreeze(ShippingCharge);
+hideAndFreeze(Charge);

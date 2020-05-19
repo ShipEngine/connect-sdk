@@ -82,29 +82,6 @@ export enum BilledParty {
 }
 
 /**
- * The types of itemized charges that can be charged by a carrier
- */
-export enum ShippingChargeType {
-  Shipping = "shipping",
-  Delivery = "delivery",
-  Handling = "handling",
-  Oversize = "oversize",
-  SpecialGoods = "special_goods",
-  DeliveryConfirmation = "delivery_confirmation",
-  Insurance = "insurance",
-  Discount = "discount",
-  Fuel = "fuel",
-  LocationFee = "location_fee",
-  Fee = "fee",
-  Pickup = "pickup",
-  Return = "return",
-  Notification = "notification",
-  Duty = "duty",
-  Tax = "tax",
-  Uncategorized = "uncategorized",
-}
-
-/**
  * The status of a shipment
  */
 export enum ShipmentStatus {

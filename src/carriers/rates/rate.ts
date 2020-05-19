@@ -1,8 +1,7 @@
-import { DateTimeZone, ErrorCode, MonetaryValue, Note, TimeRange } from "../../common";
+import { Charge, DateTimeZone, ErrorCode, MonetaryValue, Note, TimeRange } from "../../common";
 import { App, createNotes, DefinitionIdentifier, error, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { DeliveryService } from "../delivery-service";
 import { FulfillmentService } from "../fulfillment-service";
-import { ShippingCharge } from "../shipping-charge";
 import { calculateTotalCharges } from "../utils";
 import { RatePackage } from "./rate-package";
 import { RatePOJO } from "./rate-pojo";
@@ -28,7 +27,7 @@ export class Rate {
       isNegotiatedRate: Joi.boolean(),
       isGuaranteed: Joi.boolean(),
       isTrackable: Joi.boolean(),
-      charges: Joi.array().min(1).items(ShippingCharge[_internal].schema).required(),
+      charges: Joi.array().min(1).items(Charge[_internal].schema).required(),
       notes: Note[_internal].notesSchema,
       packages: Joi.array().min(1).items(RatePackage[_internal].schema).required(),
     }),
@@ -100,7 +99,7 @@ export class Rate {
    * If the carrier does not provide a detailed breakdown, then just use a single
    * charge of type "shipping".
    */
-  public readonly charges: ReadonlyArray<ShippingCharge>;
+  public readonly charges: ReadonlyArray<Charge>;
 
   /**
    * The total cost of all charges for this rate.
@@ -139,7 +138,7 @@ export class Rate {
     this.isNegotiatedRate = pojo.isNegotiatedRate || false;
     this.isGuaranteed = pojo.isGuaranteed || false;
     this.isTrackable = pojo.isTrackable || false;
-    this.charges = pojo.charges.map((charge) => new ShippingCharge(charge));
+    this.charges = pojo.charges.map((charge) => new Charge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);
     this.notes = createNotes(pojo.notes);
     this.packages = pojo.packages.map((parcel) => new RatePackage(parcel, app));

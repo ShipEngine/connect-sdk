@@ -1,7 +1,6 @@
-import { DateTimeZonePOJO, NotePOJO, TimeRangePOJO } from "../../common";
+import { ChargePOJO, DateTimeZonePOJO, NotePOJO, TimeRangePOJO } from "../../common";
 import { DeliveryServiceIdentifierPOJO } from "../delivery-service-pojo";
 import { FulfillmentService } from "../fulfillment-service";
-import { ShippingChargePOJO } from "../shipping-charge-pojo";
 import { RatePackagePOJO } from "./rate-package";
 
 /**
@@ -72,7 +71,7 @@ export interface RatePOJO {
    * If the carrier does not provide a detailed breakdown, then just use a single
    * charge of type "shipping".
    */
-  charges: ReadonlyArray<ShippingChargePOJO>;
+  charges: ReadonlyArray<ChargePOJO>;
 
   /**
    * Human-readable information regarding this rate quote, such as limitations or restrictions

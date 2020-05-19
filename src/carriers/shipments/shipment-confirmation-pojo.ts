@@ -1,7 +1,6 @@
-import { DateTimeZonePOJO, TimeRangePOJO, URLString } from "../../common";
+import { ChargePOJO, DateTimeZonePOJO, TimeRangePOJO, URLString } from "../../common";
 import { FulfillmentService } from "../fulfillment-service";
 import { PackageConfirmationPOJO } from "../packages/package-confirmation";
-import { ShippingChargePOJO } from "../shipping-charge-pojo";
 import { ShipmentIdentifierPOJO } from "./shipment-identifier";
 
 /**
@@ -61,7 +60,7 @@ export interface ShipmentConfirmationPOJO extends ShipmentIdentifierPOJO {
    * If the carrier does not provide a detailed breakdown, then just use a single
    * charge of type "shipping".
    */
-  charges: ReadonlyArray<ShippingChargePOJO>;
+  charges: ReadonlyArray<ChargePOJO>;
 
   /**
    * Confirmation details about each package in the shipment

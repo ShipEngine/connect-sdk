@@ -59,8 +59,6 @@ export * from "./shipments/shipment-cancellation-outcome-pojo";
 export * from "./shipments/shipment-confirmation";
 export * from "./shipments/shipment-confirmation-pojo";
 export { ShipmentIdentifier } from "./shipments/shipment-identifier";
-export * from "./shipping-charge";
-export * from "./shipping-charge-pojo";
 export * from "./tracking/package-tracking-info";
 export * from "./tracking/tracking-criteria";
 export * from "./tracking/tracking-event";

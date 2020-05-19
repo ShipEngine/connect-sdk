@@ -1,11 +1,10 @@
-import { ErrorCode, MonetaryValue, ShipEngineError } from "../common";
+import { Charge, ErrorCode, MonetaryValue, ShipEngineError } from "../common";
 import { error } from "../common/internal";
 import { Document } from "./documents/document";
 import { DocumentPOJO } from "./documents/document-pojo";
 import { DocumentType } from "./documents/enums";
 import { Label } from "./documents/label";
 import { ServiceArea } from "./enums";
-import { ShippingCharge } from "./shipping-charge";
 
 /**
  * A factory function that instantiates the correct document class based on the document type.
@@ -64,7 +63,7 @@ export function getMaxServiceArea(things: ReadonlyArray<{ serviceArea?: ServiceA
  * which is the sum of the insured value of all packages.
  * @internal
  */
-export function calculateTotalCharges(charges: ReadonlyArray<ShippingCharge>): MonetaryValue {
+export function calculateTotalCharges(charges: ReadonlyArray<Charge>): MonetaryValue {
   try {
     let insuredValues = charges.map((charge) => charge.amount);
     return MonetaryValue.sum(insuredValues);

@@ -29,5 +29,37 @@ export enum NoteType {
   Reason = "reason",
   Instructions = "instructions",
   Feedback = "feedback",
-  Other = "other",
+  Uncategorized = "uncategorized",
+}
+
+/**
+ * The types of itemized charges or credits that can be specified
+ * for a shipment or sales order
+ */
+export enum ChargeType {
+  Shipping = "shipping",
+  Delivery = "delivery",
+  Handling = "handling",
+  Oversize = "oversize",
+  SpecialGoods = "special_goods",
+  DeliveryConfirmation = "delivery_confirmation",
+  Insurance = "insurance",
+  Discount = "discount",
+  Fuel = "fuel",
+  LocationFee = "location_fee",
+  Fee = "fee",
+  Pickup = "pickup",
+  Return = "return",
+  Notification = "notification",
+  Duty = "duty",
+  Tax = "tax",
+  Adjustment = "adjustment",
+  Coupon = "coupon",
+  Credit = "credit",
+  Debit = "debit",
+  GiftCertificate = "gift_certificate",
+  GiftWrapping = "gift_wrapping",
+  Promotion = "promotion",
+  Refund = "refund",
+  Uncategorized = "uncategorized",
 }

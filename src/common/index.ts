@@ -5,6 +5,7 @@ export * from "./addresses/geo-coordinate";
 export { PartialAddress } from "./addresses/partial-address";
 export * from "./addresses/person-name";
 export * from "./app-pojo";
+export * from "./charge";
 export * from "./country";
 export * from "./enums";
 export * from "./errors";

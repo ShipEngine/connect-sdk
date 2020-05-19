@@ -1,6 +1,5 @@
-import { IdentifiersPOJO, NotePOJO, TimeRangePOJO } from "../../common";
+import { ChargePOJO, IdentifiersPOJO, NotePOJO, TimeRangePOJO } from "../../common";
 import { ShipmentIdentifierPOJO } from "../shipments/shipment-identifier";
-import { ShippingChargePOJO } from "../shipping-charge-pojo";
 
 /**
  * Confirmation that a package pickup has been scheduled
@@ -26,7 +25,7 @@ export interface PickupConfirmationPOJO {
    * If the carrier does not provide a detailed breakdown, then just use a single
    * charge of type "pickup".
    */
-  charges: ReadonlyArray<ShippingChargePOJO>;
+  charges: ReadonlyArray<ChargePOJO>;
 
   /**
    * The shipments to be picked-up.

@@ -1,8 +1,7 @@
-import { DateTimeZone, MonetaryValue, TimeRange } from "../../common";
+import { Charge, DateTimeZone, MonetaryValue, TimeRange } from "../../common";
 import { hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { FulfillmentService } from "../fulfillment-service";
 import { PackageConfirmation } from "../packages/package-confirmation";
-import { ShippingCharge } from "../shipping-charge";
 import { calculateTotalCharges } from "../utils";
 import { ShipmentConfirmationPOJO } from "./shipment-confirmation-pojo";
 import { ShipmentIdentifier, shipmentIdentifierMixin } from "./shipment-identifier";
@@ -26,7 +25,7 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
       zone: Joi.number().integer().min(1),
       isNegotiatedRate: Joi.boolean(),
       isGuaranteed: Joi.boolean(),
-      charges: Joi.array().min(1).items(ShippingCharge[_internal].schema).required(),
+      charges: Joi.array().min(1).items(Charge[_internal].schema).required(),
       packages: Joi.array().min(1).items(PackageConfirmation[_internal].schema).required(),
       metadata: Joi.object(),
     }),
@@ -94,7 +93,7 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
    * If the carrier does not provide a detailed breakdown, then just use a single
    * charge of type "shipping".
    */
-  public readonly charges: ReadonlyArray<ShippingCharge>;
+  public readonly charges: ReadonlyArray<Charge>;
 
   /**
    * The total cost of all charges for this label.
@@ -134,7 +133,7 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
     this.zone = pojo.zone;
     this.isNegotiatedRate = pojo.isNegotiatedRate || false;
     this.isGuaranteed = pojo.isGuaranteed || false;
-    this.charges = pojo.charges.map((charge) => new ShippingCharge(charge));
+    this.charges = pojo.charges.map((charge) => new Charge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);
     this.packages = pojo.packages.map((parcel) => new PackageConfirmation(parcel));
     this.metadata = pojo.metadata || {};

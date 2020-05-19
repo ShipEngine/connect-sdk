@@ -1,7 +1,6 @@
-import { Identifiers, MonetaryValue, Note, TimeRange } from "../../common";
+import { Charge, Identifiers, MonetaryValue, Note, TimeRange } from "../../common";
 import { createNotes, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
-import { ShippingCharge } from "../shipping-charge";
 import { calculateTotalCharges } from "../utils";
 import { PickupConfirmationPOJO } from "./pickup-confirmation-pojo";
 
@@ -18,7 +17,7 @@ export class PickupConfirmation {
       id: Joi.string().trim().singleLine().min(1).max(100).required(),
       identifiers: Identifiers[_internal].schema,
       timeWindows: Joi.array().min(1).items(TimeRange[_internal].schema).required(),
-      charges: Joi.array().min(1).items(ShippingCharge[_internal].schema).required(),
+      charges: Joi.array().min(1).items(Charge[_internal].schema).required(),
       shipments: Joi.array().min(1).items(ShipmentIdentifier[_internal].schema.unknown(true)),
       notes: Note[_internal].notesSchema,
       metadata: Joi.object(),
@@ -48,7 +47,7 @@ export class PickupConfirmation {
    * If the carrier does not provide a detailed breakdown, then just use a single
    * charge of type "pickup".
    */
-  public readonly charges: ReadonlyArray<ShippingCharge>;
+  public readonly charges: ReadonlyArray<Charge>;
 
   /**
    * The total cost of all charges for this pickup.
@@ -77,7 +76,7 @@ export class PickupConfirmation {
     this.id = pojo.id;
     this.identifiers = new Identifiers(pojo.identifiers);
     this.timeWindows = pojo.timeWindows.map((window) => new TimeRange(window));
-    this.charges = pojo.charges.map((charge) => new ShippingCharge(charge));
+    this.charges = pojo.charges.map((charge) => new Charge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);
     this.shipments = pojo.shipments!.map((shipment) => new ShipmentIdentifier(shipment));
     this.notes = createNotes(pojo.notes);

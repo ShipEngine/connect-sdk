@@ -151,7 +151,7 @@ const pojo = module.exports = {
   shipmentConfirmation (props = {}) {
     return {
       ...pojo.shipmentIdentifier(),
-      charges: [pojo.shippingCharge()],
+      charges: [pojo.charge()],
       packages: [pojo.packageConfirmation()],
       ...props,
     };
@@ -244,7 +244,7 @@ const pojo = module.exports = {
     };
   },
 
-  shippingCharge (props = {}) {
+  charge (props = {}) {
     return {
       type: "shipping",
       amount: pojo.monetaryValue(),

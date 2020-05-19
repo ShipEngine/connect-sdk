@@ -18,7 +18,7 @@ export const regex = {
   utcOffset: /^[+-]([01][0-9]|2[0-3]):[0-5][0-9]$/,
   appName: /^\@[a-z][a-z0-9]*(-[a-z0-9]+)*\/[a-z][a-z0-9]*(-[a-z0-9]+)*$/,
   semver: /^\d+\.\d+\.\d+/,
-  money: /^\d+(\.\d+)?$/,
+  money: /^\-?\d+(\.\d+)?$/,
   protocol: /^https?:\/\//,
   locale: /^[a-z]{2}(-[A-Z]{2})?$/,
 };

@@ -32,7 +32,7 @@ export class MonetaryValue {
   public static readonly [_internal] = {
     label: "monetary value",
     schema: Joi.object({
-      value: Joi.alternatives(Joi.number().min(0), Joi.string().money()).required(),
+      value: Joi.alternatives(Joi.number(), Joi.string().money()).required(),
       currency: Joi.string().enum(Currency).required(),
     }),
   };

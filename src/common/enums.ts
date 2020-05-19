@@ -33,6 +33,16 @@ export enum NoteType {
 }
 
 /**
+ * Types of delivery confirmations
+ */
+export enum DeliveryConfirmationType {
+  Delivery = "delivery",
+  Signature = "signature",
+  AdultSignature = "adult_signature",
+  DirectSignature = "direct_signature",
+}
+
+/**
  * The types of itemized charges or credits that can be specified
  * for a shipment or sales order
  */

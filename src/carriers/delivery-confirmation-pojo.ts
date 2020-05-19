@@ -1,6 +1,5 @@
-import { InlineOrReference, LocalizationDefinition, LocalizationPOJO, LocalizedInfoPOJO } from "../common";
+import { DeliveryConfirmationType, InlineOrReference, LocalizationDefinition, LocalizationPOJO, LocalizedInfoPOJO } from "../common";
 import { DefinitionIdentifierPOJO } from "../common/internal";
-import { DeliveryConfirmationType } from "./enums";
 
 /**
  * A delivery confirmation option offered by a carrier

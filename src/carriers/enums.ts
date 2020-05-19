@@ -1,14 +1,4 @@
 /**
- * Types of delivery confirmations
- */
-export enum DeliveryConfirmationType {
-  Delivery = "delivery",
-  Signature = "signature",
-  AdultSignature = "adult_signature",
-  DirectSignature = "direct_signature",
-}
-
-/**
  * A class of delivery service
  */
 export enum DeliveryServiceClass {

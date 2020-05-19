@@ -1,7 +1,6 @@
-import { LocalizedInfoPOJO } from "../common";
+import { DeliveryConfirmationType, LocalizedInfoPOJO } from "../common";
 import { App, DefinitionIdentifier, hideAndFreeze, Joi, Localization, localize, _internal } from "../common/internal";
 import { DeliveryConfirmationPOJO } from "./delivery-confirmation-pojo";
-import { DeliveryConfirmationType } from "./enums";
 
 const _private = Symbol("private fields");
 

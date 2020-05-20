@@ -252,6 +252,14 @@ const pojo = module.exports = {
     };
   },
 
+  quantity (props = {}) {
+    return {
+      value: 1,
+      unit: "ea",
+      ...props,
+    };
+  },
+
   monetaryValue (props = {}) {
     return {
       value: "12.34",
@@ -291,17 +299,6 @@ const pojo = module.exports = {
     return {
       packaging: {
         id: "44444444-4444-4444-4444-444444444444",
-      },
-      ...props,
-    };
-  },
-
-  charge (props = {}) {
-    return {
-      type: "shipping",
-      amount: {
-        value: 123.456,
-        currency: "CAD",
       },
       ...props,
     };
@@ -348,6 +345,13 @@ const pojo = module.exports = {
     };
   },
 
+  buyerIdentifier (props = {}) {
+    return {
+      id: "DUMMY_BUYER_ID",
+      ...props,
+    };
+  },
+
   storeIdentifier (props = {}) {
     return {
       id: "DUMMY_STORE_ID",
@@ -379,6 +383,53 @@ const pojo = module.exports = {
   productIdentifier (props = {}) {
     return {
       id: "DUMMY_PRODUCT_ID",
+      ...props,
+    };
+  },
+
+  salesOrder (props = {}) {
+    return {
+      ...pojo.salesOrderIdentifier(),
+      createdDateTime: "2005-05-05T05:05:05Z",
+      status: "awaiting_shipment",
+      shipTo: pojo.addressWithContactInfo(),
+      seller: pojo.sellerIdentifier(),
+      buyer: pojo.buyer(),
+      items: [pojo.salesOrderItem()],
+      ...props,
+    };
+  },
+
+  salesOrderItem (props = {}) {
+    return {
+      ...pojo.salesOrderItemIdentifier(),
+      name: "My Item",
+      quantity: pojo.quantity(),
+      unitPrice: pojo.monetaryValue(),
+      ...props,
+    };
+  },
+
+  seller (props = {}) {
+    return {
+      ...pojo.sellerIdentifier(),
+      store: pojo.store(),
+      ...props,
+    };
+  },
+
+  store (props = {}) {
+    return {
+      ...pojo.storeIdentifier(),
+      name: "My Store",
+      ...props,
+    };
+  },
+
+  buyer (props = {}) {
+    return {
+      ...pojo.buyerIdentifier(),
+      ...pojo.contactInfo(),
       ...props,
     };
   },

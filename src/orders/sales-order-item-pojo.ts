@@ -34,7 +34,8 @@ export interface SalesOrderItemPOJO extends SalesOrderItemIdentifierPOJO {
   quantity: QuantityPOJO;
 
   /**
-   * The sale price of each item
+   * The sale price of each item. This should NOT include additional charges or adjustments,
+   * such as taxes or discounts. Use `charges` for those.
    */
   unitPrice: MonetaryValuePOJO;
 

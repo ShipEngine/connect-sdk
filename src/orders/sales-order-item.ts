@@ -1,5 +1,6 @@
+import * as currency from "currency.js";
 import { Charge, MonetaryValue, Note, Quantity, Weight } from "../common";
-import { createNotes, hideAndFreeze, Joi, _internal } from "../common/internal";
+import { calculateTotalCharges, createNotes, hideAndFreeze, Joi, _internal } from "../common/internal";
 import { ProductIdentifier } from "../products";
 import { FulfillmentStatus } from "./enums";
 import { SalesOrderItemIdentifier, salesOrderItemIdentifierMixin } from "./sales-order-item-identifier";
@@ -27,7 +28,7 @@ export class SalesOrderItem extends salesOrderItemIdentifierMixin() {
       itemURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
       trackingURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
       shippingPreferences: ShippingPreferences[_internal].schema,
-      charges: Joi.array().min(1).items(Charge[_internal].schema).required(),
+      charges: Joi.array().min(1).items(Charge[_internal].schema),
       notes: Note[_internal].notesSchema,
       metadata: Joi.object(),
     }),
@@ -62,9 +63,15 @@ export class SalesOrderItem extends salesOrderItemIdentifierMixin() {
   public readonly quantity: Quantity;
 
   /**
-   * The sale price of each item
+   * The sale price of each item. This should NOT include additional charges or adjustments,
+   * such as taxes or discounts. Use `charges` for those.
    */
   public readonly unitPrice: MonetaryValue;
+
+  /**
+   * The total price of this item. This is `unitPrice` multiplied by `quantity`.
+   */
+  public readonly totalPrice: MonetaryValue;
 
   /**
    * The weight of each item
@@ -92,6 +99,16 @@ export class SalesOrderItem extends salesOrderItemIdentifierMixin() {
   public readonly charges: ReadonlyArray<Charge>;
 
   /**
+   * The total cost of all charges for this order item
+   */
+  public readonly totalCharges: MonetaryValue;
+
+  /**
+   * The total amount of the order item. This is `totalPrice` plus `totalCharges`.
+   */
+  public readonly totalAmount: MonetaryValue;
+
+  /**
    * Human-readable information regarding this order item, such as gift notes, backorder notices, etc.
    */
   public readonly notes: ReadonlyArray<Note>;
@@ -113,11 +130,17 @@ export class SalesOrderItem extends salesOrderItemIdentifierMixin() {
     this.product = pojo.product && new ProductIdentifier(pojo.product);
     this.quantity = new Quantity(pojo.quantity);
     this.unitPrice = new MonetaryValue(pojo.unitPrice);
+    this.totalPrice = new MonetaryValue({
+      value: currency(this.unitPrice.value).multiply(this.quantity.value).toString(),
+      currency: this.unitPrice.currency,
+    });
     this.unitWeight = pojo.unitWeight && new Weight(pojo.unitWeight);
     this.itemURL = pojo.itemURL ? new URL(pojo.itemURL as string) : undefined;
     this.trackingURL = pojo.trackingURL ? new URL(pojo.trackingURL as string) : undefined;
     this.shippingPreferences = new ShippingPreferences(pojo.shippingPreferences || {});
     this.charges = pojo.charges ? pojo.charges.map((charge) => new Charge(charge)) : [];
+    this.totalCharges = calculateTotalCharges(this.charges);
+    this.totalAmount = MonetaryValue.sum([this.totalPrice, this.totalCharges]);
     this.notes = createNotes(pojo.notes);
     this.metadata = pojo.metadata || {};
 

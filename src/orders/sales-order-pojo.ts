@@ -68,7 +68,7 @@ export interface SalesOrderPOJO extends SalesOrderIdentifierPOJO {
   /**
    * The breakdown of charges for this sales order
    */
-  charges: ReadonlyArray<ChargePOJO>;
+  charges?: ReadonlyArray<ChargePOJO>;
 
   /**
    * The items in this sales order

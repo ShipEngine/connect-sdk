@@ -1,5 +1,5 @@
-import { AddressWithContactInfo, Charge, DateTimeZone, Note } from "../common";
-import { createNotes, hideAndFreeze, Joi, _internal } from "../common/internal";
+import { AddressWithContactInfo, Charge, DateTimeZone, MonetaryValue, Note } from "../common";
+import { calculateTotalCharges, createNotes, hideAndFreeze, Joi, _internal } from "../common/internal";
 import { Buyer } from "./buyer";
 import { FulfillmentStatus, PaymentMethod, PaymentStatus, SalesOrderStatus } from "./enums";
 import { SalesOrderIdentifier, salesOrderIdentifierMixin } from "./sales-order-identifier";
@@ -30,7 +30,7 @@ export class SalesOrder extends salesOrderIdentifierMixin() {
       seller: SellerIdentifier[_internal].schema.required(),
       buyer: Buyer[_internal].schema.required(),
       shippingPreferences: ShippingPreferences[_internal].schema,
-      charges: Joi.array().min(1).items(Charge[_internal].schema).required(),
+      charges: Joi.array().min(1).items(Charge[_internal].schema),
       items: Joi.array().min(1).items(SalesOrderItem[_internal].schema).required(),
       notes: Note[_internal].notesSchema,
       metadata: Joi.object(),
@@ -101,6 +101,17 @@ export class SalesOrder extends salesOrderIdentifierMixin() {
   public readonly charges: ReadonlyArray<Charge>;
 
   /**
+   * The total cost of all charges for this sales order
+   */
+  public readonly totalCharges: MonetaryValue;
+
+  /**
+   * The total amount of the order. This is `totalCharges` plus the `totalAmount`
+   * of all items in the order.
+   */
+  public readonly totalAmount: MonetaryValue;
+
+  /**
    * The items in this sales order
    */
   public readonly items: ReadonlyArray<SalesOrderItem>;
@@ -122,7 +133,7 @@ export class SalesOrder extends salesOrderIdentifierMixin() {
     super(pojo);
 
     this.createdDateTime = new DateTimeZone(pojo.createdDateTime);
-    this.modifiedDateTime = pojo.modifiedDateTime ? new DateTimeZone(pojo.createdDateTime) : this.createdDateTime;
+    this.modifiedDateTime = pojo.modifiedDateTime ? new DateTimeZone(pojo.modifiedDateTime) : this.createdDateTime;
     this.status = pojo.status;
     this.fulfillmentStatus = pojo.fulfillmentStatus;
     this.paymentStatus = pojo.paymentStatus;
@@ -132,8 +143,13 @@ export class SalesOrder extends salesOrderIdentifierMixin() {
     this.seller = new SellerIdentifier(pojo.seller);
     this.buyer = new Buyer(pojo.buyer);
     this.shippingPreferences = new ShippingPreferences(pojo.shippingPreferences || {});
-    this.charges = pojo.charges.map((charge) => new Charge(charge));
+    this.charges = pojo.charges ? pojo.charges.map((charge) => new Charge(charge)) : [];
+    this.totalCharges = calculateTotalCharges(this.charges);
     this.items = pojo.items.map((item) => new SalesOrderItem(item));
+    this.totalAmount = MonetaryValue.sum([
+      this.totalCharges,
+      ...this.items.map((item) => item.totalAmount)
+    ]);
     this.notes = createNotes(pojo.notes);
     this.metadata = pojo.metadata || {};
 

@@ -1,4 +1,4 @@
-import { Charge, ErrorCode, MonetaryValue, ShipEngineError } from "../common";
+import { ErrorCode, MonetaryValue, ShipEngineError } from "../common";
 import { error } from "../common/internal";
 import { Document } from "./documents/document";
 import { DocumentPOJO } from "./documents/document-pojo";
@@ -55,29 +55,6 @@ export function getMaxServiceArea(things: ReadonlyArray<{ serviceArea?: ServiceA
   }
 
   return serviceAreas[maxArea];
-}
-
-
-/**
- * Calculates the total insurance amount for the shipment,
- * which is the sum of the insured value of all packages.
- * @internal
- */
-export function calculateTotalCharges(charges: ReadonlyArray<Charge>): MonetaryValue {
-  try {
-    let insuredValues = charges.map((charge) => charge.amount);
-    return MonetaryValue.sum(insuredValues);
-  }
-  catch (originalError) {
-    // Check for a currency mismatch, and throw a more specific error message
-    if ((originalError as ShipEngineError).code === ErrorCode.CurrencyMismatch) {
-      throw error(
-        ErrorCode.CurrencyMismatch, "All charges must be in the same currency.", { originalError }
-      );
-    }
-
-    throw originalError;
-  }
 }
 
 

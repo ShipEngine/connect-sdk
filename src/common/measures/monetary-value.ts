@@ -65,16 +65,16 @@ export class MonetaryValue {
   /**
    * Returns the sum total of all the given monetary values
    */
-  public static sum(charges: MonetaryValue[]): MonetaryValue {
+  public static sum(monetaryValues: MonetaryValue[]): MonetaryValue {
     let uniqueCurrencies = new Set<Currency>();
     let total = currency(0);
 
-    for (let charge of charges) {
-      let value = currency(charge.value);
+    for (let monetaryValue of monetaryValues) {
+      let value = currency(monetaryValue.value);
 
       if (value.intValue > 0) {
-        total = total.add(charge.value);
-        uniqueCurrencies.add(charge.currency);
+        total = total.add(monetaryValue.value);
+        uniqueCurrencies.add(monetaryValue.currency);
       }
     }
 
@@ -82,7 +82,7 @@ export class MonetaryValue {
       let currencies = [...uniqueCurrencies];
       throw error(
         ErrorCode.CurrencyMismatch,
-        `Currency mistmatch: (${currencies.join(", ")}). All charges must be in the same currency.`,
+        `Currency mismatch: ${currencies.join(", ")}. All monetary values must be in the same currency.`,
         { currencies }
       );
     }

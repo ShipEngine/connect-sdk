@@ -1,7 +1,6 @@
 import { Charge, Identifiers, MonetaryValue, Note, TimeRange } from "../../common";
-import { createNotes, hideAndFreeze, Joi, _internal } from "../../common/internal";
+import { calculateTotalCharges, createNotes, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
-import { calculateTotalCharges } from "../utils";
 import { PickupConfirmationPOJO } from "./pickup-confirmation-pojo";
 
 /**
@@ -50,12 +49,12 @@ export class PickupConfirmation {
   public readonly charges: ReadonlyArray<Charge>;
 
   /**
-   * The total cost of all charges for this pickup.
+   * The total cost of all charges for this pickup
    */
   public readonly totalAmount: MonetaryValue;
 
   /**
-   * The shipments to be picked-up.
+   * The shipments to be picked-up
    */
   public readonly shipments: ReadonlyArray<ShipmentIdentifier>;
 

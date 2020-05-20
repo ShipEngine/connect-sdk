@@ -1,8 +1,7 @@
 import { Charge, DateTimeZone, MonetaryValue, TimeRange } from "../../common";
-import { hideAndFreeze, Joi, _internal } from "../../common/internal";
+import { calculateTotalCharges, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { FulfillmentService } from "../fulfillment-service";
 import { PackageConfirmation } from "../packages/package-confirmation";
-import { calculateTotalCharges } from "../utils";
 import { ShipmentConfirmationPOJO } from "./shipment-confirmation-pojo";
 import { ShipmentIdentifier, shipmentIdentifierMixin } from "./shipment-identifier";
 
@@ -96,7 +95,7 @@ export class ShipmentConfirmation extends shipmentIdentifierMixin() {
   public readonly charges: ReadonlyArray<Charge>;
 
   /**
-   * The total cost of all charges for this label.
+   * The total cost of all charges for this label
    */
   public readonly totalAmount: MonetaryValue;
 

@@ -1,5 +1,5 @@
 import { ChargeType } from "./enums";
-import { createNotes } from "./internal/create-note";
+import { createNotes } from "./internal/class-utils";
 import { hideAndFreeze, _internal } from "./internal/utils";
 import { Joi } from "./internal/validation";
 import { MonetaryValue, MonetaryValuePOJO } from "./measures/monetary-value";

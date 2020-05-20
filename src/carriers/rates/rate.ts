@@ -1,8 +1,7 @@
 import { Charge, DateTimeZone, ErrorCode, MonetaryValue, Note, TimeRange } from "../../common";
-import { App, createNotes, DefinitionIdentifier, error, hideAndFreeze, Joi, _internal } from "../../common/internal";
+import { App, calculateTotalCharges, createNotes, DefinitionIdentifier, error, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { DeliveryService } from "../delivery-service";
 import { FulfillmentService } from "../fulfillment-service";
-import { calculateTotalCharges } from "../utils";
 import { RatePackage } from "./rate-package";
 import { RatePOJO } from "./rate-pojo";
 
@@ -102,7 +101,7 @@ export class Rate {
   public readonly charges: ReadonlyArray<Charge>;
 
   /**
-   * The total cost of all charges for this rate.
+   * The total cost of all charges for this rate
    */
   public readonly totalAmount: MonetaryValue;
 

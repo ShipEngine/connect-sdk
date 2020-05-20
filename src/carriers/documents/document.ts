@@ -1,13 +1,60 @@
+// tslint:disable: max-classes-per-file
 import { ErrorCode } from "../../common";
-import { Constructor, error, hideAndFreeze, Joi, _internal } from "../../common/internal";
+import { error, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { DocumentPOJO } from "./document-pojo";
 import { DocumentFormat, DocumentSize, DocumentType } from "./enums";
+
+/**
+ * Abstract base class for documents and labels
+ */
+export abstract class DocumentBase {
+  //#region Public Fields
+
+  /**
+   * The user-friendly name of the document (e.g. "Label", "Customs Form")
+   */
+  public readonly name: string;
+
+  /**
+   * The type of document (e.g. label, customs form, SCAN form)
+   */
+  public readonly type: DocumentType;
+
+  /**
+   * The dimensions of the document
+   */
+  public readonly size: DocumentSize;
+
+  /**
+   * The file format of the document
+   */
+  public readonly format: DocumentFormat;
+
+  /**
+   * The document data, in the specified file format
+   */
+  public readonly data: Buffer;
+
+  //#endregion
+
+  public constructor(pojo: DocumentPOJO) {
+    this.name = getDocumentName(pojo);
+    this.type = pojo.type;
+    this.size = pojo.size;
+    this.format = pojo.format;
+    this.data = pojo.data;
+
+    if (this.data.length === 0) {
+      throw error(ErrorCode.Validation, `${this.name} data cannot be empty`);
+    }
+  }
+}
 
 
 /**
  * A document that is associated with a shipment or package, such as a customs form.
  */
-export class Document extends documentMixin() {
+export class Document extends DocumentBase {
   //#region Private/Internal Fields
 
   /** @internal */
@@ -34,58 +81,6 @@ export class Document extends documentMixin() {
 
 // Prevent modifications to the class
 hideAndFreeze(Document);
-
-
-/**
- * Extends a base class with document fields
- * @internal
- */
-export function documentMixin(base: Constructor = Object) {
-  return class DocumentMixin extends base {
-    //#region Public Fields
-
-    /**
-     * The user-friendly name of the document (e.g. "Label", "Customs Form")
-     */
-    public readonly name: string;
-
-    /**
-     * The type of document (e.g. label, customs form, SCAN form)
-     */
-    public readonly type: DocumentType;
-
-    /**
-     * The dimensions of the document
-     */
-    public readonly size: DocumentSize;
-
-    /**
-     * The file format of the document
-     */
-    public readonly format: DocumentFormat;
-
-    /**
-     * The document data, in the specified file format
-     */
-    public readonly data: Buffer;
-
-    //#endregion
-
-    public constructor(pojo: DocumentPOJO) {
-      base === Object ? super() : super(pojo);
-
-      this.name = getDocumentName(pojo);
-      this.type = pojo.type;
-      this.size = pojo.size;
-      this.format = pojo.format;
-      this.data = pojo.data;
-
-      if (this.data.length === 0) {
-        throw error(ErrorCode.Validation, `${this.name} data cannot be empty`);
-      }
-    }
-  };
-}
 
 
 /**

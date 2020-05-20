@@ -1,5 +1,6 @@
+// tslint:disable: max-classes-per-file
 import { Identifiers, IdentifiersPOJO } from "../common";
-import { Constructor, hideAndFreeze, Joi, _internal } from "../common/internal";
+import { hideAndFreeze, Joi, _internal } from "../common/internal";
 
 
 /**
@@ -24,9 +25,40 @@ export interface SalesOrderItemIdentifierPOJO {
 
 
 /**
+ * Abstract base class for sales order item identity
+ */
+export abstract class SalesOrderItemIdentifierBase {
+  //#region Public Fields
+
+  /**
+   * The marketplace's unique ID for the sales order
+   */
+  public readonly id: string;
+
+  /**
+   * The Stock Keeping Unit code for this item
+   */
+  public readonly sku: string;
+
+  /**
+   * Your own identifiers for this sales order
+   */
+  public readonly identifiers: Identifiers;
+
+  //#endregion
+
+  public constructor(pojo: SalesOrderItemIdentifierPOJO) {
+    this.id = pojo.id;
+    this.sku = pojo.sku || "";
+    this.identifiers = new Identifiers(pojo.identifiers);
+  }
+}
+
+
+/**
  * Identifies an item in a sales order
  */
-export class SalesOrderItemIdentifier extends salesOrderItemIdentifierMixin() {
+export class SalesOrderItemIdentifier extends SalesOrderItemIdentifierBase {
   //#region Private/Internal Fields
 
   /** @internal */
@@ -51,38 +83,3 @@ export class SalesOrderItemIdentifier extends salesOrderItemIdentifierMixin() {
 
 // Prevent modifications to the class
 hideAndFreeze(SalesOrderItemIdentifier);
-
-/**
- * Extends a base class with the fields of a sales order identifier
- * @internal
- */
-export function salesOrderItemIdentifierMixin(base: Constructor = Object) {
-  return class SalesOrderItemIdentifierMixin extends base {
-    //#region Public Fields
-
-    /**
-     * The marketplace's unique ID for the sales order
-     */
-    public readonly id: string;
-
-    /**
-     * The Stock Keeping Unit code for this item
-     */
-    public readonly sku: string;
-
-    /**
-     * Your own identifiers for this sales order
-     */
-    public readonly identifiers: Identifiers;
-
-    //#endregion
-
-    public constructor(pojo: SalesOrderItemIdentifierPOJO) {
-      base === Object ? super() : super(pojo);
-
-      this.id = pojo.id;
-      this.sku = pojo.sku || "";
-      this.identifiers = new Identifiers(pojo.identifiers);
-    }
-  };
-}

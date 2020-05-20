@@ -1,6 +1,6 @@
 import { ContactInfo, ContactInfoPOJO } from "../../common";
 import { hideAndFreeze, Joi, _internal } from "../../common/internal";
-import { SellerIdentifier, sellerIdentifierMixin, SellerIdentifierPOJO } from "./seller-identifier";
+import { SellerIdentifier, SellerIdentifierBase, SellerIdentifierPOJO } from "./seller-identifier";
 import { Store, StorePOJO } from "./store";
 
 
@@ -29,7 +29,7 @@ export interface SellerPOJO extends SellerIdentifierPOJO {
 /**
  * A seller who sells goods in a marketplace
  */
-export class Seller extends sellerIdentifierMixin() {
+export class Seller extends SellerIdentifierBase {
   //#region Private/Internal Fields
 
   /** @internal */

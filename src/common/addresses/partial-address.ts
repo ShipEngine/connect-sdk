@@ -6,9 +6,9 @@ import { AddressPOJO } from "./address";
 import { GeoCoordinate } from "./geo-coordinate";
 
 /**
- * The abstract base class for all address classes
+ * Aabstract base class for all address classes
  */
-export abstract class BaseAddress {
+export abstract class PartialAddressBase {
   public readonly company: string;
   public readonly addressLines: ReadonlyArray<string>;
   public readonly cityLocality: string;
@@ -35,7 +35,7 @@ export abstract class BaseAddress {
 /**
  * A partial mailing address
  */
-export class PartialAddress extends BaseAddress {
+export class PartialAddress extends PartialAddressBase {
   //#region Private/Internal Fields
 
   /** @internal */

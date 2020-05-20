@@ -1,5 +1,6 @@
+// tslint:disable: max-classes-per-file
 import { Identifiers, IdentifiersPOJO } from "../../common";
-import { Constructor, hideAndFreeze, Joi, _internal } from "../../common/internal";
+import { hideAndFreeze, Joi, _internal } from "../../common/internal";
 
 /**
  * Identifies a shipment
@@ -21,9 +22,37 @@ export interface ShipmentIdentifierPOJO {
 
 
 /**
+ * Abstract base class for shipment identity
+ */
+export abstract class ShipmentIdentifierBase {
+  //#region Public Fields
+
+  /**
+   * The master tracking number for the entire shipment.
+   * For single-piece shipments, this will be the same as the package tracking number.
+   * For multi-piece shipments, this may be a separate tracking number, or the same
+   * tracking number as one of the packages.
+   */
+  public readonly trackingNumber: string;
+
+  /**
+   * Your own identifiers for this shipment
+   */
+  public readonly identifiers: Identifiers;
+
+  //#endregion
+
+  public constructor(pojo: ShipmentIdentifierPOJO) {
+    this.trackingNumber = pojo.trackingNumber || "";
+    this.identifiers = new Identifiers(pojo.identifiers);
+  }
+}
+
+
+/**
  * Identifies a shipment
  */
-export class ShipmentIdentifier extends shipmentIdentifierMixin() {
+export class ShipmentIdentifier extends ShipmentIdentifierBase {
   //#region Private/Internal Fields
 
   /** @internal */
@@ -47,36 +76,3 @@ export class ShipmentIdentifier extends shipmentIdentifierMixin() {
 
 // Prevent modifications to the class
 hideAndFreeze(ShipmentIdentifier);
-
-
-/**
- * Extends a base class with shipment identifier fields
- * @internal
- */
-export function shipmentIdentifierMixin(base: Constructor = Object) {
-  return class ShipmentIdentifierMixin extends base {
-    //#region Public Fields
-
-    /**
-     * The master tracking number for the entire shipment.
-     * For single-piece shipments, this will be the same as the package tracking number.
-     * For multi-piece shipments, this may be a separate tracking number, or the same
-     * tracking number as one of the packages.
-     */
-    public readonly trackingNumber: string;
-
-    /**
-     * Your own identifiers for this shipment
-     */
-    public readonly identifiers: Identifiers;
-
-    //#endregion
-
-    public constructor(pojo: ShipmentIdentifierPOJO) {
-      base === Object ? super() : super(pojo);
-
-      this.trackingNumber = pojo.trackingNumber || "";
-      this.identifiers = new Identifiers(pojo.identifiers);
-    }
-  };
-}

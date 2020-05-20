@@ -1,5 +1,5 @@
 import { hideAndFreeze, Joi, _internal } from "../../common/internal";
-import { Document, documentMixin } from "./document";
+import { Document, DocumentBase } from "./document";
 import { DocumentPOJO } from "./document-pojo";
 
 /**
@@ -18,8 +18,7 @@ export interface LabelPOJO extends DocumentPOJO {
 /**
  * A shipping label
  */
-// tslint:disable-next-line: max-classes-per-file
-export class Label extends documentMixin() {
+export class Label extends DocumentBase {
   //#region Private/Internal Fields
 
   /** @internal */

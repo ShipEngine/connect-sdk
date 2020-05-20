@@ -1,6 +1,6 @@
 import { UUID } from "../../common";
 import { hideAndFreeze, Joi, _internal } from "../../common/internal";
-import { ShipmentIdentifier, shipmentIdentifierMixin, ShipmentIdentifierPOJO } from "./shipment-identifier";
+import { ShipmentIdentifier, ShipmentIdentifierBase, ShipmentIdentifierPOJO } from "./shipment-identifier";
 
 /**
  * Cancellation of a previously-created shipment
@@ -21,7 +21,7 @@ export interface ShipmentCancellationPOJO extends ShipmentIdentifierPOJO {
 /**
  * Cancellation of a previously-created shipment
  */
-export class ShipmentCancellation extends shipmentIdentifierMixin() {
+export class ShipmentCancellation extends ShipmentIdentifierBase {
   //#region Private/Internal Fields
 
   /** @internal */

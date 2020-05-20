@@ -200,7 +200,8 @@ export class Marketplace {
     }
 
     try {
-      await getSalesOrdersByDate(_transaction);
+      await Promise.resolve();
+      // await getSalesOrdersByDate(_transaction);
     }
     catch (originalError) {
       let transactionID = _transaction.id;

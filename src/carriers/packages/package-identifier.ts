@@ -1,5 +1,6 @@
+// tslint:disable: max-classes-per-file
 import { Identifiers, IdentifiersPOJO } from "../../common";
-import { Constructor, hideAndFreeze, Joi, _internal } from "../../common/internal";
+import { hideAndFreeze, Joi, _internal } from "../../common/internal";
 
 /**
  * Identifies a package
@@ -18,9 +19,34 @@ export interface PackageIdentifierPOJO {
 
 
 /**
+ * Abstract base class for package identity
+ */
+export abstract class PackageIdentifierBase {
+  //#region Public Fields
+
+  /**
+   * The carrier tracking number
+   */
+  public readonly trackingNumber: string;
+
+  /**
+   * Your own identifiers for this package
+   */
+  public readonly identifiers: Identifiers;
+
+  //#endregion
+
+  public constructor(pojo: PackageIdentifierPOJO) {
+    this.trackingNumber = pojo.trackingNumber || "";
+    this.identifiers = new Identifiers(pojo.identifiers);
+  }
+}
+
+
+/**
  * Identifies a package
  */
-export class PackageIdentifier extends packageIdentifierMixin() {
+export class PackageIdentifier extends PackageIdentifierBase {
   //#region Private/Internal Fields
 
   /** @internal */
@@ -44,32 +70,3 @@ export class PackageIdentifier extends packageIdentifierMixin() {
 
 // Prevent modifications to the class
 hideAndFreeze(PackageIdentifier);
-
-/**
- * Extends a base class with the fields of a package identifier
- * @internal
- */
-export function packageIdentifierMixin(base: Constructor = Object) {
-  return class PackageIdentifierMixin extends base {
-    //#region Public Fields
-
-    /**
-     * The carrier tracking number
-     */
-    public readonly trackingNumber: string;
-
-    /**
-     * Your own identifiers for this package
-     */
-    public readonly identifiers: Identifiers;
-
-    //#endregion
-
-    public constructor(pojo: PackageIdentifierPOJO) {
-      base === Object ? super() : super(pojo);
-
-      this.trackingNumber = pojo.trackingNumber || "";
-      this.identifiers = new Identifiers(pojo.identifiers);
-    }
-  };
-}

@@ -1,5 +1,6 @@
+import { Constructor } from "../internal/types";
 import { hideAndFreeze, _internal } from "../internal/utils";
-import { Address, addressMixin, AddressPOJO } from "./address";
+import { Address, AddressBase, AddressPOJO } from "./address";
 import { ContactInfo, contactInfoMixin, ContactInfoPOJO } from "./contact-info";
 
 
@@ -17,7 +18,7 @@ export interface AddressWithContactInfo extends Address, ContactInfo {}
 /**
  * A mailing address with a person's contact info
  */
-export class AddressWithContactInfo extends contactInfoMixin(addressMixin()) {
+export class AddressWithContactInfo extends contactInfoMixin(AddressBase as Constructor) {
   //#region Private/Internal Fields
 
   /** @internal */

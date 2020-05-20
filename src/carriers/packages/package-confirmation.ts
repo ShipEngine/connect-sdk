@@ -5,7 +5,7 @@ import { DocumentPOJO } from "../documents/document-pojo";
 import { DocumentType } from "../documents/enums";
 import { Label, LabelPOJO } from "../documents/label";
 import { createDocument, isLabel } from "../utils";
-import { PackageIdentifier, packageIdentifierMixin, PackageIdentifierPOJO } from "./package-identifier";
+import { PackageIdentifier, PackageIdentifierBase, PackageIdentifierPOJO } from "./package-identifier";
 
 /**
  * Confirmation details about a package in a shipment
@@ -32,7 +32,7 @@ export interface PackageConfirmationPOJO extends PackageIdentifierPOJO {
 /**
  * Confirmation details about a package in a shipment
  */
-export class PackageConfirmation extends packageIdentifierMixin() {
+export class PackageConfirmation extends PackageIdentifierBase {
   //#region Private/Internal Fields
 
   /** @internal */

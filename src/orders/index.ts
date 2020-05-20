@@ -10,6 +10,7 @@ export * from "./sales-order-item";
 export { SalesOrderItemIdentifier, SalesOrderItemIdentifierPOJO } from "./sales-order-item-identifier";
 export * from "./sales-order-item-pojo";
 export * from "./sales-order-pojo";
+export * from "./sales-order-time-range";
 export * from "./sellers/seller";
 export { SellerIdentifier, SellerIdentifierPOJO } from "./sellers/seller-identifier";
 export * from "./sellers/store";

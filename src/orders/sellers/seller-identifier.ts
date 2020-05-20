@@ -1,5 +1,6 @@
+// tslint:disable: max-classes-per-file
 import { Identifiers, IdentifiersPOJO } from "../../common";
-import { Constructor, hideAndFreeze, Joi, _internal } from "../../common/internal";
+import { hideAndFreeze, Joi, _internal } from "../../common/internal";
 
 
 /**
@@ -19,9 +20,34 @@ export interface SellerIdentifierPOJO {
 
 
 /**
+ * Aabstract base class for seller identity
+ */
+export abstract class SellerIdentifierBase {
+  //#region Public Fields
+
+  /**
+   * The marketplace's unique ID for the seller
+   */
+  public readonly id: string;
+
+  /**
+   * Your own identifiers for this seller
+   */
+  public readonly identifiers: Identifiers;
+
+  //#endregion
+
+  public constructor(pojo: SellerIdentifierPOJO) {
+    this.id = pojo.id;
+    this.identifiers = new Identifiers(pojo.identifiers);
+  }
+}
+
+
+/**
  * Identifies a seller who sells goods in a marketplace
  */
-export class SellerIdentifier extends sellerIdentifierMixin() {
+export class SellerIdentifier extends SellerIdentifierBase {
   //#region Private/Internal Fields
 
   /** @internal */
@@ -45,32 +71,3 @@ export class SellerIdentifier extends sellerIdentifierMixin() {
 
 // Prevent modifications to the class
 hideAndFreeze(SellerIdentifier);
-
-/**
- * Extends a base class with the fields of a seller identifier
- * @internal
- */
-export function sellerIdentifierMixin(base: Constructor = Object) {
-  return class SellerIdentifierMixin extends base {
-    //#region Public Fields
-
-    /**
-     * The marketplace's unique ID for the seller
-     */
-    public readonly id: string;
-
-    /**
-     * Your own identifiers for this seller
-     */
-    public readonly identifiers: Identifiers;
-
-    //#endregion
-
-    public constructor(pojo: SellerIdentifierPOJO) {
-      base === Object ? super() : super(pojo);
-
-      this.id = pojo.id;
-      this.identifiers = new Identifiers(pojo.identifiers);
-    }
-  };
-}

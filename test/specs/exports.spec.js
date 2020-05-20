@@ -24,6 +24,9 @@ describe("package exports", () => {
         expect(namedExport.name).to.equal(name);
         expect(namedExport.prototype).to.be.an("object");
         expect(namedExport.prototype.constructor).to.equal(namedExport);
+
+        // Don't export abstract base classes
+        expect(name).not.to.match(/Base$/, "Abstract base classes should not be exported");
       }
       else {
         // This export is an enumeration

@@ -27,6 +27,7 @@ export interface ShipEngineConstructor<T extends object = object> extends ShipEn
  * @internal
  */
 export interface Constructor<T extends object = object> {
+  prototype: T;
   readonly name: string;
   new(...args: unknown[]): T;
 }

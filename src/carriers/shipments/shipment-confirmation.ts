@@ -3,12 +3,12 @@ import { calculateTotalCharges, hideAndFreeze, Joi, _internal } from "../../comm
 import { FulfillmentService } from "../fulfillment-service";
 import { PackageConfirmation } from "../packages/package-confirmation";
 import { ShipmentConfirmationPOJO } from "./shipment-confirmation-pojo";
-import { ShipmentIdentifier, shipmentIdentifierMixin } from "./shipment-identifier";
+import { ShipmentIdentifier, ShipmentIdentifierBase } from "./shipment-identifier";
 
 /**
  * Confirmation that a shipment has been created
  */
-export class ShipmentConfirmation extends shipmentIdentifierMixin() {
+export class ShipmentConfirmation extends ShipmentIdentifierBase {
   //#region Private/Internal Fields
 
   /** @internal */

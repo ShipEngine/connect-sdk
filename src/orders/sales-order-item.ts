@@ -3,7 +3,7 @@ import { Charge, MonetaryValue, Note, Quantity, Weight } from "../common";
 import { calculateTotalCharges, createNotes, hideAndFreeze, Joi, _internal } from "../common/internal";
 import { ProductIdentifier } from "../products";
 import { FulfillmentStatus } from "./enums";
-import { SalesOrderItemIdentifier, salesOrderItemIdentifierMixin } from "./sales-order-item-identifier";
+import { SalesOrderItemIdentifier, SalesOrderItemIdentifierBase } from "./sales-order-item-identifier";
 import { SalesOrderItemPOJO } from "./sales-order-item-pojo";
 import { ShippingPreferences } from "./shipping-preferences";
 
@@ -11,7 +11,7 @@ import { ShippingPreferences } from "./shipping-preferences";
 /**
  * An item in a sales order
  */
-export class SalesOrderItem extends salesOrderItemIdentifierMixin() {
+export class SalesOrderItem extends SalesOrderItemIdentifierBase {
   //#region Private/Internal Fields
 
   /** @internal */

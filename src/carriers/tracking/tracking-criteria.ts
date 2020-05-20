@@ -1,5 +1,5 @@
 import { hideAndFreeze, Joi, _internal } from "../../common/internal";
-import { ShipmentIdentifier, shipmentIdentifierMixin, ShipmentIdentifierPOJO } from "../shipments/shipment-identifier";
+import { ShipmentIdentifier, ShipmentIdentifierBase, ShipmentIdentifierPOJO } from "../shipments/shipment-identifier";
 
 /**
  * The information needed to request tracking information for a shipment
@@ -25,7 +25,7 @@ export interface TrackingCriteriaPOJO extends ShipmentIdentifierPOJO {
 /**
  * The information needed to request tracking information for a shipment
  */
-export class TrackingCriteria extends shipmentIdentifierMixin() {
+export class TrackingCriteria extends ShipmentIdentifierBase {
   //#region Private/Internal Fields
 
   /** @internal */

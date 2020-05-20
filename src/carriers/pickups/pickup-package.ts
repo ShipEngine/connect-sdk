@@ -1,6 +1,6 @@
 import { Dimensions, Weight } from "../../common";
 import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../../common/internal";
-import { PackageIdentifier, packageIdentifierMixin } from "../packages/package-identifier";
+import { PackageIdentifier, PackageIdentifierBase } from "../packages/package-identifier";
 import { Packaging } from "../packaging";
 import { PickupPackagePOJO } from "./pickup-shipment-pojo";
 
@@ -8,7 +8,7 @@ import { PickupPackagePOJO } from "./pickup-shipment-pojo";
 /**
  * The package information needed to schedule a pickup
  */
-export class PickupPackage extends packageIdentifierMixin() {
+export class PickupPackage extends PackageIdentifierBase {
   //#region Private/Internal Fields
 
   /** @internal */

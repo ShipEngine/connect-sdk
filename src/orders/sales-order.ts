@@ -2,7 +2,7 @@ import { AddressWithContactInfo, Charge, DateTimeZone, MonetaryValue, Note } fro
 import { calculateTotalCharges, createNotes, hideAndFreeze, Joi, _internal } from "../common/internal";
 import { Buyer } from "./buyer";
 import { FulfillmentStatus, PaymentMethod, PaymentStatus, SalesOrderStatus } from "./enums";
-import { SalesOrderIdentifier, salesOrderIdentifierMixin } from "./sales-order-identifier";
+import { SalesOrderIdentifier, SalesOrderIdentifierBase } from "./sales-order-identifier";
 import { SalesOrderItem } from "./sales-order-item";
 import { SalesOrderPOJO } from "./sales-order-pojo";
 import { SellerIdentifier } from "./sellers/seller-identifier";
@@ -12,7 +12,7 @@ import { ShippingPreferences } from "./shipping-preferences";
 /**
  * A sales order
  */
-export class SalesOrder extends salesOrderIdentifierMixin() {
+export class SalesOrder extends SalesOrderIdentifierBase {
   //#region Private/Internal Fields
 
   /** @internal */

@@ -1,6 +1,6 @@
 import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../../common/internal";
 import { DeliveryService } from "../delivery-service";
-import { ShipmentIdentifier, shipmentIdentifierMixin } from "../shipments/shipment-identifier";
+import { ShipmentIdentifier, ShipmentIdentifierBase } from "../shipments/shipment-identifier";
 import { PickupPackage } from "./pickup-package";
 import { PickupShipmentPOJO } from "./pickup-shipment-pojo";
 
@@ -8,7 +8,7 @@ import { PickupShipmentPOJO } from "./pickup-shipment-pojo";
 /**
  * The shipment information needed to schedule a pickup
  */
-export class PickupShipment extends shipmentIdentifierMixin() {
+export class PickupShipment extends ShipmentIdentifierBase {
   //#region Private/Internal Fields
 
   /** @internal */

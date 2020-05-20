@@ -1,6 +1,7 @@
 import { Transaction } from "../common";
 import { SalesOrderIdentifier } from "./sales-order-identifier";
 import { SalesOrderPOJO } from "./sales-order-pojo";
+import { SalesOrderTimeRange } from "./sales-order-time-range";
 import { SellerPOJO } from "./sellers/seller";
 import { SellerIdentifier } from "./sellers/seller-identifier";
 
@@ -21,8 +22,8 @@ export type GetSalesOrder = (transaction: Transaction, salesOrder: SalesOrderIde
 /**
  * Returns all orders that were created and/or modified within a given timeframe
  */
-export type GetSalesOrdersByDate = (transaction: Transaction)
-  => void | Promise<void>;
+export type GetSalesOrdersByDate = (transaction: Transaction, range: SalesOrderTimeRange)
+  => Iterable<SalesOrderPOJO> | Promise<Iterable<SalesOrderPOJO>> | AsyncIterable<SalesOrderPOJO>;
 
 
 /**

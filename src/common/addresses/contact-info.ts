@@ -44,6 +44,7 @@ export class ContactInfo extends contactInfoMixin() {
 // Prevent modifications to the class
 hideAndFreeze(ContactInfo);
 
+
 /**
  * Extends a base class with contact information
  * @internal

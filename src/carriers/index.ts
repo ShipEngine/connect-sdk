@@ -1,6 +1,5 @@
-export * from "./carrier";
 export * from "./carrier-app";
-export * from "./carrier-pojo";
+export * from "./carrier-app-pojo";
 export * from "./delivery-confirmation";
 export * from "./delivery-confirmation-pojo";
 export * from "./delivery-service";

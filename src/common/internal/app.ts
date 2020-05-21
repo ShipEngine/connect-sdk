@@ -1,4 +1,5 @@
-import { AppPOJO } from "../app-pojo";
+// tslint:disable: max-classes-per-file
+import { AppManifestPOJO, AppPOJO } from "../app-pojo";
 import { ReferenceMap } from "./reference-map";
 import { _internal } from "./utils";
 import { Joi } from "./validation";
@@ -7,17 +8,20 @@ import { Joi } from "./validation";
  * A ShipEngine Integration Platform app
  */
 export abstract class App {
-
   //#region Private/Internal Fields
 
   /** @internal */
   public static readonly [_internal] = {
     label: "ShipEngine Integration Platform app",
     schema: Joi.object({
-      name: Joi.string().appName().required(),
-      version: Joi.string().semver().required(),
-      description: Joi.string().trim().singleLine().allow("").max(1000),
-    }).unknown(true),
+      manifest: Joi.object({
+        name: Joi.string().appName().required(),
+        version: Joi.string().semver().required(),
+        description: Joi.string().trim().singleLine().allow("").max(1000),
+        dependencies: Joi.object(),
+        devDependencies: Joi.object(),
+      }).unknown(true).required(),
+    }),
   };
 
   /** @internal */
@@ -29,48 +33,19 @@ export abstract class App {
   //#region Public Fields
 
   /**
-   * Indicates the type of app
+   * The app manifest (package.json file)
    */
-  public abstract readonly type: string;
-
-  /**
-   * The ShipEngine Integration Platform app name.
-   * This is a scoped NPM package name (e.g. @company-name/app-name)
-   */
-  public readonly name: string;
-
-  /**
-   * The ShipEngine Integration Platform app version number.
-   * This is a semantic version number (e.g. "1.23.456")
-   */
-  public readonly version: string;
-
-  /**
-   * A short, user-friendly description of the app
-   */
-  public readonly description: string;
+  public readonly manifest: AppManifestPOJO;
 
   //#endregion
 
   public constructor(pojo: AppPOJO) {
-    this.name = pojo.name;
-    this.version = pojo.version;
-    this.description = pojo.description || "";
+    this.manifest = pojo.manifest;
+    this.manifest.description = pojo.manifest.description || "";
   }
 
   /**
    * Creates a copy of the app, localized for the specified locale if possible.
    */
   public abstract localize(locale: string): App;
-
-  /**
-   * Returns the app as a POJO that can be safely serialized as JSON.
-   */
-  public toJSON(): AppPOJO {
-    return {
-      name: this.name,
-      version: this.version,
-      description: this.description,
-    };
-  }
 }

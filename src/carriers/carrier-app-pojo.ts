@@ -1,4 +1,4 @@
-import { FilePath, InlineOrReference, InlineOrReferenceArray, LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO, URLString, UUID } from "../common";
+import { AppPOJO, FilePath, InlineOrReference, InlineOrReferenceArray, LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO, URLString, UUID } from "../common";
 import { DeliveryServiceDefinition, DeliveryServicePOJO } from "./delivery-service-pojo";
 import { ManifestLocation, ManifestShipment } from "./manifests/enums";
 import { CancelPickups, CancelShipments, CreateManifest, CreateShipment, RateShipment, SchedulePickup, TrackShipment } from "./methods";
@@ -6,9 +6,9 @@ import { PickupServiceDefinition, PickupServicePOJO } from "./pickups/pickup-ser
 
 
 /**
- * A carrier that provides delivery services
+ * A ShipEngine Integration Platform carrier app
  */
-export interface CarrierPOJO extends CarrierDefinition {
+export interface CarrierAppPOJO extends CarrierAppDefinition, AppPOJO {
   deliveryServices: ReadonlyArray<DeliveryServicePOJO>;
   pickupServices?: ReadonlyArray<PickupServicePOJO>;
   localization?: LocalizationPOJO<LocalizedBrandingPOJO>;
@@ -23,9 +23,9 @@ export interface CarrierPOJO extends CarrierDefinition {
 
 
 /**
- * A carrier that provides delivery services
+ * A ShipEngine Integration Platform carrier app
  */
-export interface CarrierDefinition {
+export interface CarrierAppDefinition {
   /**
    * A UUID that uniquely identifies the carrier.
    * This ID should never change, even if the carrier name changes.

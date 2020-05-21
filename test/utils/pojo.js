@@ -5,6 +5,13 @@ const path = require("path");
 const pojo = module.exports = {
   app (props = {}) {
     return {
+      manifest: pojo.appManifest,
+      ...props,
+    };
+  },
+
+  appManifest (props = {}) {
+    return {
       name: "@company-name/app-name",
       version: "1.23.456",
       ...props,
@@ -22,7 +29,11 @@ const pojo = module.exports = {
   carrierApp (props = {}) {
     return {
       ...pojo.app(),
-      carrier: pojo.carrier(),
+      id: "11111111-1111-1111-1111-111111111111",
+      name: "Dummy Carrier",
+      websiteURL: "https://example.com/",
+      logo: path.resolve("logo.svg"),
+      deliveryServices: [pojo.deliveryService()],
       ...props,
     };
   },
@@ -31,17 +42,6 @@ const pojo = module.exports = {
     return {
       ...pojo.app(),
       marketplace: pojo.marketplace(),
-      ...props,
-    };
-  },
-
-  carrier (props = {}) {
-    return {
-      id: "11111111-1111-1111-1111-111111111111",
-      name: "Dummy Carrier",
-      websiteURL: "https://example.com/",
-      logo: path.resolve("logo.svg"),
-      deliveryServices: [pojo.deliveryService()],
       ...props,
     };
   },

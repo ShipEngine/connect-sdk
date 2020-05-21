@@ -1,6 +1,6 @@
 import { Address, DateTimeZone, ErrorCode } from "../../common";
 import { error, hideAndFreeze, Joi, _internal } from "../../common/internal";
-import { Carrier } from "../carrier";
+import { CarrierApp } from "../carrier-app";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 import { ManifestLocation } from "./enums";
 import { NewManifestPOJO } from "./new-manifest-pojo";
@@ -57,7 +57,7 @@ export class NewManifest {
 
   //#endregion
 
-  public constructor(pojo: NewManifestPOJO, carrier: Carrier) {
+  public constructor(pojo: NewManifestPOJO, carrier: CarrierApp) {
     this.shipFrom = pojo.shipFrom && new Address(pojo.shipFrom);
     this.openDateTime = new DateTimeZone(pojo.openDateTime);
     this.closeDateTime = new DateTimeZone(pojo.closeDateTime);

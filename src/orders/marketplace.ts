@@ -4,8 +4,10 @@ import { MarketplacePOJO } from "./marketplace-pojo";
 import { GetSalesOrder, GetSalesOrdersByDate, GetSeller, ShipmentCancelled, ShipmentCreated } from "./methods";
 import { SalesOrder } from "./sales-order";
 import { SalesOrderIdentifier } from "./sales-order-identifier";
+import { SalesOrderTimeRange, SalesOrderTimeRangePOJO } from "./sales-order-time-range";
 import { Seller } from "./sellers/seller";
 import { SellerIdentifier, SellerIdentifierPOJO } from "./sellers/seller-identifier";
+import { getAsyncIterable } from "./utils";
 
 const _private = Symbol("private fields");
 
@@ -187,21 +189,31 @@ export class Marketplace {
   /**
    * Returns all orders that were created and/or modified within a given timeframe
    */
-  public async getSalesOrdersByDate(transaction: TransactionPOJO): Promise<void> {
-    let _transaction, _arg2;
+  public async* getSalesOrdersByDate(
+    transaction: TransactionPOJO, range: SalesOrderTimeRangePOJO): AsyncGenerator<SalesOrder> {
+
+    let _transaction, _range;
     let { getSalesOrdersByDate } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
-      // _arg2 = new Arg2(validate(arg2, Arg2));
+      _range = new SalesOrderTimeRange(validate(range, SalesOrderTimeRange));
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the getSalesOrdersByDate method.", { originalError });
     }
 
     try {
-      await Promise.resolve();
-      // await getSalesOrdersByDate(_transaction);
+      let salesOrders = await getSalesOrdersByDate(_transaction, _range);
+      let iterable = getAsyncIterable(salesOrders);
+
+      if (!iterable) {
+        throw error(ErrorCode.AppError, "The return value is not iterable");
+      }
+
+      for await (let salesOrder of iterable) {
+        yield new SalesOrder(validate(salesOrder, SalesOrder));
+      }
     }
     catch (originalError) {
       let transactionID = _transaction.id;

@@ -55,7 +55,7 @@ describe("package exports", () => {
   });
 
   it("should export order classes", () => {
-    assertFileExports("src/orders", true);
+    assertFileExports("src/orders", true, ["utils.ts"]);
   });
 
   it("should export product classes", () => {

@@ -16,7 +16,7 @@ export * from "./measures/dimensions";
 export * from "./measures/enums";
 export * from "./measures/monetary-value";
 export * from "./measures/quantity";
-export * from "./measures/time-range";
+export { TimeRange, TimeRangePOJO } from "./measures/time-range";
 export * from "./measures/weight";
 export * from "./note";
 export * from "./transaction";

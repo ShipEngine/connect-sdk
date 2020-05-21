@@ -1,3 +1,4 @@
+// tslint:disable: max-classes-per-file
 import { ErrorCode } from "../errors";
 import { error, hideAndFreeze, _internal } from "../internal/utils";
 import { Joi } from "../internal/validation";
@@ -20,21 +21,9 @@ export interface TimeRangePOJO {
 
 
 /**
- * A range of time
+ * Abstract base class for date/time ranges
  */
-export class TimeRange {
-  //#region Private/Internal Fields
-
-  /** @internal */
-  public static readonly [_internal] = {
-    label: "time range",
-    schema: Joi.object({
-      startDateTime: DateTimeZone[_internal].schema.required(),
-      endDateTime: DateTimeZone[_internal].schema.required(),
-    }),
-  };
-
-  //#endregion
+export abstract class TimeRangeBase {
   //#region Public Fields
 
   /**
@@ -57,9 +46,6 @@ export class TimeRange {
       throw error(ErrorCode.Validation,
         `Invalid time range: ${this.toString()}. The start date occurs after the end date.`);
     }
-
-    // Make this object immutable
-    hideAndFreeze(this);
   }
 
   /**
@@ -67,6 +53,32 @@ export class TimeRange {
    */
   public toString() {
     return `${this.startDateTime.toISOString()} - ${this.endDateTime.toISOString()}`;
+  }
+}
+
+
+/**
+ * A range of time
+ */
+export class TimeRange extends TimeRangeBase {
+  //#region Private/Internal Fields
+
+  /** @internal */
+  public static readonly [_internal] = {
+    label: "time range",
+    schema: Joi.object({
+      startDateTime: DateTimeZone[_internal].schema.required(),
+      endDateTime: DateTimeZone[_internal].schema.required(),
+    }),
+  };
+
+  //#endregion
+
+  public constructor(pojo: TimeRangePOJO) {
+    super(pojo);
+
+    // Make this object immutable
+    hideAndFreeze(this);
   }
 }
 

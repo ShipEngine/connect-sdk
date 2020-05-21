@@ -1,6 +1,6 @@
 "use strict";
 
-const { CarrierApp } = require("../../../lib");
+const { CarrierApp } = require("../../../");
 const pojo = require("../../utils/pojo");
 const { expect, assert } = require("chai");
 
@@ -8,26 +8,24 @@ describe("schedulePickup", () => {
 
   it("should return a PickupConfirmation from minimal return values", async () => {
     let app = new CarrierApp(pojo.carrierApp({
-      carrier: pojo.carrier({
-        pickupServices: [pojo.pickupService()],
-        schedulePickup: () => ({
-          id: "ABCDEF-123456",
-          timeWindows: [{
-            startDateTime: "2005-05-05T05:05:05.005+05:00",
-            endDateTime: new Date("2005-05-05T05:05:05.005+05:00"),
-          }],
-          charges: [{
-            type: "pickup",
-            amount: {
-              value: 12.34,
-              currency: "AUD",
-            }
-          }]
-        })
-      }),
+      pickupServices: [pojo.pickupService()],
+      schedulePickup: () => ({
+        id: "ABCDEF-123456",
+        timeWindows: [{
+          startDateTime: "2005-05-05T05:05:05.005+05:00",
+          endDateTime: new Date("2005-05-05T05:05:05.005+05:00"),
+        }],
+        charges: [{
+          type: "pickup",
+          amount: {
+            value: 12.34,
+            currency: "AUD",
+          }
+        }]
+      })
     }));
 
-    let confirmation = await app.carrier.schedulePickup(pojo.transaction(), pojo.pickupRequest());
+    let confirmation = await app.schedulePickup(pojo.transaction(), pojo.pickupRequest());
 
     expect(confirmation).to.deep.equal({
       id: "ABCDEF-123456",
@@ -67,60 +65,58 @@ describe("schedulePickup", () => {
 
   it("should return a PickupConfirmation from all possible return values", async () => {
     let app = new CarrierApp(pojo.carrierApp({
-      carrier: pojo.carrier({
-        pickupServices: [pojo.pickupService()],
-        schedulePickup: () => ({
-          id: "ABCDEF-123456",
-          identifiers: {
-            myPickupID: "123456-ABCDEFG",
+      pickupServices: [pojo.pickupService()],
+      schedulePickup: () => ({
+        id: "ABCDEF-123456",
+        identifiers: {
+          myPickupID: "123456-ABCDEFG",
+        },
+        timeWindows: [{
+          startDateTime: "2005-05-05T05:05:05.005+07:30",
+          endDateTime: {
+            value: "2005-05-05T05:05:05.005",
+            timeZone: "America/New_York",
           },
-          timeWindows: [{
-            startDateTime: "2005-05-05T05:05:05.005+07:30",
-            endDateTime: {
-              value: "2005-05-05T05:05:05.005",
-              timeZone: "America/New_York",
-            },
-          }],
-          charges: [
-            {
-              name: "Pickup Charge",
-              description: "Charge for pickup",
-              code: "PIK",
-              notes: "This is a note",
-              type: "pickup",
-              amount: {
-                value: 12.34,
-                currency: "AUD",
-              }
-            },
-            {
-              name: "Pickup Tax",
-              description: "Taxes for pickup",
-              code: "TAX",
-              notes: "This is a note",
-              type: "tax",
-              amount: {
-                value: 2.5,
-                currency: "AUD",
-              }
-            },
-          ],
-          shipments: [{
-            trackingNumber: "1234567890",
-            identifiers: {
-              myShipmentID: "1234567890-ABCDEFG",
+        }],
+        charges: [
+          {
+            name: "Pickup Charge",
+            description: "Charge for pickup",
+            code: "PIK",
+            notes: "This is a note",
+            type: "pickup",
+            amount: {
+              value: 12.34,
+              currency: "AUD",
             }
-          }],
-          notes: "this is a note",
-          metadata: {
-            foo: "bar",
-            biz: "baz",
+          },
+          {
+            name: "Pickup Tax",
+            description: "Taxes for pickup",
+            code: "TAX",
+            notes: "This is a note",
+            type: "tax",
+            amount: {
+              value: 2.5,
+              currency: "AUD",
+            }
+          },
+        ],
+        shipments: [{
+          trackingNumber: "1234567890",
+          identifiers: {
+            myShipmentID: "1234567890-ABCDEFG",
           }
-        })
-      }),
+        }],
+        notes: "this is a note",
+        metadata: {
+          foo: "bar",
+          biz: "baz",
+        }
+      })
     }));
 
-    let confirmation = await app.carrier.schedulePickup(pojo.transaction(), pojo.pickupRequest());
+    let confirmation = await app.schedulePickup(pojo.transaction(), pojo.pickupRequest());
 
     expect(confirmation).to.deep.equal({
       id: "ABCDEF-123456",
@@ -200,13 +196,11 @@ describe("schedulePickup", () => {
 
     it("should throw an error if called with no arguments", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        carrier: pojo.carrier({
-          schedulePickup () {}
-        }),
+        schedulePickup () {}
       }));
 
       try {
-        await app.carrier.schedulePickup();
+        await app.schedulePickup();
         assert.fail("An error should have been thrown");
       }
       catch (error) {
@@ -220,13 +214,11 @@ describe("schedulePickup", () => {
 
     it("should throw an error if called without a PickupRequest", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        carrier: pojo.carrier({
-          schedulePickup () {}
-        }),
+        schedulePickup () {}
       }));
 
       try {
-        await app.carrier.schedulePickup(pojo.transaction());
+        await app.schedulePickup(pojo.transaction());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
@@ -240,13 +232,11 @@ describe("schedulePickup", () => {
 
     it("should throw an error if called with an invalid PickupRequest", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        carrier: pojo.carrier({
-          schedulePickup () {}
-        }),
+        schedulePickup () {}
       }));
 
       try {
-        await app.carrier.schedulePickup(pojo.transaction(), {
+        await app.schedulePickup(pojo.transaction(), {
           pickupService: {
             id: "Come get it",
           },
@@ -276,13 +266,11 @@ describe("schedulePickup", () => {
 
     it("should throw an error if called with an invalid pickupService", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        carrier: pojo.carrier({
-          schedulePickup () {}
-        }),
+        schedulePickup () {}
       }));
 
       try {
-        await app.carrier.schedulePickup(pojo.transaction(), pojo.pickupRequest({
+        await app.schedulePickup(pojo.transaction(), pojo.pickupRequest({
           pickupService: {
             id: "22222222-2222-2222-2222-222222222222",
           }
@@ -299,14 +287,12 @@ describe("schedulePickup", () => {
 
     it("should throw an error if nothing is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        carrier: pojo.carrier({
-          pickupServices: [pojo.pickupService()],
-          schedulePickup () {}
-        }),
+        pickupServices: [pojo.pickupService()],
+        schedulePickup () {}
       }));
 
       try {
-        await app.carrier.schedulePickup(pojo.transaction(), pojo.pickupRequest());
+        await app.schedulePickup(pojo.transaction(), pojo.pickupRequest());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
@@ -320,19 +306,17 @@ describe("schedulePickup", () => {
 
     it("should throw an error if an invalid PickupConfirmation is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        carrier: pojo.carrier({
-          pickupServices: [pojo.pickupService()],
-          schedulePickup: () => ({
-            id: 12345,
-            timeWindows: [],
-            notes: [12345],
-            metadata: false
-          })
-        }),
+        pickupServices: [pojo.pickupService()],
+        schedulePickup: () => ({
+          id: 12345,
+          timeWindows: [],
+          notes: [12345],
+          metadata: false
+        })
       }));
 
       try {
-        await app.carrier.schedulePickup(pojo.transaction(), pojo.pickupRequest());
+        await app.schedulePickup(pojo.transaction(), pojo.pickupRequest());
         assert.fail("An error should have been thrown");
       }
       catch (error) {

@@ -1,11 +1,14 @@
-import { AppPOJO, FilePath, InlineOrReference, LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO, URLString, UUID } from "../common";
+import { AppPOJO, Connect, ConnectionAppDefinition, FormPOJO, InlineOrReference, LocalizationPOJO, LocalizedBrandingPOJO } from "../common";
 import { GetSalesOrder, GetSalesOrdersByDate, GetSeller, ShipmentCancelled, ShipmentCreated } from "./methods";
 
 /**
  * A ShipEngine Integration Platform order app
  */
 export interface OrderAppPOJO extends OrderAppDefinition, AppPOJO {
+  connectionForm: FormPOJO;
+  settingsForm?: FormPOJO;
   localization?: LocalizationPOJO<LocalizedBrandingPOJO>;
+  connect: Connect;
   getSeller: GetSeller;
   getSalesOrder: GetSalesOrder;
   getSalesOrdersByDate: GetSalesOrdersByDate;
@@ -17,42 +20,7 @@ export interface OrderAppPOJO extends OrderAppDefinition, AppPOJO {
 /**
  * A ShipEngine Integration Platform order app
  */
-export interface OrderAppDefinition {
-  /**
-   * A UUID that uniquely identifies the marketplace.
-   * This ID should never change, even if the marketplace name changes.
-   */
-  id: UUID;
-
-  /**
-   * The user-friendly marketplace name (e.g. "Ebay", "Shopify")
-   */
-  name: string;
-
-  /**
-   * A short, user-friendly description of the marketplace
-   */
-  description?: string;
-
-  /**
-   * The URL of the marketplace's website
-   */
-  websiteURL: URLString;
-
-  /**
-   * The marketplace's logo image
-   */
-  logo: FilePath;
-
-  /**
-   * Localizaed values for fields that allow localization
-   */
-  localization?: InlineOrReference<LocalizationDefinition<{
-    name?: string;
-    description?: string;
-    websiteURL?: URLString;
-  }>>;
-
+export interface OrderAppDefinition extends ConnectionAppDefinition {
   /**
    * Returns detailed information about a seller on the marketplace
    */

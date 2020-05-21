@@ -1,6 +1,6 @@
 "use strict";
 
-const { CarrierApp } = require("../../../lib");
+const { CarrierApp } = require("../../../");
 const host = require("@jsdevtools/host-environment");
 const { assert, expect } = require("chai");
 const pojo = require("../../utils/pojo");
@@ -9,11 +9,9 @@ describe("DateTimeZone", () => {
 
   async function createDateTimeZone (value) {
     let app = new CarrierApp(pojo.carrierApp({
-      carrier: pojo.carrier({
-        rateShipment: () => [pojo.rate({ shipDateTime: value })]
-      }),
+      rateShipment: () => [pojo.rate({ shipDateTime: value })]
     }));
-    let rates = await app.carrier.rateShipment(pojo.transaction(), pojo.rateCriteria());
+    let rates = await app.rateShipment(pojo.transaction(), pojo.rateCriteria());
     return rates[0].shipDateTime;
   }
 

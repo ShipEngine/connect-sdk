@@ -1,11 +1,13 @@
-import { FilePath, InlineOrReference, LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO, URLString, UUID } from "../common";
+import { AppDefinition, AppPOJO } from "./app-pojo";
 import { FormDefinition, FormPOJO } from "./form-pojo";
+import { LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO } from "./localization-pojo";
 import { Connect } from "./methods";
+import { FilePath, InlineOrReference, URLString } from "./types";
 
 /**
- * A connection to a third-party service, such as a carrier or marketplace
+ * A ShipEngine Integration Platform app that connects to a service, such as a carrier or marketplace
  */
-export interface ConnectionPOJO extends ConnectionDefinition {
+export interface ConnectionAppPOJO extends ConnectionAppDefinition, AppPOJO {
   connectionForm: FormPOJO;
   settingsForm?: FormPOJO;
   localization?: LocalizationPOJO<LocalizedBrandingPOJO>;
@@ -14,15 +16,9 @@ export interface ConnectionPOJO extends ConnectionDefinition {
 
 
 /**
- * A connection to a third-party service, such as a carrier or marketplace
+ * A ShipEngine Integration Platform app that connects to a service, such as a carrier or marketplace
  */
-export interface ConnectionDefinition {
-  /**
-   * A UUID that uniquely identifies the connection.
-   * This ID should never change, even if the connection name changes.
-   */
-  id: UUID;
-
+export interface ConnectionAppDefinition extends AppDefinition {
   /**
    * The user-friendly connection name (e.g. "FedEx", "Shopify")
    */
@@ -34,7 +30,7 @@ export interface ConnectionDefinition {
   description?: string;
 
   /**
-   * The URL of the third-party service's website
+   * The URL of the service's website
    */
   websiteURL: URLString;
 
@@ -44,7 +40,7 @@ export interface ConnectionDefinition {
   logo: FilePath;
 
   /**
-   * A form that allows the user to connect to the third-party service.
+   * A form that allows the user to connect to the service.
    * This form will usually prompt for an account number and login credentials.
    */
   connectionForm: InlineOrReference<FormDefinition>;

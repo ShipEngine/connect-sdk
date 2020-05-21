@@ -1,5 +1,5 @@
-import { CancellationStatus, Country, ErrorCode, FilePath, LocalizedBrandingPOJO, Transaction, TransactionPOJO, UUID } from "../common";
-import { App, error, hideAndFreeze, Joi, Localization, localize, validate, validateArray, _internal } from "../common/internal";
+import { CancellationStatus, Country, ErrorCode, Transaction, TransactionPOJO } from "../common";
+import { ConnectionApp, error, hideAndFreeze, Joi, localize, validate, validateArray, _internal } from "../common/internal";
 import { CarrierAppPOJO } from "./carrier-app-pojo";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
@@ -35,29 +35,19 @@ const _private = Symbol("private fields");
 /**
  * A ShipEngine Integration Platform carrier app
  */
-export class CarrierApp extends App {
+export class CarrierApp extends ConnectionApp {
   //#region Private/Internal Fields
 
   /** @internal */
   public static readonly [_internal] = {
     label: "ShipEngine Integration Platform carrier app",
-    schema: App[_internal].schema.keys({
-      id: Joi.string().uuid().required(),
-      name: Joi.string().trim().singleLine().min(1).max(100).required(),
-      description: Joi.string().trim().singleLine().allow("").max(1000),
-      websiteURL: Joi.string().website().required(),
-      logo: Joi.string().filePath({ ext: ".svg" }).required(),
+    schema: ConnectionApp[_internal].schema.keys({
       manifestLocations: Joi.string().enum(ManifestLocation)
         .when("createManifest", { is: Joi.function().required(), then: Joi.required() }),
       manifestShipments: Joi.string().enum(ManifestShipment)
         .when("createManifest", { is: Joi.function().required(), then: Joi.required() }),
       deliveryServices: Joi.array().min(1).items(DeliveryService[_internal].schema).required(),
       pickupServices: Joi.array().items(PickupService[_internal].schema),
-      localization: Joi.object().localization({
-        name: Joi.string().trim().singleLine().allow("").max(100),
-        description: Joi.string().trim().singleLine().allow("").max(1000),
-        websiteURL: Joi.string().website(),
-      }),
       createShipment: Joi.function(),
       cancelShipments: Joi.function(),
       rateShipment: Joi.function(),
@@ -70,7 +60,6 @@ export class CarrierApp extends App {
 
   /** @internal */
   private readonly [_private]: {
-    readonly localization: Localization<LocalizedBrandingPOJO>;
     readonly createShipment: CreateShipment | undefined;
     readonly cancelShipments: CancelShipments | undefined;
     readonly rateShipment: RateShipment | undefined;
@@ -82,32 +71,6 @@ export class CarrierApp extends App {
 
   //#endregion
   //#region Public Fields
-
-  /**
-   * A UUID that uniquely identifies the carrier.
-   * This ID should never change, even if the carrier name changes.
-   */
-  public readonly id: UUID;
-
-  /**
-   * The user-friendly carrier name (e.g. "FedEx", "Australia Post")
-   */
-  public readonly name: string;
-
-  /**
-   * A short, user-friendly description of the carrier
-   */
-  public readonly description: string;
-
-  /**
-   * The URL of the carrier's website
-   */
-  public readonly websiteURL: URL;
-
-  /**
-   * The carrier's logo image
-   */
-  public readonly logo: FilePath;
 
   /**
    * Indicates which locations are included in end-of-day manifests.
@@ -275,11 +238,6 @@ export class CarrierApp extends App {
 
     super(pojo);
 
-    this.id = pojo.id;
-    this.name = pojo.name;
-    this.description = pojo.description || "";
-    this.websiteURL = new URL(pojo.websiteURL);
-    this.logo =  pojo.logo;
     this.manifestLocations = pojo.manifestLocations;
     this.manifestShipments = pojo.manifestShipments;
     this.deliveryServices = pojo.deliveryServices.map((svc) => new DeliveryService(svc, this));
@@ -287,8 +245,6 @@ export class CarrierApp extends App {
       ? pojo.pickupServices.map((svc) => new PickupService(svc, this)) : [];
 
     this[_private] = {
-      localization: new Localization(pojo.localization || {}),
-
       // Store any user-defined methods as private fields.
       // For any methods that aren't implemented, set the corresponding class method to undefined.
       createShipment: pojo.createShipment ? pojo.createShipment : (this.createShipment = undefined),
@@ -308,7 +264,7 @@ export class CarrierApp extends App {
   }
 
   /**
-   * Creates a copy of the carrier, localized for the specified locale if possible.
+   * Creates a copy of the app, localized for the specified locale if possible.
    */
   public localize(locale: string): CarrierApp {
     let pojo = localize(this, locale);
@@ -316,17 +272,14 @@ export class CarrierApp extends App {
   }
 
   /**
-   * Returns the carrier as a POJO that can be safely serialized as JSON.
+   * Returns the app as a POJO that can be safely serialized as JSON.
    * Optionally returns the POJO localized to the specifeid language and region.
    */
   public toJSON(locale?: string): CarrierAppPOJO {
-    let { localization } = this[_private];
     let methods = this[_private];
-    let localizedValues = locale ? localization.lookup(locale) : {};
 
     return {
-      ...this,
-      websiteURL: this.websiteURL.href,
+      ...super.toJSON(locale),
       deliveryServices: this.deliveryServices.map((o) => o.toJSON(locale)),
       pickupServices: this.pickupServices.map((o) => o.toJSON(locale)),
       createShipment: methods.createShipment,
@@ -336,8 +289,6 @@ export class CarrierApp extends App {
       createManifest: methods.createManifest,
       schedulePickup: methods.schedulePickup,
       cancelPickups: methods.cancelPickups,
-      localization: localization.toJSON(),
-      ...localizedValues,
     };
   }
 

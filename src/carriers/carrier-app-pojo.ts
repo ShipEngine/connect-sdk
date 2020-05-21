@@ -1,4 +1,4 @@
-import { AppPOJO, FilePath, InlineOrReference, InlineOrReferenceArray, LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO, URLString, UUID } from "../common";
+import { AppPOJO, Connect, ConnectionAppDefinition, FormPOJO, InlineOrReference, InlineOrReferenceArray, LocalizationPOJO, LocalizedBrandingPOJO } from "../common";
 import { DeliveryServiceDefinition, DeliveryServicePOJO } from "./delivery-service-pojo";
 import { ManifestLocation, ManifestShipment } from "./manifests/enums";
 import { CancelPickups, CancelShipments, CreateManifest, CreateShipment, RateShipment, SchedulePickup, TrackShipment } from "./methods";
@@ -9,9 +9,12 @@ import { PickupServiceDefinition, PickupServicePOJO } from "./pickups/pickup-ser
  * A ShipEngine Integration Platform carrier app
  */
 export interface CarrierAppPOJO extends CarrierAppDefinition, AppPOJO {
+  connectionForm: FormPOJO;
+  settingsForm?: FormPOJO;
+  localization?: LocalizationPOJO<LocalizedBrandingPOJO>;
   deliveryServices: ReadonlyArray<DeliveryServicePOJO>;
   pickupServices?: ReadonlyArray<PickupServicePOJO>;
-  localization?: LocalizationPOJO<LocalizedBrandingPOJO>;
+  connect: Connect;
   createShipment?: CreateShipment;
   cancelShipments?: CancelShipments;
   rateShipment?: RateShipment;
@@ -25,33 +28,7 @@ export interface CarrierAppPOJO extends CarrierAppDefinition, AppPOJO {
 /**
  * A ShipEngine Integration Platform carrier app
  */
-export interface CarrierAppDefinition {
-  /**
-   * A UUID that uniquely identifies the carrier.
-   * This ID should never change, even if the carrier name changes.
-   */
-  id: UUID;
-
-  /**
-   * The user-friendly carrier name (e.g. "FedEx", "Australia Post")
-   */
-  name: string;
-
-  /**
-   * A short, user-friendly description of the carrier
-   */
-  description?: string;
-
-  /**
-   * The URL of the carrier's website
-   */
-  websiteURL: URLString;
-
-  /**
-   * The carrier's logo image
-   */
-  logo: FilePath;
-
+export interface CarrierAppDefinition extends ConnectionAppDefinition {
   /**
    * Indicates which locations are included in end-of-day manifests.
    * This field is required if the `createManifest` method is implemented.
@@ -73,15 +50,6 @@ export interface CarrierAppDefinition {
    * The package pickup services that are offered by the carrier
    */
   pickupServices?: InlineOrReferenceArray<PickupServiceDefinition>;
-
-  /**
-   * Localizaed values for fields that allow localization
-   */
-  localization?: InlineOrReference<LocalizationDefinition<{
-    name?: string;
-    description?: string;
-    websiteURL?: URLString;
-  }>>;
 
   /**
    * Creates a new shipment, including its labels, tracking numbers, customs forms, etc.

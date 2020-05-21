@@ -1,6 +1,6 @@
 "use strict";
 
-const { CarrierApp } = require("../../../lib");
+const { CarrierApp } = require("../../../");
 const pojo = require("../../utils/pojo");
 const { expect, assert } = require("chai");
 
@@ -8,28 +8,26 @@ describe("rateShipment", () => {
 
   it("should return a rate from minimal return values", async () => {
     let app = new CarrierApp(pojo.carrierApp({
-      carrier: pojo.carrier({
-        rateShipment: () => [{
-          deliveryService: {
-            id: "22222222-2222-2222-2222-222222222222"
+      rateShipment: () => [{
+        deliveryService: {
+          id: "22222222-2222-2222-2222-222222222222"
+        },
+        charges: [{
+          type: "shipping",
+          amount: {
+            value: 123.456,
+            currency: "CAD",
           },
-          charges: [{
-            type: "shipping",
-            amount: {
-              value: 123.456,
-              currency: "CAD",
-            },
-          }],
-          packages: [{
-            packaging: {
-              id: "44444444-4444-4444-4444-444444444444",
-            }
-          }]
+        }],
+        packages: [{
+          packaging: {
+            id: "44444444-4444-4444-4444-444444444444",
+          }
         }]
-      }),
+      }]
     }));
 
-    let rates = await app.carrier.rateShipment(pojo.transaction(), pojo.rateCriteria());
+    let rates = await app.rateShipment(pojo.transaction(), pojo.rateCriteria());
 
     expect(rates).to.deep.equal([{
       deliveryService: {
@@ -74,70 +72,68 @@ describe("rateShipment", () => {
 
   it("should return a rate from all possible return values", async () => {
     let app = new CarrierApp(pojo.carrierApp({
-      carrier: pojo.carrier({
-        deliveryServices: [
-          pojo.deliveryService({
-            deliveryConfirmations: [pojo.deliveryConfirmation()],
-          })
+      deliveryServices: [
+        pojo.deliveryService({
+          deliveryConfirmations: [pojo.deliveryConfirmation()],
+        })
+      ],
+      rateShipment: () => [{
+        deliveryService: {
+          id: "22222222-2222-2222-2222-222222222222",
+          identifiers: {},
+        },
+        fulfillmentService: "ups_ground",
+        shipDateTime: "2005-05-05T05:05:05.005+00:30",
+        deliveryDateTime: new Date("2005-05-05T05:05:05.005-07:00"),
+        minimumDeliveryDays: 0,
+        maximumDeliveryDays: 1,
+        deliveryWindow: {
+          startDateTime: "2005-05-02T05:05:05.0005Z",
+          endDateTime: "2005-05-06T05:05:05.0005Z",
+        },
+        zone: 1,
+        isNegotiatedRate: true,
+        isGuaranteed: true,
+        isTrackable: true,
+        notes: "This is a note",
+        charges: [
+          {
+            name: "Shipping Charge",
+            description: "Charge for shipping",
+            code: "SHP",
+            notes: "you were charged extra because reasons",
+            type: "shipping",
+            amount: {
+              value: 123.456,
+              currency: "CAD",
+            },
+          },
+          {
+            name: "Delivery Confirmation Charge",
+            description: "Charge for delivery conirmation",
+            code: "DEL",
+            notes: "Signatures cost extra",
+            type: "delivery_confirmation",
+            amount: {
+              value: 1.5,
+              currency: "CAD",
+            },
+          },
         ],
-        rateShipment: () => [{
-          deliveryService: {
-            id: "22222222-2222-2222-2222-222222222222",
+        packages: [{
+          packaging: {
+            id: "44444444-4444-4444-4444-444444444444",
             identifiers: {},
           },
-          fulfillmentService: "ups_ground",
-          shipDateTime: "2005-05-05T05:05:05.005+00:30",
-          deliveryDateTime: new Date("2005-05-05T05:05:05.005-07:00"),
-          minimumDeliveryDays: 0,
-          maximumDeliveryDays: 1,
-          deliveryWindow: {
-            startDateTime: "2005-05-02T05:05:05.0005Z",
-            endDateTime: "2005-05-06T05:05:05.0005Z",
-          },
-          zone: 1,
-          isNegotiatedRate: true,
-          isGuaranteed: true,
-          isTrackable: true,
-          notes: "This is a note",
-          charges: [
-            {
-              name: "Shipping Charge",
-              description: "Charge for shipping",
-              code: "SHP",
-              notes: "you were charged extra because reasons",
-              type: "shipping",
-              amount: {
-                value: 123.456,
-                currency: "CAD",
-              },
-            },
-            {
-              name: "Delivery Confirmation Charge",
-              description: "Charge for delivery conirmation",
-              code: "DEL",
-              notes: "Signatures cost extra",
-              type: "delivery_confirmation",
-              amount: {
-                value: 1.5,
-                currency: "CAD",
-              },
-            },
-          ],
-          packages: [{
-            packaging: {
-              id: "44444444-4444-4444-4444-444444444444",
-              identifiers: {},
-            },
-            deliveryConfirmation: {
-              id: "55555555-5555-5555-5555-555555555555",
-              identifiers: {},
-            }
-          }]
+          deliveryConfirmation: {
+            id: "55555555-5555-5555-5555-555555555555",
+            identifiers: {},
+          }
         }]
-      }),
+      }]
     }));
 
-    let rates = await app.carrier.rateShipment(pojo.transaction(), pojo.rateCriteria());
+    let rates = await app.rateShipment(pojo.transaction(), pojo.rateCriteria());
 
     expect(rates).to.deep.equal([{
       deliveryService: {
@@ -234,13 +230,11 @@ describe("rateShipment", () => {
 
     it("should throw an error if called with no arguments", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        carrier: pojo.carrier({
-          rateShipment () {}
-        }),
+        rateShipment () {}
       }));
 
       try {
-        await app.carrier.rateShipment();
+        await app.rateShipment();
         assert.fail("An error should have been thrown");
       }
       catch (error) {
@@ -254,13 +248,11 @@ describe("rateShipment", () => {
 
     it("should throw an error if called without a shipment", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        carrier: pojo.carrier({
-          rateShipment () {}
-        }),
+        rateShipment () {}
       }));
 
       try {
-        await app.carrier.rateShipment(pojo.transaction());
+        await app.rateShipment(pojo.transaction());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
@@ -274,13 +266,11 @@ describe("rateShipment", () => {
 
     it("should throw an error if called with an invalid shipment", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        carrier: pojo.carrier({
-          rateShipment () {}
-        }),
+        rateShipment () {}
       }));
 
       try {
-        await app.carrier.rateShipment(pojo.transaction(), {
+        await app.rateShipment(pojo.transaction(), {
           deliveryServices: "12345678-1234-1234-1234-123456789012",
           deliveryDateTime: "9999-99-99T99:99:99.999Z",
           packages: [],
@@ -303,13 +293,11 @@ describe("rateShipment", () => {
 
     it("should throw an error if nothing is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        carrier: pojo.carrier({
-          rateShipment () {}
-        }),
+        rateShipment () {}
       }));
 
       try {
-        await app.carrier.rateShipment(pojo.transaction(), pojo.rateCriteria());
+        await app.rateShipment(pojo.transaction(), pojo.rateCriteria());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
@@ -323,25 +311,23 @@ describe("rateShipment", () => {
 
     it("should throw an error if an invalid rate is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        carrier: pojo.carrier({
-          rateShipment: () => [{
-            deliveryDateTime: "9999-99-99T99:99:99.999Z",
-            isNegotiatedRate: "no",
-            charges: [],
-            notes: false,
-            packages: [
-              {
-                deliveryConfirmation: {
-                  id: "Handshake",
-                }
+        rateShipment: () => [{
+          deliveryDateTime: "9999-99-99T99:99:99.999Z",
+          isNegotiatedRate: "no",
+          charges: [],
+          notes: false,
+          packages: [
+            {
+              deliveryConfirmation: {
+                id: "Handshake",
               }
-            ]
-          }]
-        }),
+            }
+          ]
+        }]
       }));
 
       try {
-        await app.carrier.rateShipment(pojo.transaction(), pojo.rateCriteria());
+        await app.rateShipment(pojo.transaction(), pojo.rateCriteria());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
@@ -361,19 +347,17 @@ describe("rateShipment", () => {
 
     it("should throw an error if an invalid deliveryService is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        carrier: pojo.carrier({
-          rateShipment: () => [
-            pojo.rate({
-              deliveryService: {
-                id: "12345678-1234-1234-1234-123456789012",
-              }
-            })
-          ]
-        }),
+        rateShipment: () => [
+          pojo.rate({
+            deliveryService: {
+              id: "12345678-1234-1234-1234-123456789012",
+            }
+          })
+        ]
       }));
 
       try {
-        await app.carrier.rateShipment(pojo.transaction(), pojo.rateCriteria());
+        await app.rateShipment(pojo.transaction(), pojo.rateCriteria());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
@@ -386,21 +370,19 @@ describe("rateShipment", () => {
 
     it("should throw an error if an invalid packaging is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        carrier: pojo.carrier({
-          rateShipment: () => [
-            pojo.rate({
-              packages: [{
-                packaging: {
-                  id: "12345678-1234-1234-1234-123456789012",
-                }
-              }]
-            })
-          ]
-        }),
+        rateShipment: () => [
+          pojo.rate({
+            packages: [{
+              packaging: {
+                id: "12345678-1234-1234-1234-123456789012",
+              }
+            }]
+          })
+        ]
       }));
 
       try {
-        await app.carrier.rateShipment(pojo.transaction(), pojo.rateCriteria());
+        await app.rateShipment(pojo.transaction(), pojo.rateCriteria());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
@@ -413,23 +395,21 @@ describe("rateShipment", () => {
 
     it("should throw an error if an invalid deliveryConfirmation is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        carrier: pojo.carrier({
-          rateShipment: () => [
-            pojo.rate({
-              packages: [
-                pojo.ratePackage({
-                  deliveryConfirmation: {
-                    id: "22222222-2222-2222-2222-222222222222",
-                  }
-                })
-              ]
-            })
-          ]
-        }),
+        rateShipment: () => [
+          pojo.rate({
+            packages: [
+              pojo.ratePackage({
+                deliveryConfirmation: {
+                  id: "22222222-2222-2222-2222-222222222222",
+                }
+              })
+            ]
+          })
+        ]
       }));
 
       try {
-        await app.carrier.rateShipment(pojo.transaction(), pojo.rateCriteria());
+        await app.rateShipment(pojo.transaction(), pojo.rateCriteria());
         assert.fail("An error should have been thrown");
       }
       catch (error) {
@@ -442,18 +422,16 @@ describe("rateShipment", () => {
 
     it("should throw an error if minimumDeliveryDays is greater than maximumDeliveryDays", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        carrier: pojo.carrier({
-          rateShipment: () => [
-            pojo.rate({
-              minimumDeliveryDays: 5,
-              maximumDeliveryDays: 3,
-            })
-          ]
-        }),
+        rateShipment: () => [
+          pojo.rate({
+            minimumDeliveryDays: 5,
+            maximumDeliveryDays: 3,
+          })
+        ]
       }));
 
       try {
-        await app.carrier.rateShipment(pojo.transaction(), pojo.rateCriteria());
+        await app.rateShipment(pojo.transaction(), pojo.rateCriteria());
         assert.fail("An error should have been thrown");
       }
       catch (error) {

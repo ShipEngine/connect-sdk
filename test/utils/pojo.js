@@ -5,7 +5,8 @@ const path = require("path");
 const pojo = module.exports = {
   app (props = {}) {
     return {
-      manifest: pojo.appManifest,
+      id: "11111111-1111-1111-1111-111111111111",
+      manifest: pojo.appManifest(),
       ...props,
     };
   },
@@ -21,18 +22,18 @@ const pojo = module.exports = {
   connectionApp (props = {}) {
     return {
       ...pojo.app(),
-      connection: pojo.connection(),
+      name: "Dummy App",
+      websiteURL: "https://example.com/",
+      logo: path.resolve("logo.svg"),
+      connectionForm: pojo.form(),
+      connect () {},
       ...props,
     };
   },
 
   carrierApp (props = {}) {
     return {
-      ...pojo.app(),
-      id: "11111111-1111-1111-1111-111111111111",
-      name: "Dummy Carrier App",
-      websiteURL: "https://example.com/",
-      logo: path.resolve("logo.svg"),
+      ...pojo.connectionApp(),
       deliveryServices: [pojo.deliveryService()],
       ...props,
     };
@@ -40,11 +41,7 @@ const pojo = module.exports = {
 
   orderApp (props = {}) {
     return {
-      ...pojo.app(),
-      id: "77777777-7777-7777-7777-777777777777",
-      name: "Dummy Order App",
-      websiteURL: "https://example.com/",
-      logo: path.resolve("logo.svg"),
+      ...pojo.connectionApp(),
       getSeller () {},
       getSalesOrder () {},
       getSalesOrdersByDate () {},
@@ -86,18 +83,6 @@ const pojo = module.exports = {
       id: "55555555-5555-5555-5555-555555555555",
       name: "Dummy Confirmation",
       type: "signature",
-      ...props,
-    };
-  },
-
-  connection (props = {}) {
-    return {
-      id: "66666666-6666-6666-6666-666666666666",
-      name: "Dummy Connection",
-      websiteURL: "https://example.com/",
-      logo: path.resolve("logo.svg"),
-      connectionForm: pojo.form(),
-      connect () {},
       ...props,
     };
   },

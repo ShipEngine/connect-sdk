@@ -1,7 +1,7 @@
 "use strict";
 
 const { assert, expect } = require("chai");
-const { ConnectionApp, Transaction } = require("../../..");
+const { CarrierApp, Transaction } = require("../../..");
 const pojo = require("../../utils/pojo");
 
 describe("Transaction", () => {
@@ -122,15 +122,13 @@ describe("Transaction", () => {
     async function createTransaction (transactionPOJO) {
       let transaction;
 
-      let app = new ConnectionApp(pojo.connectionApp({
-        connection: pojo.connection({
-          connect (tx) {
-            transaction = tx;
-          }
-        })
+      let app = new CarrierApp(pojo.carrierApp({
+        connect (tx) {
+          transaction = tx;
+        }
       }));
 
-      await app.connection.connect(transactionPOJO, {});
+      await app.connect(transactionPOJO, {});
       return transaction;
     }
 

@@ -1,6 +1,6 @@
 "use strict";
 
-const { CarrierApp } = require("../../../lib");
+const { CarrierApp } = require("../../../");
 const { assert, expect } = require("chai");
 const pojo = require("../../utils/pojo");
 
@@ -10,15 +10,13 @@ describe("PersonName", () => {
     let personName;
 
     let app = new CarrierApp(pojo.carrierApp({
-      carrier: pojo.carrier({
-        createShipment (_, shipment) {
-          personName = shipment.shipFrom.name;
-          return pojo.shipmentConfirmation();
-        }
-      }),
+      createShipment (_, shipment) {
+        personName = shipment.shipFrom.name;
+        return pojo.shipmentConfirmation();
+      }
     }));
 
-    await app.carrier.createShipment(pojo.transaction(), pojo.newShipment({
+    await app.createShipment(pojo.transaction(), pojo.newShipment({
       shipFrom: pojo.address({
         name: personNamePOJO,
       })

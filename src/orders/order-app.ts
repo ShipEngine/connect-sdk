@@ -1,5 +1,5 @@
-import { ErrorCode, FilePath, LocalizedBrandingPOJO, Transaction, TransactionPOJO, UUID } from "../common";
-import { App, error, hideAndFreeze, Joi, Localization, localize, validate, _internal } from "../common/internal";
+import { ErrorCode, Transaction, TransactionPOJO } from "../common";
+import { ConnectionApp, error, hideAndFreeze, Joi, localize, validate, _internal } from "../common/internal";
 import { GetSalesOrder, GetSalesOrdersByDate, GetSeller, ShipmentCancelled, ShipmentCreated } from "./methods";
 import { OrderAppPOJO } from "./order-app-pojo";
 import { SalesOrder } from "./sales-order";
@@ -14,23 +14,13 @@ const _private = Symbol("private fields");
 /**
  * A ShipEngine Integration Platform order app
  */
-export class OrderApp extends App {
+export class OrderApp extends ConnectionApp {
   //#region Private/Internal Fields
 
   /** @internal */
   public static readonly [_internal] = {
     label: "ShipEngine Integration Platform order app",
-    schema: App[_internal].schema.keys({
-      id: Joi.string().uuid().required(),
-      name: Joi.string().trim().singleLine().min(1).max(100).required(),
-      description: Joi.string().trim().singleLine().allow("").max(1000),
-      websiteURL: Joi.string().website().required(),
-      logo: Joi.string().filePath({ ext: ".svg" }).required(),
-      localization: Joi.object().localization({
-        name: Joi.string().trim().singleLine().allow("").max(100),
-        description: Joi.string().trim().singleLine().allow("").max(1000),
-        websiteURL: Joi.string().website(),
-      }),
+    schema: ConnectionApp[_internal].schema.keys({
       getSeller: Joi.function().required(),
       getSalesOrder: Joi.function().required(),
       getSalesOrdersByDate: Joi.function().required(),
@@ -41,7 +31,6 @@ export class OrderApp extends App {
 
   /** @internal */
   private readonly [_private]: {
-    readonly localization: Localization<LocalizedBrandingPOJO>;
     readonly getSeller: GetSeller;
     readonly getSalesOrder: GetSalesOrder;
     readonly getSalesOrdersByDate: GetSalesOrdersByDate;
@@ -50,49 +39,13 @@ export class OrderApp extends App {
   };
 
   //#endregion
-  //#region Public Fields
-
-  /**
-   * A UUID that uniquely identifies the marketplace.
-   * This ID should never change, even if the marketplace name changes.
-   */
-  public readonly id: UUID;
-
-  /**
-   * The user-friendly marketplace name (e.g. "FedEx", "Shopify")
-   */
-  public readonly name: string;
-
-  /**
-   * A short, user-friendly description of the marketplace
-   */
-  public readonly description: string;
-
-  /**
-   * The URL of the third-party service's website
-   */
-  public readonly websiteURL: URL;
-
-  /**
-   * The third party service's logo image
-   */
-  public readonly logo: FilePath;
-
-  //#endregion
 
   public constructor(pojo: OrderAppPOJO) {
     validate(pojo, OrderApp);
 
     super(pojo);
 
-    this.id = pojo.id;
-    this.name = pojo.name;
-    this.description = pojo.description || "";
-    this.websiteURL = new URL(pojo.websiteURL);
-    this.logo =  pojo.logo;
-
     this[_private] = {
-      localization: new Localization(pojo.localization || {}),
       getSeller: pojo.getSeller,
       getSalesOrder: pojo.getSalesOrder,
       getSalesOrdersByDate: pojo.getSalesOrdersByDate,
@@ -108,7 +61,7 @@ export class OrderApp extends App {
   }
 
   /**
-   * Creates a copy of the marketplace, localized for the specified locale if possible.
+   * Creates a copy of the app, localized for the specified locale if possible.
    */
   public localize(locale: string): OrderApp {
     let pojo = localize(this, locale);
@@ -116,31 +69,26 @@ export class OrderApp extends App {
   }
 
   /**
-   * Returns the marketplace as a POJO that can be safely serialized as JSON.
+   * Returns the app as a POJO that can be safely serialized as JSON.
    * Optionally returns the POJO localized to the specifeid language and region.
    */
   public toJSON(locale?: string): OrderAppPOJO {
-    let { localization } = this[_private];
     let methods = this[_private];
-    let localizedValues = locale ? localization.lookup(locale) : {};
 
     return {
-      ...this,
-      websiteURL: this.websiteURL.href,
+      ...super.toJSON(locale),
       getSeller: methods.getSeller,
       getSalesOrder: methods.getSalesOrder,
       getSalesOrdersByDate: methods.getSalesOrdersByDate,
       shipmentCreated: methods.shipmentCreated,
       shipmentCancelled: methods.shipmentCancelled,
-      localization: localization.toJSON(),
-      ...localizedValues,
     };
   }
 
   //#region Wrappers around user-defined methdos
 
   /**
-   * Returns detailed information about a seller on the marketplace
+   * Returns detailed information about a seller
    */
   public async getSeller(transaction: TransactionPOJO, id: SellerIdentifierPOJO): Promise<Seller> {
     let _transaction, _id;

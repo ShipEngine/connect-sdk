@@ -1,8 +1,10 @@
 "use strict";
 
-const { OrderApp } = require("../../../lib");
+const { OrderApp } = require("../../../");
+const sdkManifest = require("../../../package.json");
 const { expect } = require("chai");
 const path = require("path");
+const pojo = require("../../utils/pojo");
 
 describe("OrderApp", () => {
   it("should create an OrderApp with the minimum required fields", () => {
@@ -11,6 +13,8 @@ describe("OrderApp", () => {
       name: "My order",
       websiteURL: "https://my-order.com/",
       logo: path.resolve("logo.svg"),
+      connectionForm: pojo.form(),
+      connect () {},
       getSeller () {},
       getSalesOrder () {},
       getSalesOrdersByDate () {},
@@ -26,12 +30,17 @@ describe("OrderApp", () => {
       description: "",
       websiteURL: new URL("https://my-order.com/"),
       logo: path.resolve("logo.svg"),
+      connectionForm: app.connectionForm,
+      settingsForm: undefined,
       shipmentCreated: undefined,
       shipmentCancelled: undefined,
+      sdkVersion: parseFloat(sdkManifest.version),
       manifest: {
         name: "@company/order",
         version: "1.0.0",
         description: "",
+        dependencies: {},
+        devDependencies: {},
       },
     });
   });
@@ -43,9 +52,12 @@ describe("OrderApp", () => {
       description: "My order description",
       websiteURL: "https://my-order.com/",
       logo: path.resolve("logo.svg"),
+      connectionForm: pojo.form(),
+      settingsForm: pojo.form(),
       localization: {
         es: { name: "Nombre de la compañía" },
       },
+      connect () {},
       getSeller () {},
       getSalesOrder () {},
       getSalesOrdersByDate () {},
@@ -71,6 +83,9 @@ describe("OrderApp", () => {
       description: "My order description",
       websiteURL: new URL("https://my-order.com/"),
       logo: path.resolve("logo.svg"),
+      connectionForm: app.connectionForm,
+      settingsForm: app.settingsForm,
+      sdkVersion: parseFloat(sdkManifest.version),
       manifest: {
         name: "@my-company/my-order",
         version: "123.45.678",
@@ -93,6 +108,8 @@ describe("OrderApp", () => {
       description: "",
       websiteURL: "https://my-order.com/",
       logo: path.resolve("logo.svg"),
+      connectionForm: pojo.form(),
+      connect () {},
       getSeller () {},
       getSalesOrder () {},
       getSalesOrdersByDate () {},
@@ -109,12 +126,17 @@ describe("OrderApp", () => {
       description: "",
       websiteURL: new URL("https://my-order.com/"),
       logo: path.resolve("logo.svg"),
+      connectionForm: app.connectionForm,
+      settingsForm: undefined,
       shipmentCreated: undefined,
       shipmentCancelled: undefined,
+      sdkVersion: parseFloat(sdkManifest.version),
       manifest: {
         name: "@company/order",
         version: "1.0.0",
         description: "",
+        dependencies: {},
+        devDependencies: {},
       },
     });
   });

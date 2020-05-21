@@ -1,6 +1,6 @@
 "use strict";
 
-const { OrderApp, SalesOrder } = require("../../../lib");
+const { OrderApp, SalesOrder } = require("../../../");
 const pojo = require("../../utils/pojo");
 const { expect, assert } = require("chai");
 
@@ -8,16 +8,14 @@ describe("getSalesOrdersByDate", () => {
 
   it("should work with an array", async () => {
     let app = new OrderApp(pojo.orderApp({
-      marketplace: pojo.marketplace({
-        getSalesOrdersByDate: () => [
-          pojo.salesOrder({ id: "Order1" }),
-          pojo.salesOrder({ id: "Order2" }),
-          pojo.salesOrder({ id: "Order3" }),
-        ]
-      }),
+      getSalesOrdersByDate: () => [
+        pojo.salesOrder({ id: "Order1" }),
+        pojo.salesOrder({ id: "Order2" }),
+        pojo.salesOrder({ id: "Order3" }),
+      ]
     }));
 
-    let salesOrders = await app.marketplace.getSalesOrdersByDate(pojo.transaction(), pojo.timeRange());
+    let salesOrders = await app.getSalesOrdersByDate(pojo.transaction(), pojo.timeRange());
 
     // It should NOT return the array
     expect(salesOrders).not.to.be.an("array");
@@ -38,12 +36,10 @@ describe("getSalesOrdersByDate", () => {
 
   it("should work with an empty array", async () => {
     let app = new OrderApp(pojo.orderApp({
-      marketplace: pojo.marketplace({
-        getSalesOrdersByDate: () => []
-      }),
+      getSalesOrdersByDate: () => []
     }));
 
-    let salesOrders = await app.marketplace.getSalesOrdersByDate(pojo.transaction(), pojo.timeRange());
+    let salesOrders = await app.getSalesOrdersByDate(pojo.transaction(), pojo.timeRange());
 
     for await (let salesOrder of salesOrders) {
       assert.fail(salesOrder, undefined, "The iterable should not return any values");
@@ -52,16 +48,14 @@ describe("getSalesOrdersByDate", () => {
 
   it("should work with a synchronous generator", async () => {
     let app = new OrderApp(pojo.orderApp({
-      marketplace: pojo.marketplace({
-        *getSalesOrdersByDate () {
-          yield pojo.salesOrder({ id: "Order1" });
-          yield pojo.salesOrder({ id: "Order2" });
-          yield pojo.salesOrder({ id: "Order3" });
-        }
-      }),
+      *getSalesOrdersByDate () {
+        yield pojo.salesOrder({ id: "Order1" });
+        yield pojo.salesOrder({ id: "Order2" });
+        yield pojo.salesOrder({ id: "Order3" });
+      }
     }));
 
-    let salesOrders = await app.marketplace.getSalesOrdersByDate(pojo.transaction(), pojo.timeRange());
+    let salesOrders = await app.getSalesOrdersByDate(pojo.transaction(), pojo.timeRange());
 
     // It should NOT return a synchronous iterable
     expect(salesOrders[Symbol.iterator]).not.to.be.a("function");
@@ -79,21 +73,19 @@ describe("getSalesOrdersByDate", () => {
 
   it("should work with an asynchronous generator", async () => {
     let app = new OrderApp(pojo.orderApp({
-      marketplace: pojo.marketplace({
-        async *getSalesOrdersByDate () {
-          await new Promise((resolve) => setTimeout(resolve, 100));
-          yield pojo.salesOrder({ id: "Order1" });
+      async *getSalesOrdersByDate () {
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        yield pojo.salesOrder({ id: "Order1" });
 
-          await new Promise((resolve) => setTimeout(resolve, 100));
-          yield pojo.salesOrder({ id: "Order2" });
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        yield pojo.salesOrder({ id: "Order2" });
 
-          await new Promise((resolve) => setTimeout(resolve, 100));
-          yield pojo.salesOrder({ id: "Order3" });
-        }
-      }),
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        yield pojo.salesOrder({ id: "Order3" });
+      }
     }));
 
-    let salesOrders = await app.marketplace.getSalesOrdersByDate(pojo.transaction(), pojo.timeRange());
+    let salesOrders = await app.getSalesOrdersByDate(pojo.transaction(), pojo.timeRange());
 
     // It should return an asynchronous iterable
     expect(salesOrders[Symbol.asyncIterator]).to.be.a("function");
@@ -110,7 +102,7 @@ describe("getSalesOrdersByDate", () => {
 
     it("should throw an error if called with no arguments", async () => {
       let app = new OrderApp(pojo.orderApp());
-      let iterable = app.marketplace.getSalesOrdersByDate();
+      let iterable = app.getSalesOrdersByDate();
       let iterator = iterable[Symbol.asyncIterator]();
 
       try {
@@ -128,7 +120,7 @@ describe("getSalesOrdersByDate", () => {
 
     it("should throw an error if called without a time range", async () => {
       let app = new OrderApp(pojo.orderApp());
-      let iterable = app.marketplace.getSalesOrdersByDate(pojo.transaction());
+      let iterable = app.getSalesOrdersByDate(pojo.transaction());
       let iterator = iterable[Symbol.asyncIterator]();
 
       try {
@@ -146,7 +138,7 @@ describe("getSalesOrdersByDate", () => {
 
     it("should throw an error if called with an invalid time range", async () => {
       let app = new OrderApp(pojo.orderApp());
-      let iterable = app.marketplace.getSalesOrdersByDate(pojo.transaction(), {
+      let iterable = app.getSalesOrdersByDate(pojo.transaction(), {
         startDateTime: "9999-99-99T99:99:99.999Z",
       });
       let iterator = iterable[Symbol.asyncIterator]();
@@ -167,12 +159,10 @@ describe("getSalesOrdersByDate", () => {
 
     it("should throw an error if nothing is returned", async () => {
       let app = new OrderApp(pojo.orderApp({
-        marketplace: pojo.marketplace({
-          getSalesOrdersByDate () {}
-        })
+        getSalesOrdersByDate () {}
       }));
 
-      let iterable = app.marketplace.getSalesOrdersByDate(pojo.transaction(), pojo.timeRange());
+      let iterable = app.getSalesOrdersByDate(pojo.transaction(), pojo.timeRange());
       let iterator = iterable[Symbol.asyncIterator]();
 
       try {
@@ -189,19 +179,17 @@ describe("getSalesOrdersByDate", () => {
 
     it("should throw an error if an invalid sales order is returned", async () => {
       let app = new OrderApp(pojo.orderApp({
-        marketplace: pojo.marketplace({
-          *getSalesOrdersByDate () {
-            yield {
-              identifiers: true,
-              createdDateTime: "9999-99-99T99:99:99.999Z",
-              status: 5,
-              items: [],
-            };
-          }
-        })
+        *getSalesOrdersByDate () {
+          yield {
+            identifiers: true,
+            createdDateTime: "9999-99-99T99:99:99.999Z",
+            status: 5,
+            items: [],
+          };
+        }
       }));
 
-      let iterable = app.marketplace.getSalesOrdersByDate(pojo.transaction(), pojo.timeRange());
+      let iterable = app.getSalesOrdersByDate(pojo.transaction(), pojo.timeRange());
       let iterator = iterable[Symbol.asyncIterator]();
 
       try {

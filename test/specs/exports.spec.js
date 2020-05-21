@@ -50,10 +50,6 @@ describe("package exports", () => {
     assertFileExports("src/common", true, ["internal"]);
   });
 
-  it("should export connection classes", () => {
-    assertFileExports("src/connections", true);
-  });
-
   it("should export order classes", () => {
     assertFileExports("src/orders", true, ["utils.ts"]);
   });

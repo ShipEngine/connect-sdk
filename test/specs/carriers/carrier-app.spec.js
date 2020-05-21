@@ -1,6 +1,7 @@
 "use strict";
 
-const { CarrierApp } = require("../../../lib");
+const { CarrierApp } = require("../../../");
+const sdkManifest = require("../../../package.json");
 const pojo = require("../../utils/pojo");
 const { expect } = require("chai");
 const path = require("path");
@@ -12,7 +13,9 @@ describe("CarrierApp", () => {
       name: "My carrier",
       websiteURL: "https://my-carrier.com/",
       logo: path.resolve("logo.svg"),
+      connectionForm: pojo.form(),
       deliveryServices: [pojo.deliveryService()],
+      connect () {},
       manifest: {
         name: "@company/carrier",
         version: "1.0.0"
@@ -27,6 +30,8 @@ describe("CarrierApp", () => {
       logo: path.resolve("logo.svg"),
       manifestLocations: undefined,
       manifestShipments: undefined,
+      connectionForm: app.connectionForm,
+      settingsForm: undefined,
       deliveryServices: [app.deliveryServices[0]],
       pickupServices: [],
       createShipment: undefined,
@@ -36,10 +41,13 @@ describe("CarrierApp", () => {
       createManifest: undefined,
       schedulePickup: undefined,
       cancelPickups: undefined,
+      sdkVersion: parseFloat(sdkManifest.version),
       manifest: {
         name: "@company/carrier",
         version: "1.0.0",
         description: "",
+        dependencies: {},
+        devDependencies: {},
       },
     });
   });
@@ -53,11 +61,14 @@ describe("CarrierApp", () => {
       logo: path.resolve("logo.svg"),
       manifestLocations: "single_location",
       manifestShipments: "explicit_shipments",
+      connectionForm: pojo.form(),
+      settingsForm: pojo.form(),
       deliveryServices: [pojo.deliveryService()],
       pickupServices: [pojo.pickupService()],
       localization: {
         es: { name: "Nombre de la compañía" },
       },
+      connect () {},
       createShipment () {},
       cancelShipments () {},
       rateShipment () {},
@@ -87,8 +98,11 @@ describe("CarrierApp", () => {
       logo: path.resolve("logo.svg"),
       manifestLocations: "single_location",
       manifestShipments: "explicit_shipments",
+      connectionForm: app.connectionForm,
+      settingsForm: app.settingsForm,
       deliveryServices: [app.deliveryServices[0]],
       pickupServices: [app.pickupServices[0]],
+      sdkVersion: parseFloat(sdkManifest.version),
       manifest: {
         name: "@my-company/my-carrier",
         version: "123.45.678",
@@ -111,7 +125,9 @@ describe("CarrierApp", () => {
       description: "",
       websiteURL: "https://my-carrier.com/",
       logo: path.resolve("logo.svg"),
+      connectionForm: pojo.form(),
       deliveryServices: [pojo.deliveryService()],
+      connect () {},
       manifest: {
         name: "@company/carrier",
         version: "1.0.0",
@@ -127,6 +143,8 @@ describe("CarrierApp", () => {
       logo: path.resolve("logo.svg"),
       manifestLocations: undefined,
       manifestShipments: undefined,
+      connectionForm: app.connectionForm,
+      settingsForm: undefined,
       deliveryServices: [app.deliveryServices[0]],
       pickupServices: [],
       createShipment: undefined,
@@ -136,10 +154,13 @@ describe("CarrierApp", () => {
       createManifest: undefined,
       schedulePickup: undefined,
       cancelPickups: undefined,
+      sdkVersion: parseFloat(sdkManifest.version),
       manifest: {
         name: "@company/carrier",
         version: "1.0.0",
         description: "",
+        dependencies: {},
+        devDependencies: {},
       },
     });
   });

@@ -1,10 +1,10 @@
-import { FilePath, InlineOrReference, LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO, URLString, UUID } from "../common";
+import { AppPOJO, FilePath, InlineOrReference, LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO, URLString, UUID } from "../common";
 import { GetSalesOrder, GetSalesOrdersByDate, GetSeller, ShipmentCancelled, ShipmentCreated } from "./methods";
 
 /**
- * A marketplace where orders originate
+ * A ShipEngine Integration Platform order app
  */
-export interface MarketplacePOJO extends MarketplaceDefinition {
+export interface OrderAppPOJO extends OrderAppDefinition, AppPOJO {
   localization?: LocalizationPOJO<LocalizedBrandingPOJO>;
   getSeller: GetSeller;
   getSalesOrder: GetSalesOrder;
@@ -15,9 +15,9 @@ export interface MarketplacePOJO extends MarketplaceDefinition {
 
 
 /**
- * A marketplace where orders originate
+ * A ShipEngine Integration Platform order app
  */
-export interface MarketplaceDefinition {
+export interface OrderAppDefinition {
   /**
    * A UUID that uniquely identifies the marketplace.
    * This ID should never change, even if the marketplace name changes.

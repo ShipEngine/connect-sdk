@@ -1,9 +1,8 @@
 export * from "./buyer";
 export * from "./enums";
-export * from "./marketplace";
-export * from "./marketplace-pojo";
 export * from "./methods";
 export * from "./order-app";
+export * from "./order-app-pojo";
 export * from "./sales-order";
 export { SalesOrderIdentifier, SalesOrderIdentifierPOJO } from "./sales-order-identifier";
 export * from "./sales-order-item";

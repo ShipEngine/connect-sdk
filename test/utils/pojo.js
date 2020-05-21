@@ -30,7 +30,7 @@ const pojo = module.exports = {
     return {
       ...pojo.app(),
       id: "11111111-1111-1111-1111-111111111111",
-      name: "Dummy Carrier",
+      name: "Dummy Carrier App",
       websiteURL: "https://example.com/",
       logo: path.resolve("logo.svg"),
       deliveryServices: [pojo.deliveryService()],
@@ -41,7 +41,13 @@ const pojo = module.exports = {
   orderApp (props = {}) {
     return {
       ...pojo.app(),
-      marketplace: pojo.marketplace(),
+      id: "77777777-7777-7777-7777-777777777777",
+      name: "Dummy Order App",
+      websiteURL: "https://example.com/",
+      logo: path.resolve("logo.svg"),
+      getSeller () {},
+      getSalesOrder () {},
+      getSalesOrdersByDate () {},
       ...props,
     };
   },
@@ -321,19 +327,6 @@ const pojo = module.exports = {
     return {
       startDateTime: new Date(),
       endDateTime: new Date(),
-      ...props,
-    };
-  },
-
-  marketplace (props = {}) {
-    return {
-      id: "77777777-7777-7777-7777-777777777777",
-      name: "Dummy Marketplace",
-      websiteURL: "https://example.com/",
-      logo: path.resolve("logo.svg"),
-      getSeller () {},
-      getSalesOrder () {},
-      getSalesOrdersByDate () {},
       ...props,
     };
   },

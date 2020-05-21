@@ -1,15 +1,15 @@
-import { AppPOJO } from "../common";
-import { App, hideAndFreeze, localize, validate, _internal } from "../common/internal";
-import { Marketplace } from "./marketplace";
-import { MarketplacePOJO } from "./marketplace-pojo";
+import { ErrorCode, FilePath, LocalizedBrandingPOJO, Transaction, TransactionPOJO, UUID } from "../common";
+import { App, error, hideAndFreeze, Joi, Localization, localize, validate, _internal } from "../common/internal";
+import { GetSalesOrder, GetSalesOrdersByDate, GetSeller, ShipmentCancelled, ShipmentCreated } from "./methods";
+import { OrderAppPOJO } from "./order-app-pojo";
+import { SalesOrder } from "./sales-order";
+import { SalesOrderIdentifier } from "./sales-order-identifier";
+import { SalesOrderTimeRange, SalesOrderTimeRangePOJO } from "./sales-order-time-range";
+import { Seller } from "./sellers/seller";
+import { SellerIdentifier, SellerIdentifierPOJO } from "./sellers/seller-identifier";
+import { getAsyncIterable } from "./utils";
 
-/**
- * A ShipEngine Integration Platform order app
- */
-export interface OrderAppPOJO extends AppPOJO {
-  marketplace: MarketplacePOJO;
-}
-
+const _private = Symbol("private fields");
 
 /**
  * A ShipEngine Integration Platform order app
@@ -21,41 +21,94 @@ export class OrderApp extends App {
   public static readonly [_internal] = {
     label: "ShipEngine Integration Platform order app",
     schema: App[_internal].schema.keys({
-      marketplace: Marketplace[_internal].schema.required(),
+      id: Joi.string().uuid().required(),
+      name: Joi.string().trim().singleLine().min(1).max(100).required(),
+      description: Joi.string().trim().singleLine().allow("").max(1000),
+      websiteURL: Joi.string().website().required(),
+      logo: Joi.string().filePath({ ext: ".svg" }).required(),
+      localization: Joi.object().localization({
+        name: Joi.string().trim().singleLine().allow("").max(100),
+        description: Joi.string().trim().singleLine().allow("").max(1000),
+        websiteURL: Joi.string().website(),
+      }),
+      getSeller: Joi.function().required(),
+      getSalesOrder: Joi.function().required(),
+      getSalesOrdersByDate: Joi.function().required(),
+      shipmentCreated: Joi.function(),
+      shipmentCancelled: Joi.function(),
     }),
+  };
+
+  /** @internal */
+  private readonly [_private]: {
+    readonly localization: Localization<LocalizedBrandingPOJO>;
+    readonly getSeller: GetSeller;
+    readonly getSalesOrder: GetSalesOrder;
+    readonly getSalesOrdersByDate: GetSalesOrdersByDate;
+    readonly shipmentCreated?: ShipmentCreated;
+    readonly shipmentCancelled?: ShipmentCancelled;
   };
 
   //#endregion
   //#region Public Fields
 
   /**
-   * Indicates that this is an order app
+   * A UUID that uniquely identifies the marketplace.
+   * This ID should never change, even if the marketplace name changes.
    */
-  public readonly type = "order";
+  public readonly id: UUID;
 
   /**
-   * The app's marketplace object
+   * The user-friendly marketplace name (e.g. "FedEx", "Shopify")
    */
-  public readonly marketplace: Marketplace;
+  public readonly name: string;
+
+  /**
+   * A short, user-friendly description of the marketplace
+   */
+  public readonly description: string;
+
+  /**
+   * The URL of the third-party service's website
+   */
+  public readonly websiteURL: URL;
+
+  /**
+   * The third party service's logo image
+   */
+  public readonly logo: FilePath;
 
   //#endregion
 
   public constructor(pojo: OrderAppPOJO) {
-    super(pojo);
-
     validate(pojo, OrderApp);
 
-    this.marketplace = new Marketplace(pojo.marketplace, this);
+    super(pojo);
 
-    // The app is now finished loading, so free-up memory that's no longer needed
-    this[_internal].references.finishedLoading();
+    this.id = pojo.id;
+    this.name = pojo.name;
+    this.description = pojo.description || "";
+    this.websiteURL = new URL(pojo.websiteURL);
+    this.logo =  pojo.logo;
+
+    this[_private] = {
+      localization: new Localization(pojo.localization || {}),
+      getSeller: pojo.getSeller,
+      getSalesOrder: pojo.getSalesOrder,
+      getSalesOrdersByDate: pojo.getSalesOrdersByDate,
+      shipmentCreated: pojo.shipmentCreated ? pojo.shipmentCreated : (this.shipmentCreated = undefined),
+      shipmentCancelled: pojo.shipmentCancelled ? pojo.shipmentCancelled : (this.shipmentCancelled = undefined),
+    };
 
     // Make this object immutable
     hideAndFreeze(this);
+
+    this[_internal].references.add(this);
+    this[_internal].references.finishedLoading();
   }
 
   /**
-   * Creates a copy of the app, localized for the specified locale if possible.
+   * Creates a copy of the marketplace, localized for the specified locale if possible.
    */
   public localize(locale: string): OrderApp {
     let pojo = localize(this, locale);
@@ -63,15 +116,169 @@ export class OrderApp extends App {
   }
 
   /**
-   * Returns the app as a POJO that can be safely serialized as JSON.
+   * Returns the marketplace as a POJO that can be safely serialized as JSON.
    * Optionally returns the POJO localized to the specifeid language and region.
    */
   public toJSON(locale?: string): OrderAppPOJO {
+    let { localization } = this[_private];
+    let methods = this[_private];
+    let localizedValues = locale ? localization.lookup(locale) : {};
+
     return {
-      ...super.toJSON(),
-      marketplace: this.marketplace.toJSON(locale),
+      ...this,
+      websiteURL: this.websiteURL.href,
+      getSeller: methods.getSeller,
+      getSalesOrder: methods.getSalesOrder,
+      getSalesOrdersByDate: methods.getSalesOrdersByDate,
+      shipmentCreated: methods.shipmentCreated,
+      shipmentCancelled: methods.shipmentCancelled,
+      localization: localization.toJSON(),
+      ...localizedValues,
     };
   }
+
+  //#region Wrappers around user-defined methdos
+
+  /**
+   * Returns detailed information about a seller on the marketplace
+   */
+  public async getSeller(transaction: TransactionPOJO, id: SellerIdentifierPOJO): Promise<Seller> {
+    let _transaction, _id;
+    let { getSeller } = this[_private];
+
+    try {
+      _transaction = new Transaction(validate(transaction, Transaction));
+      _id = new SellerIdentifier(validate(id, SellerIdentifier));
+    }
+    catch (originalError) {
+      throw error(ErrorCode.InvalidInput, "Invalid input to the getSeller method.", { originalError });
+    }
+
+    try {
+      let seller = await getSeller(_transaction, _id);
+      return new Seller(validate(seller, Seller));
+    }
+    catch (originalError) {
+      let transactionID = _transaction.id;
+      throw error(ErrorCode.AppError, "Error in the getSeller method.", { originalError, transactionID });
+    }
+  }
+
+  /**
+   * Returns a specific sales order
+   */
+  public async getSalesOrder(transaction: TransactionPOJO, id: SalesOrderIdentifier): Promise<SalesOrder> {
+    let _transaction, _id;
+    let { getSalesOrder } = this[_private];
+
+    try {
+      _transaction = new Transaction(validate(transaction, Transaction));
+      _id = new SalesOrderIdentifier(validate(id, SalesOrderIdentifier));
+    }
+    catch (originalError) {
+      throw error(ErrorCode.InvalidInput, "Invalid input to the getSalesOrder method.", { originalError });
+    }
+
+    try {
+      let salesOrder = await getSalesOrder(_transaction, _id);
+      return new SalesOrder(validate(salesOrder, SalesOrder));
+    }
+    catch (originalError) {
+      let transactionID = _transaction.id;
+      throw error(ErrorCode.AppError, "Error in the getSalesOrder method.", { originalError, transactionID });
+    }
+  }
+
+  /**
+   * Returns all orders that were created and/or modified within a given timeframe
+   */
+  public async* getSalesOrdersByDate(
+    transaction: TransactionPOJO, range: SalesOrderTimeRangePOJO): AsyncGenerator<SalesOrder> {
+
+    let _transaction, _range;
+    let { getSalesOrdersByDate } = this[_private];
+
+    try {
+      _transaction = new Transaction(validate(transaction, Transaction));
+      _range = new SalesOrderTimeRange(validate(range, SalesOrderTimeRange));
+    }
+    catch (originalError) {
+      throw error(ErrorCode.InvalidInput, "Invalid input to the getSalesOrdersByDate method.", { originalError });
+    }
+
+    try {
+      let salesOrders = await getSalesOrdersByDate(_transaction, _range);
+      let iterable = getAsyncIterable(salesOrders);
+
+      if (!iterable) {
+        throw error(ErrorCode.AppError, "The return value is not iterable");
+      }
+
+      for await (let salesOrder of iterable) {
+        yield new SalesOrder(validate(salesOrder, SalesOrder));
+      }
+    }
+    catch (originalError) {
+      let transactionID = _transaction.id;
+      throw error(ErrorCode.AppError, "Error in the getSalesOrdersByDate method.", { originalError, transactionID });
+    }
+  }
+
+  /**
+   * Called when a shipment is created for one or more items in one or more sales orders.
+   *
+   * A single shipment may contain items from multiple sales orders, and a single sales order
+   * may be fulfilled by multiple shipments.
+   */
+  public async shipmentCreated?(transaction: TransactionPOJO): Promise<void> {
+    let _transaction, _arg2;
+    let { shipmentCreated } = this[_private];
+
+    try {
+      _transaction = new Transaction(validate(transaction, Transaction));
+      // _arg2 = new Arg2(validate(arg2, Arg2));
+    }
+    catch (originalError) {
+      throw error(ErrorCode.InvalidInput, "Invalid input to the shipmentCreated method.", { originalError });
+    }
+
+    try {
+      await shipmentCreated!(_transaction);
+    }
+    catch (originalError) {
+      let transactionID = _transaction.id;
+      throw error(ErrorCode.AppError, "Error in the shipmentCreated method.", { originalError, transactionID });
+    }
+  }
+
+  /**
+   * Called when a shipment is cancelled for one or more items in one or more sales orders.
+   *
+   * A single shipment may contain items from multiple sales orders, and a single sales order
+   * may be fulfilled by multiple shipments.
+   */
+  public async shipmentCancelled?(transaction: TransactionPOJO): Promise<void> {
+    let _transaction, _arg2;
+    let { shipmentCancelled } = this[_private];
+
+    try {
+      _transaction = new Transaction(validate(transaction, Transaction));
+      // _arg2 = new Arg2(validate(arg2, Arg2));
+    }
+    catch (originalError) {
+      throw error(ErrorCode.InvalidInput, "Invalid input to the shipmentCancelled method.", { originalError });
+    }
+
+    try {
+      await shipmentCancelled!(_transaction);
+    }
+    catch (originalError) {
+      let transactionID = _transaction.id;
+      throw error(ErrorCode.AppError, "Error in the shipmentCancelled method.", { originalError, transactionID });
+    }
+  }
+
+  //#endregion
 }
 
 // Prevent modifications to the class

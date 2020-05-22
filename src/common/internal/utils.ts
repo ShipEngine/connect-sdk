@@ -11,7 +11,6 @@ export const _internal = Symbol("internal fields");
 
 /**
  * Regular expression patterns
- * @internal
  */
 export const regex = {
   isoDateTime: /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?)([+-]\d{2}:\d{2}|Z)?$/,
@@ -60,7 +59,6 @@ export function hideAndFreeze<T extends object>(obj: T, ...omit: Array<keyof T>)
 
 /**
  * Additional properties to add to a an error
- * @internal
  */
 export interface ErrorProps {
   originalError?: unknown;
@@ -71,9 +69,16 @@ export interface ErrorProps {
 
 /**
  * Creates a ShipEngine Integration Platform SDK error
- * @internal
  */
 export function error(code: ErrorCode, message: string, { originalError, ...props }: ErrorProps = {}): ShipEngineError {
-  let err =  ono(originalError as Error, { ...props, code }, message);
+  // Capture the original error code
+  let original = originalError as ShipEngineError | undefined;
+  let originalCode = original ? original.originalCode ? original.originalCode : original.code : undefined;
+
+  // Create a new error with:
+  //  - The new error message and the original error message
+  //  - The new stack trace and the original stack trace
+  //  - The new properties and the original error's properties
+  let err =  ono(originalError as Error, { ...props, code, originalCode }, message);
   return err;
 }

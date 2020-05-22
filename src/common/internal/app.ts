@@ -1,12 +1,29 @@
-import { AppManifestPOJO, AppPOJO } from "../app-pojo";
+import { AppManifestPOJO } from "../app-manifest-pojo";
 import { UUID } from "../types";
 import { ReferenceMap } from "./reference-map";
+import { sdk } from "./sdk";
 import { _internal } from "./utils";
 import { Joi } from "./validation";
 
-// NOTE: We can't use `import` syntax here because package.json is outside the TypeScript root dir
-// tslint:disable-next-line: no-var-requires no-require-imports
-const sdkManifest = require("../../../package.json") as AppManifestPOJO;
+/**
+ * A ShipEngine Integration Platform app
+ */
+export interface AppPOJO extends AppDefinition {
+  manifest: AppManifestPOJO;
+}
+
+
+/**
+ * A ShipEngine Integration Platform app
+ */
+export interface AppDefinition {
+  /**
+   * A UUID that uniquely identifies the app.
+   * This ID should never change, even if the app name changes.
+   */
+  id: UUID;
+}
+
 
 /**
  * A ShipEngine Integration Platform app
@@ -58,7 +75,7 @@ export abstract class App {
 
   public constructor(pojo: AppPOJO) {
     this.id = pojo.id;
-    this.sdkVersion = Number.parseFloat(sdkManifest.version);
+    this.sdkVersion = Number.parseFloat(sdk.version);
     this.manifest = {
       ...pojo.manifest,
       description: pojo.manifest.description || "",

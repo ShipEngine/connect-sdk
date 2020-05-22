@@ -1,8 +1,8 @@
-import { AppDefinition, AppPOJO } from "./app-pojo";
-import { FormDefinition, FormPOJO } from "./form-pojo";
-import { LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO } from "./localization-pojo";
-import { Connect } from "./methods";
-import { FilePath, InlineOrReference, URLString } from "./types";
+import { FormDefinition, FormPOJO } from "../form-pojo";
+import { LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO } from "../localization-pojo";
+import { Connect } from "../methods";
+import { FilePath, InlineOrReference, URLString } from "../types";
+import { AppDefinition, AppPOJO } from "./app";
 
 /**
  * A ShipEngine Integration Platform app that connects to a service, such as a carrier or marketplace

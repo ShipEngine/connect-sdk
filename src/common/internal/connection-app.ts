@@ -1,4 +1,3 @@
-import { ConnectionAppPOJO } from "../connection-app-pojo";
 import { ErrorCode } from "../errors";
 import { Form } from "../form";
 import { LocalizedBrandingPOJO } from "../localization-pojo";
@@ -7,6 +6,7 @@ import { Transaction } from "../transaction";
 import { TransactionPOJO } from "../transaction-pojo";
 import { FilePath } from "../types";
 import { App } from "./app";
+import { ConnectionAppPOJO } from "./connection-app-pojo";
 import { Localization } from "./localization";
 import { error, _internal } from "./utils";
 import { Joi, validate } from "./validation";

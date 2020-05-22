@@ -1,4 +1,5 @@
-import { AppPOJO, Connect, ConnectionAppDefinition, FormPOJO, InlineOrReference, InlineOrReferenceArray, LocalizationPOJO, LocalizedBrandingPOJO } from "../common";
+import { Connect, FormPOJO, InlineOrReference, InlineOrReferenceArray, LocalizationPOJO, LocalizedBrandingPOJO } from "../common";
+import { AppPOJO, ConnectionAppDefinition } from "../common/internal";
 import { DeliveryServiceDefinition, DeliveryServicePOJO } from "./delivery-service-pojo";
 import { ManifestLocation, ManifestShipment } from "./manifests/enums";
 import { CancelPickups, CancelShipments, CreateManifest, CreateShipment, RateShipment, SchedulePickup, TrackShipment } from "./methods";

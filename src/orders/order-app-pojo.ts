@@ -1,4 +1,5 @@
-import { AppPOJO, Connect, ConnectionAppDefinition, FormPOJO, InlineOrReference, LocalizationPOJO, LocalizedBrandingPOJO } from "../common";
+import { Connect, FormPOJO, InlineOrReference, LocalizationPOJO, LocalizedBrandingPOJO } from "../common";
+import { AppPOJO, ConnectionAppDefinition } from "../common/internal";
 import { GetSalesOrder, GetSalesOrdersByDate, GetSeller, ShipmentCancelled, ShipmentCreated } from "./methods";
 
 /**

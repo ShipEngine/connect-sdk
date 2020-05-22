@@ -25,6 +25,7 @@ describe("OrderApp", () => {
     });
 
     expect(app).to.deep.equal({
+      type: "order",
       id: "12345678-1234-1234-1234-123456789012",
       name: "My order",
       description: "",
@@ -78,6 +79,7 @@ describe("OrderApp", () => {
     });
 
     expect(app).to.deep.equal({
+      type: "order",
       id: "12345678-1234-1234-1234-123456789012",
       name: "My order",
       description: "My order description",
@@ -121,6 +123,7 @@ describe("OrderApp", () => {
     });
 
     expect(app).to.deep.equal({
+      type: "order",
       id: "12345678-1234-1234-1234-123456789012",
       name: "My order",
       description: "",

@@ -1,4 +1,13 @@
 /**
+ * The types of ShipEngine Integration Platform apps
+ */
+export enum AppType {
+  Carrier = "carrier",
+  Order = "order",
+}
+
+
+/**
  * The status of a cancellation request
  */
 export enum CancellationStatus {

@@ -23,6 +23,7 @@ describe("CarrierApp", () => {
     });
 
     expect(app).to.deep.equal({
+      type: "carrier",
       id: "12345678-1234-1234-1234-123456789012",
       name: "My carrier",
       description: "",
@@ -91,6 +92,7 @@ describe("CarrierApp", () => {
     });
 
     expect(app).to.deep.equal({
+      type: "carrier",
       id: "12345678-1234-1234-1234-123456789012",
       name: "My carrier",
       description: "My carrier description",
@@ -136,6 +138,7 @@ describe("CarrierApp", () => {
     });
 
     expect(app).to.deep.equal({
+      type: "carrier",
       id: "12345678-1234-1234-1234-123456789012",
       name: "My carrier",
       description: "",

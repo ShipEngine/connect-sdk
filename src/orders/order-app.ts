@@ -1,4 +1,4 @@
-import { ErrorCode, Transaction, TransactionPOJO } from "../common";
+import { AppType, ErrorCode, Transaction, TransactionPOJO } from "../common";
 import { ConnectionApp, error, hideAndFreeze, Joi, localize, validate, _internal } from "../common/internal";
 import { GetSalesOrder, GetSalesOrdersByDate, GetSeller, ShipmentCancelled, ShipmentCreated } from "./methods";
 import { OrderAppPOJO } from "./order-app-pojo";
@@ -39,11 +39,21 @@ export class OrderApp extends ConnectionApp {
   };
 
   //#endregion
+  //#region Public Fields
+
+  /**
+   * Indicates that this is an order app
+   */
+  public readonly type: AppType;
+
+  //#endregion
 
   public constructor(pojo: OrderAppPOJO) {
     validate(pojo, OrderApp);
 
     super(pojo);
+
+    this.type = AppType.Order;
 
     this[_private] = {
       getSeller: pojo.getSeller,

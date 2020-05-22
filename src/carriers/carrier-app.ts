@@ -1,4 +1,4 @@
-import { CancellationStatus, Country, ErrorCode, Transaction, TransactionPOJO } from "../common";
+import { AppType, CancellationStatus, Country, ErrorCode, Transaction, TransactionPOJO } from "../common";
 import { ConnectionApp, error, hideAndFreeze, Joi, localize, validate, validateArray, _internal } from "../common/internal";
 import { CarrierAppPOJO } from "./carrier-app-pojo";
 import { DeliveryConfirmation } from "./delivery-confirmation";
@@ -71,6 +71,11 @@ export class CarrierApp extends ConnectionApp {
 
   //#endregion
   //#region Public Fields
+
+  /**
+   * Indicates that this is a carrier app
+   */
+  public readonly type: AppType;
 
   /**
    * Indicates which locations are included in end-of-day manifests.
@@ -238,6 +243,7 @@ export class CarrierApp extends ConnectionApp {
 
     super(pojo);
 
+    this.type = AppType.Carrier;
     this.manifestLocations = pojo.manifestLocations;
     this.manifestShipments = pojo.manifestShipments;
     this.deliveryServices = pojo.deliveryServices.map((svc) => new DeliveryService(svc, this));

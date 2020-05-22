@@ -1,4 +1,5 @@
 import { AppManifestPOJO } from "../app-manifest-pojo";
+import { AppType } from "../enums";
 import { UUID } from "../types";
 import { ReferenceMap } from "./reference-map";
 import { sdk } from "./sdk";
@@ -53,6 +54,11 @@ export abstract class App {
 
   //#endregion
   //#region Public Fields
+
+  /**
+   * The type of app this is
+   */
+  public abstract readonly type: AppType;
 
   /**
    * A UUID that uniquely identifies the connection.

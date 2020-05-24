@@ -1,4 +1,4 @@
-import type { DefinitionIdentifierPOJO, InlineOrReference, Localizable, LocalizationDefinition, LocalizationPOJO, LocalizedInfoPOJO } from "../../common";
+import type { DefinitionIdentifier, DefinitionIdentifierPOJO, InlineOrReference, Localizable, LocalizationDefinition, LocalizationPOJO, LocalizedInfoPOJO } from "../../common";
 
 
 /**
@@ -47,9 +47,15 @@ export type PickupServiceIdentifierPOJO = DefinitionIdentifierPOJO;
 
 
 /**
+ * Identifies a pickup service that is offered by a carrier
+ */
+export type PickupServiceIdentifier = DefinitionIdentifier;
+
+
+/**
  * A package pickup service that is offered by a carrier
  */
-export interface PickupService extends Localizable<PickupService, PickupServicePOJO> {
+export interface PickupService extends DefinitionIdentifier, Localizable<PickupService, PickupServicePOJO> {
   /**
    * The user-friendly service name (e.g. "One-Time Pickup", "Recurring Pickup", "Drop-Off")
    */

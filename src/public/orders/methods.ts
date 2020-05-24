@@ -14,7 +14,7 @@ export type GetSeller = (transaction: Transaction, seller: SellerIdentifier)
 
 
 /**
- * Returns a specific sales order
+ * Returns detailed information about a specific sales order
  */
 export type GetSalesOrder = (transaction: Transaction, salesOrder: SalesOrderIdentifier)
   => SalesOrderPOJO | Promise<SalesOrderPOJO>;

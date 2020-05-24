@@ -45,6 +45,12 @@ export type DeliveryConfirmationIdentifierPOJO = DefinitionIdentifierPOJO;
 
 
 /**
+ * Identifies a delivery confirmation option offered by a carrier
+ */
+export type DeliveryConfirmationIdentifier = DefinitionIdentifier;
+
+
+/**
  * Delivery confirmation options offered by a carrier
  */
 export interface DeliveryConfirmation extends DefinitionIdentifier, Localizable<DeliveryConfirmation, DeliveryConfirmationPOJO> {

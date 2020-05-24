@@ -125,6 +125,12 @@ export type DeliveryServiceIdentifierPOJO = DefinitionIdentifierPOJO;
 
 
 /**
+ * Identifies a delivery service that is offered by a carrier
+ */
+export type DeliveryServiceIdentifier = DefinitionIdentifier;
+
+
+/**
  * A delivery service that is offered by a carrier
  */
 export interface DeliveryService extends DefinitionIdentifier, Localizable<DeliveryService, DeliveryServicePOJO> {

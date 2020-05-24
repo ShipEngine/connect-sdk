@@ -1,6 +1,6 @@
 "use strict";
 
-const { OrderApp } = require("../../../");
+const { OrderApp } = require("../../../lib/internal");
 const sdkManifest = require("../../../package.json");
 const { expect } = require("chai");
 const path = require("path");

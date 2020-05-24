@@ -1,6 +1,6 @@
 "use strict";
 
-const { CarrierApp } = require("../../../");
+const { CarrierApp } = require("../../../lib/internal");
 const pojo = require("../../utils/pojo");
 const { expect, assert } = require("chai");
 

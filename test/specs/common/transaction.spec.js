@@ -1,7 +1,7 @@
 "use strict";
 
 const { assert, expect } = require("chai");
-const { CarrierApp, Transaction } = require("../../..");
+const { CarrierApp, Transaction } = require("../../../lib/internal");
 const pojo = require("../../utils/pojo");
 
 describe("Transaction", () => {

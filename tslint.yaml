@@ -14,3 +14,9 @@ rules:
       -
         - "json-schema"
         - "react-jsonschema-form"
+
+  # All public interfaces should have JSDocs,
+  # but don't need to duplicate the docs for internal classes and interfaces
+  completed-docs: false
+
+  max-classes-per-file: false

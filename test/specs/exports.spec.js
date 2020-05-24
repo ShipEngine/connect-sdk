@@ -14,48 +14,46 @@ describe("package exports", () => {
     expect(namedExports).not.to.include.key("default");
   });
 
-  it("should only export enumerations and classes", () => {
+  it("should only export enumerations", () => {
     for (let [name, namedExport] of Object.entries(namedExports)) {
-      expect(name).to.match(/^[A-Z][a-z]+/, "all exported classes & enumerations must start with a capital letter");
-
-      if (typeof namedExport === "function") {
-        // This export is a class
-        expect(namedExport).to.be.a("function");
-        expect(namedExport.name).to.equal(name);
-        expect(namedExport.prototype).to.be.an("object");
-        expect(namedExport.prototype.constructor).to.equal(namedExport);
-
-        // Don't export abstract base classes
-        expect(name).not.to.match(/Base$/, "Abstract base classes should not be exported");
-      }
-      else {
-        // This export is an enumeration
-        expect(namedExport).to.be.an("object");
-        for (let value of Object.values(namedExport)) {
-          expect(value).to.be.a("string", "enumerations should only contain string values");
-        }
+      expect(name).to.match(/^[A-Z][a-z]+/, "all exported enumerations must start with a capital letter");
+      expect(namedExport).to.be.an("object");
+      for (let value of Object.values(namedExport)) {
+        expect(value).to.be.a("string", "enumerations should only contain string values");
       }
     }
   });
 
-  it("should export root files", () => {
-    assertFileExports("src", false, ["internal-types.ts", "validation.ts"]);
+  it("should export everything in public/common", () => {
+    assertFileExports("src/public/common", true);
   });
 
-  it("should export carrier classes", () => {
-    assertFileExports("src/carriers", true, ["utils.ts"]);
+  it("should export everything in public/carriers", () => {
+    assertFileExports("src/public/carriers", true);
   });
 
-  it("should export common classes", () => {
-    assertFileExports("src/common", true, ["internal"]);
+  it("should export everything in public/orders", () => {
+    assertFileExports("src/public/orders", true);
   });
 
-  it("should export order classes", () => {
-    assertFileExports("src/orders", true, ["utils.ts"]);
+  it("should export everything in public/products", () => {
+    assertFileExports("src/public/products", true);
   });
 
-  it("should export product classes", () => {
-    assertFileExports("src/products", true);
+  it("should export everything in internal/common", () => {
+    assertFileExports("src/internal/common", true);
+  });
+
+  it("should export everything in internal/carriers", () => {
+    assertFileExports("src/internal/carriers", true);
+  });
+
+  it("should export everything in internal/orders", () => {
+    assertFileExports("src/internal/orders", true);
+  });
+
+  it("should export everything in internal/products", () => {
+    assertFileExports("src/internal/products", true);
   });
 
 });

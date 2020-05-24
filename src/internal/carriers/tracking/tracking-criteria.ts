@@ -1,0 +1,36 @@
+import { TrackingCriteria as ITrackingCriteria, TrackingCriteriaPOJO } from "../../../public";
+import { hideAndFreeze, Joi, _internal } from "../../common";
+import { ShipmentIdentifier, ShipmentIdentifierBase } from "../shipments/shipment-identifier";
+
+export class TrackingCriteria extends ShipmentIdentifierBase implements ITrackingCriteria {
+  public static readonly [_internal] = {
+    label: "shipment",
+    schema: ShipmentIdentifier[_internal].schema.keys({
+      returns: Joi.object({
+        isReturn: Joi.boolean(),
+      }),
+      metadata: Joi.object(),
+    }),
+  };
+
+  public readonly returns: {
+    readonly isReturn: boolean;
+  };
+
+  public readonly metadata: object;
+
+  public constructor(pojo: TrackingCriteriaPOJO) {
+    super(pojo);
+
+    this.metadata = pojo.metadata || {};
+
+    // If there's no return info, then the shipment is not a return
+    let returns = pojo.returns || {};
+    this.returns = {
+      isReturn: returns.isReturn || false,
+    };
+
+    // Make this object immutable
+    hideAndFreeze(this);
+  }
+}

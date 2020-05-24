@@ -1,6 +1,6 @@
 "use strict";
 
-const { OrderApp } = require("../../../");
+const { OrderApp } = require("../../../lib/internal");
 const pojo = require("../../utils/pojo");
 const { expect, assert } = require("chai");
 

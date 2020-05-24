@@ -1,9 +1,9 @@
-import { Currency, NewPackage as INewPackage, NewPackagePOJO, NonDeliveryOption } from "../../../public";
+import { Currency, NewPackage as INewPackage, NewPackagePOJO } from "../../../public";
 import { App, DefinitionIdentifier, Dimensions, hideAndFreeze, Joi, MonetaryValue, Weight, _internal } from "../../common";
+import { Customs } from "../customs/customs";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { NewLabel } from "../documents/new-label";
 import { Packaging } from "../packaging";
-import { CustomsItem } from "./customs-item";
 import { PackageItem } from "./package-item";
 
 export class NewPackage implements INewPackage {
@@ -18,11 +18,8 @@ export class NewPackage implements INewPackage {
       containsAlcohol: Joi.boolean(),
       isNonMachinable: Joi.boolean(),
       label: NewLabel[_internal].schema.required(),
+      customs: Customs[_internal].schema,
       contents: Joi.array().items(PackageItem[_internal].schema),
-      customs: Joi.object({
-        nonDeliveryOption: Joi.string().enum(NonDeliveryOption),
-        contents: Joi.array().items(CustomsItem[_internal].schema),
-      }),
     }),
   };
 
@@ -35,11 +32,7 @@ export class NewPackage implements INewPackage {
   public readonly isNonMachinable: boolean;
   public readonly label: NewLabel;
   public readonly contents: ReadonlyArray<PackageItem>;
-
-  public readonly customs: {
-    nonDeliveryOption?: NonDeliveryOption;
-    contents: ReadonlyArray<CustomsItem>;
-  };
+  public readonly customs: Customs;
 
   public constructor(pojo: NewPackagePOJO, app: App) {
     this.packaging = app[_internal].references.lookup(pojo.packaging, Packaging);
@@ -51,15 +44,9 @@ export class NewPackage implements INewPackage {
     this.isNonMachinable = pojo.isNonMachinable || false;
     this.label = new NewLabel(pojo.label);
     this.contents = (pojo.contents || []).map((item) => new PackageItem(item));
-
-    let customs = pojo.customs || {};
-    this.customs = {
-      nonDeliveryOption: customs.nonDeliveryOption,
-      contents: customs.contents ? customs.contents.map((item) => new CustomsItem(item)) : [],
-    };
+    this.customs = new Customs(pojo.customs || {});
 
     // Make this object immutable
     hideAndFreeze(this);
-    Object.freeze(this.customs.contents);
   }
 }

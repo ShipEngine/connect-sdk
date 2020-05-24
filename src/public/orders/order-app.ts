@@ -5,6 +5,7 @@ import type { SalesOrderIdentifierPOJO } from "./sales-order-identifier";
 import type { SalesOrderTimeRangePOJO } from "./sales-order-time-range";
 import type { Seller } from "./sellers/seller";
 import type { SellerIdentifierPOJO } from "./sellers/seller-identifier";
+import { SalesOrderShipmentPOJO } from "./shipments/sales-order-shipment";
 
 
 /**
@@ -86,7 +87,7 @@ export interface OrderApp extends ConnectionApp {
    * A single shipment may contain items from multiple sales orders, and a single sales order
    * may be fulfilled by multiple shipments.
    */
-  shipmentCreated?(transaction: TransactionPOJO): Promise<void>;
+  shipmentCreated?(transaction: TransactionPOJO, shipment: SalesOrderShipmentPOJO): Promise<void>;
 
   /**
    * Called when a shipment is cancelled for one or more items in one or more sales orders.
@@ -94,5 +95,5 @@ export interface OrderApp extends ConnectionApp {
    * A single shipment may contain items from multiple sales orders, and a single sales order
    * may be fulfilled by multiple shipments.
    */
-  shipmentCancelled?(transaction: TransactionPOJO): Promise<void>;
+  shipmentCancelled?(transaction: TransactionPOJO, shipment: SalesOrderShipmentPOJO): Promise<void>;
 }

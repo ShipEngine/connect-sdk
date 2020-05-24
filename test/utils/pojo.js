@@ -159,6 +159,17 @@ const pojo = module.exports = {
     };
   },
 
+  salesOrderShipment (props = {}) {
+    return {
+      ...pojo.shipmentIdentifier(),
+      shipFrom: pojo.addressWithContactInfo(),
+      shipTo: pojo.addressWithContactInfo(),
+      shipDateTime: new Date(),
+      packages: [pojo.salesOrderPackage()],
+      ...props,
+    };
+  },
+
   package (props = {}) {
     return {
       ...pojo.packageIdentifier(),
@@ -196,6 +207,23 @@ const pojo = module.exports = {
       packaging: {
         id: "44444444-4444-4444-4444-444444444444",
       },
+      ...props,
+    };
+  },
+
+  salesOrderPackage (props = {}) {
+    return {
+      ...pojo.packageIdentifier(),
+      contents: [pojo.salesOrderPackageItem()],
+      ...props,
+    };
+  },
+
+  salesOrderPackageItem (props = {}) {
+    return {
+      salesOrder: pojo.salesOrderIdentifier(),
+      salesOrderItem: pojo.salesOrderItemIdentifier(),
+      quantity: pojo.quantity(),
       ...props,
     };
   },

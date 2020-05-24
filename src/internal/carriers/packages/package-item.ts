@@ -1,7 +1,8 @@
 import * as currency from "currency.js";
 import { PackageItem as IPackageItem, PackageItemPOJO } from "../../../public";
 import { hideAndFreeze, Identifiers, Joi, MonetaryValue, Quantity, _internal } from "../../common";
-import { SalesOrderIdentifier, SalesOrderItemIdentifier } from "../../orders";
+import { SalesOrderIdentifier } from "../../orders/sales-order-identifier";
+import { SalesOrderItemIdentifier } from "../../orders/sales-order-item-identifier";
 import { ProductIdentifier } from "../../products";
 
 export class PackageItem implements IPackageItem {

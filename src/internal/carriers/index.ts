@@ -1,4 +1,6 @@
 export * from "./carrier-app";
+export * from "./customs/customs";
+export * from "./customs/customs-item";
 export * from "./delivery-confirmation";
 export * from "./delivery-service";
 export * from "./documents/document";
@@ -9,7 +11,6 @@ export * from "./manifests/manifest";
 export * from "./manifests/manifest-confirmation";
 export * from "./manifests/new-manifest";
 export * from "./manifests/non-manifested-shipment";
-export * from "./packages/customs-item";
 export * from "./packages/new-package";
 export * from "./packages/package-confirmation";
 export * from "./packages/package-identifier";

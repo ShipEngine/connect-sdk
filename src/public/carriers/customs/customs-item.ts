@@ -21,7 +21,7 @@ export interface CustomsItemPOJO {
   description?: string;
 
   /**
-   * The quantity of this item in the package. May be zero.
+   * The quantity of this item in the package
    */
   quantity: QuantityPOJO;
 
@@ -70,7 +70,7 @@ export interface CustomsItem {
   readonly description: string;
 
   /**
-   * The quantity of this item in the package. May be zero.
+   * The quantity of this item in the package
    */
   readonly quantity: Quantity;
 

@@ -32,7 +32,7 @@ export interface PackageItemPOJO {
   product?: ProductIdentifierPOJO;
 
   /**
-   * The quantity of this item in the package. May be zero.
+   * The quantity of this item in the package
    */
   quantity: QuantityPOJO;
 
@@ -73,7 +73,7 @@ export interface PackageItem {
   readonly product?: ProductIdentifier;
 
   /**
-   * The quantity of this item in the package. May be zero.
+   * The quantity of this item in the package
    */
   readonly quantity: Quantity;
 

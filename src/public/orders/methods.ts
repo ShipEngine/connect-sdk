@@ -4,6 +4,7 @@ import type { SalesOrderIdentifier } from "./sales-order-identifier";
 import type { SalesOrderTimeRange } from "./sales-order-time-range";
 import type { SellerPOJO } from "./sellers/seller";
 import type { SellerIdentifier } from "./sellers/seller-identifier";
+import { SalesOrderShipment } from "./shipments/sales-order-shipment";
 
 /**
  * Returns detailed information about a seller on the marketplace
@@ -32,7 +33,7 @@ export type GetSalesOrdersByDate = (transaction: Transaction, range: SalesOrderT
  * A single shipment may contain items from multiple sales orders, and a single sales order
  * may be fulfilled by multiple shipments.
  */
-export type ShipmentCreated = (transaction: Transaction)
+export type ShipmentCreated = (transaction: Transaction, shipment: SalesOrderShipment)
   => void | Promise<void>;
 
 
@@ -42,5 +43,5 @@ export type ShipmentCreated = (transaction: Transaction)
  * A single shipment may contain items from multiple sales orders, and a single sales order
  * may be fulfilled by multiple shipments.
  */
-export type ShipmentCancelled = (transaction: Transaction)
+export type ShipmentCancelled = (transaction: Transaction, shipment: SalesOrderShipment)
   => void | Promise<void>;

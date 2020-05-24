@@ -1,10 +1,11 @@
-import { AppType, ErrorCode, GetSalesOrder, GetSalesOrdersByDate, GetSeller, OrderApp as IOrderApp, OrderAppPOJO, SalesOrderIdentifierPOJO, SalesOrderTimeRangePOJO, SellerIdentifierPOJO, ShipmentCancelled, ShipmentCreated, TransactionPOJO } from "../../public";
+import { AppType, ErrorCode, GetSalesOrder, GetSalesOrdersByDate, GetSeller, OrderApp as IOrderApp, OrderAppPOJO, SalesOrderIdentifierPOJO, SalesOrderShipmentPOJO, SalesOrderTimeRangePOJO, SellerIdentifierPOJO, ShipmentCancelled, ShipmentCreated, TransactionPOJO } from "../../public";
 import { ConnectionApp, error, hideAndFreeze, Joi, localize, Transaction, validate, _internal } from "../common";
 import { SalesOrder } from "./sales-order";
 import { SalesOrderIdentifier } from "./sales-order-identifier";
 import { SalesOrderTimeRange } from "./sales-order-time-range";
 import { Seller } from "./sellers/seller";
 import { SellerIdentifier } from "./sellers/seller-identifier";
+import { SalesOrderShipment } from "./shipments/sales-order-shipment";
 import { getAsyncIterable } from "./utils";
 
 const _private = Symbol("private fields");
@@ -147,20 +148,20 @@ export class OrderApp extends ConnectionApp implements IOrderApp {
     }
   }
 
-  public async shipmentCreated?(transaction: TransactionPOJO): Promise<void> {
-    let _transaction, _arg2;
+  public async shipmentCreated?(transaction: TransactionPOJO, shipment: SalesOrderShipmentPOJO): Promise<void> {
+    let _transaction, _shipment;
     let { shipmentCreated } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
-      // _arg2 = new Arg2(validate(arg2, Arg2));
+      _shipment = new SalesOrderShipment(validate(shipment, SalesOrderShipment));
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the shipmentCreated method.", { originalError });
     }
 
     try {
-      await shipmentCreated!(_transaction);
+      await shipmentCreated!(_transaction, _shipment);
     }
     catch (originalError) {
       let transactionID = _transaction.id;
@@ -168,20 +169,20 @@ export class OrderApp extends ConnectionApp implements IOrderApp {
     }
   }
 
-  public async shipmentCancelled?(transaction: TransactionPOJO): Promise<void> {
-    let _transaction, _arg2;
+  public async shipmentCancelled?(transaction: TransactionPOJO, shipment: SalesOrderShipmentPOJO): Promise<void> {
+    let _transaction, _shipment;
     let { shipmentCancelled } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
-      // _arg2 = new Arg2(validate(arg2, Arg2));
+      _shipment = new SalesOrderShipment(validate(shipment, SalesOrderShipment));
     }
     catch (originalError) {
       throw error(ErrorCode.InvalidInput, "Invalid input to the shipmentCancelled method.", { originalError });
     }
 
     try {
-      await shipmentCancelled!(_transaction);
+      await shipmentCancelled!(_transaction, _shipment);
     }
     catch (originalError) {
       let transactionID = _transaction.id;

@@ -9,7 +9,6 @@ const path = require("path");
 describe("CarrierApp", () => {
   it("should create a CarrierApp with the minimum required fields", () => {
     let app = new CarrierApp({
-      id: "12345678-1234-1234-1234-123456789012",
       name: "My carrier",
       websiteURL: "https://my-carrier.com/",
       logo: path.resolve("logo.svg"),
@@ -24,7 +23,6 @@ describe("CarrierApp", () => {
 
     expect(app).to.deep.equal({
       type: "carrier",
-      id: "12345678-1234-1234-1234-123456789012",
       name: "My carrier",
       description: "",
       websiteURL: new URL("https://my-carrier.com/"),
@@ -55,7 +53,6 @@ describe("CarrierApp", () => {
 
   it("should create a CarrierApp with all possible fields", () => {
     let app = new CarrierApp({
-      id: "12345678-1234-1234-1234-123456789012",
       name: "My carrier",
       description: "My carrier description",
       websiteURL: "https://my-carrier.com/",
@@ -93,7 +90,6 @@ describe("CarrierApp", () => {
 
     expect(app).to.deep.equal({
       type: "carrier",
-      id: "12345678-1234-1234-1234-123456789012",
       name: "My carrier",
       description: "My carrier description",
       websiteURL: new URL("https://my-carrier.com/"),
@@ -122,7 +118,6 @@ describe("CarrierApp", () => {
 
   it("should allow an empty description", () => {
     let app = new CarrierApp({
-      id: "12345678-1234-1234-1234-123456789012",
       name: "My carrier",
       description: "",
       websiteURL: "https://my-carrier.com/",
@@ -139,7 +134,6 @@ describe("CarrierApp", () => {
 
     expect(app).to.deep.equal({
       type: "carrier",
-      id: "12345678-1234-1234-1234-123456789012",
       name: "My carrier",
       description: "",
       websiteURL: new URL("https://my-carrier.com/"),
@@ -177,27 +171,8 @@ describe("CarrierApp", () => {
       );
     });
 
-    it("should throw an error if the ID is not a UUID", () => {
-      expect(() => new CarrierApp({
-        id: "12345",
-        name: "My carrier",
-        websiteURL: "https://my-carrier.com/",
-        logo: path.resolve("logo.svg"),
-        deliveryServices: [pojo.deliveryService()],
-        manifest: {
-          name: "@company/carrier",
-          version: "1.0.0"
-        }
-      })
-      ).to.throw(
-        "Invalid ShipEngine Integration Platform carrier app: \n" +
-        "  id must be a valid GUID"
-      );
-    });
-
     it("should throw an error if the name contains illegal characters", () => {
       expect(() => new CarrierApp({
-        id: "12345678-1234-1234-1234-123456789012",
         name: "  My \nCarrier  ",
         websiteURL: "https://my-carrier.com/",
         logo: path.resolve("logo.svg"),
@@ -216,7 +191,6 @@ describe("CarrierApp", () => {
 
     it("should throw an error if the description is the wrong type", () => {
       expect(() => new CarrierApp({
-        id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
         logo: path.resolve("logo.svg"),
@@ -235,7 +209,6 @@ describe("CarrierApp", () => {
 
     it("should throw an error if the logo is not an absolute path", () => {
       expect(() => new CarrierApp({
-        id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
         logo: "logo.svg",
@@ -253,7 +226,6 @@ describe("CarrierApp", () => {
 
     it("should throw an error if the logo is not an SVG", () => {
       expect(() => new CarrierApp({
-        id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
         logo: path.resolve("logo.jpg"),

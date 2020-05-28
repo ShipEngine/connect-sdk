@@ -8,7 +8,6 @@ export abstract class App implements IApp {
   public static readonly [_internal] = {
     label: "ShipEngine Integration Platform app",
     schema: Joi.object({
-      id: Joi.string().uuid().required(),
       manifest: Joi.object({
         name: Joi.string().appName().required(),
         version: Joi.string().semver().required(),
@@ -24,12 +23,10 @@ export abstract class App implements IApp {
   };
 
   public abstract readonly type: AppType;
-  public readonly id: UUID;
   public readonly manifest: AppManifest;
   public readonly sdkVersion: number;
 
   public constructor(pojo: AppPOJO) {
-    this.id = pojo.id;
     this.sdkVersion = Number.parseFloat(sdk.version);
     this.manifest = {
       ...pojo.manifest,
@@ -43,7 +40,6 @@ export abstract class App implements IApp {
 
   public toJSON(): AppPOJO {
     return {
-      id: this.id,
       manifest: this.manifest,
     };
   }

@@ -9,7 +9,6 @@ describe("App", () => {
 
   it("should create an app with the minimum required fields", () => {
     let app = new CarrierApp(pojo.carrierApp({
-      id: "12345678-1234-1234-1234-123456789012",
       manifest: {
         name: "@company-name/app-name",
         version: "1.23.456",
@@ -18,7 +17,6 @@ describe("App", () => {
 
     expect(app).to.deep.equal({
       ...app,
-      id: "12345678-1234-1234-1234-123456789012",
       sdkVersion: parseFloat(sdkManifest.version),
       manifest: {
         name: "@company-name/app-name",
@@ -32,7 +30,6 @@ describe("App", () => {
 
   it("should create an app with all possible fields", () => {
     let app = new CarrierApp(pojo.carrierApp({
-      id: "12345678-1234-1234-1234-123456789012",
       manifest: {
         name: "@company-name/app-name",
         version: "1.23.456",
@@ -54,7 +51,6 @@ describe("App", () => {
 
     expect(app).to.deep.equal({
       ...app,
-      id: "12345678-1234-1234-1234-123456789012",
       sdkVersion: parseFloat(sdkManifest.version),
       manifest: {
         name: "@company-name/app-name",
@@ -78,7 +74,6 @@ describe("App", () => {
 
   it("should allow an empty description", () => {
     let app = new CarrierApp(pojo.carrierApp({
-      id: "12345678-1234-1234-1234-123456789012",
       manifest: {
         name: "@company-name/app-name",
         version: "1.23.456",
@@ -88,7 +83,6 @@ describe("App", () => {
 
     expect(app).to.deep.equal({
       ...app,
-      id: "12345678-1234-1234-1234-123456789012",
       sdkVersion: parseFloat(sdkManifest.version),
       manifest: {
         name: "@company-name/app-name",

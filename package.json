@@ -73,7 +73,6 @@
     "@types/json-schema": "^7.0.4",
     "@types/react-jsonschema-form": "^1.7.3",
     "currency.js": "^1.2.2",
-    "date-fns": "^2.14.0",
-    "date-fns-tz": "^1.0.10"
+    "moment-timezone": "^0.5.31"
   }
 }

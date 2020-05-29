@@ -1,4 +1,5 @@
-import { format, toDate } from "date-fns-tz";
+import * as moment from "moment-timezone";
+
 import { DateTimeZone as IDateTimeZone, DateTimeZonePOJO } from "../../../public";
 import { hideAndFreeze, regex, _internal } from "../utils";
 import { Joi } from "../validation";
@@ -47,7 +48,7 @@ export class DateTimeZone implements IDateTimeZone {
     }
     else {
       // Get the UTC offset for this date/time and time zone
-      this.offset = format(toDate(value, { timeZone }), "xxx", { timeZone });
+      this.offset = moment.tz(value, timeZone).format("Z");
     }
 
     // Make this object immutable

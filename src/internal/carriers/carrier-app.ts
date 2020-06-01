@@ -132,23 +132,23 @@ export class CarrierApp extends ConnectionApp implements ICarrierApp {
   }
 
   public get packaging(): ReadonlyArray<Packaging> {
-    let packaging = new Set<Packaging>();
+    let packaging = new Map<string, Packaging>();
     for (let service of this.deliveryServices) {
       for (let parcel of service.packaging) {
-        packaging.add(parcel);
+        packaging.set(parcel.id, parcel);
       }
     }
-    return Object.freeze([...packaging]);
+    return Object.freeze(Array.from(packaging.values()));
   }
 
   public get deliveryConfirmations(): ReadonlyArray<DeliveryConfirmation> {
-    let deliveryConfirmations = new Set<DeliveryConfirmation>();
+    let deliveryConfirmations = new Map<string, DeliveryConfirmation>();
     for (let service of this.deliveryServices) {
       for (let deliveryConfirmation of service.deliveryConfirmations) {
-        deliveryConfirmations.add(deliveryConfirmation);
+        deliveryConfirmations.set(deliveryConfirmation.id, deliveryConfirmation);
       }
     }
-    return Object.freeze([...deliveryConfirmations]);
+    return Object.freeze(Array.from(deliveryConfirmations.values()));
   }
 
   //#endregion

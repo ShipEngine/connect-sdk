@@ -20,3 +20,15 @@ export enum ErrorCode {
   AppError = "ERR_APP_ERROR",
   CurrencyMismatch = "ERR_CURRENCY_MISMATCH",
 }
+
+
+/**
+ * Possible error codes
+ * - Endpoint not found
+ * - Network error
+ * - Request timeout
+ * - Unauthorized
+ * - Bad Request
+ * - Rate limits
+ * - External Server Error
+ */

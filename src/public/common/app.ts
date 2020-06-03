@@ -8,8 +8,8 @@ import type { UUID } from "./types";
  */
 export interface AppDefinition {
   /**
-   * A UUID that uniquely identifies the app.
-   * This ID should never change, even if the app name changes.
+   * A UUID that uniquely identifies the carrier.
+   * This ID should never change.
    */
   id: UUID;
 }

@@ -179,6 +179,8 @@ export class CarrierApp extends ConnectionApp implements ICarrierApp {
 
     // Make this object immutable
     hideAndFreeze(this);
+
+    this[_internal].references.add(this);
     this[_internal].references.finishedLoading();
   }
 

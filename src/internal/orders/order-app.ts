@@ -50,6 +50,7 @@ export class OrderApp extends ConnectionApp implements IOrderApp {
     // Make this object immutable
     hideAndFreeze(this);
 
+    this[_internal].references.add(this);
     this[_internal].references.finishedLoading();
   }
 

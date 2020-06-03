@@ -2,10 +2,23 @@ import type { AppType } from "./enums";
 import type { Localizable } from "./localization";
 import type { UUID } from "./types";
 
+
 /**
  * A ShipEngine Integration Platform app
  */
-export interface AppPOJO {
+export interface AppDefinition {
+  /**
+   * A UUID that uniquely identifies the app.
+   * This ID should never change, even if the app name changes.
+   */
+  id: UUID;
+}
+
+
+/**
+ * A ShipEngine Integration Platform app
+ */
+export interface AppPOJO extends AppDefinition {
   manifest: AppManifestPOJO;
 }
 
@@ -18,6 +31,12 @@ export interface App extends Localizable<App, AppPOJO> {
    * The type of app this is
    */
   readonly type: AppType;
+
+  /**
+   * A UUID that uniquely identifies the connection.
+   * This ID should never change, even if the connection name changes.
+   */
+  readonly id: UUID;
 
   /**
    * The app manifest (package.json file)

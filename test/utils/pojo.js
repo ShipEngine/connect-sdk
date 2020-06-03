@@ -5,6 +5,7 @@ const path = require("path");
 const pojo = module.exports = {
   app (props = {}) {
     return {
+      id: "11111111-1111-1111-1111-111111111111",
       manifest: pojo.appManifest(),
       ...props,
     };

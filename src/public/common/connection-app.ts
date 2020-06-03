@@ -1,4 +1,4 @@
-import type { App, AppPOJO } from "./app";
+import type { App, AppDefinition, AppPOJO } from "./app";
 import type { Form, FormDefinition, FormPOJO } from "./form";
 import type { LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO } from "./localization";
 import type { Connect } from "./methods";
@@ -9,7 +9,7 @@ import type { FilePath, InlineOrReference, URLString } from "./types";
 /**
  * A ShipEngine Integration Platform app that connects to a service, such as a carrier or marketplace
  */
-export interface ConnectionAppDefinition {
+export interface ConnectionAppDefinition extends AppDefinition {
   /**
    * The user-friendly connection name (e.g. "FedEx", "Shopify")
    */

@@ -9,6 +9,7 @@ const pojo = require("../../utils/pojo");
 describe("OrderApp", () => {
   it("should create an OrderApp with the minimum required fields", () => {
     let app = new OrderApp({
+      id: "12345678-1234-1234-1234-123456789012",
       name: "My order",
       websiteURL: "https://my-order.com/",
       logo: path.resolve("logo.svg"),
@@ -25,6 +26,7 @@ describe("OrderApp", () => {
 
     expect(app).to.deep.equal({
       type: "order",
+      id: "12345678-1234-1234-1234-123456789012",
       name: "My order",
       description: "",
       websiteURL: new URL("https://my-order.com/"),
@@ -46,6 +48,7 @@ describe("OrderApp", () => {
 
   it("should create an OrderApp with all possible fields", () => {
     let app = new OrderApp({
+      id: "12345678-1234-1234-1234-123456789012",
       name: "My order",
       description: "My order description",
       websiteURL: "https://my-order.com/",
@@ -77,6 +80,7 @@ describe("OrderApp", () => {
 
     expect(app).to.deep.equal({
       type: "order",
+      id: "12345678-1234-1234-1234-123456789012",
       name: "My order",
       description: "My order description",
       websiteURL: new URL("https://my-order.com/"),
@@ -101,6 +105,7 @@ describe("OrderApp", () => {
 
   it("should allow an empty description", () => {
     let app = new OrderApp({
+      id: "12345678-1234-1234-1234-123456789012",
       name: "My order",
       description: "",
       websiteURL: "https://my-order.com/",
@@ -119,6 +124,7 @@ describe("OrderApp", () => {
 
     expect(app).to.deep.equal({
       type: "order",
+      id: "12345678-1234-1234-1234-123456789012",
       name: "My order",
       description: "",
       websiteURL: new URL("https://my-order.com/"),
@@ -147,8 +153,29 @@ describe("OrderApp", () => {
       );
     });
 
+    it("should throw an error if the ID is not a UUID", () => {
+      expect(() => new OrderApp({
+        id: "12345",
+        name: "My order",
+        websiteURL: "https://my-order.com/",
+        logo: path.resolve("logo.svg"),
+        getSeller () {},
+        getSalesOrder () {},
+        getSalesOrdersByDate () {},
+        manifest: {
+          name: "@company/order",
+          version: "1.0.0"
+        }
+      })
+      ).to.throw(
+        "Invalid ShipEngine Integration Platform order app: \n" +
+        "  id must be a valid GUID"
+      );
+    });
+
     it("should throw an error if the name contains illegal characters", () => {
       expect(() => new OrderApp({
+        id: "12345678-1234-1234-1234-123456789012",
         name: "  My \nOrder  ",
         websiteURL: "https://my-order.com/",
         logo: path.resolve("logo.svg"),
@@ -169,6 +196,7 @@ describe("OrderApp", () => {
 
     it("should throw an error if the description is the wrong type", () => {
       expect(() => new OrderApp({
+        id: "12345678-1234-1234-1234-123456789012",
         name: "My order",
         websiteURL: "https://my-order.com/",
         logo: path.resolve("logo.svg"),
@@ -189,6 +217,7 @@ describe("OrderApp", () => {
 
     it("should throw an error if the logo is not an absolute path", () => {
       expect(() => new OrderApp({
+        id: "12345678-1234-1234-1234-123456789012",
         name: "My order",
         websiteURL: "https://my-order.com/",
         logo: "logo.svg",
@@ -208,6 +237,7 @@ describe("OrderApp", () => {
 
     it("should throw an error if the logo is not an SVG", () => {
       expect(() => new OrderApp({
+        id: "12345678-1234-1234-1234-123456789012",
         name: "My order",
         websiteURL: "https://my-order.com/",
         logo: path.resolve("logo.jpg"),

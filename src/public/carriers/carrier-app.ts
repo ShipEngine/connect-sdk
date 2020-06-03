@@ -164,13 +164,13 @@ export interface CarrierApp extends ConnectionApp {
   readonly hasSandbox: boolean;
 
   /**
-   * The label formats that are offered for this service.
+   * The label formats that are used by this carrier.
    * This list includes all unique label formats that are offered by all of the carrier's delivery services.
    */
   readonly labelFormats: ReadonlyArray<DocumentFormat>;
 
   /**
-   * The label dimensions that are used for this service.
+   * The label dimensions that are used by this carrier.
    * This list includes all unique label sizes that are offered by all of the carrier's delivery services.
    */
   readonly labelSizes: ReadonlyArray<DocumentSize>;
@@ -194,13 +194,13 @@ export interface CarrierApp extends ConnectionApp {
   readonly destinationCountries: ReadonlyArray<Country>;
 
   /**
-   * The types of packaging that are provided/allowed for this service.
+   * The types of packaging that are provided/allowed for this carrier.
    * This list includes all unique packaging types for all of the carrier's delivery services.
    */
   readonly packaging: ReadonlyArray<Packaging>;
 
   /**
-   * The types of package delivery confirmations offered for this service.
+   * The types of package delivery confirmations offered for this carrier.
    * This list includes all unique delivery confirmations for all of the carrier's delivery services.
    */
   readonly deliveryConfirmations: ReadonlyArray<DeliveryConfirmation>;

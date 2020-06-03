@@ -172,6 +172,7 @@ describe("CarrierApp", () => {
     it("should return a distinct list of delivery confirmations", () => {
       let dcID = "12222222-2222-2222-2222-222222222222";
       let app = new CarrierApp({
+        id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
         logo: path.resolve("logo.svg"),
@@ -201,6 +202,7 @@ describe("CarrierApp", () => {
     it("should return a distinct list of packaging types", () => {
       let pkgID = "12222222-2222-2222-2222-222222222222";
       let app = new CarrierApp({
+        id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
         logo: path.resolve("logo.svg"),
@@ -229,6 +231,7 @@ describe("CarrierApp", () => {
 
     it("should return a distinct list of label formats", () => {
       let app = new CarrierApp({
+        id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
         logo: path.resolve("logo.svg"),
@@ -252,6 +255,7 @@ describe("CarrierApp", () => {
 
     it("should return a distinct list of label sizes", () => {
       let app = new CarrierApp({
+        id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
         logo: path.resolve("logo.svg"),
@@ -275,6 +279,7 @@ describe("CarrierApp", () => {
 
     it("should return a distinct list of countries", () => {
       let app = new CarrierApp({
+        id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
         logo: path.resolve("logo.svg"),
@@ -297,6 +302,7 @@ describe("CarrierApp", () => {
 
     it("should return a distinct list of origin countries", () => {
       let app = new CarrierApp({
+        id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
         logo: path.resolve("logo.svg"),
@@ -321,6 +327,7 @@ describe("CarrierApp", () => {
 
     it("should return a distinct list of destination countries", () => {
       let app = new CarrierApp({
+        id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
         logo: path.resolve("logo.svg"),
@@ -347,6 +354,7 @@ describe("CarrierApp", () => {
   describe("Carrier app's Delivery Service property accessors", () => {
     it("should return a distinct list of  countries", () => {
       let app = new CarrierApp({
+        id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
         logo: path.resolve("logo.svg"),

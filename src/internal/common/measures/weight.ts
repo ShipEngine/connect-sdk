@@ -6,7 +6,7 @@ export class Weight implements IWeight {
   public static readonly [_internal] = {
     label: "weight",
     schema: Joi.object({
-      value: Joi.number().integer().min(1).required(),
+      value: Joi.number().min(1).required(),
       unit: Joi.string().enum(WeightUnit).required(),
     }),
   };

@@ -233,7 +233,7 @@ export class CarrierApp extends ConnectionApp implements ICarrierApp {
   }
 
   public async cancelShipments?(
-    transaction: TransactionPOJO, shipments: ShipmentCancellationPOJO[]): Promise<unknown> {
+    transaction: TransactionPOJO, shipments: ShipmentCancellationPOJO[]): Promise<ShipmentCancellationOutcome[]> {
 
     let _transaction, _shipments;
     let { cancelShipments } = this[_private];

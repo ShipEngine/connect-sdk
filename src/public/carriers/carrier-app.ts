@@ -15,10 +15,10 @@ import type { Rate } from "./rates/rate";
 import type { RateCriteriaPOJO } from "./rates/rate-criteria";
 import type { NewShipmentPOJO } from "./shipments/new-shipment";
 import type { ShipmentCancellationPOJO } from "./shipments/shipment-cancellation";
+import { ShipmentCancellationOutcome } from "./shipments/shipment-cancellation-outcome";
 import type { ShipmentConfirmation } from "./shipments/shipment-confirmation";
 import type { TrackingCriteriaPOJO } from "./tracking/tracking-criteria";
 import type { TrackingInfo } from "./tracking/tracking-info";
-
 
 /**
  * A ShipEngine Integration Platform carrier app
@@ -214,7 +214,8 @@ export interface CarrierApp extends ConnectionApp {
    * Cancels one or more shipments that were previously created. Depending on the carrier,
    * this may include voiding labels, refunding charges, and/or removing the shipment from the day's manifest.
    */
-  cancelShipments?(transaction: TransactionPOJO, shipments: ShipmentCancellationPOJO[]): Promise<unknown>;
+  cancelShipments?(
+    transaction: TransactionPOJO, shipments: ShipmentCancellationPOJO[]): Promise<ShipmentCancellationOutcome[]>;
 
   /**
    * Calculates the shipping costs for a shipment, or multiple permutations of a shipment

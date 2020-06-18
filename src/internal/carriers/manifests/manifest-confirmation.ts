@@ -7,7 +7,7 @@ export class ManifestConfirmation implements IManifestConfirmation {
   public static readonly [_internal] = {
     label: "manifest confirmation",
     schema: Joi.object({
-      manifetsts: Joi.array().min(1).items(Manifest[_internal].schema).required(),
+      manifests: Joi.array().min(1).items(Manifest[_internal].schema).required(),
       notManifested: Joi.array().items(NonManifestedShipment[_internal].schema),
     }),
   };

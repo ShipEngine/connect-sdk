@@ -1,4 +1,8 @@
-import { Dimensions as IDimensions, DimensionsPOJO, LengthUnit } from "../../../public";
+import {
+  Dimensions as IDimensions,
+  DimensionsPOJO,
+  LengthUnit,
+} from "../../../public";
 import { hideAndFreeze, _internal } from "../utils";
 import { Joi } from "../validation";
 
@@ -6,9 +10,9 @@ export class Dimensions implements IDimensions {
   public static readonly [_internal] = {
     label: "dimensions",
     schema: Joi.object({
-      length: Joi.number().integer().min(1).required(),
-      width: Joi.number().integer().min(1).required(),
-      height: Joi.number().integer().min(1).required(),
+      length: Joi.number().min(1).required(),
+      width: Joi.number().min(1).required(),
+      height: Joi.number().min(1).required(),
       unit: Joi.string().enum(LengthUnit).required(),
     }),
   };

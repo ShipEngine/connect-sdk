@@ -24,6 +24,6 @@ export function error(code: ErrorCode, message: string, { originalError, ...prop
   //  - The new error message and the original error message
   //  - The new stack trace and the original stack trace
   //  - The new properties and the original error's properties
-  let err =  ono(originalError as Error, { ...props, code, originalCode }, message);
+  let err = ono(originalError as Error, { ...props, code, originalCode }, message);
   return err;
 }

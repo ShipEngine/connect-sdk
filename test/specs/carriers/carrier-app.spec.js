@@ -261,7 +261,7 @@ describe("CarrierApp", () => {
         logo: path.resolve("logo.svg"),
         connectionForm: pojo.form(),
         deliveryServices: [
-          pojo.deliveryService({ labelSizes: ["A4", "letter"]}),
+          pojo.deliveryService({ labelSizes: ["A4", "letter", "A6"]}),
           pojo.deliveryService({ labelSizes: ["A4", "4x6"]}),
           pojo.deliveryService({ labelSizes: ["4x6", "letter"]}),
         ],
@@ -272,8 +272,8 @@ describe("CarrierApp", () => {
         },
       });
 
-      expect(app.labelSizes).to.have.lengthOf(3);
-      expect(app.labelSizes).to.have.members(["A4", "letter", "4x6"]);
+      expect(app.labelSizes).to.have.lengthOf(4);
+      expect(app.labelSizes).to.have.members(["A4", "letter", "4x6", "A6"]);
       expect(app.labelSizes).to.not.have.members(["4x8"]);
     });
 

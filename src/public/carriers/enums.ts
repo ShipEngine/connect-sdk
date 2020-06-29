@@ -99,6 +99,7 @@ export enum DocumentFormat {
  */
 export enum DocumentSize {
   A4 = "A4",
+  A6 = "A6",
   Letter = "letter",
   Inches4x6 = "4x6",
   Inches4x8 = "4x8",

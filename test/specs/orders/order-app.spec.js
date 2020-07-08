@@ -14,10 +14,6 @@ describe("OrderApp", () => {
       websiteURL: "https://my-order.com/",
       logo: path.resolve("logo.svg"),
       connectionForm: pojo.form(),
-      connect () {},
-      getSeller () {},
-      getSalesOrder () {},
-      getSalesOrdersByDate () {},
       manifest: {
         name: "@company/order",
         version: "1.0.0"
@@ -33,6 +29,10 @@ describe("OrderApp", () => {
       logo: path.resolve("logo.svg"),
       connectionForm: app.connectionForm,
       settingsForm: undefined,
+      connect: undefined,
+      getSeller: undefined,
+      getSalesOrder: undefined,
+      getSalesOrdersByDate: undefined,
       shipmentCreated: undefined,
       shipmentCancelled: undefined,
       sdkVersion: parseFloat(sdkManifest.version),

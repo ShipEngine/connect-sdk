@@ -15,7 +15,6 @@ describe("CarrierApp", () => {
       logo: path.resolve("logo.svg"),
       connectionForm: pojo.form(),
       deliveryServices: [pojo.deliveryService()],
-      connect () { },
       manifest: {
         name: "@company/carrier",
         version: "1.0.0"
@@ -35,6 +34,7 @@ describe("CarrierApp", () => {
       settingsForm: undefined,
       deliveryServices: [app.deliveryServices[0]],
       pickupServices: [],
+      connect: undefined,
       createShipment: undefined,
       cancelShipments: undefined,
       rateShipment: undefined,
@@ -129,7 +129,6 @@ describe("CarrierApp", () => {
       logo: path.resolve("logo.svg"),
       connectionForm: pojo.form(),
       deliveryServices: [pojo.deliveryService()],
-      connect () { },
       manifest: {
         name: "@company/carrier",
         version: "1.0.0",
@@ -150,6 +149,7 @@ describe("CarrierApp", () => {
       settingsForm: undefined,
       deliveryServices: [app.deliveryServices[0]],
       pickupServices: [],
+      connect: undefined,
       createShipment: undefined,
       cancelShipments: undefined,
       rateShipment: undefined,
@@ -182,7 +182,7 @@ describe("CarrierApp", () => {
           pojo.deliveryService({ deliveryConfirmations: [pojo.deliveryConfirmation()]}),
           pojo.deliveryService({ deliveryConfirmations: [pojo.deliveryConfirmation({ id: dcID })]})
         ],
-        connect () { },
+
         manifest: {
           name: "@company/carrier",
           version: "1.0.0"
@@ -212,7 +212,7 @@ describe("CarrierApp", () => {
           pojo.deliveryService(),
           pojo.deliveryService({ packaging: [pojo.packaging({ id: pkgID })]})
         ],
-        connect () { },
+
         manifest: {
           name: "@company/carrier",
           version: "1.0.0"
@@ -241,7 +241,7 @@ describe("CarrierApp", () => {
           pojo.deliveryService({ labelFormats: ["pdf", "zpl"]}),
           pojo.deliveryService({ labelFormats: ["zpl", "html"]}),
         ],
-        connect () { },
+
         manifest: {
           name: "@company/carrier",
           version: "1.0.0"
@@ -265,7 +265,7 @@ describe("CarrierApp", () => {
           pojo.deliveryService({ labelSizes: ["A4", "4x6"]}),
           pojo.deliveryService({ labelSizes: ["4x6", "letter"]}),
         ],
-        connect () { },
+
         manifest: {
           name: "@company/carrier",
           version: "1.0.0"
@@ -289,7 +289,7 @@ describe("CarrierApp", () => {
           pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"]}),
           pojo.deliveryService({ originCountries: ["FR"]}),
         ],
-        connect () { },
+
         manifest: {
           name: "@company/carrier",
           version: "1.0.0"
@@ -312,7 +312,7 @@ describe("CarrierApp", () => {
           pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"]}),
           pojo.deliveryService({ originCountries: ["FR"]}),
         ],
-        connect () { },
+
         manifest: {
           name: "@company/carrier",
           version: "1.0.0"
@@ -337,7 +337,7 @@ describe("CarrierApp", () => {
           pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"]}),
           pojo.deliveryService({ originCountries: ["FR"]}),
         ],
-        connect () { },
+
         manifest: {
           name: "@company/carrier",
           version: "1.0.0"
@@ -362,7 +362,7 @@ describe("CarrierApp", () => {
         deliveryServices: [
           pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"]}),
         ],
-        connect () { },
+
         manifest: {
           name: "@company/carrier",
           version: "1.0.0"

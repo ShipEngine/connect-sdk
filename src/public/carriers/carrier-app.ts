@@ -93,7 +93,7 @@ export interface CarrierAppPOJO extends CarrierAppDefinition, AppPOJO {
   localization?: LocalizationPOJO<LocalizedBrandingPOJO>;
   deliveryServices: ReadonlyArray<DeliveryServicePOJO>;
   pickupServices?: ReadonlyArray<PickupServicePOJO>;
-  connect: Connect;
+  connect?: Connect;
   createShipment?: CreateShipment;
   cancelShipments?: CancelShipments;
   rateShipment?: RateShipment;

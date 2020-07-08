@@ -45,13 +45,13 @@ export class CarrierApp extends ConnectionApp implements ICarrierApp {
   };
 
   private readonly [_private]: {
-    readonly createShipment: CreateShipment | undefined;
-    readonly cancelShipments: CancelShipments | undefined;
-    readonly rateShipment: RateShipment | undefined;
-    readonly trackShipment: TrackShipment | undefined;
-    readonly createManifest: CreateManifest | undefined;
-    readonly schedulePickup: SchedulePickup | undefined;
-    readonly cancelPickups: CancelPickups | undefined;
+    readonly createShipment?: CreateShipment;
+    readonly cancelShipments?: CancelShipments;
+    readonly rateShipment?: RateShipment;
+    readonly trackShipment?: TrackShipment;
+    readonly createManifest?: CreateManifest;
+    readonly schedulePickup?: SchedulePickup;
+    readonly cancelPickups?: CancelPickups;
   };
 
   //#endregion

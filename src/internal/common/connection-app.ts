@@ -24,13 +24,13 @@ export abstract class ConnectionApp extends App implements IConnectionApp {
         description: Joi.string().trim().singleLine().allow("").max(1000),
         websiteURL: Joi.string().website(),
       }),
-      connect: Joi.function().required(),
+      connect: Joi.function(),
     }),
   };
 
   private readonly [_private]: {
     readonly localization: Localization<LocalizedBrandingPOJO>;
-    readonly connect: Connect;
+    readonly connect?: Connect;
   };
 
   public readonly name: string;
@@ -52,7 +52,7 @@ export abstract class ConnectionApp extends App implements IConnectionApp {
 
     this[_private] = {
       localization: new Localization(pojo.localization || {}),
-      connect: pojo.connect,
+      connect: pojo.connect ? pojo.connect : (this.connect = undefined),
     };
   }
 
@@ -74,7 +74,7 @@ export abstract class ConnectionApp extends App implements IConnectionApp {
     };
   }
 
-  public async connect(transaction: TransactionPOJO, connectionFormData: object): Promise<void> {
+  public async connect?(transaction: TransactionPOJO, connectionFormData: object): Promise<void> {
     let _transaction, _connectionFormData;
     let { connect } = this[_private];
 
@@ -87,7 +87,7 @@ export abstract class ConnectionApp extends App implements IConnectionApp {
     }
 
     try {
-      await connect(_transaction, _connectionFormData);
+      await connect!(_transaction, _connectionFormData);
     }
     catch (originalError) {
       let transactionID = _transaction.id;

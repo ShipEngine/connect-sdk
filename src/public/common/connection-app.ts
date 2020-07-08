@@ -54,7 +54,7 @@ export interface ConnectionAppDefinition extends AppDefinition {
    * Connects to an existing account using the data that was gathered in the `connectionForm`.
    * NOTE: This function does not return a value. It updates the `transaction.session` property.
    */
-  connect: InlineOrReference<Connect>;
+  connect?: InlineOrReference<Connect>;
 }
 
 
@@ -65,7 +65,7 @@ export interface ConnectionAppPOJO extends ConnectionAppDefinition, AppPOJO {
   connectionForm: FormPOJO;
   settingsForm?: FormPOJO;
   localization?: LocalizationPOJO<LocalizedBrandingPOJO>;
-  connect: Connect;
+  connect?: Connect;
 }
 
 
@@ -114,5 +114,5 @@ export interface ConnectionApp extends App {
    * Connects to an existing account using the data that was gathered in the `connectionForm`.
    * NOTE: This function does not return a value. It updates the `transaction.session` property.
    */
-  connect(transaction: TransactionPOJO, connectionFormData: object): Promise<void>;
+  connect?(transaction: TransactionPOJO, connectionFormData: object): Promise<void>;
 }

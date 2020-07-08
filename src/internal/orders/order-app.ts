@@ -14,18 +14,18 @@ export class OrderApp extends ConnectionApp implements IOrderApp {
   public static readonly [_internal] = {
     label: "ShipEngine Integration Platform order app",
     schema: ConnectionApp[_internal].schema.keys({
-      getSeller: Joi.function().required(),
-      getSalesOrder: Joi.function().required(),
-      getSalesOrdersByDate: Joi.function().required(),
+      getSeller: Joi.function(),
+      getSalesOrder: Joi.function(),
+      getSalesOrdersByDate: Joi.function(),
       shipmentCreated: Joi.function(),
       shipmentCancelled: Joi.function(),
     }),
   };
 
   private readonly [_private]: {
-    readonly getSeller: GetSeller;
-    readonly getSalesOrder: GetSalesOrder;
-    readonly getSalesOrdersByDate: GetSalesOrdersByDate;
+    readonly getSeller?: GetSeller;
+    readonly getSalesOrder?: GetSalesOrder;
+    readonly getSalesOrdersByDate?: GetSalesOrdersByDate;
     readonly shipmentCreated?: ShipmentCreated;
     readonly shipmentCancelled?: ShipmentCancelled;
   };
@@ -40,9 +40,10 @@ export class OrderApp extends ConnectionApp implements IOrderApp {
     this.type = AppType.Order;
 
     this[_private] = {
-      getSeller: pojo.getSeller,
-      getSalesOrder: pojo.getSalesOrder,
-      getSalesOrdersByDate: pojo.getSalesOrdersByDate,
+      getSeller: pojo.getSeller ? pojo.getSeller : (this.getSeller = undefined),
+      getSalesOrder: pojo.getSalesOrder ? pojo.getSalesOrder : (this.getSalesOrder = undefined),
+      getSalesOrdersByDate:
+        pojo.getSalesOrdersByDate ? pojo.getSalesOrdersByDate : (this.getSalesOrdersByDate = undefined),
       shipmentCreated: pojo.shipmentCreated ? pojo.shipmentCreated : (this.shipmentCreated = undefined),
       shipmentCancelled: pojo.shipmentCancelled ? pojo.shipmentCancelled : (this.shipmentCancelled = undefined),
     };
@@ -72,7 +73,7 @@ export class OrderApp extends ConnectionApp implements IOrderApp {
     };
   }
 
-  public async getSeller(transaction: TransactionPOJO, id: SellerIdentifierPOJO): Promise<Seller> {
+  public async getSeller?(transaction: TransactionPOJO, id: SellerIdentifierPOJO): Promise<Seller> {
     let _transaction, _id;
     let { getSeller } = this[_private];
 
@@ -85,7 +86,7 @@ export class OrderApp extends ConnectionApp implements IOrderApp {
     }
 
     try {
-      let seller = await getSeller(_transaction, _id);
+      let seller = await getSeller!(_transaction, _id);
       return new Seller(validate(seller, Seller));
     }
     catch (originalError) {
@@ -94,7 +95,7 @@ export class OrderApp extends ConnectionApp implements IOrderApp {
     }
   }
 
-  public async getSalesOrder(transaction: TransactionPOJO, id: SalesOrderIdentifierPOJO): Promise<SalesOrder> {
+  public async getSalesOrder?(transaction: TransactionPOJO, id: SalesOrderIdentifierPOJO): Promise<SalesOrder> {
     let _transaction, _id;
     let { getSalesOrder } = this[_private];
 
@@ -107,7 +108,7 @@ export class OrderApp extends ConnectionApp implements IOrderApp {
     }
 
     try {
-      let salesOrder = await getSalesOrder(_transaction, _id);
+      let salesOrder = await getSalesOrder!(_transaction, _id);
       return new SalesOrder(validate(salesOrder, SalesOrder));
     }
     catch (originalError) {
@@ -116,7 +117,7 @@ export class OrderApp extends ConnectionApp implements IOrderApp {
     }
   }
 
-  public async* getSalesOrdersByDate(
+  public async* getSalesOrdersByDate?(
     transaction: TransactionPOJO, range: SalesOrderTimeRangePOJO): AsyncGenerator<SalesOrder> {
 
     let _transaction, _range;
@@ -131,7 +132,7 @@ export class OrderApp extends ConnectionApp implements IOrderApp {
     }
 
     try {
-      let salesOrders = await getSalesOrdersByDate(_transaction, _range);
+      let salesOrders = await getSalesOrdersByDate!(_transaction, _range);
       let iterable = getAsyncIterable(salesOrders);
 
       if (!iterable) {

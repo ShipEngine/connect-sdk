@@ -7,16 +7,13 @@ export abstract class DefinitionIdentifier implements IDefinitionIdentifier {
   public static readonly [_internal] = {
     label: "object",
     schema: Joi.object({
-      id: Joi.string().uuid().required(),
-      identifiers: Identifiers[_internal].schema,
+      id: Joi.string().required()
     }),
   };
 
   public readonly id: UUID;
-  public readonly identifiers: Identifiers;
 
   public constructor(pojo: DefinitionIdentifierPOJO) {
     this.id = pojo.id;
-    this.identifiers = new Identifiers(pojo.identifiers);
   }
 }

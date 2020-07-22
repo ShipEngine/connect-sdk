@@ -1,25 +1,25 @@
-import { ErrorCode, UUID } from "../../public";
+import { ErrorCode } from "../../public";
 import { error } from "./errors";
 import { ShipEngineConstructor } from "./types";
 import { _internal } from "./utils";
 import { Joi, validate } from "./validation";
 
-interface ClassInstance { id: UUID; }
+interface ClassInstance { id: string; }
 
 interface Reference {
   type: ShipEngineConstructor;
   instance: ClassInstance;
 }
 
-const classInstanceSchema = Joi.object({ id: Joi.string().uuid() }).unknown(true);
+const classInstanceSchema = Joi.object({ id: Joi.string() }).unknown(true);
 const _private = Symbol("private fields");
 
 /**
- * Maps ShipEngine Integration Platform classes by their UUIDs
+ * Maps ShipEngine Integration Platform classes by their Id's
  */
 export class ReferenceMap {
   private readonly [_private] = {
-    map: new Map<UUID, Reference>(),
+    map: new Map<string, Reference>(),
     isFinishedLoading: false,
   };
 
@@ -36,8 +36,8 @@ export class ReferenceMap {
     if (existing) {
       // We already have a reference to this instance. Just make sure the types match.
       if (existing.type !== type) {
-        // There are two different objects with the same UUID
-        throw error(ErrorCode.Validation, `Duplicate UUID: ${instance.id}`);
+        // There are two different objects with the same Id
+        throw error(ErrorCode.Validation, `Duplicate Id's: ${instance.id}`);
       }
     }
     else {
@@ -74,7 +74,7 @@ export class ReferenceMap {
   }
 
   /**
-   * Returns the class instance that corresponds to the specified UUID, or throws an error if not found
+   * Returns the class instance that corresponds to the specified Id, or throws an error if not found
    */
   public lookup<T extends ClassInstance>(
     instance: ClassInstance, type: ShipEngineConstructor<T>): T;

@@ -55,9 +55,6 @@ describe("OrderApp", () => {
       logo: path.resolve("logo.svg"),
       connectionForm: pojo.form(),
       settingsForm: pojo.form(),
-      localization: {
-        es: { name: "Nombre de la compañía" },
-      },
       connect () {},
       getSeller () {},
       getSalesOrder () {},

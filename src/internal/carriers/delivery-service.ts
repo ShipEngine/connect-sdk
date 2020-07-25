@@ -1,5 +1,5 @@
-import { Country, DeliveryService as IDeliveryService, DeliveryServiceClass, DeliveryServiceGrade, DeliveryServicePOJO, DocumentFormat, DocumentSize, FulfillmentService, LocalizedInfoPOJO, ServiceArea } from "../../public";
-import { App, DefinitionIdentifier, hideAndFreeze, Joi, Localization, localize, _internal } from "../common";
+import { Country, DeliveryService as IDeliveryService, DeliveryServiceClass, DeliveryServiceGrade, DeliveryServicePOJO, DocumentFormat, DocumentSize, FulfillmentService, ServiceArea } from "../../public";
+import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../common";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { Packaging } from "./packaging";
 
@@ -26,17 +26,12 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
       destinationCountries: Joi.array().min(1).items(Joi.string().enum(Country)).required(),
       packaging: Joi.array().items(Packaging[_internal].schema).required(),
       deliveryConfirmations: Joi.array().items(DeliveryConfirmation[_internal].schema),
-      localization: Joi.object().localization({
-        name: Joi.string().trim().singleLine().allow("").max(100),
-        description: Joi.string().trim().singleLine().allow("").max(1000),
-      }),
     }),
   };
 
 
   private readonly [_private]: {
     readonly app: App;
-    readonly localization: Localization<LocalizedInfoPOJO>;
   };
 
   public readonly name: string;
@@ -93,35 +88,12 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
       ? pojo.deliveryConfirmations.map((svc) => new DeliveryConfirmation(svc, app)) : [];
 
     this[_private] = {
-      app,
-      localization: new Localization(pojo.localization || {}),
+      app
     };
 
     // Make this object immutable
     hideAndFreeze(this);
 
     app[_internal].references.add(this);
-  }
-
-  public localize(locale: string): DeliveryService {
-    let pojo = localize(this, locale);
-    return new DeliveryService(pojo, this[_private].app);
-  }
-
-  public toJSON(locale?: string): DeliveryServicePOJO {
-    let { localization } = this[_private];
-    let localizedValues = locale ? localization.lookup(locale) : {};
-
-    return {
-      ...this,
-      labelFormats: this.labelFormats as DocumentFormat[],
-      labelSizes: this.labelSizes as DocumentSize[],
-      originCountries: this.originCountries as Country[],
-      destinationCountries: this.destinationCountries as Country[],
-      packaging: this.packaging.map((o) => o.toJSON(locale)),
-      deliveryConfirmations: this.deliveryConfirmations.map((o) => o.toJSON(locale)),
-      localization: localization.toJSON(),
-      ...localizedValues,
-    };
   }
 }

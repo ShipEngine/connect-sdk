@@ -1,4 +1,4 @@
-import type { DefinitionIdentifier, DefinitionIdentifierPOJO, DeliveryConfirmationType, InlineOrReference, Localizable, LocalizationDefinition, LocalizationPOJO, LocalizedInfoPOJO } from "../common";
+import type { DefinitionIdentifier, DefinitionIdentifierPOJO, DeliveryConfirmationType, InlineOrReference } from "../common";
 
 
 /**
@@ -20,22 +20,13 @@ export interface DeliveryConfirmationDefinition extends DefinitionIdentifierPOJO
    */
   type: DeliveryConfirmationType;
 
-  /**
-   * Localizaed values for fields that allow localization
-   */
-  localization?: InlineOrReference<LocalizationDefinition<{
-    name?: string;
-    description?: string;
-  }>>;
 }
 
 
 /**
  * A delivery confirmation option offered by a carrier
  */
-export interface DeliveryConfirmationPOJO extends DeliveryConfirmationDefinition {
-  localization?: LocalizationPOJO<LocalizedInfoPOJO>;
-}
+export type DeliveryConfirmationPOJO = DeliveryConfirmationDefinition;
 
 
 /**
@@ -53,7 +44,7 @@ export type DeliveryConfirmationIdentifier = DefinitionIdentifier;
 /**
  * Delivery confirmation options offered by a carrier
  */
-export interface DeliveryConfirmation extends DefinitionIdentifier, Localizable<DeliveryConfirmation, DeliveryConfirmationPOJO> {
+export interface DeliveryConfirmation extends DefinitionIdentifier {
   /**
    * The user-friendly name for this delivery confirmation (e.g. "Adult Signature", "Authority to Leave")
    */

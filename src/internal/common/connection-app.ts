@@ -1,8 +1,7 @@
-import { Connect, ConnectionApp as IConnectionApp, ConnectionAppPOJO, ErrorCode, FilePath, LocalizedBrandingPOJO, TransactionPOJO } from "../../public";
+import { Connect, ConnectionApp as IConnectionApp, ConnectionAppPOJO, ErrorCode, FilePath, TransactionPOJO } from "../../public";
 import { App } from "./app";
 import { error } from "./errors";
 import { Form } from "./form";
-import { Localization } from "./localization";
 import { Transaction } from "./transaction";
 import { _internal } from "./utils";
 import { Joi, validate } from "./validation";
@@ -19,17 +18,11 @@ export abstract class ConnectionApp extends App implements IConnectionApp {
       logo: Joi.string().filePath({ ext: ".svg" }).required(),
       connectionForm: Form[_internal].schema.required(),
       settingsForm: Form[_internal].schema,
-      localization: Joi.object().localization({
-        name: Joi.string().trim().singleLine().allow("").max(100),
-        description: Joi.string().trim().singleLine().allow("").max(1000),
-        websiteURL: Joi.string().website(),
-      }),
       connect: Joi.function(),
     }),
   };
 
   private readonly [_private]: {
-    readonly localization: Localization<LocalizedBrandingPOJO>;
     readonly connect?: Connect;
   };
 
@@ -51,26 +44,7 @@ export abstract class ConnectionApp extends App implements IConnectionApp {
     this.settingsForm = pojo.settingsForm && new Form(pojo.settingsForm);
 
     this[_private] = {
-      localization: new Localization(pojo.localization || {}),
       connect: pojo.connect ? pojo.connect : (this.connect = undefined),
-    };
-  }
-
-  public toJSON(locale?: string): ConnectionAppPOJO {
-    let { localization, connect } = this[_private];
-    let localizedValues = locale ? localization.lookup(locale) : {};
-
-    return {
-      ...super.toJSON(),
-      name: this.name,
-      description: this.description,
-      logo: this.logo,
-      websiteURL: this.websiteURL.href,
-      connectionForm: this.connectionForm.toJSON(locale),
-      settingsForm: this.settingsForm && this.settingsForm.toJSON(locale),
-      connect,
-      localization: localization.toJSON(),
-      ...localizedValues,
     };
   }
 

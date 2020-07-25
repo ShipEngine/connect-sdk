@@ -1,4 +1,4 @@
-import type { Country, DefinitionIdentifier, DefinitionIdentifierPOJO, InlineOrReference, InlineOrReferenceArray, Localizable, LocalizationDefinition, LocalizationPOJO, LocalizedInfoPOJO } from "../common";
+import type { Country, DefinitionIdentifier, DefinitionIdentifierPOJO, InlineOrReference, InlineOrReferenceArray } from "../common";
 import type { DeliveryConfirmation, DeliveryConfirmationDefinition, DeliveryConfirmationPOJO } from "./delivery-confirmation";
 import type { DeliveryServiceClass, DeliveryServiceGrade, DocumentFormat, DocumentSize, ServiceArea } from "./enums";
 import type { FulfillmentService } from "./fulfillment-service";
@@ -96,13 +96,6 @@ export interface DeliveryServiceDefinition extends DefinitionIdentifierPOJO {
    */
   deliveryConfirmations?: InlineOrReferenceArray<DeliveryConfirmationDefinition>;
 
-  /**
-   * Localizaed values for fields that allow localization
-   */
-  localization?: InlineOrReference<LocalizationDefinition<{
-    name?: string;
-    description?: string;
-  }>>;
 }
 
 
@@ -114,7 +107,6 @@ export interface DeliveryServicePOJO extends DeliveryServiceDefinition {
   destinationCountries: Country[];
   packaging: ReadonlyArray<PackagingPOJO>;
   deliveryConfirmations?: ReadonlyArray<DeliveryConfirmationPOJO>;
-  localization?: LocalizationPOJO<LocalizedInfoPOJO>;
 }
 
 
@@ -133,7 +125,7 @@ export type DeliveryServiceIdentifier = DefinitionIdentifier;
 /**
  * A delivery service that is offered by a carrier
  */
-export interface DeliveryService extends DefinitionIdentifier, Localizable<DeliveryService, DeliveryServicePOJO> {
+export interface DeliveryService extends DefinitionIdentifier {
   /**
    * The user-friendly service name (e.g. "Priority Overnight", "2-Day Air")
    */

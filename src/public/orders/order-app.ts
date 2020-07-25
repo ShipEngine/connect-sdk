@@ -1,4 +1,4 @@
-import type { AppPOJO, Connect, ConnectionApp, ConnectionAppDefinition, FormPOJO, InlineOrReference, LocalizationPOJO, LocalizedBrandingPOJO, TransactionPOJO } from "../common";
+import type { AppPOJO, Connect, ConnectionApp, ConnectionAppDefinition, FormPOJO, InlineOrReference, TransactionPOJO } from "../common";
 import type { GetSalesOrder, GetSalesOrdersByDate, GetSeller, ShipmentCancelled, ShipmentCreated } from "./methods";
 import type { SalesOrder } from "./sales-order";
 import type { SalesOrderIdentifierPOJO } from "./sales-order-identifier";
@@ -51,7 +51,6 @@ export interface OrderAppDefinition extends ConnectionAppDefinition {
 export interface OrderAppPOJO extends OrderAppDefinition, AppPOJO {
   connectionForm: FormPOJO;
   settingsForm?: FormPOJO;
-  localization?: LocalizationPOJO<LocalizedBrandingPOJO>;
   connect?: Connect;
   getSeller?: GetSeller;
   getSalesOrder?: GetSalesOrder;

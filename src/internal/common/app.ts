@@ -38,13 +38,4 @@ export abstract class App implements IApp {
       devDependencies: pojo.manifest.devDependencies || {},
     };
   }
-
-  public abstract localize(locale: string): App;
-
-  public toJSON(): AppPOJO {
-    return {
-      id: this.id,
-      manifest: this.manifest,
-    };
-  }
 }

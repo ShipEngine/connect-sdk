@@ -1,4 +1,4 @@
-import type { DefinitionIdentifier, DefinitionIdentifierPOJO, InlineOrReference, Localizable, LocalizationDefinition, LocalizationPOJO, LocalizedInfoPOJO } from "../common";
+import type { DefinitionIdentifier, DefinitionIdentifierPOJO } from "../common";
 
 
 /**
@@ -25,22 +25,13 @@ export interface PackagingDefinition extends DefinitionIdentifierPOJO {
    */
   requiresDimensions?: boolean;
 
-  /**
-   * Localizaed values for fields that allow localization
-   */
-  localization?: InlineOrReference<LocalizationDefinition<{
-    name?: string;
-    description?: string;
-  }>>;
 }
 
 
 /**
  * Describes a type of packaging
  */
-export interface PackagingPOJO extends PackagingDefinition {
-  localization?: LocalizationPOJO<LocalizedInfoPOJO>;
-}
+export type PackagingPOJO = PackagingDefinition;
 
 
 /**
@@ -58,7 +49,7 @@ export type PackagingIdentifier = DefinitionIdentifier;
 /**
  * Describes a type of packaging
  */
-export interface Packaging extends DefinitionIdentifier, Localizable<Packaging, PackagingPOJO> {
+export interface Packaging extends DefinitionIdentifier {
   /**
    * The user-friendly name for this packaging (e.g. "Flat-Rate Box", "Large Padded Envelope")
    */

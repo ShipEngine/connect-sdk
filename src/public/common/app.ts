@@ -1,5 +1,4 @@
 import type { AppType } from "./enums";
-import type { Localizable } from "./localization";
 import type { UUID } from "./types";
 
 
@@ -26,7 +25,7 @@ export interface AppPOJO extends AppDefinition {
 /**
  * A ShipEngine Integration Platform app
  */
-export interface App extends Localizable<App, AppPOJO> {
+export interface App {
   /**
    * The type of app this is
    */

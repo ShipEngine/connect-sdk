@@ -1,5 +1,5 @@
 import { AppType, ErrorCode, GetSalesOrder, GetSalesOrdersByDate, GetSeller, OrderApp as IOrderApp, OrderAppPOJO, SalesOrderIdentifierPOJO, SalesOrderShipmentPOJO, SalesOrderTimeRangePOJO, SellerIdentifierPOJO, ShipmentCancelled, ShipmentCreated, TransactionPOJO } from "../../public";
-import { ConnectionApp, error, hideAndFreeze, Joi, localize, Transaction, validate, _internal } from "../common";
+import { ConnectionApp, error, hideAndFreeze, Joi, Transaction, validate, _internal } from "../common";
 import { SalesOrder } from "./sales-order";
 import { SalesOrderIdentifier } from "./sales-order-identifier";
 import { SalesOrderTimeRange } from "./sales-order-time-range";
@@ -53,24 +53,6 @@ export class OrderApp extends ConnectionApp implements IOrderApp {
 
     this[_internal].references.add(this);
     this[_internal].references.finishedLoading();
-  }
-
-  public localize(locale: string): OrderApp {
-    let pojo = localize(this, locale);
-    return new OrderApp(pojo);
-  }
-
-  public toJSON(locale?: string): OrderAppPOJO {
-    let methods = this[_private];
-
-    return {
-      ...super.toJSON(locale),
-      getSeller: methods.getSeller,
-      getSalesOrder: methods.getSalesOrder,
-      getSalesOrdersByDate: methods.getSalesOrdersByDate,
-      shipmentCreated: methods.shipmentCreated,
-      shipmentCancelled: methods.shipmentCancelled,
-    };
   }
 
   public async getSeller?(transaction: TransactionPOJO, id: SellerIdentifierPOJO): Promise<Seller> {

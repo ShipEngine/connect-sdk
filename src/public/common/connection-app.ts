@@ -1,6 +1,5 @@
 import type { App, AppDefinition, AppPOJO } from "./app";
 import type { Form, FormDefinition, FormPOJO } from "./form";
-import type { LocalizationDefinition, LocalizationPOJO, LocalizedBrandingPOJO } from "./localization";
 import type { Connect } from "./methods";
 import type { TransactionPOJO } from "./transaction";
 import type { FilePath, InlineOrReference, URLString } from "./types";
@@ -42,15 +41,6 @@ export interface ConnectionAppDefinition extends AppDefinition {
   settingsForm?: InlineOrReference<FormDefinition>;
 
   /**
-   * Localizaed values for fields that allow localization
-   */
-  localization?: InlineOrReference<LocalizationDefinition<{
-    name?: string;
-    description?: string;
-    websiteURL?: URLString;
-  }>>;
-
-  /**
    * Connects to an existing account using the data that was gathered in the `connectionForm`.
    * NOTE: This function does not return a value. It updates the `transaction.session` property.
    */
@@ -64,7 +54,6 @@ export interface ConnectionAppDefinition extends AppDefinition {
 export interface ConnectionAppPOJO extends ConnectionAppDefinition, AppPOJO {
   connectionForm: FormPOJO;
   settingsForm?: FormPOJO;
-  localization?: LocalizationPOJO<LocalizedBrandingPOJO>;
   connect?: Connect;
 }
 
@@ -103,12 +92,6 @@ export interface ConnectionApp extends App {
    * A form that allows the user to configure connection settings
    */
   readonly settingsForm?: Form;
-
-  /**
-   * Returns the app as an object that can be safely serialized as JSON.
-   * Optionally returns the object localized to the specifeid language and region.
-   */
-  toJSON(locale?: string): ConnectionAppPOJO;
 
   /**
    * Connects to an existing account using the data that was gathered in the `connectionForm`.

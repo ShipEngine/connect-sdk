@@ -1,4 +1,4 @@
-import type { AppPOJO, AppType, Connect, ConnectionApp, ConnectionAppDefinition, Country, FormPOJO, InlineOrReference, InlineOrReferenceArray, LocalizationPOJO, LocalizedBrandingPOJO, TransactionPOJO } from "../common";
+import type { AppPOJO, AppType, Connect, ConnectionApp, ConnectionAppDefinition, Country, FormPOJO, InlineOrReference, InlineOrReferenceArray, TransactionPOJO } from "../common";
 import type { DeliveryConfirmation } from "./delivery-confirmation";
 import type { DeliveryService, DeliveryServiceDefinition, DeliveryServicePOJO } from "./delivery-service";
 import type { DocumentFormat, DocumentSize, ManifestLocation, ManifestShipment, ServiceArea } from "./enums";
@@ -90,7 +90,6 @@ export interface CarrierAppDefinition extends ConnectionAppDefinition {
 export interface CarrierAppPOJO extends CarrierAppDefinition, AppPOJO {
   connectionForm: FormPOJO;
   settingsForm?: FormPOJO;
-  localization?: LocalizationPOJO<LocalizedBrandingPOJO>;
   deliveryServices: ReadonlyArray<DeliveryServicePOJO>;
   pickupServices?: ReadonlyArray<PickupServicePOJO>;
   connect?: Connect;

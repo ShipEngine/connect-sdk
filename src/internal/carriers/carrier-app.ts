@@ -1,5 +1,5 @@
 import { AppType, CancellationStatus, CancelPickups, CancelShipments, CarrierApp as ICarrierApp, CarrierAppPOJO, Country, CreateManifest, CreateShipment, DocumentFormat, DocumentSize, ErrorCode, ManifestLocation, ManifestShipment, NewManifestPOJO, NewShipmentPOJO, Packaging, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, RateShipment, SchedulePickup, ServiceArea, ShipmentCancellationPOJO, TrackingCriteriaPOJO, TrackShipment, TransactionPOJO } from "../../public";
-import { ConnectionApp, error, hideAndFreeze, Joi, localize, Transaction, validate, validateArray, _internal } from "../common";
+import { ConnectionApp, error, hideAndFreeze, Joi, Transaction, validate, validateArray, _internal } from "../common";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
 import { ManifestConfirmation } from "./manifests/manifest-confirmation";
@@ -185,28 +185,6 @@ export class CarrierApp extends ConnectionApp implements ICarrierApp {
   }
 
   //#region  Methods
-
-  public localize(locale: string): CarrierApp {
-    let pojo = localize(this, locale);
-    return new CarrierApp(pojo);
-  }
-
-  public toJSON(locale?: string): CarrierAppPOJO {
-    let methods = this[_private];
-
-    return {
-      ...super.toJSON(locale),
-      deliveryServices: this.deliveryServices.map((o) => o.toJSON(locale)),
-      pickupServices: this.pickupServices.map((o) => o.toJSON(locale)),
-      createShipment: methods.createShipment,
-      cancelShipments: methods.cancelShipments,
-      rateShipment: methods.rateShipment,
-      trackShipment: methods.trackShipment,
-      createManifest: methods.createManifest,
-      schedulePickup: methods.schedulePickup,
-      cancelPickups: methods.cancelPickups,
-    };
-  }
 
   public async createShipment?(
     transaction: TransactionPOJO, shipment: NewShipmentPOJO): Promise<ShipmentConfirmation> {

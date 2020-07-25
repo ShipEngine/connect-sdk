@@ -1,5 +1,4 @@
-import type { DefinitionIdentifier, DefinitionIdentifierPOJO, InlineOrReference, Localizable, LocalizationDefinition, LocalizationPOJO, LocalizedInfoPOJO } from "../../common";
-
+import type { DefinitionIdentifier, DefinitionIdentifierPOJO } from "../../common";
 
 /**
  * A package pickup service that is offered by a carrier
@@ -21,23 +20,13 @@ export interface PickupServiceDefinition extends DefinitionIdentifierPOJO {
    * costs or affect production data.
    */
   hasSandbox?: boolean;
-
-  /**
-   * Localizaed values for fields that allow localization
-   */
-  localization?: InlineOrReference<LocalizationDefinition<{
-    name?: string;
-    description?: string;
-  }>>;
 }
 
 
 /**
  * A package pickup service that is offered by a carrier
  */
-export interface PickupServicePOJO extends PickupServiceDefinition {
-  localization?: LocalizationPOJO<LocalizedInfoPOJO>;
-}
+export type PickupServicePOJO = PickupServiceDefinition;
 
 
 /**
@@ -55,7 +44,7 @@ export type PickupServiceIdentifier = DefinitionIdentifier;
 /**
  * A package pickup service that is offered by a carrier
  */
-export interface PickupService extends DefinitionIdentifier, Localizable<PickupService, PickupServicePOJO> {
+export interface PickupService extends DefinitionIdentifier {
   /**
    * The user-friendly service name (e.g. "One-Time Pickup", "Recurring Pickup", "Drop-Off")
    */

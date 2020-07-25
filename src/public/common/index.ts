@@ -13,7 +13,6 @@ export * from "./enums";
 export * from "./errors";
 export * from "./form";
 export * from "./identifiers";
-export * from "./localization";
 export * from "./measures/date-time-zone";
 export * from "./measures/dimensions";
 export * from "./measures/monetary-value";

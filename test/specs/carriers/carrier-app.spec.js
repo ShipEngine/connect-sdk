@@ -66,9 +66,6 @@ describe("CarrierApp", () => {
       settingsForm: pojo.form(),
       deliveryServices: [pojo.deliveryService()],
       pickupServices: [pojo.pickupService()],
-      localization: {
-        es: { name: "Nombre de la compañía" },
-      },
       connect () { },
       createShipment () { },
       cancelShipments () { },

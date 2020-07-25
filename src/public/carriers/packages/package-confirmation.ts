@@ -1,7 +1,7 @@
 import type { URLString } from "../../common";
 import type { Document, DocumentPOJO } from "../documents/document";
 import type { Label, LabelPOJO } from "../documents/label";
-import type { PackageIdentifierPOJO } from "./package-identifier";
+import type { PackageIdentifier, PackageIdentifierPOJO } from "./package-identifier";
 
 /**
  * Confirmation details about a package in a shipment
@@ -28,7 +28,7 @@ export interface PackageConfirmationPOJO extends PackageIdentifierPOJO {
 /**
  * Confirmation details about a package in a shipment
  */
-export interface PackageConfirmation {
+export interface PackageConfirmation extends PackageIdentifier {
   /**
    * The URL of a webpage where the customer can track the package
    */

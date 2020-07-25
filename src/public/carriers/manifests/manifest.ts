@@ -22,7 +22,7 @@ export interface ManifestPOJO {
   shipments: ReadonlyArray<ShipmentIdentifierPOJO>;
 
   /**
-   * The digital manifst document, such as a PDF SCAN form
+   * The digital manifest document, such as a PDF SCAN form
    */
   document?: DocumentPOJO;
 

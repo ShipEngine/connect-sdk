@@ -73,7 +73,6 @@ describe("getSeller", () => {
               stateProvince: "CA",
               postalCode: "90210",
               country: "US",
-              timeZone: "America/Los_Angeles",
               isResidential: false,
               coordinates: {
                 latitude: -90,
@@ -89,7 +88,6 @@ describe("getSeller", () => {
               stateProvince: "IL",
               postalCode: "12345",
               country: "US",
-              timeZone: "America/Chicago",
               isResidential: true,
               coordinates: {
                 latitude: 90,
@@ -147,7 +145,6 @@ describe("getSeller", () => {
             stateProvince: "CA",
             postalCode: "90210",
             country: "US",
-            timeZone: "America/Los_Angeles",
             isResidential: false,
             coordinates: {
               latitude: -90,
@@ -163,7 +160,6 @@ describe("getSeller", () => {
             stateProvince: "IL",
             postalCode: "12345",
             country: "US",
-            timeZone: "America/Chicago",
             isResidential: true,
             coordinates: {
               latitude: 90,

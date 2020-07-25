@@ -5,7 +5,6 @@ import { PartialAddress, PartialAddressBase } from "./partial-address";
 
 export abstract class AddressBase  extends PartialAddressBase implements IAddress {
   public readonly country!: Country;
-  public readonly timeZone!: string;
 
   public toString(): string {
     let address = [];
@@ -26,8 +25,7 @@ export class Address extends AddressBase {
       cityLocality: Joi.string().trim().singleLine().min(1).max(100).required(),
       stateProvince: Joi.string().trim().singleLine().min(1).max(100).required(),
       postalCode: Joi.string().trim().singleLine().min(1).max(100).required(),
-      country: Joi.string().enum(Country).required(),
-      timeZone: Joi.string().timeZone().required(),
+      country: Joi.string().enum(Country).required()
     }),
   };
 

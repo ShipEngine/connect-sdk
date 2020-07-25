@@ -165,8 +165,7 @@ describe("getSalesOrder", () => {
           cityLocality: "Austin",
           stateProvince: "TX",
           postalCode: "78754",
-          country: "US",
-          timeZone: "America/Chicago",
+          country: "US"
         },
         seller: {
           id: "SELLER_123456",
@@ -325,7 +324,6 @@ describe("getSalesOrder", () => {
         stateProvince: "TX",
         postalCode: "78754",
         country: "US",
-        timeZone: "America/Chicago",
         isResidential: undefined,
         coordinates: undefined,
       },

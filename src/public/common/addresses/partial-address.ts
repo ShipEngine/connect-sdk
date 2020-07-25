@@ -18,7 +18,6 @@ export interface PartialAddress {
   readonly stateProvince: string;
   readonly postalCode: string;
   readonly country?: Country;
-  readonly timeZone?: string;
   readonly isResidential?: boolean;
   readonly coordinates?: GeoCoordinate;
 }

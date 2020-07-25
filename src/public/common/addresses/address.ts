@@ -11,7 +11,6 @@ export interface AddressPOJO {
   stateProvince: string;
   postalCode: string;
   country: Country;
-  timeZone: string;
   isResidential?: boolean;
   coordinates?: GeoCoordinatePOJO;
 }
@@ -27,7 +26,6 @@ export interface Address {
   readonly stateProvince: string;
   readonly postalCode: string;
   readonly country: Country;
-  readonly timeZone: string;
   readonly isResidential?: boolean;
   readonly coordinates?: GeoCoordinate;
 

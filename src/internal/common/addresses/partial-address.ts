@@ -10,7 +10,6 @@ export abstract class PartialAddressBase implements IPartialAddress {
   public readonly stateProvince: string;
   public readonly postalCode: string;
   public readonly country?: Country;
-  public readonly timeZone?: string;
   public readonly isResidential?: boolean;
   public readonly coordinates?: GeoCoordinate;
 
@@ -21,7 +20,6 @@ export abstract class PartialAddressBase implements IPartialAddress {
     this.stateProvince = pojo.stateProvince || "";
     this.postalCode = pojo.postalCode || "";
     this.country = pojo.country;
-    this.timeZone = pojo.timeZone;
     this.isResidential = pojo.isResidential;
     this.coordinates = pojo.coordinates && new GeoCoordinate(pojo.coordinates);
   }
@@ -38,7 +36,6 @@ export class PartialAddress extends PartialAddressBase {
       stateProvince: Joi.string().trim().singleLine().max(100),
       postalCode: Joi.string().trim().singleLine().max(100),
       country: Joi.string().enum(Country),
-      timeZone: Joi.string().timeZone(),
       isResidential: Joi.boolean(),
       coordinates: GeoCoordinate[_internal].schema,
     }),

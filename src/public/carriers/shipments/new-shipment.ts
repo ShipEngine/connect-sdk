@@ -48,12 +48,6 @@ export interface NewShipmentPOJO {
      * this number is often printed on the label, and used when the original shipper processes the inbound return.
      */
     rmaNumber?: string;
-
-    /**
-     * The original (outgoing) shipment that this return shipment is for.
-     * This associates the two shipments, which is required by some carriers.
-     */
-    outboundShipment?: ShipmentIdentifierPOJO;
   };
 
   /**
@@ -150,14 +144,6 @@ export interface NewShipment {
      * this number is often printed on the label, and used when the original shipper processes the inbound return.
      */
     readonly rmaNumber: string;
-
-    /**
-     * The original (outgoing) shipment that this return shipment is for.
-     * This associates the two shipments, which is required by some carriers.
-     * This field is `undefined` if this is not a return shipment, or if no
-     * outbound shipment was specified.
-     */
-    readonly outboundShipment?: Readonly<ShipmentIdentifier>;
   };
 
   /**

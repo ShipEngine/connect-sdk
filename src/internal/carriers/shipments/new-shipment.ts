@@ -16,8 +16,7 @@ export class NewShipment implements INewShipment {
       shipDateTime: DateTimeZone[_internal].schema.required(),
       returns: Joi.object({
         isReturn: Joi.boolean(),
-        rmaNumber: Joi.string().trim().singleLine().allow("").max(100),
-        outboundShipment: ShipmentIdentifier[_internal].schema.unknown(true),
+        rmaNumber: Joi.string().trim().singleLine().allow("").max(100)
       }),
       billing: Joi.object({
         dutiesPaidBy: Joi.string().enum(BilledParty),
@@ -50,7 +49,6 @@ export class NewShipment implements INewShipment {
   public readonly returns: {
     readonly isReturn: boolean;
     readonly rmaNumber: string;
-    readonly outboundShipment?: Readonly<ShipmentIdentifier>;
   };
 
   public readonly billing: {
@@ -78,8 +76,7 @@ export class NewShipment implements INewShipment {
     let returns = pojo.returns || {};
     this.returns = {
       isReturn: returns.isReturn || false,
-      rmaNumber: returns.rmaNumber || "",
-      outboundShipment: returns.outboundShipment && new ShipmentIdentifier(returns.outboundShipment),
+      rmaNumber: returns.rmaNumber || ""
     };
 
     // If there is no billing info, then the sender is billed by default
@@ -97,6 +94,5 @@ export class NewShipment implements INewShipment {
 
     // Make this object immutable
     hideAndFreeze(this);
-    Object.freeze(this.returns.outboundShipment);
   }
 }

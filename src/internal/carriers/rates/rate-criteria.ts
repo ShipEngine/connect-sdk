@@ -16,8 +16,7 @@ export class RateCriteria implements IRateCriteria {
       shipFrom: AddressWithContactInfo[_internal].schema.required(),
       shipTo: AddressWithContactInfo[_internal].schema.required(),
       returns: Joi.object({
-        isReturn: Joi.boolean(),
-        outboundShipment: ShipmentIdentifier[_internal].schema.unknown(true),
+        isReturn: Joi.boolean()
       }),
       packages: Joi.array().min(1).items(PackageRateCriteria[_internal].schema).required(),
     }),
@@ -33,7 +32,6 @@ export class RateCriteria implements IRateCriteria {
   public readonly packages: ReadonlyArray<PackageRateCriteria>;
   public readonly returns: {
     readonly isReturn: boolean;
-    readonly outboundShipment?: Readonly<ShipmentIdentifier>;
   };
 
   public get package(): PackageRateCriteria {
@@ -53,7 +51,6 @@ export class RateCriteria implements IRateCriteria {
     let returns = pojo.returns || {};
     this.returns = {
       isReturn: returns.isReturn || false,
-      outboundShipment: returns.outboundShipment && new ShipmentIdentifier(returns.outboundShipment),
     };
 
     this.packages = pojo.packages.map((parcel) => new PackageRateCriteria(parcel, app));
@@ -61,6 +58,5 @@ export class RateCriteria implements IRateCriteria {
 
     // Make this object immutable
     hideAndFreeze(this);
-    Object.freeze(this.returns.outboundShipment);
   }
 }

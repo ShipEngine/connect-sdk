@@ -1,7 +1,6 @@
 import { FulfillmentService, RateCriteria as IRateCriteria, RateCriteriaPOJO } from "../../../public";
 import { AddressWithContactInfo, App, DateTimeZone, DefinitionIdentifier, hideAndFreeze, Joi, MonetaryValue, _internal } from "../../common";
 import { DeliveryService } from "../delivery-service";
-import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 import { calculateTotalInsuranceAmount } from "../utils";
 import { PackageRateCriteria } from "./package-rate-criteria";
 
@@ -9,8 +8,8 @@ export class RateCriteria implements IRateCriteria {
   public static readonly [_internal] = {
     label: "shipment",
     schema: Joi.object({
-      deliveryServices: Joi.array().items(DefinitionIdentifier[_internal].schema.unknown(true)),
-      fulfillmentServices: Joi.array().items(Joi.string().enum(FulfillmentService)),
+      deliveryService: DefinitionIdentifier[_internal].schema.unknown(true),
+      fulfillmentService: Joi.string().enum(FulfillmentService),
       shipDateTime: DateTimeZone[_internal].schema.required(),
       deliveryDateTime: DateTimeZone[_internal].schema,
       shipFrom: AddressWithContactInfo[_internal].schema.required(),
@@ -22,8 +21,8 @@ export class RateCriteria implements IRateCriteria {
     }),
   };
 
-  public readonly deliveryServices: ReadonlyArray<DeliveryService>;
-  public readonly fulfillmentServices: ReadonlyArray<FulfillmentService>;
+  public readonly deliveryService?: DeliveryService;
+  public readonly fulfillmentService?: FulfillmentService;
   public readonly shipDateTime: DateTimeZone;
   public readonly deliveryDateTime?: DateTimeZone;
   public readonly shipFrom: AddressWithContactInfo;
@@ -39,9 +38,8 @@ export class RateCriteria implements IRateCriteria {
   }
 
   public constructor(pojo: RateCriteriaPOJO, app: App) {
-    this.deliveryServices = (pojo.deliveryServices || [])
-      .map((id) => app[_internal].references.lookup(id, DeliveryService));
-    this.fulfillmentServices = pojo.fulfillmentServices || [];
+    this.deliveryService = app[_internal].references.lookup(pojo.deliveryService, DeliveryService);
+    this.fulfillmentService = pojo.fulfillmentService;
     this.shipDateTime = new DateTimeZone(pojo.shipDateTime);
     this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;
     this.shipFrom = new AddressWithContactInfo(pojo.shipFrom);

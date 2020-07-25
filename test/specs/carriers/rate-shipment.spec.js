@@ -271,7 +271,7 @@ describe("rateShipment", () => {
 
       try {
         await app.rateShipment(pojo.transaction(), {
-          deliveryServices: "12345678-1234-1234-1234-123456789012",
+          deliveryService: "12345678-1234-1234-1234-123456789012",
           deliveryDateTime: "9999-99-99T99:99:99.999Z",
           packages: [],
         });
@@ -281,7 +281,7 @@ describe("rateShipment", () => {
         expect(error.message).to.equal(
           "Invalid input to the rateShipment method. \n" +
           "Invalid shipment: \n" +
-          "  deliveryServices must be an array \n" +
+          "  deliveryService must be of type object \n" +
           "  shipDateTime is required \n" +
           "  deliveryDateTime must be a valid date/time \n" +
           "  shipFrom is required \n" +

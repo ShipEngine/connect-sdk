@@ -9,18 +9,18 @@ import type { PackageRateCriteria, PackageRateCriteriaPOJO } from "./package-rat
  */
 export interface RateCriteriaPOJO {
   /**
-   * The delivery services that may be used. If neither `deliveryServices` nor
-   * `fulfillmentServices` are specified, then rate quotes should be returned for all
+   * The delivery service that may be used. If neither `deliveryService` nor
+   * `fulfillmentService` are specified, then rate quotes should be returned for all
    * applicable services.
    */
-  deliveryServices?: ReadonlyArray<DeliveryServiceIdentifierPOJO>;
+  deliveryService?: DeliveryServiceIdentifierPOJO;
 
   /**
    * Well-known carrier services that may be used to fulfill the shipment.
-   * If neither `deliveryServices` nor `fulfillmentServices` are specified, then rate quotes
+   * If neither `deliveryService` nor `fulfillmentService` are specified, then rate quotes
    * should be returned for all applicable services.
    */
-  fulfillmentServices?: FulfillmentService[];
+  fulfillmentService?: FulfillmentService;
 
   /**
    * The date/time that the shipment is expected to ship.
@@ -65,18 +65,18 @@ export interface RateCriteriaPOJO {
  */
 export interface RateCriteria {
   /**
-   * The delivery services that may be used. If neither `deliveryServices` nor
-   * `fulfillmentServices` are specified, then rate quotes should be returned for all
+   * The delivery services that may be used. If neither `deliveryService` nor
+   * `fulfillmentService` are specified, then rate quotes should be returned for all
    * applicable services.
    */
-  readonly deliveryServices: ReadonlyArray<DeliveryService>;
+  readonly deliveryService?: DeliveryService;
 
   /**
    * Well-known carrier services that may be used to fulfill the shipment.
-   * If neither `deliveryServices` nor `fulfillmentServices` are specified, then rate quotes
+   * If neither `deliveryService` nor `fulfillmentService` are specified, then rate quotes
    * should be returned for all applicable services.
    */
-  readonly fulfillmentServices: ReadonlyArray<FulfillmentService>;
+  readonly fulfillmentService?: FulfillmentService;
 
   /**
    * The date/time that the shipment is expected to ship.

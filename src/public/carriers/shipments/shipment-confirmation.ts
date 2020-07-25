@@ -7,10 +7,6 @@ import type { ShipmentIdentifier, ShipmentIdentifierPOJO } from "./shipment-iden
  * Confirmation that a shipment has been created
  */
 export interface ShipmentConfirmationPOJO extends ShipmentIdentifierPOJO {
-  /**
-   * The URL of a webpage where the customer can track the shipment
-   */
-  trackingURL?: URLString | URL;
 
   /**
    * If the shipment is being fulfilled using a well-known third-party carrier, such as UPS, FedEx, DHL, etc.
@@ -79,11 +75,6 @@ export interface ShipmentConfirmationPOJO extends ShipmentIdentifierPOJO {
  * Confirmation that a shipment has been created
  */
 export interface ShipmentConfirmation extends ShipmentIdentifier {
-  /**
-   * The URL of a webpage where the customer can track the shipment
-   */
-  readonly trackingURL?: URL;
-
   /**
    * A well-known carrier service that's being used to fulfill this shipment
    */

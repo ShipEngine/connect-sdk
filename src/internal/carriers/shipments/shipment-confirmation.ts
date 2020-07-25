@@ -7,7 +7,6 @@ export class ShipmentConfirmation extends ShipmentIdentifierBase implements IShi
   public static readonly [_internal] = {
     label: "shipment",
     schema: ShipmentIdentifier[_internal].schema.keys({
-      trackingURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
       fulfillmentService: Joi.string().enum(FulfillmentService),
       deliveryDateTime: DateTimeZone[_internal].schema,
       minimumDeliveryDays: Joi.number().integer().min(0),
@@ -22,7 +21,6 @@ export class ShipmentConfirmation extends ShipmentIdentifierBase implements IShi
     }),
   };
 
-  public readonly trackingURL?: URL;
   public readonly fulfillmentService?: FulfillmentService;
   public readonly deliveryDateTime?: DateTimeZone;
   public readonly minimumDeliveryDays?: number;
@@ -37,7 +35,7 @@ export class ShipmentConfirmation extends ShipmentIdentifierBase implements IShi
   public readonly metadata: object;
 
   public get isTrackable(): boolean {
-    return Boolean(this.trackingNumber || this.trackingURL);
+    return Boolean(this.trackingNumber);
   }
 
   public get package(): PackageConfirmation {
@@ -47,7 +45,6 @@ export class ShipmentConfirmation extends ShipmentIdentifierBase implements IShi
   public constructor(pojo: ShipmentConfirmationPOJO) {
     super(pojo);
 
-    this.trackingURL = pojo.trackingURL ? new URL(pojo.trackingURL as string) : undefined;
     this.fulfillmentService = pojo.fulfillmentService;
     this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;
     this.minimumDeliveryDays = pojo.minimumDeliveryDays;

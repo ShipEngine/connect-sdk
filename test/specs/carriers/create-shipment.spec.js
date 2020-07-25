@@ -31,7 +31,6 @@ describe("createShipment", () => {
 
     expect(confirmation).to.deep.equal({
       trackingNumber: "",
-      trackingURL: undefined,
       identifiers: {},
       fulfillmentService: undefined,
       deliveryDateTime: undefined,
@@ -59,7 +58,6 @@ describe("createShipment", () => {
       },
       packages: [{
         trackingNumber: "",
-        trackingURL: undefined,
         identifiers: {},
         metadata: {},
         documents: [{
@@ -78,7 +76,6 @@ describe("createShipment", () => {
     let app = new CarrierApp(pojo.carrierApp({
       createShipment: () => ({
         trackingNumber: "123456-ABCDEF",
-        trackingURL: "http://example.com/",
         identifiers: {
           myShipmentID: "123456-ABCDEF",
         },
@@ -123,7 +120,6 @@ describe("createShipment", () => {
         ],
         packages: [{
           trackingNumber: "ABCDEF-123456",
-          trackingURL: new URL("https://example.com"),
           identifiers: {
             myPackageID: "123456-ABCDEF-1",
           },
@@ -155,7 +151,6 @@ describe("createShipment", () => {
 
     expect(confirmation).to.deep.equal({
       trackingNumber: "123456-ABCDEF",
-      trackingURL: new URL("http://example.com"),
       identifiers: {
         myShipmentID: "123456-ABCDEF",
       },
@@ -226,7 +221,6 @@ describe("createShipment", () => {
       },
       packages: [{
         trackingNumber: "ABCDEF-123456",
-        trackingURL: new URL("https://example.com"),
         identifiers: {
           myPackageID: "123456-ABCDEF-1",
         },
@@ -287,7 +281,6 @@ describe("createShipment", () => {
 
     expect(confirmation).to.deep.equal({
       trackingNumber: "",
-      trackingURL: undefined,
       identifiers: {},
       fulfillmentService: undefined,
       deliveryDateTime: undefined,
@@ -315,7 +308,6 @@ describe("createShipment", () => {
       },
       packages: [{
         trackingNumber: "",
-        trackingURL: undefined,
         identifiers: {},
         metadata: {},
         documents: [{

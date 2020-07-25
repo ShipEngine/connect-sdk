@@ -8,11 +8,6 @@ import type { PackageIdentifier, PackageIdentifierPOJO } from "./package-identif
  */
 export interface PackageConfirmationPOJO extends PackageIdentifierPOJO {
   /**
-   * The URL of a webpage where the customer can track the package
-   */
-  trackingURL?: URLString | URL;
-
-  /**
    * The documents for this package, such as shipping labels, customs forms, etc.
    */
   documents: ReadonlyArray<DocumentPOJO | LabelPOJO>;
@@ -29,11 +24,6 @@ export interface PackageConfirmationPOJO extends PackageIdentifierPOJO {
  * Confirmation details about a package in a shipment
  */
 export interface PackageConfirmation extends PackageIdentifier {
-  /**
-   * The URL of a webpage where the customer can track the package
-   */
-  readonly trackingURL?: URL;
-
   /**
    * The documents for this package, such as shipping labels, customs forms, etc.
    */

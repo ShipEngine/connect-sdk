@@ -9,7 +9,6 @@ export class PackageConfirmation extends PackageIdentifierBase implements IPacka
   public static readonly [_internal] = {
     label: "package",
     schema: PackageIdentifier[_internal].schema.keys({
-      trackingURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
       documents: Joi.array().min(1).items(
         Joi.alternatives(
           Document[_internal].schema,
@@ -20,7 +19,6 @@ export class PackageConfirmation extends PackageIdentifierBase implements IPacka
     }),
   };
 
-  public readonly trackingURL?: URL;
   public readonly documents: ReadonlyArray<Document | Label>;
   public readonly metadata: object;
 
@@ -35,7 +33,6 @@ export class PackageConfirmation extends PackageIdentifierBase implements IPacka
   public constructor(pojo: PackageConfirmationPOJO) {
     super(pojo);
 
-    this.trackingURL = pojo.trackingURL ? new URL(pojo.trackingURL as string) : undefined;
     this.metadata = pojo.metadata || {};
     this.documents = pojo.documents.map(createDocument);
 

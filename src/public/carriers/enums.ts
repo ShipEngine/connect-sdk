@@ -88,7 +88,6 @@ export enum ShipmentStatus {
  */
 export enum DocumentFormat {
   PDF = "pdf",
-  HTML = "html",
   ZPL = "zpl",
   PNG = "png"
 }

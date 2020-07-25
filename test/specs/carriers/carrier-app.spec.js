@@ -237,9 +237,9 @@ describe("CarrierApp", () => {
         logo: path.resolve("logo.svg"),
         connectionForm: pojo.form(),
         deliveryServices: [
-          pojo.deliveryService({ labelFormats: ["pdf", "html"]}),
+          pojo.deliveryService({ labelFormats: ["pdf"]}),
           pojo.deliveryService({ labelFormats: ["pdf", "zpl"]}),
-          pojo.deliveryService({ labelFormats: ["zpl", "html"]}),
+          pojo.deliveryService({ labelFormats: ["zpl"]}),
         ],
 
         manifest: {
@@ -248,8 +248,8 @@ describe("CarrierApp", () => {
         },
       });
 
-      expect(app.labelFormats).to.have.lengthOf(3);
-      expect(app.labelFormats).to.have.members(["pdf", "html", "zpl"]);
+      expect(app.labelFormats).to.have.lengthOf(2);
+      expect(app.labelFormats).to.have.members(["pdf", "zpl"]);
       expect(app.labelFormats).to.not.have.members(["png"]);
     });
 

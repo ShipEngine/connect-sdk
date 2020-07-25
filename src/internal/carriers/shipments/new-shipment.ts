@@ -18,19 +18,6 @@ export class NewShipment implements INewShipment {
         isReturn: Joi.boolean(),
         rmaNumber: Joi.string().trim().singleLine().allow("").max(100)
       }),
-      billing: Joi.object({
-        dutiesPaidBy: Joi.string().enum(BilledParty),
-        deliveryPaidBy: Joi.string().enum(BilledParty),
-        account: Joi.string().trim().singleLine().allow("").max(100)
-          .when("dutiesPaidBy", { is: BilledParty.ThirdParty, then: Joi.string().min(1).required() })
-          .when("deliveryPaidBy", { is: BilledParty.ThirdParty, then: Joi.string().min(1).required() }),
-        postalCode: Joi.string().trim().singleLine().allow("").max(100)
-          .when("dutiesPaidBy", { is: BilledParty.ThirdParty, then: Joi.string().min(1).required() })
-          .when("deliveryPaidBy", { is: BilledParty.ThirdParty, then: Joi.string().min(1).required() }),
-        country: Joi.string().enum(Country)
-          .when("dutiesPaidBy", { is: BilledParty.ThirdParty, then: Joi.required() })
-          .when("deliveryPaidBy", { is: BilledParty.ThirdParty, then: Joi.required() }),
-      }),
       packages: Joi.array().min(1).items(NewPackage[_internal].schema).required(),
     }),
   };
@@ -51,14 +38,6 @@ export class NewShipment implements INewShipment {
     readonly rmaNumber: string;
   };
 
-  public readonly billing: {
-    readonly dutiesPaidBy: BilledParty;
-    readonly deliveryPaidBy: BilledParty;
-    readonly account: string;
-    readonly postalCode: string;
-    readonly country?: Country;
-  };
-
   public readonly packages: ReadonlyArray<NewPackage>;
 
   public get package(): NewPackage {
@@ -77,16 +56,6 @@ export class NewShipment implements INewShipment {
     this.returns = {
       isReturn: returns.isReturn || false,
       rmaNumber: returns.rmaNumber || ""
-    };
-
-    // If there is no billing info, then the sender is billed by default
-    let billing = pojo.billing || {};
-    this.billing = {
-      dutiesPaidBy: billing.dutiesPaidBy || BilledParty.Sender,
-      deliveryPaidBy: billing.deliveryPaidBy || BilledParty.Sender,
-      account: billing.account || "",
-      postalCode: billing.postalCode || "",
-      country: billing.country
     };
 
     this.packages = pojo.packages.map((parcel) => new NewPackage(parcel, app));

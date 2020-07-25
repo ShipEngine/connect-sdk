@@ -51,36 +51,6 @@ export interface NewShipmentPOJO {
   };
 
   /**
-   * Billing details. If `undefined`, then the sender is billed for all shipping costs.
-   */
-  billing?: {
-    /**
-     * Indicates who customs duties are billed to. Defaults to the sender
-     */
-    dutiesPaidBy?: BilledParty;
-
-    /**
-     * Indicates who delivery charges are billed to. Defaults to the sender
-     */
-    deliveryPaidBy?: BilledParty;
-
-    /**
-     * The account number of the third-party that is responsible for shipping costs
-     */
-    account?: string;
-
-    /**
-     * The postal code of the third-party that is responsible for shipping costs
-     */
-    postalCode?: string;
-
-    /**
-     * The country of the third-party that is responsible for shipping costs
-     */
-    country?: Country;
-  };
-
-  /**
    * The list of packages in the shipment
    */
   packages: ReadonlyArray<NewPackagePOJO>;
@@ -144,36 +114,6 @@ export interface NewShipment {
      * this number is often printed on the label, and used when the original shipper processes the inbound return.
      */
     readonly rmaNumber: string;
-  };
-
-  /**
-   * Billing details
-   */
-  readonly billing: {
-    /**
-     * Indicates who customs duties are billed to. Defaults to the sender
-     */
-    readonly dutiesPaidBy: BilledParty;
-
-    /**
-     * Indicates who delivery charges are billed to. Defaults to the sender
-     */
-    readonly deliveryPaidBy: BilledParty;
-
-    /**
-     * The account number of the third-party that is responsible for shipping costs
-     */
-    readonly account: string;
-
-    /**
-     * The postal code of the third-party that is responsible for shipping costs
-     */
-    readonly postalCode: string;
-
-    /**
-     * The country of the third-party that is responsible for shipping costs
-     */
-    readonly country?: Country;
   };
 
   /**

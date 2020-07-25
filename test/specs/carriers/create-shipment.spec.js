@@ -32,15 +32,7 @@ describe("createShipment", () => {
     expect(confirmation).to.deep.equal({
       trackingNumber: "",
       identifiers: {},
-      fulfillmentService: undefined,
       deliveryDateTime: undefined,
-      minimumDeliveryDays: undefined,
-      maximumDeliveryDays: undefined,
-      deliveryWindow: undefined,
-      zone: undefined,
-      isNegotiatedRate: false,
-      isGuaranteed: false,
-      metadata: {},
       charges: [{
         name: "",
         description: "",
@@ -79,21 +71,7 @@ describe("createShipment", () => {
         identifiers: {
           myShipmentID: "123456-ABCDEF",
         },
-        fulfillmentService: "ups_ground",
         deliveryDateTime: "2005-05-05T05:05:05.0005Z",
-        minimumDeliveryDays: 2,
-        maximumDeliveryDays: 5,
-        deliveryWindow: {
-          startDateTime: "2005-05-02T05:05:05.0005Z",
-          endDateTime: "2005-05-06T05:05:05.0005Z",
-        },
-        zone: 3,
-        isNegotiatedRate: true,
-        isGuaranteed: true,
-        metadata: {
-          foo: "bar",
-          biz: "baz",
-        },
         charges: [
           {
             name: "Shipping Charges",
@@ -154,32 +132,10 @@ describe("createShipment", () => {
       identifiers: {
         myShipmentID: "123456-ABCDEF",
       },
-      fulfillmentService: "ups_ground",
       deliveryDateTime: {
         value: "2005-05-05T05:05:05.0005",
         offset: "+00:00",
         timeZone: "UTC",
-      },
-      minimumDeliveryDays: 2,
-      maximumDeliveryDays: 5,
-      deliveryWindow: {
-        startDateTime: {
-          value: "2005-05-02T05:05:05.0005",
-          offset: "+00:00",
-          timeZone: "UTC",
-        },
-        endDateTime: {
-          value: "2005-05-06T05:05:05.0005",
-          offset: "+00:00",
-          timeZone: "UTC",
-        },
-      },
-      zone: 3,
-      isNegotiatedRate: true,
-      isGuaranteed: true,
-      metadata: {
-        foo: "bar",
-        biz: "baz",
       },
       charges: [
         {
@@ -282,15 +238,7 @@ describe("createShipment", () => {
     expect(confirmation).to.deep.equal({
       trackingNumber: "",
       identifiers: {},
-      fulfillmentService: undefined,
       deliveryDateTime: undefined,
-      minimumDeliveryDays: undefined,
-      maximumDeliveryDays: undefined,
-      deliveryWindow: undefined,
-      zone: undefined,
-      isNegotiatedRate: false,
-      isGuaranteed: false,
-      metadata: {},
       charges: [{
         name: "",
         description: "",
@@ -409,7 +357,6 @@ describe("createShipment", () => {
       let app = new CarrierApp(pojo.carrierApp({
         createShipment: () => ({
           deliveryDateTime: true,
-          fulfillmentService: 123,
           packages: []
         })
       }));
@@ -422,7 +369,6 @@ describe("createShipment", () => {
         expect(error.message).to.equal(
           "Error in the createShipment method. \n" +
           "Invalid shipment: \n" +
-          "  fulfillmentService must be a string \n" +
           "  deliveryDateTime must be one of date, string, object \n" +
           "  charges is required \n" +
           "  packages must contain at least 1 items"

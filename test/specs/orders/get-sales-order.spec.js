@@ -324,8 +324,7 @@ describe("getSalesOrder", () => {
         stateProvince: "TX",
         postalCode: "78754",
         country: "US",
-        isResidential: undefined,
-        coordinates: undefined,
+        isResidential: undefined
       },
       seller: {
         id: "SELLER_123456",

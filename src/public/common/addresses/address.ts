@@ -1,5 +1,4 @@
 import type { Country } from "../country";
-import type { GeoCoordinate, GeoCoordinatePOJO } from "./geo-coordinate";
 
 /**
  * A mailing address
@@ -12,7 +11,6 @@ export interface AddressPOJO {
   postalCode: string;
   country: Country;
   isResidential?: boolean;
-  coordinates?: GeoCoordinatePOJO;
 }
 
 
@@ -27,7 +25,6 @@ export interface Address {
   readonly postalCode: string;
   readonly country: Country;
   readonly isResidential?: boolean;
-  readonly coordinates?: GeoCoordinate;
 
   /**
    * Returns the formatted address

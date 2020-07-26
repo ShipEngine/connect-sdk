@@ -73,11 +73,7 @@ describe("getSeller", () => {
               stateProvince: "CA",
               postalCode: "90210",
               country: "US",
-              isResidential: false,
-              coordinates: {
-                latitude: -90,
-                longitude: -180,
-              },
+              isResidential: false
             },
             returnTo: {
               company: "My Return Location",
@@ -88,11 +84,7 @@ describe("getSeller", () => {
               stateProvince: "IL",
               postalCode: "12345",
               country: "US",
-              isResidential: true,
-              coordinates: {
-                latitude: 90,
-                longitude: 180,
-              },
+              isResidential: true
             },
           }]
         }
@@ -145,11 +137,7 @@ describe("getSeller", () => {
             stateProvince: "CA",
             postalCode: "90210",
             country: "US",
-            isResidential: false,
-            coordinates: {
-              latitude: -90,
-              longitude: -180,
-            },
+            isResidential: false
           },
           returnTo: {
             company: "My Return Location",
@@ -160,11 +148,7 @@ describe("getSeller", () => {
             stateProvince: "IL",
             postalCode: "12345",
             country: "US",
-            isResidential: true,
-            coordinates: {
-              latitude: 90,
-              longitude: 180,
-            },
+            isResidential: true
           },
         }]
       }

@@ -1,7 +1,6 @@
 export * from "./addresses/address";
 export * from "./addresses/address-with-contact-info";
 export * from "./addresses/contact-info";
-export * from "./addresses/geo-coordinate";
 export * from "./addresses/partial-address";
 export * from "./addresses/person-name";
 export * from "./app";

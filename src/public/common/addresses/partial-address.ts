@@ -1,6 +1,5 @@
 import type { Country } from "../country";
 import type { AddressPOJO } from "./address";
-import type { GeoCoordinate } from "./geo-coordinate";
 
 /**
  * A partial/incomplete mailing address. All fields are optional.
@@ -19,5 +18,4 @@ export interface PartialAddress {
   readonly postalCode: string;
   readonly country?: Country;
   readonly isResidential?: boolean;
-  readonly coordinates?: GeoCoordinate;
 }

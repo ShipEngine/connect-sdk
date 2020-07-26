@@ -1,7 +1,6 @@
 import { Country, PartialAddress as IPartialAddress, PartialAddressPOJO } from "../../../public";
 import { hideAndFreeze, _internal } from "../utils";
 import { Joi } from "../validation";
-import { GeoCoordinate } from "./geo-coordinate";
 
 export abstract class PartialAddressBase implements IPartialAddress {
   public readonly company: string;
@@ -11,7 +10,6 @@ export abstract class PartialAddressBase implements IPartialAddress {
   public readonly postalCode: string;
   public readonly country?: Country;
   public readonly isResidential?: boolean;
-  public readonly coordinates?: GeoCoordinate;
 
   public constructor(pojo: PartialAddressPOJO) {
     this.company = pojo.company || "";
@@ -21,7 +19,6 @@ export abstract class PartialAddressBase implements IPartialAddress {
     this.postalCode = pojo.postalCode || "";
     this.country = pojo.country;
     this.isResidential = pojo.isResidential;
-    this.coordinates = pojo.coordinates && new GeoCoordinate(pojo.coordinates);
   }
 }
 
@@ -36,8 +33,7 @@ export class PartialAddress extends PartialAddressBase {
       stateProvince: Joi.string().trim().singleLine().max(100),
       postalCode: Joi.string().trim().singleLine().max(100),
       country: Joi.string().enum(Country),
-      isResidential: Joi.boolean(),
-      coordinates: GeoCoordinate[_internal].schema,
+      isResidential: Joi.boolean()
     }),
   };
 

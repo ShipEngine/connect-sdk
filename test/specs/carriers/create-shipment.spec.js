@@ -16,13 +16,13 @@ describe("createShipment", () => {
             currency: "CAD",
           },
         }],
+        documents: [{
+          type: "label",
+          size: "letter",
+          format: "pdf",
+          data: Buffer.from("data"),
+        }],
         packages: [{
-          documents: [{
-            type: "label",
-            size: "letter",
-            format: "pdf",
-            data: Buffer.from("data"),
-          }]
         }]
       })
     }));
@@ -44,6 +44,14 @@ describe("createShipment", () => {
           currency: "CAD",
         }
       }],
+      documents: [{
+        name: "Label",
+        type: "label",
+        size: "letter",
+        format: "pdf",
+        data: Buffer.from("data"),
+        referenceFields: [],
+      }],
       totalAmount: {
         value: "123.46",
         currency: "CAD",
@@ -51,15 +59,7 @@ describe("createShipment", () => {
       packages: [{
         trackingNumber: "",
         identifiers: {},
-        metadata: {},
-        documents: [{
-          name: "Label",
-          type: "label",
-          size: "letter",
-          format: "pdf",
-          data: Buffer.from("data"),
-          referenceFields: [],
-        }]
+        metadata: {}
       }],
     });
   });
@@ -72,6 +72,23 @@ describe("createShipment", () => {
           myShipmentID: "123456-ABCDEF",
         },
         deliveryDateTime: "2005-05-05T05:05:05.0005Z",
+        documents: [
+          {
+            name: "Shipping Label",
+            type: "label",
+            size: "letter",
+            format: "pdf",
+            data: Buffer.from("label data"),
+            referenceFields: ["one", "two", "three"],
+          },
+          {
+            name: "Customs Form",
+            type: "customs_form",
+            size: "A4",
+            format: "png",
+            data: Buffer.from("customs form data"),
+          },
+        ],
         charges: [
           {
             name: "Shipping Charges",
@@ -101,23 +118,6 @@ describe("createShipment", () => {
           identifiers: {
             myPackageID: "123456-ABCDEF-1",
           },
-          documents: [
-            {
-              name: "Shipping Label",
-              type: "label",
-              size: "letter",
-              format: "pdf",
-              data: Buffer.from("label data"),
-              referenceFields: ["one", "two", "three"],
-            },
-            {
-              name: "Customs Form",
-              type: "customs_form",
-              size: "A4",
-              format: "png",
-              data: Buffer.from("customs form data"),
-            },
-          ],
           metadata: {
             fizz: "buzz",
           },
@@ -175,28 +175,28 @@ describe("createShipment", () => {
         value: "10.95",
         currency: "GBP",
       },
+      documents: [
+        {
+          name: "Shipping Label",
+          type: "label",
+          size: "letter",
+          format: "pdf",
+          data: Buffer.from("label data"),
+          referenceFields: ["one", "two", "three"],
+        },
+        {
+          name: "Customs Form",
+          type: "customs_form",
+          size: "A4",
+          format: "png",
+          data: Buffer.from("customs form data"),
+        },
+      ],
       packages: [{
         trackingNumber: "ABCDEF-123456",
         identifiers: {
           myPackageID: "123456-ABCDEF-1",
         },
-        documents: [
-          {
-            name: "Shipping Label",
-            type: "label",
-            size: "letter",
-            format: "pdf",
-            data: Buffer.from("label data"),
-            referenceFields: ["one", "two", "three"],
-          },
-          {
-            name: "Customs Form",
-            type: "customs_form",
-            size: "A4",
-            format: "png",
-            data: Buffer.from("customs form data"),
-          },
-        ],
         metadata: {
           fizz: "buzz",
         },
@@ -215,14 +215,13 @@ describe("createShipment", () => {
             currency: "CAD",
           },
         }],
-        packages: [{
-          documents: [{
-            type: "label",
-            size: "letter",
-            format: "pdf",
-            data: Buffer.from("data"),
-          }]
-        }]
+        documents: [{
+          type: "label",
+          size: "letter",
+          format: "pdf",
+          data: Buffer.from("data"),
+        }],
+        packages: [{}]
       })
     }));
 
@@ -254,18 +253,18 @@ describe("createShipment", () => {
         value: "123.46",
         currency: "CAD",
       },
+      documents: [{
+        name: "Label",
+        type: "label",
+        size: "letter",
+        format: "pdf",
+        data: Buffer.from("data"),
+        referenceFields: [],
+      }],
       packages: [{
         trackingNumber: "",
         identifiers: {},
-        metadata: {},
-        documents: [{
-          name: "Label",
-          type: "label",
-          size: "letter",
-          format: "pdf",
-          data: Buffer.from("data"),
-          referenceFields: [],
-        }]
+        metadata: {}
       }],
     });
   });
@@ -369,6 +368,7 @@ describe("createShipment", () => {
         expect(error.message).to.equal(
           "Error in the createShipment method. \n" +
           "Invalid shipment: \n" +
+          "  documents is required \n" +
           "  deliveryDateTime must be one of date, string, object \n" +
           "  charges is required \n" +
           "  packages must contain at least 1 items"
@@ -379,15 +379,14 @@ describe("createShipment", () => {
     it("should throw an error if the document is invalid", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         createShipment: () => pojo.shipmentConfirmation({
+          documents: [
+            {
+              name: "   \n\t  ",
+              type: "letter",
+            },
+          ],
           packages: [
-            pojo.packageConfirmation({
-              documents: [
-                {
-                  name: "   \n\t  ",
-                  type: "letter",
-                },
-              ]
-            }),
+            pojo.packageConfirmation(),
           ]
         }),
       }));
@@ -400,7 +399,7 @@ describe("createShipment", () => {
         expect(error.message).to.equal(
           "Error in the createShipment method. \n" +
           "Invalid shipment: \n" +
-          "  packages[0].documents[0] does not match any of the allowed types"
+          "  documents[0] does not match any of the allowed types"
         );
       }
     });
@@ -408,14 +407,13 @@ describe("createShipment", () => {
     it("should throw an error if the document is empty", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         createShipment: () => pojo.shipmentConfirmation({
-          packages: [
-            pojo.packageConfirmation({
-              documents: [
-                pojo.document({
-                  data: Buffer.alloc(0),
-                }),
-              ]
+          documents: [
+            pojo.document({
+              data: Buffer.alloc(0),
             }),
+          ],
+          packages: [
+            pojo.packageConfirmation(),
           ]
         }),
       }));

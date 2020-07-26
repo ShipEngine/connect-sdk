@@ -1,11 +1,16 @@
 import type { Charge, ChargePOJO, DateTimeZone, DateTimeZonePOJO, MonetaryValue } from "../../common";
+import type { Document, DocumentPOJO } from "../documents/document";
+import type { Label, LabelPOJO } from "../documents/label";
 import type { PackageConfirmation, PackageConfirmationPOJO } from "../packages/package-confirmation";
 import type { ShipmentIdentifier, ShipmentIdentifierPOJO } from "./shipment-identifier";
-
 /**
  * Confirmation that a shipment has been created
  */
 export interface ShipmentConfirmationPOJO extends ShipmentIdentifierPOJO {
+  /**
+   * The documents for this package, such as shipping labels, customs forms, etc.
+   */
+  documents: ReadonlyArray<DocumentPOJO | LabelPOJO>;
 
   /**
    * The estimated date and time the shipment will be delivered
@@ -31,6 +36,10 @@ export interface ShipmentConfirmationPOJO extends ShipmentIdentifierPOJO {
  * Confirmation that a shipment has been created
  */
 export interface ShipmentConfirmation extends ShipmentIdentifier {
+  /**
+   * The documents for this package, such as shipping labels, customs forms, etc.
+   */
+  readonly documents: ReadonlyArray<Document | Label>;
 
   /**
    * The estimated date and time the shipment will be delivered
@@ -64,5 +73,15 @@ export interface ShipmentConfirmation extends ShipmentIdentifier {
    * Useful for carriers that only support single-piece shipments.
    */
   readonly package: PackageConfirmation;
+
+  /**
+   * The first document of type "label" in the `documents` array
+   */
+  readonly label: Label | undefined;
+
+  /**
+   * The first document of type "customs_form" in the `documents` array
+   */
+  readonly customsForm: Document | undefined;
 
 }

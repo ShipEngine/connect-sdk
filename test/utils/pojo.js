@@ -144,6 +144,7 @@ const pojo = module.exports = {
       ...pojo.shipmentIdentifier(),
       charges: [pojo.charge()],
       packages: [pojo.packageConfirmation()],
+      documents: [pojo.document()],
       ...props,
     };
   },
@@ -187,7 +188,6 @@ const pojo = module.exports = {
   packageConfirmation (props = {}) {
     return {
       ...pojo.packageIdentifier(),
-      documents: [pojo.document()],
       ...props,
     };
   },

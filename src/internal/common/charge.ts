@@ -37,28 +37,19 @@ export class Charge implements ICharge {
     label: "charge",
     schema: Joi.object({
       name: Joi.string().trim().singleLine().allow("").max(100),
-      description: Joi.string().trim().singleLine().allow("").max(1000),
-      code: Joi.string().trim().singleLine().allow("").max(100),
       type: Joi.string().enum(ChargeType).required(),
       amount: MonetaryValue[_internal].schema.required(),
-      notes: Note[_internal].notesSchema,
     }),
   };
 
   public readonly name: string;
-  public readonly description: string;
-  public readonly code: string;
   public readonly type: ChargeType;
   public readonly amount: MonetaryValue;
-  public readonly notes: ReadonlyArray<Note>;
 
   public constructor(pojo: ChargePOJO) {
     this.name = pojo.name || "";
-    this.description = pojo.description || "";
-    this.code = pojo.code || "";
     this.type = pojo.type;
     this.amount = new MonetaryValue(pojo.amount);
-    this.notes = createNotes(pojo.notes);
 
     // Make this object immutable
     hideAndFreeze(this);

@@ -35,9 +35,6 @@ describe("createShipment", () => {
       deliveryDateTime: undefined,
       charges: [{
         name: "",
-        description: "",
-        code: "",
-        notes: [],
         type: "shipping",
         amount: {
           value: "123.46",
@@ -92,20 +89,14 @@ describe("createShipment", () => {
         charges: [
           {
             name: "Shipping Charges",
-            description: "charges for shipping",
-            code: "SHIP",
             type: "shipping",
             amount: {
               value: 8.95,
               currency: "GBP",
-            },
-            notes: "extra charge because reasons",
+            }
           },
           {
             name: "VAT",
-            description: "value added tax",
-            code: "VAT",
-            notes: "Her majesty the queen demands it",
             type: "tax",
             amount: {
               value: 2,
@@ -140,14 +131,6 @@ describe("createShipment", () => {
       charges: [
         {
           name: "Shipping Charges",
-          description: "charges for shipping",
-          code: "SHIP",
-          notes: [
-            {
-              type: "uncategorized",
-              text: "extra charge because reasons",
-            }
-          ],
           type: "shipping",
           amount: {
             value: "8.95",
@@ -156,14 +139,6 @@ describe("createShipment", () => {
         },
         {
           name: "VAT",
-          description: "value added tax",
-          code: "VAT",
-          notes: [
-            {
-              type: "uncategorized",
-              text: "Her majesty the queen demands it",
-            }
-          ],
           type: "tax",
           amount: {
             value: "2.00",
@@ -240,9 +215,6 @@ describe("createShipment", () => {
       deliveryDateTime: undefined,
       charges: [{
         name: "",
-        description: "",
-        code: "",
-        notes: [],
         type: "shipping",
         amount: {
           value: "123.46",

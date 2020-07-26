@@ -51,9 +51,6 @@ describe("rateShipment", () => {
       },
       charges: [{
         name: "",
-        description: "",
-        code: "",
-        notes: [],
         type: "shipping",
         amount: {
           value: "123.46",
@@ -99,9 +96,6 @@ describe("rateShipment", () => {
         charges: [
           {
             name: "Shipping Charge",
-            description: "Charge for shipping",
-            code: "SHP",
-            notes: "you were charged extra because reasons",
             type: "shipping",
             amount: {
               value: 123.456,
@@ -110,9 +104,6 @@ describe("rateShipment", () => {
           },
           {
             name: "Delivery Confirmation Charge",
-            description: "Charge for delivery conirmation",
-            code: "DEL",
-            notes: "Signatures cost extra",
             type: "delivery_confirmation",
             amount: {
               value: 1.5,
@@ -182,14 +173,6 @@ describe("rateShipment", () => {
       charges: [
         {
           name: "Shipping Charge",
-          description: "Charge for shipping",
-          code: "SHP",
-          notes: [
-            {
-              type: "uncategorized",
-              text: "you were charged extra because reasons",
-            }
-          ],
           type: "shipping",
           amount: {
             value: "123.46",
@@ -198,14 +181,6 @@ describe("rateShipment", () => {
         },
         {
           name: "Delivery Confirmation Charge",
-          description: "Charge for delivery conirmation",
-          code: "DEL",
-          notes: [
-            {
-              type: "uncategorized",
-              text: "Signatures cost extra",
-            }
-          ],
           type: "delivery_confirmation",
           amount: {
             value: "1.50",

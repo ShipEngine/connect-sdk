@@ -12,16 +12,6 @@ export interface ChargePOJO {
   name?: string;
 
   /**
-   * The carrier's description of the charge, not specific to the user
-   */
-  description?: string;
-
-  /**
-   * The carrier's code for this charge
-   */
-  code?: string;
-
-  /**
    * The type of charge
    */
   type: ChargeType;
@@ -31,10 +21,6 @@ export interface ChargePOJO {
    */
   amount: MonetaryValuePOJO;
 
-  /**
-   * Human-readable information regarding this charge, such as an explanation or reference number
-   */
-  notes?: string | ReadonlyArray<string | NotePOJO>;
 }
 
 /**
@@ -47,16 +33,6 @@ export interface Charge {
   readonly name: string;
 
   /**
-   * The carrier's description of the charge, not specific to the user
-   */
-  readonly description: string;
-
-  /**
-   * The carrier's code for this charge
-   */
-  readonly code: string;
-
-  /**
    * The type of charge
    */
   readonly type: ChargeType;
@@ -65,9 +41,4 @@ export interface Charge {
    * The amount of the charge (negative amount for a credit)
    */
   readonly amount: MonetaryValue;
-
-  /**
-   * Human-readable information regarding this charge, such as an explanation or reference number
-   */
-  readonly notes: ReadonlyArray<Note>;
 }

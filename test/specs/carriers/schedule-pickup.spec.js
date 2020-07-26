@@ -46,9 +46,6 @@ describe("schedulePickup", () => {
       }],
       charges: [{
         name: "",
-        description: "",
-        code: "",
-        notes: [],
         type: "pickup",
         amount: {
           value: "12.34",
@@ -81,9 +78,6 @@ describe("schedulePickup", () => {
         charges: [
           {
             name: "Pickup Charge",
-            description: "Charge for pickup",
-            code: "PIK",
-            notes: "This is a note",
             type: "pickup",
             amount: {
               value: 12.34,
@@ -92,9 +86,6 @@ describe("schedulePickup", () => {
           },
           {
             name: "Pickup Tax",
-            description: "Taxes for pickup",
-            code: "TAX",
-            notes: "This is a note",
             type: "tax",
             amount: {
               value: 2.5,
@@ -138,14 +129,6 @@ describe("schedulePickup", () => {
       charges: [
         {
           name: "Pickup Charge",
-          description: "Charge for pickup",
-          code: "PIK",
-          notes: [
-            {
-              type: "uncategorized",
-              text: "This is a note",
-            }
-          ],
           type: "pickup",
           amount: {
             value: "12.34",
@@ -154,14 +137,6 @@ describe("schedulePickup", () => {
         },
         {
           name: "Pickup Tax",
-          description: "Taxes for pickup",
-          code: "TAX",
-          notes: [
-            {
-              type: "uncategorized",
-              text: "This is a note",
-            }
-          ],
           type: "tax",
           amount: {
             value: "2.50",

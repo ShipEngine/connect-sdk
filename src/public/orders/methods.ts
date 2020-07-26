@@ -1,5 +1,5 @@
 import type { Transaction } from "../common";
-import type { SalesOrderPOJO } from "./sales-order";
+import { SalesOrderArrayPOJO } from "./sales-order-array";
 import type { SalesOrderTimeRange } from "./sales-order-time-range";
 import { SalesOrderShipment } from "./shipments/sales-order-shipment";
 
@@ -7,8 +7,7 @@ import { SalesOrderShipment } from "./shipments/sales-order-shipment";
  * Returns all orders that were created and/or modified within a given timeframe
  */
 export type GetSalesOrdersByDate = (transaction: Transaction, range: SalesOrderTimeRange)
-  => Iterable<SalesOrderPOJO> | Promise<Iterable<SalesOrderPOJO>> | AsyncIterable<SalesOrderPOJO>;
-
+  => SalesOrderArrayPOJO | Promise<SalesOrderArrayPOJO >;
 
 /**
  * Called when a shipment is created for one or more items in one or more sales orders.
@@ -18,7 +17,6 @@ export type GetSalesOrdersByDate = (transaction: Transaction, range: SalesOrderT
  */
 export type ShipmentCreated = (transaction: Transaction, shipment: SalesOrderShipment)
   => void | Promise<void>;
-
 
 /**
  * Called when a shipment is cancelled for one or more items in one or more sales orders.

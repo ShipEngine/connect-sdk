@@ -42,7 +42,6 @@ const pojo = module.exports = {
   orderApp (props = {}) {
     return {
       ...pojo.connectionApp(),
-      getSalesOrder () {},
       getSalesOrdersByDate () {},
       ...props,
     };

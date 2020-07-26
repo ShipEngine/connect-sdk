@@ -1,17 +1,7 @@
 import type { Transaction } from "../common";
 import type { SalesOrderPOJO } from "./sales-order";
-import type { SalesOrderIdentifier } from "./sales-order-identifier";
 import type { SalesOrderTimeRange } from "./sales-order-time-range";
-import type { SellerPOJO } from "./sellers/seller";
-import type { SellerIdentifier } from "./sellers/seller-identifier";
 import { SalesOrderShipment } from "./shipments/sales-order-shipment";
-
-/**
- * Returns detailed information about a specific sales order
- */
-export type GetSalesOrder = (transaction: Transaction, salesOrder: SalesOrderIdentifier)
-  => SalesOrderPOJO | Promise<SalesOrderPOJO>;
-
 
 /**
  * Returns all orders that were created and/or modified within a given timeframe

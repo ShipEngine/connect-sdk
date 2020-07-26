@@ -34,15 +34,9 @@ describe("rateShipment", () => {
         ...rates[0].deliveryService,
         id: "22222222-2222-2222-2222-222222222222",
       },
-      fulfillmentService: undefined,
       shipDateTime: undefined,
       deliveryDateTime: undefined,
-      minimumDeliveryDays: undefined,
-      maximumDeliveryDays: undefined,
-      deliveryWindow: undefined,
-      zone: undefined,
       isNegotiatedRate: false,
-      isGuaranteed: false,
       isTrackable: false,
       notes: [],
       totalAmount: {
@@ -79,18 +73,9 @@ describe("rateShipment", () => {
           id: "22222222-2222-2222-2222-222222222222",
           identifiers: {},
         },
-        fulfillmentService: "ups_ground",
         shipDateTime: "2005-05-05T05:05:05.005+00:30",
         deliveryDateTime: new Date("2005-05-05T05:05:05.005-07:00"),
-        minimumDeliveryDays: 0,
-        maximumDeliveryDays: 1,
-        deliveryWindow: {
-          startDateTime: "2005-05-02T05:05:05.0005Z",
-          endDateTime: "2005-05-06T05:05:05.0005Z",
-        },
-        zone: 1,
         isNegotiatedRate: true,
-        isGuaranteed: true,
         isTrackable: true,
         notes: "This is a note",
         charges: [
@@ -131,7 +116,6 @@ describe("rateShipment", () => {
         ...rates[0].deliveryService,
         id: "22222222-2222-2222-2222-222222222222",
       },
-      fulfillmentService: "ups_ground",
       shipDateTime: {
         value: "2005-05-05T05:05:05.005",
         offset: "+00:30",
@@ -142,23 +126,7 @@ describe("rateShipment", () => {
         offset: "+00:00",
         timeZone: "UTC",
       },
-      minimumDeliveryDays: 0,
-      maximumDeliveryDays: 1,
-      deliveryWindow: {
-        startDateTime: {
-          value: "2005-05-02T05:05:05.0005",
-          offset: "+00:00",
-          timeZone: "UTC",
-        },
-        endDateTime: {
-          value: "2005-05-06T05:05:05.0005",
-          offset: "+00:00",
-          timeZone: "UTC",
-        },
-      },
-      zone: 1,
       isNegotiatedRate: true,
-      isGuaranteed: true,
       isTrackable: true,
       notes: [
         {
@@ -394,28 +362,5 @@ describe("rateShipment", () => {
         );
       }
     });
-
-    it("should throw an error if minimumDeliveryDays is greater than maximumDeliveryDays", async () => {
-      let app = new CarrierApp(pojo.carrierApp({
-        rateShipment: () => [
-          pojo.rate({
-            minimumDeliveryDays: 5,
-            maximumDeliveryDays: 3,
-          })
-        ]
-      }));
-
-      try {
-        await app.rateShipment(pojo.transaction(), pojo.rateCriteria());
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal(
-          "Error in the rateShipment method. \n" +
-          "Invalid delivery time range: minimumDeliveryDays must be less than or equal to maximumDeliveryDays"
-        );
-      }
-    });
-
   });
 });

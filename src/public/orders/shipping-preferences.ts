@@ -16,11 +16,6 @@ export interface ShippingPreferencesPOJO {
   deliveryDateTime?: DateTimeZonePOJO | Date | string;
 
   /**
-   * Indicates whether expedited shipping is requested
-   */
-  expeditedService?: boolean;
-
-  /**
    * Indicates whether the shipment needs to be marked as containing alcohol
    */
   containsAlcohol?: boolean;
@@ -50,11 +45,6 @@ export interface ShippingPreferences {
    * The date and time that the shipment should be delivered
    */
   readonly deliveryDateTime?: DateTimeZone;
-
-  /**
-   * Indicates whether expedited shipping is requested
-   */
-  readonly expeditedService: boolean;
 
   /**
    * Indicates whether the shipment needs to be marked as containing alcohol

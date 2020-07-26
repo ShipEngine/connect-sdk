@@ -1,7 +1,6 @@
-import { AppType, ErrorCode, GetSalesOrdersByDate, OrderApp as IOrderApp, OrderAppPOJO, SalesOrderIdentifierPOJO, SalesOrderShipmentPOJO, SalesOrderTimeRangePOJO, SellerIdentifierPOJO, ShipmentCancelled, ShipmentCreated, TransactionPOJO } from "../../public";
+import { AppType, ErrorCode, GetSalesOrdersByDate, OrderApp as IOrderApp, OrderAppPOJO, SalesOrderShipmentPOJO, SalesOrderTimeRangePOJO, ShipmentCancelled, ShipmentCreated, TransactionPOJO } from "../../public";
 import { ConnectionApp, error, hideAndFreeze, Joi, Transaction, validate, _internal } from "../common";
 import { SalesOrder } from "./sales-order";
-import { SalesOrderIdentifier } from "./sales-order-identifier";
 import { SalesOrderTimeRange } from "./sales-order-time-range";
 import { SalesOrderShipment } from "./shipments/sales-order-shipment";
 import { getAsyncIterable } from "./utils";

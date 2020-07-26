@@ -1,9 +1,8 @@
 import type { AddressWithContactInfo, AddressWithContactInfoPOJO, Charge, ChargePOJO, DateTimeZone, DateTimeZonePOJO, MonetaryValue, Note, NotePOJO, URLString } from "../common";
 import type { Buyer, BuyerPOJO } from "./buyer";
-import type { FulfillmentStatus, PaymentMethod, PaymentStatus, SalesOrderStatus } from "./enums";
+import type { PaymentMethod, SalesOrderStatus } from "./enums";
 import type { SalesOrderIdentifier, SalesOrderIdentifierPOJO } from "./sales-order-identifier";
 import type { SalesOrderItem, SalesOrderItemPOJO } from "./sales-order-item";
-import type { SellerIdentifier, SellerIdentifierPOJO } from "./sellers/seller-identifier";
 import type { ShippingPreferences, ShippingPreferencesPOJO } from "./shipping-preferences";
 
 /**
@@ -26,16 +25,6 @@ export interface SalesOrderPOJO extends SalesOrderIdentifierPOJO {
   status: SalesOrderStatus;
 
   /**
-   * Indicates whether the order has been fulfilled
-   */
-  fulfillmentStatus?: FulfillmentStatus;
-
-  /**
-   * Indicates whether the customer has paid for the order
-   */
-  paymentStatus?: PaymentStatus;
-
-  /**
    * Indicates how the customer has paid for the order
    */
   paymentMethod?: PaymentMethod;
@@ -49,11 +38,6 @@ export interface SalesOrderPOJO extends SalesOrderIdentifierPOJO {
    * The address where the order should be shipped
    */
   shipTo: AddressWithContactInfoPOJO;
-
-  /**
-   * Identifies the seller who sold the order
-   */
-  seller: SellerIdentifierPOJO;
 
   /**
    * The buyer who bought the order. This is not necessarily the same person as the `shipTo`
@@ -108,16 +92,6 @@ export interface SalesOrder extends SalesOrderIdentifier {
   readonly status: SalesOrderStatus;
 
   /**
-   * Indicates whether the order has been fulfilled
-   */
-  readonly fulfillmentStatus?: FulfillmentStatus;
-
-  /**
-   * Indicates whether the customer has paid for the order
-   */
-  readonly paymentStatus?: PaymentStatus;
-
-  /**
    * Indicates how the customer has paid for the order
    */
   readonly paymentMethod?: PaymentMethod;
@@ -131,11 +105,6 @@ export interface SalesOrder extends SalesOrderIdentifier {
    * The address where the order should be shipped
    */
   readonly shipTo: AddressWithContactInfo;
-
-  /**
-   * Identifies the seller who sold the order
-   */
-  readonly seller: SellerIdentifier;
 
   /**
    * The buyer who bought the order. This is not necessarily the same person as the `shipTo`

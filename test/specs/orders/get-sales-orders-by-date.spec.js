@@ -205,7 +205,6 @@ describe("getSalesOrdersByDate", () => {
           "  createdDateTime must be a valid date/time \n" +
           "  status must be a string \n" +
           "  shipTo is required \n" +
-          "  seller is required \n" +
           "  buyer is required \n" +
           "  items must contain at least 1 items"
         );

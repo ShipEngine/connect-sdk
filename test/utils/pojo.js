@@ -332,13 +332,6 @@ const pojo = module.exports = {
     };
   },
 
-  sellerIdentifier (props = {}) {
-    return {
-      id: "DUMMY_SELLER_ID",
-      ...props,
-    };
-  },
-
   buyerIdentifier (props = {}) {
     return {
       id: "DUMMY_BUYER_ID",
@@ -387,7 +380,6 @@ const pojo = module.exports = {
       createdDateTime: "2005-05-05T05:05:05Z",
       status: "awaiting_shipment",
       shipTo: pojo.addressWithContactInfo(),
-      seller: pojo.sellerIdentifier(),
       buyer: pojo.buyer(),
       items: [pojo.salesOrderItem()],
       ...props,
@@ -401,14 +393,6 @@ const pojo = module.exports = {
       quantity: pojo.quantity(),
       unitPrice: pojo.monetaryValue(),
       product: pojo.productIdentifier(),
-      ...props,
-    };
-  },
-
-  seller (props = {}) {
-    return {
-      ...pojo.sellerIdentifier(),
-      store: pojo.store(),
       ...props,
     };
   },

@@ -10,17 +10,6 @@ export enum SalesOrderStatus {
 }
 
 /**
- * The fulfillment status of a sales order
- */
-export enum FulfillmentStatus {
-  Unfulfilled = "unfulfilled",
-  PartiallyFulfilled = "partially_fulfilled",
-  OnHold = "on_hold",
-  Fulfilled = "fulfilled",
-  Cancelled = "cancelled",
-}
-
-/**
  * The payment status of a sales order
  */
 export enum PaymentStatus {

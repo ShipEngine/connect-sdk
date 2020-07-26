@@ -7,7 +7,6 @@ export interface ContactInfoPOJO {
   name: string | PersonNamePOJO;
   email?: string;
   phoneNumber?: string;
-  phoneNumberExtension?: string;
 }
 
 /**
@@ -17,5 +16,4 @@ export interface ContactInfo {
   readonly name: PersonName;
   readonly email: string;
   readonly phoneNumber: string;
-  readonly phoneNumberExtension: string;
 }

@@ -150,7 +150,7 @@ describe("OrderApp", () => {
         name: "My order",
         websiteURL: "https://my-order.com/",
         logo: path.resolve("logo.svg"),
-          getSalesOrdersByDate () {},
+        getSalesOrdersByDate () {},
         manifest: {
           name: "@company/order",
           version: "1.0.0"
@@ -168,7 +168,7 @@ describe("OrderApp", () => {
         name: "  My \nOrder  ",
         websiteURL: "https://my-order.com/",
         logo: path.resolve("logo.svg"),
-          getSalesOrdersByDate () {},
+        getSalesOrdersByDate () {},
         manifest: {
           name: "@company/order",
           version: "1.0.0"
@@ -187,7 +187,7 @@ describe("OrderApp", () => {
         name: "My order",
         websiteURL: "https://my-order.com/",
         logo: path.resolve("logo.svg"),
-          getSalesOrdersByDate () {},
+        getSalesOrdersByDate () {},
         description: 12345,
         manifest: {
           name: "@company/order",
@@ -206,7 +206,7 @@ describe("OrderApp", () => {
         name: "My order",
         websiteURL: "https://my-order.com/",
         logo: "logo.svg",
-          getSalesOrdersByDate () {},
+        getSalesOrdersByDate () {},
         manifest: {
           name: "@company/order",
           version: "1.0.0"
@@ -224,7 +224,7 @@ describe("OrderApp", () => {
         name: "My order",
         websiteURL: "https://my-order.com/",
         logo: path.resolve("logo.jpg"),
-          getSalesOrdersByDate () {},
+        getSalesOrdersByDate () {},
         manifest: {
           name: "@company/order",
           version: "1.0.0"

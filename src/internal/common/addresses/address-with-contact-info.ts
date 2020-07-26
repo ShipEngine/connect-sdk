@@ -13,7 +13,6 @@ export class AddressWithContactInfo extends AddressBase implements IAddressWithC
   public readonly name: PersonName;
   public readonly email: string;
   public readonly phoneNumber: string;
-  public readonly phoneNumberExtension: string;
 
   public constructor(pojo: AddressWithContactInfoPOJO) {
     super(pojo);
@@ -21,7 +20,6 @@ export class AddressWithContactInfo extends AddressBase implements IAddressWithC
     this.name = new PersonName(pojo.name);
     this.email = pojo.email || "";
     this.phoneNumber = pojo.phoneNumber || "";
-    this.phoneNumberExtension = pojo.phoneNumberExtension || "";
 
     // Make this object immutable
     hideAndFreeze(this);

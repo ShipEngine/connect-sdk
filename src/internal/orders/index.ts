@@ -9,7 +9,6 @@ export * from "./sellers/seller";
 export * from "./sellers/seller-identifier";
 export * from "./sellers/store";
 export * from "./sellers/warehouse";
-export * from "./shipments/sales-order-package";
 export * from "./shipments/sales-order-package-item";
 export * from "./shipments/sales-order-shipment";
 export * from "./shipping-preferences";

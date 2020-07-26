@@ -65,7 +65,7 @@ describe("shipmentCancelled", () => {
         await app.shipmentCancelled(pojo.transaction(), {
           trackingNumber: 12345,
           identifiers: true,
-          packages: [],
+          contents: [],
         });
         assert.fail("An error should have been thrown");
       }
@@ -75,10 +75,9 @@ describe("shipmentCancelled", () => {
           "Invalid shipment: \n" +
           "  trackingNumber must be a string \n" +
           "  identifiers must be of type object \n" +
-          "  shipFrom is required \n" +
           "  shipTo is required \n" +
           "  shipDateTime is required \n" +
-          "  packages must contain at least 1 items"
+          "  contents must contain at least 1 items"
         );
       }
     });

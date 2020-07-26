@@ -164,7 +164,7 @@ const pojo = module.exports = {
       shipFrom: pojo.addressWithContactInfo(),
       shipTo: pojo.addressWithContactInfo(),
       shipDateTime: new Date(),
-      packages: [pojo.salesOrderPackage()],
+      contents: [pojo.salesOrderPackageItem()],
       ...props,
     };
   },
@@ -205,14 +205,6 @@ const pojo = module.exports = {
       packaging: {
         id: "44444444-4444-4444-4444-444444444444",
       },
-      ...props,
-    };
-  },
-
-  salesOrderPackage (props = {}) {
-    return {
-      ...pojo.packageIdentifier(),
-      contents: [pojo.salesOrderPackageItem()],
       ...props,
     };
   },

@@ -1,6 +1,6 @@
-import { FulfillmentService, ShipmentIdentifier, ShipmentIdentifierPOJO } from "../../carriers";
+import { ShipmentIdentifier, ShipmentIdentifierPOJO } from "../../carriers";
 import type { AddressWithContactInfo, AddressWithContactInfoPOJO, DateTimeZone, DateTimeZonePOJO, TimeRange, TimeRangePOJO, URLString } from "../../common";
-import { SalesOrderPackage, SalesOrderPackagePOJO } from "./sales-order-package";
+import { SalesOrderPackageItem, SalesOrderPackageItemPOJO } from "./sales-order-package-item";
 
 /**
  * A shipment that fulfills all or part of one or more sales orders
@@ -15,12 +15,12 @@ export interface SalesOrderShipmentPOJO extends ShipmentIdentifierPOJO {
    * If the shipment is being fulfilled using a well-known third-party carrier, such as UPS, FedEx, DHL, etc.
    * then this field specifies the carrier service.
    */
-  fulfillmentService?: FulfillmentService;
+  fulfillmentService?: string;
 
   /**
    * The sender's contact info and address
    */
-  shipFrom: AddressWithContactInfoPOJO;
+  shipFrom?: AddressWithContactInfoPOJO;
 
   /**
    * The recipient's contact info and address
@@ -34,29 +34,9 @@ export interface SalesOrderShipmentPOJO extends ShipmentIdentifierPOJO {
   shipDateTime: DateTimeZonePOJO | Date | string;
 
   /**
-   * The estimated date and time the shipment will be delivered
+   * Describes the items inside the package
    */
-  deliveryDateTime?: DateTimeZonePOJO | Date | string;
-
-  /**
-   * The minimum number of days delivery will take
-   */
-  minimumDeliveryDays?: number;
-
-  /**
-   * The maximum number of days delivery will take
-   */
-  maximumDeliveryDays?: number;
-
-  /**
-   * The expected delivery window
-   */
-  deliveryWindow?: TimeRangePOJO;
-
-  /**
-   * The packages in the shipment
-   */
-  packages: ReadonlyArray<SalesOrderPackagePOJO>;
+  contents: ReadonlyArray<SalesOrderPackageItemPOJO>;
 }
 
 
@@ -73,12 +53,12 @@ export interface SalesOrderShipment extends ShipmentIdentifier {
    * If the shipment is being fulfilled using a well-known third-party carrier, such as UPS, FedEx, DHL, etc.
    * then this field specifies the carrier service.
    */
-  readonly fulfillmentService?: FulfillmentService;
+  readonly fulfillmentService?: string;
 
   /**
    * The sender's contact info and address
    */
-  readonly shipFrom: AddressWithContactInfo;
+  readonly shipFrom?: AddressWithContactInfo;
 
   /**
    * The recipient's contact info and address
@@ -92,33 +72,7 @@ export interface SalesOrderShipment extends ShipmentIdentifier {
   readonly shipDateTime: DateTimeZone;
 
   /**
-   * The estimated date and time the shipment will be delivered
+   * Describes the items inside the package
    */
-  readonly deliveryDateTime?: DateTimeZone;
-
-  /**
-   * The minimum number of days delivery will take
-   */
-  readonly minimumDeliveryDays?: number;
-
-  /**
-   * The maximum number of days delivery will take
-   */
-  readonly maximumDeliveryDays?: number;
-
-  /**
-   * The expected delivery window
-   */
-  readonly deliveryWindow?: TimeRange;
-
-  /**
-   * The packages in the shipment
-   */
-  readonly packages: ReadonlyArray<SalesOrderPackage>;
-
-  /**
-   * Returns the first package in the `packages` array.
-   * Useful for carriers that only support single-piece shipments.
-   */
-  readonly package: SalesOrderPackage;
+  readonly contents: ReadonlyArray<SalesOrderPackageItem>;
 }

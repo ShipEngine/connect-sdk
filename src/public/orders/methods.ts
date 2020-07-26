@@ -7,13 +7,6 @@ import type { SellerIdentifier } from "./sellers/seller-identifier";
 import { SalesOrderShipment } from "./shipments/sales-order-shipment";
 
 /**
- * Returns detailed information about a seller on the marketplace
- */
-export type GetSeller = (transaction: Transaction, seller: SellerIdentifier)
-  => SellerPOJO | Promise<SellerPOJO>;
-
-
-/**
  * Returns detailed information about a specific sales order
  */
 export type GetSalesOrder = (transaction: Transaction, salesOrder: SalesOrderIdentifier)

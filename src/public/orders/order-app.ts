@@ -1,5 +1,5 @@
 import type { AppPOJO, Connect, ConnectionApp, ConnectionAppDefinition, FormPOJO, InlineOrReference, TransactionPOJO } from "../common";
-import type { GetSalesOrder, GetSalesOrdersByDate, GetSeller, ShipmentCancelled, ShipmentCreated } from "./methods";
+import type { GetSalesOrder, GetSalesOrdersByDate, ShipmentCancelled, ShipmentCreated } from "./methods";
 import type { SalesOrder } from "./sales-order";
 import type { SalesOrderIdentifierPOJO } from "./sales-order-identifier";
 import type { SalesOrderTimeRangePOJO } from "./sales-order-time-range";
@@ -12,11 +12,6 @@ import { SalesOrderShipmentPOJO } from "./shipments/sales-order-shipment";
  * A ShipEngine Integration Platform order app
  */
 export interface OrderAppDefinition extends ConnectionAppDefinition {
-  /**
-   * Returns detailed information about a seller on the marketplace
-   */
-  getSeller?: InlineOrReference<GetSeller>;
-
   /**
    * Returns a specific sales order
    */
@@ -52,7 +47,6 @@ export interface OrderAppPOJO extends OrderAppDefinition, AppPOJO {
   connectionForm: FormPOJO;
   settingsForm?: FormPOJO;
   connect?: Connect;
-  getSeller?: GetSeller;
   getSalesOrder?: GetSalesOrder;
   getSalesOrdersByDate?: GetSalesOrdersByDate;
   shipmentCreated?: ShipmentCreated;
@@ -64,11 +58,6 @@ export interface OrderAppPOJO extends OrderAppDefinition, AppPOJO {
  * A ShipEngine Integration Platform order app
  */
 export interface OrderApp extends ConnectionApp {
-  /**
-   * Returns detailed information about a seller
-   */
-  getSeller?(transaction: TransactionPOJO, id: SellerIdentifierPOJO): Promise<Seller>;
-
   /**
    * Returns a specific sales order
    */

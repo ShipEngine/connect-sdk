@@ -30,7 +30,6 @@ describe("OrderApp", () => {
       connectionForm: app.connectionForm,
       settingsForm: undefined,
       connect: undefined,
-      getSeller: undefined,
       getSalesOrder: undefined,
       getSalesOrdersByDate: undefined,
       shipmentCreated: undefined,
@@ -56,7 +55,6 @@ describe("OrderApp", () => {
       connectionForm: pojo.form(),
       settingsForm: pojo.form(),
       connect () {},
-      getSeller () {},
       getSalesOrder () {},
       getSalesOrdersByDate () {},
       shipmentCreated () {},
@@ -109,7 +107,6 @@ describe("OrderApp", () => {
       logo: path.resolve("logo.svg"),
       connectionForm: pojo.form(),
       connect () {},
-      getSeller () {},
       getSalesOrder () {},
       getSalesOrdersByDate () {},
       manifest: {
@@ -156,7 +153,6 @@ describe("OrderApp", () => {
         name: "My order",
         websiteURL: "https://my-order.com/",
         logo: path.resolve("logo.svg"),
-        getSeller () {},
         getSalesOrder () {},
         getSalesOrdersByDate () {},
         manifest: {
@@ -176,7 +172,6 @@ describe("OrderApp", () => {
         name: "  My \nOrder  ",
         websiteURL: "https://my-order.com/",
         logo: path.resolve("logo.svg"),
-        getSeller () {},
         getSalesOrder () {},
         getSalesOrdersByDate () {},
         manifest: {
@@ -197,7 +192,6 @@ describe("OrderApp", () => {
         name: "My order",
         websiteURL: "https://my-order.com/",
         logo: path.resolve("logo.svg"),
-        getSeller () {},
         getSalesOrder () {},
         getSalesOrdersByDate () {},
         description: 12345,
@@ -218,7 +212,6 @@ describe("OrderApp", () => {
         name: "My order",
         websiteURL: "https://my-order.com/",
         logo: "logo.svg",
-        getSeller () {},
         getSalesOrder () {},
         getSalesOrdersByDate () {},
         manifest: {
@@ -238,7 +231,6 @@ describe("OrderApp", () => {
         name: "My order",
         websiteURL: "https://my-order.com/",
         logo: path.resolve("logo.jpg"),
-        getSeller () {},
         getSalesOrder () {},
         getSalesOrdersByDate () {},
         manifest: {

@@ -1,4 +1,4 @@
-import { AppType, ErrorCode, GetSalesOrder, GetSalesOrdersByDate, GetSeller, OrderApp as IOrderApp, OrderAppPOJO, SalesOrderIdentifierPOJO, SalesOrderShipmentPOJO, SalesOrderTimeRangePOJO, SellerIdentifierPOJO, ShipmentCancelled, ShipmentCreated, TransactionPOJO } from "../../public";
+import { AppType, ErrorCode, GetSalesOrder, GetSalesOrdersByDate, OrderApp as IOrderApp, OrderAppPOJO, SalesOrderIdentifierPOJO, SalesOrderShipmentPOJO, SalesOrderTimeRangePOJO, SellerIdentifierPOJO, ShipmentCancelled, ShipmentCreated, TransactionPOJO } from "../../public";
 import { ConnectionApp, error, hideAndFreeze, Joi, Transaction, validate, _internal } from "../common";
 import { SalesOrder } from "./sales-order";
 import { SalesOrderIdentifier } from "./sales-order-identifier";
@@ -14,7 +14,6 @@ export class OrderApp extends ConnectionApp implements IOrderApp {
   public static readonly [_internal] = {
     label: "ShipEngine Integration Platform order app",
     schema: ConnectionApp[_internal].schema.keys({
-      getSeller: Joi.function(),
       getSalesOrder: Joi.function(),
       getSalesOrdersByDate: Joi.function(),
       shipmentCreated: Joi.function(),
@@ -23,7 +22,6 @@ export class OrderApp extends ConnectionApp implements IOrderApp {
   };
 
   private readonly [_private]: {
-    readonly getSeller?: GetSeller;
     readonly getSalesOrder?: GetSalesOrder;
     readonly getSalesOrdersByDate?: GetSalesOrdersByDate;
     readonly shipmentCreated?: ShipmentCreated;
@@ -40,7 +38,6 @@ export class OrderApp extends ConnectionApp implements IOrderApp {
     this.type = AppType.Order;
 
     this[_private] = {
-      getSeller: pojo.getSeller ? pojo.getSeller : (this.getSeller = undefined),
       getSalesOrder: pojo.getSalesOrder ? pojo.getSalesOrder : (this.getSalesOrder = undefined),
       getSalesOrdersByDate:
         pojo.getSalesOrdersByDate ? pojo.getSalesOrdersByDate : (this.getSalesOrdersByDate = undefined),
@@ -53,28 +50,6 @@ export class OrderApp extends ConnectionApp implements IOrderApp {
 
     this[_internal].references.add(this);
     this[_internal].references.finishedLoading();
-  }
-
-  public async getSeller?(transaction: TransactionPOJO, id: SellerIdentifierPOJO): Promise<Seller> {
-    let _transaction, _id;
-    let { getSeller } = this[_private];
-
-    try {
-      _transaction = new Transaction(validate(transaction, Transaction));
-      _id = new SellerIdentifier(validate(id, SellerIdentifier));
-    }
-    catch (originalError) {
-      throw error(ErrorCode.InvalidInput, "Invalid input to the getSeller method.", { originalError });
-    }
-
-    try {
-      let seller = await getSeller!(_transaction, _id);
-      return new Seller(validate(seller, Seller));
-    }
-    catch (originalError) {
-      let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the getSeller method.", { originalError, transactionID });
-    }
   }
 
   public async getSalesOrder?(transaction: TransactionPOJO, id: SalesOrderIdentifierPOJO): Promise<SalesOrder> {

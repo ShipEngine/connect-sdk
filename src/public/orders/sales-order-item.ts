@@ -106,7 +106,7 @@ export interface SalesOrderItem extends SalesOrderItemIdentifier {
   readonly itemURL?: URL;
 
   /**
-   * The URL of a webpage where the customer can view an image of the order item 
+   * The URL of a webpage where the customer can view an image of the order item
    */
   readonly thumbnailURL?: URL;
 

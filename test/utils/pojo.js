@@ -271,7 +271,6 @@ const pojo = module.exports = {
   quantity (props = {}) {
     return {
       value: 1,
-      unit: "ea",
       ...props,
     };
   },

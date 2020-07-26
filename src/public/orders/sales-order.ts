@@ -158,12 +158,6 @@ export interface SalesOrder extends SalesOrderIdentifier {
   readonly totalCharges: MonetaryValue;
 
   /**
-   * The total amount of the order. This is `totalCharges` plus the `totalAmount`
-   * of all items in the order.
-   */
-  readonly totalAmount: MonetaryValue;
-
-  /**
    * The items in this sales order
    */
   readonly items: ReadonlyArray<SalesOrderItem>;

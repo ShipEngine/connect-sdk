@@ -42,7 +42,6 @@ export class SalesOrder extends SalesOrderIdentifierBase implements ISalesOrder 
   public readonly shippingPreferences: ShippingPreferences;
   public readonly charges: ReadonlyArray<Charge>;
   public readonly totalCharges: MonetaryValue;
-  public readonly totalAmount: MonetaryValue;
   public readonly items: ReadonlyArray<SalesOrderItem>;
   public readonly notes: ReadonlyArray<Note>;
   public readonly metadata: object;
@@ -64,10 +63,6 @@ export class SalesOrder extends SalesOrderIdentifierBase implements ISalesOrder 
     this.charges = pojo.charges ? pojo.charges.map((charge) => new Charge(charge)) : [];
     this.totalCharges = calculateTotalCharges(this.charges);
     this.items = pojo.items.map((item) => new SalesOrderItem(item));
-    this.totalAmount = MonetaryValue.sum([
-      this.totalCharges,
-      ...this.items.map((item) => item.totalAmount)
-    ]);
     this.notes = createNotes(pojo.notes);
     this.metadata = pojo.metadata || {};
 

@@ -1,8 +1,6 @@
-import type { Charge, ChargePOJO, MonetaryValue, MonetaryValuePOJO, Note, NotePOJO, Quantity, QuantityPOJO, URLString, Weight, WeightPOJO } from "../common";
+import type { MonetaryValue, MonetaryValuePOJO, Note, NotePOJO, Quantity, QuantityPOJO, URLString, Weight, WeightPOJO } from "../common";
 import type { ProductIdentifier, ProductIdentifierPOJO } from "../products";
-import type { FulfillmentStatus } from "./enums";
 import type { SalesOrderItemIdentifier, SalesOrderItemIdentifierPOJO } from "./sales-order-item-identifier";
-import type { ShippingPreferences, ShippingPreferencesPOJO } from "./shipping-preferences";
 
 /**
  * An item in a sales order
@@ -19,14 +17,9 @@ export interface SalesOrderItemPOJO extends SalesOrderItemIdentifierPOJO {
   description?: string;
 
   /**
-   * Indicates whether the order item has been fulfilled
-   */
-  fulfillmentStatus?: FulfillmentStatus;
-
-  /**
    * The product associated with this item
    */
-  product?: ProductIdentifierPOJO;
+  product: ProductIdentifierPOJO;
 
   /**
    * The quantity of this item in the sales order
@@ -50,19 +43,9 @@ export interface SalesOrderItemPOJO extends SalesOrderItemIdentifierPOJO {
   itemURL?: URLString | URL;
 
   /**
-   * The URL of a webpage where the customer can track the package
+   * The URL of a webpage where the customer can view an image of the order item
    */
-  trackingURL?: URLString | URL;
-
-  /**
-   * Preferences on how this item should be shipped
-   */
-  shippingPreferences?: ShippingPreferencesPOJO;
-
-  /**
-   * The breakdown of charges for this order item
-   */
-  charges?: ReadonlyArray<ChargePOJO>;
+  thumbnailURL?: URLString | URL;
 
   /**
    * Human-readable information regarding this order item, such as gift notes, backorder notices, etc.
@@ -92,14 +75,9 @@ export interface SalesOrderItem extends SalesOrderItemIdentifier {
   readonly description: string;
 
   /**
-   * Indicates whether the order item has been fulfilled
-   */
-  readonly fulfillmentStatus?: FulfillmentStatus;
-
-  /**
    * The product associated with this item
    */
-  readonly product?: ProductIdentifier;
+  readonly product: ProductIdentifier;
 
   /**
    * The quantity of this item in the sales order
@@ -128,29 +106,9 @@ export interface SalesOrderItem extends SalesOrderItemIdentifier {
   readonly itemURL?: URL;
 
   /**
-   * The URL of a webpage where the customer can track the package
+   * The URL of a webpage where the customer can view an image of the order item 
    */
-  readonly trackingURL?: URL;
-
-  /**
-   * Preferences on how this item should be shipped
-   */
-  readonly shippingPreferences: ShippingPreferences;
-
-  /**
-   * The breakdown of charges for this order item
-   */
-  readonly charges: ReadonlyArray<Charge>;
-
-  /**
-   * The total cost of all charges for this order item
-   */
-  readonly totalCharges: MonetaryValue;
-
-  /**
-   * The total amount of the order item. This is `totalPrice` plus `totalCharges`.
-   */
-  readonly totalAmount: MonetaryValue;
+  readonly thumbnailURL?: URL;
 
   /**
    * Human-readable information regarding this order item, such as gift notes, backorder notices, etc.

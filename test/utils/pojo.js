@@ -400,6 +400,7 @@ const pojo = module.exports = {
       name: "My Item",
       quantity: pojo.quantity(),
       unitPrice: pojo.monetaryValue(),
+      product: pojo.productIdentifier(),
       ...props,
     };
   },

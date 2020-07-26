@@ -1,5 +1,5 @@
 import * as currency from "currency.js";
-import { Currency, ErrorCode, MonetaryValue as IMonetaryValue, MonetaryValuePOJO } from "../../../public";
+import { ErrorCode, MonetaryValue as IMonetaryValue, MonetaryValuePOJO } from "../../../public";
 import { error } from "../errors";
 import { hideAndFreeze, _internal } from "../utils";
 import { Joi } from "../validation";
@@ -12,12 +12,12 @@ export class MonetaryValue implements IMonetaryValue {
     label: "monetary value",
     schema: Joi.object({
       value: Joi.alternatives(Joi.number(), Joi.string().money()).required(),
-      currency: Joi.string().enum(Currency).required(),
+      currency: Joi.string().required(),
     }),
   };
 
   public readonly value: string;
-  public readonly currency: Currency;
+  public readonly currency: string;
 
   public constructor(pojo: MonetaryValuePOJO) {
     this.value = currency(pojo.value).toString();
@@ -31,7 +31,7 @@ export class MonetaryValue implements IMonetaryValue {
    * Returns the sum total of all the given monetary values
    */
   public static sum(monetaryValues: MonetaryValue[]): MonetaryValue {
-    let uniqueCurrencies = new Set<Currency>();
+    let uniqueCurrencies = new Set<string>();
     let total = currency(0);
 
     for (let monetaryValue of monetaryValues) {
@@ -53,7 +53,7 @@ export class MonetaryValue implements IMonetaryValue {
     }
 
     return new MonetaryValue({
-      currency: [...uniqueCurrencies][0] || Currency.UnitedStatesDollar,
+      currency: [...uniqueCurrencies][0] || "usd",
       value: total.toString(),
     });
   }

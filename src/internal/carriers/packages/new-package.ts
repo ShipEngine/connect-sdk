@@ -1,4 +1,4 @@
-import { Currency, NewPackage as INewPackage, NewPackagePOJO } from "../../../public";
+import { NewPackage as INewPackage, NewPackagePOJO } from "../../../public";
 import { App, DefinitionIdentifier, Dimensions, hideAndFreeze, Joi, MonetaryValue, Weight, _internal } from "../../common";
 import { Customs } from "../customs/customs";
 import { DeliveryConfirmation } from "../delivery-confirmation";
@@ -39,7 +39,7 @@ export class NewPackage implements INewPackage {
     this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmation, DeliveryConfirmation);
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
-    this.insuredValue = new MonetaryValue(pojo.insuredValue || { value: "0", currency: Currency.UnitedStatesDollar });
+    this.insuredValue = new MonetaryValue(pojo.insuredValue || { value: "0", currency: "usd" });
     this.containsAlcohol = pojo.containsAlcohol || false;
     this.isNonMachinable = pojo.isNonMachinable || false;
     this.label = new NewLabel(pojo.label);

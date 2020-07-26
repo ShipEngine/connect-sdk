@@ -1,19 +1,5 @@
 /**
- * An ISO 4217 currency code that is supported by ShipEngine
- *
- * @see https://en.wikipedia.org/wiki/ISO_4217
- */
-export enum Currency {
-  UnitedStatesDollar = "USD",
-  CanadianDollar = "CAD",
-  AustralianDollar = "AUD",
-  GreatBritishPound = "GBP",
-  Euro = "EUR",
-  NewZealandDollar = "NZD",
-}
-
-/**
- * A monetary value in a supported currency
+ * A monetary value
  */
 export interface MonetaryValuePOJO {
   /**
@@ -26,11 +12,11 @@ export interface MonetaryValuePOJO {
   /**
    * The currency that the value represents.
    */
-  currency: Currency;
+  currency: string;
 }
 
 /**
- * A monetary value in a supported currency
+ * A monetary value
  */
 export interface MonetaryValue {
   /**
@@ -43,5 +29,5 @@ export interface MonetaryValue {
   /**
    * The currency that the value represents.
    */
-  readonly currency: Currency;
+  readonly currency: string;
 }

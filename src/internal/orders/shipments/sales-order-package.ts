@@ -1,4 +1,4 @@
-import { Currency, InsuranceProvider, SalesOrderPackage as ISalesOrderPackage, SalesOrderPackagePOJO } from "../../../public";
+import { InsuranceProvider, SalesOrderPackage as ISalesOrderPackage, SalesOrderPackagePOJO } from "../../../public";
 import { Customs, PackageIdentifier, PackageIdentifierBase } from "../../carriers";
 import { Dimensions, hideAndFreeze, Joi, MonetaryValue, Weight, _internal } from "../../common";
 import { SalesOrderPackageItem } from "./sales-order-package-item";
@@ -31,7 +31,7 @@ export class SalesOrderPackage extends PackageIdentifierBase implements ISalesOr
     this.trackingURL = pojo.trackingURL ? new URL(pojo.trackingURL as string) : undefined;
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
-    this.insuredValue = new MonetaryValue(pojo.insuredValue || { value: "0", currency: Currency.UnitedStatesDollar });
+    this.insuredValue = new MonetaryValue(pojo.insuredValue || { value: "0", currency: "usd" });
     this.insuranceProvider = pojo.insuranceProvider || InsuranceProvider.Carrier;
     this.customs = new Customs(pojo.customs || {});
     this.contents = (pojo.contents || []).map((item) => new SalesOrderPackageItem(item));

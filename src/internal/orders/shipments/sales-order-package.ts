@@ -31,7 +31,7 @@ export class SalesOrderPackage extends PackageIdentifierBase implements ISalesOr
     this.trackingURL = pojo.trackingURL ? new URL(pojo.trackingURL as string) : undefined;
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
-    this.insuredValue = new MonetaryValue(pojo.insuredValue || { value: 0, currency: Currency.UnitedStatesDollar });
+    this.insuredValue = new MonetaryValue(pojo.insuredValue || { value: "0", currency: Currency.UnitedStatesDollar });
     this.insuranceProvider = pojo.insuranceProvider || InsuranceProvider.Carrier;
     this.customs = new Customs(pojo.customs || {});
     this.contents = (pojo.contents || []).map((item) => new SalesOrderPackageItem(item));

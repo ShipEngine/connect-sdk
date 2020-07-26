@@ -39,7 +39,7 @@ export class NewPackage implements INewPackage {
     this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmation, DeliveryConfirmation);
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
-    this.insuredValue = new MonetaryValue(pojo.insuredValue || { value: 0, currency: Currency.UnitedStatesDollar });
+    this.insuredValue = new MonetaryValue(pojo.insuredValue || { value: "0", currency: Currency.UnitedStatesDollar });
     this.containsAlcohol = pojo.containsAlcohol || false;
     this.isNonMachinable = pojo.isNonMachinable || false;
     this.label = new NewLabel(pojo.label);

@@ -21,7 +21,7 @@ export interface MonetaryValuePOJO {
    *
    * NOTE: We recommend using a string value to avoid floating point rounding issues.
    */
-  value: number | string;
+  value: string;
 
   /**
    * The currency that the value represents.

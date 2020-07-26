@@ -8,11 +8,6 @@ export interface BuyerPOJO extends ContactInfoPOJO {
    * The marketplace's unique ID for the buyer
    */
   id: string;
-
-  /**
-   * Your own identifiers for this buyer
-   */
-  identifiers?: IdentifiersPOJO;
 }
 
 
@@ -24,9 +19,4 @@ export interface Buyer extends ContactInfo {
    * The marketplace's unique ID for the sales order
    */
   readonly id: string;
-
-  /**
-   * Your own identifiers for this sales order
-   */
-  readonly identifiers: Identifiers;
 }

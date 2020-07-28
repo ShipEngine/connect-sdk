@@ -15,7 +15,8 @@ export interface SalesOrderShipmentPOJO extends ShipmentIdentifierPOJO {
    * If the shipment is being fulfilled using a well-known third-party carrier, such as UPS, FedEx, DHL, etc.
    * then this field specifies the carrier service.
    */
-  fulfillmentService?: FulfillmentService;
+  // This probably shouldn't be an enum
+  fulfillmentService?: string;
 
   /**
    * The sender's contact info and address
@@ -36,27 +37,32 @@ export interface SalesOrderShipmentPOJO extends ShipmentIdentifierPOJO {
   /**
    * The estimated date and time the shipment will be delivered
    */
-  deliveryDateTime?: DateTimeZonePOJO | Date | string;
+  // This isn't supported by the platform
+  // deliveryDateTime?: DateTimeZonePOJO | Date | string;
 
   /**
    * The minimum number of days delivery will take
    */
-  minimumDeliveryDays?: number;
+  // This isn't supported by the platform
+  // minimumDeliveryDays?: number;
 
   /**
    * The maximum number of days delivery will take
    */
-  maximumDeliveryDays?: number;
+  // This isn't supported by the platform
+  // maximumDeliveryDays?: number;
 
   /**
    * The expected delivery window
    */
-  deliveryWindow?: TimeRangePOJO;
+  // This isn't supported by the platform
+  //deliveryWindow?: TimeRangePOJO;
 
   /**
    * The packages in the shipment
    */
-  packages: ReadonlyArray<SalesOrderPackagePOJO>;
+  // This needs to be replaced with information about orders and items; the platform does not provide package information
+  // packages: ReadonlyArray<SalesOrderPackagePOJO>;
 }
 
 

@@ -12,15 +12,11 @@ import { SalesOrderShipmentPOJO } from "./shipments/sales-order-shipment";
  * A ShipEngine Integration Platform order app
  */
 export interface OrderAppDefinition extends ConnectionAppDefinition {
-  /**
-   * Returns detailed information about a seller on the marketplace
-   */
-  getSeller?: InlineOrReference<GetSeller>;
+  // We should remove this unless we have a plan to consume it in the platform
+  //getSeller?: InlineOrReference<GetSeller>;
 
-  /**
-   * Returns a specific sales order
-   */
-  getSalesOrder?: InlineOrReference<GetSalesOrder>;
+  // We should remove this unless we have a plan to consume it in the platform
+  // getSalesOrder?: InlineOrReference<GetSalesOrder>;
 
   /**
    * Returns all orders that were created and/or modified within a given timeframe

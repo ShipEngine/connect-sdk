@@ -10,7 +10,8 @@ export enum QuantityUnit {
  */
 export interface QuantityPOJO {
   value: number;
-  unit: QuantityUnit;
+  // The platform doen't support quantity units
+  // unit: QuantityUnit;
 }
 
 /**

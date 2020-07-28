@@ -12,6 +12,7 @@ export interface ProductIdentifierPOJO {
   /**
    * The Stock Keeping Unit code for this item
    */
+  // Note: the platform requires a SKU, so if this is missing we use the product's id
   sku?: string;
 
   /**

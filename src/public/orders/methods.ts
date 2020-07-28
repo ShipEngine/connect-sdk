@@ -23,8 +23,9 @@ export type GetSalesOrder = (transaction: Transaction, salesOrder: SalesOrderIde
 /**
  * Returns all orders that were created and/or modified within a given timeframe
  */
-export type GetSalesOrdersByDate = (transaction: Transaction, range: SalesOrderTimeRange)
-  => Iterable<SalesOrderPOJO> | Promise<Iterable<SalesOrderPOJO>> | AsyncIterable<SalesOrderPOJO>;
+// We need to remove async iterable from this interface and replace it with pagination data in the request
+export type GetSalesOrdersByDate = (transaction: Transaction, range: SalesOrderTimeRange /* pagination */)
+  => Iterable<SalesOrderPOJO> | Promise<Iterable<SalesOrderPOJO>>;
 
 
 /**

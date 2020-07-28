@@ -18,15 +18,15 @@ export enum Currency {
 export interface MonetaryValuePOJO {
   /**
    * The amount of this value.
-   *
-   * NOTE: We recommend using a string value to avoid floating point rounding issues.
    */
-  value: number | string;
+  // We need this to be a number so we can compute totals for each charge type
+  value: number;
 
   /**
    * The currency that the value represents.
    */
-  currency: Currency;
+  // The platform supports arbitrary currency codes; it doesn't seem like a good idea to tie ourselves to an enum for this
+  currency: string;
 }
 
 /**

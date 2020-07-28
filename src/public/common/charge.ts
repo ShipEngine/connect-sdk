@@ -14,12 +14,14 @@ export interface ChargePOJO {
   /**
    * The carrier's description of the charge, not specific to the user
    */
-  description?: string;
+  // This isn't stored in the platform
+  // description?: string;
 
   /**
    * The carrier's code for this charge
    */
-  code?: string;
+  // This isn't stored in the platform
+  // code?: string;
 
   /**
    * The type of charge
@@ -29,12 +31,14 @@ export interface ChargePOJO {
   /**
    * The amount of the charge (negative amount for a credit)
    */
+  // Note: All charges on an order must be in the same currency
   amount: MonetaryValuePOJO;
 
   /**
    * Human-readable information regarding this charge, such as an explanation or reference number
    */
-  notes?: string | ReadonlyArray<string | NotePOJO>;
+  // Notes aren't associated with charges in the platform
+  // notes?: string | ReadonlyArray<string | NotePOJO>;
 }
 
 /**

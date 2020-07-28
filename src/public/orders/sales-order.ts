@@ -25,15 +25,11 @@ export interface SalesOrderPOJO extends SalesOrderIdentifierPOJO {
    */
   status: SalesOrderStatus;
 
-  /**
-   * Indicates whether the order has been fulfilled
-   */
-  fulfillmentStatus?: FulfillmentStatus;
+  // This isn't tracked in the platform
+  //fulfillmentStatus?: FulfillmentStatus;
 
-  /**
-   * Indicates whether the customer has paid for the order
-   */
-  paymentStatus?: PaymentStatus;
+  // This isn't tracked in the platform
+  //paymentStatus?: PaymentStatus;
 
   /**
    * Indicates how the customer has paid for the order
@@ -53,7 +49,8 @@ export interface SalesOrderPOJO extends SalesOrderIdentifierPOJO {
   /**
    * Identifies the seller who sold the order
    */
-  seller: SellerIdentifierPOJO;
+  // This data is provided by the platform
+  //seller: SellerIdentifierPOJO;
 
   /**
    * The buyer who bought the order. This is not necessarily the same person as the `shipTo`

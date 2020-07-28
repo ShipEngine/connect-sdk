@@ -3,6 +3,7 @@ import type { ContactInfo, ContactInfoPOJO, Identifiers, IdentifiersPOJO } from 
 /**
  * The person who bought a sales order
  */
+// This interface should contain an optional address
 export interface BuyerPOJO extends ContactInfoPOJO {
   /**
    * The marketplace's unique ID for the buyer
@@ -12,7 +13,8 @@ export interface BuyerPOJO extends ContactInfoPOJO {
   /**
    * Your own identifiers for this buyer
    */
-  identifiers?: IdentifiersPOJO;
+  // These aren't stored in the platform
+  //identifiers?: IdentifiersPOJO;
 }
 
 

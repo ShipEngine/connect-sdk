@@ -7,7 +7,8 @@ export interface ContactInfoPOJO {
   name: string | PersonNamePOJO;
   email?: string;
   phoneNumber?: string;
-  phoneNumberExtension?: string;
+  // Addresses in the platform combine extensions with the base number
+  // phoneNumberExtension?: string;
 }
 
 /**

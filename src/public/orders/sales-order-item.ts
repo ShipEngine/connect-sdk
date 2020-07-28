@@ -16,17 +16,20 @@ export interface SalesOrderItemPOJO extends SalesOrderItemIdentifierPOJO {
   /**
    * A short description of the item. This is often the same as the product summary.
    */
+  // Note: we save either the description if it exists, or the name, but never both
   description?: string;
 
   /**
    * Indicates whether the order item has been fulfilled
    */
-  fulfillmentStatus?: FulfillmentStatus;
+  // This isn't tracked in the platform
+  // fulfillmentStatus?: FulfillmentStatus;
 
   /**
    * The product associated with this item
    */
-  product?: ProductIdentifierPOJO;
+  // The platform requires a SKU, so this must be requried
+  product: ProductIdentifierPOJO;
 
   /**
    * The quantity of this item in the sales order
@@ -49,20 +52,29 @@ export interface SalesOrderItemPOJO extends SalesOrderItemIdentifierPOJO {
    */
   itemURL?: URLString | URL;
 
+  // This is commonly requested in new integrations
+  /**
+   * The URL of a small image of this item
+   */
+  thumbnailURL?: URLString | URL;
+
   /**
    * The URL of a webpage where the customer can track the package
    */
-  trackingURL?: URLString | URL;
+  // This isn't supported by the platform
+  // trackingURL?: URLString | URL;
 
   /**
    * Preferences on how this item should be shipped
    */
-  shippingPreferences?: ShippingPreferencesPOJO;
+  // This isn't supported by the platform
+  // shippingPreferences?: ShippingPreferencesPOJO;
 
   /**
    * The breakdown of charges for this order item
    */
-  charges?: ReadonlyArray<ChargePOJO>;
+  // This isn't supported by the platform; we can only store unit price/cost, tax amount and shipping amount
+  // charges?: ReadonlyArray<ChargePOJO>;
 
   /**
    * Human-readable information regarding this order item, such as gift notes, backorder notices, etc.

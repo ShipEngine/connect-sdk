@@ -12,7 +12,8 @@ export interface AddressPOJO {
   postalCode: string;
   country: Country;
   isResidential?: boolean;
-  coordinates?: GeoCoordinatePOJO;
+  // Addresses in the platform don't have this
+  // coordinates?: GeoCoordinatePOJO;
 }
 
 

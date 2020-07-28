@@ -18,7 +18,8 @@ export interface ShippingPreferencesPOJO {
   /**
    * Indicates whether expedited shipping is requested
    */
-  expeditedService?: boolean;
+  // The platform doesn't accept this
+  // expeditedService?: boolean;
 
   /**
    * Indicates whether the shipment needs to be marked as containing alcohol

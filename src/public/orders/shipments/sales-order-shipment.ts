@@ -21,7 +21,8 @@ export interface SalesOrderShipmentPOJO extends ShipmentIdentifierPOJO {
   /**
    * The sender's contact info and address
    */
-  shipFrom: AddressWithContactInfoPOJO;
+  // We won't always send this
+  shipFrom?: AddressWithContactInfoPOJO;
 
   /**
    * The recipient's contact info and address

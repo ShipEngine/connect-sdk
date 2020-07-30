@@ -30,6 +30,7 @@ describe("DeliveryConfirmation", () => {
       name: "Handshake",
       type: "signature",
       description: "",
+      code: ""
     });
   });
 
@@ -47,6 +48,7 @@ describe("DeliveryConfirmation", () => {
       name: "Handshake",
       type: "signature",
       description: "A firm handshake",
+      code: ""
     });
   });
 
@@ -64,6 +66,7 @@ describe("DeliveryConfirmation", () => {
       name: "Handshake",
       type: "signature",
       description: "",
+      code: ""
     });
   });
 

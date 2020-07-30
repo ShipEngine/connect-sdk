@@ -408,6 +408,7 @@ const pojo = module.exports = {
 
   buyer (props = {}) {
     return {
+      address: pojo.address(),
       ...pojo.buyerIdentifier(),
       ...pojo.contactInfo(),
       ...props,

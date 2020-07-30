@@ -14,6 +14,11 @@ export interface DefinitionIdentifierPOJO {
    * Your own identifiers for the object
    */
   identifiers?: IdentifiersPOJO;
+
+  /**
+   * Optional code used to map to what the carrier or marketplace uses to identify the resource
+   */
+  code?: string;
 }
 
 /**
@@ -29,4 +34,10 @@ export interface DefinitionIdentifier {
    * Your own identifiers for the object
    */
   readonly identifiers: Identifiers;
+
+  /**
+   * Optional code used to map to what the carrier or marketplace uses to identify the resource
+   */
+  readonly code: string;
+
 }

@@ -25,6 +25,7 @@ const pojo = module.exports = {
       name: "Dummy App",
       websiteURL: "https://example.com/",
       logo: path.resolve("logo.svg"),
+      icon: path.resolve("logo.svg"),
       connectionForm: pojo.form(),
       connect () {},
       ...props,

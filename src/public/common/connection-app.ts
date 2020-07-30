@@ -30,6 +30,11 @@ export interface ConnectionAppDefinition extends AppDefinition {
   logo: FilePath;
 
   /**
+   * The third party service's icon image
+   */
+  icon: FilePath;
+
+  /**
    * A form that allows the user to connect to the service.
    * This form will usually prompt for an account number and login credentials.
    */
@@ -81,6 +86,11 @@ export interface ConnectionApp extends App {
    * The third party service's logo image
    */
   readonly logo: FilePath;
+
+  /**
+   * The third party service's icon image
+   */
+  readonly icon: FilePath;
 
   /**
    * A form that allows the user to connect to the third-party service.

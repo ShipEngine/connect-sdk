@@ -16,6 +16,7 @@ export abstract class ConnectionApp extends App implements IConnectionApp {
       description: Joi.string().trim().singleLine().allow("").max(1000),
       websiteURL: Joi.string().website().required(),
       logo: Joi.string().filePath({ ext: ".svg" }).required(),
+      icon: Joi.string().filePath({ ext: ".svg" }).required(),
       connectionForm: Form[_internal].schema.required(),
       settingsForm: Form[_internal].schema,
       connect: Joi.function(),
@@ -30,6 +31,7 @@ export abstract class ConnectionApp extends App implements IConnectionApp {
   public readonly description: string;
   public readonly websiteURL: URL;
   public readonly logo: FilePath;
+  public readonly icon: FilePath;
   public readonly connectionForm: Form;
   public readonly settingsForm?: Form;
 
@@ -40,6 +42,7 @@ export abstract class ConnectionApp extends App implements IConnectionApp {
     this.description = pojo.description || "";
     this.websiteURL = new URL(pojo.websiteURL);
     this.logo =  pojo.logo;
+    this.icon =  pojo.icon;
     this.connectionForm = new Form(pojo.connectionForm);
     this.settingsForm = pojo.settingsForm && new Form(pojo.settingsForm);
 

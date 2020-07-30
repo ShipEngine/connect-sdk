@@ -13,6 +13,7 @@ describe("OrderApp", () => {
       name: "My order",
       websiteURL: "https://my-order.com/",
       logo: path.resolve("logo.svg"),
+      icon: path.resolve("logo.svg"),
       connectionForm: pojo.form(),
       manifest: {
         name: "@company/order",
@@ -27,6 +28,7 @@ describe("OrderApp", () => {
       description: "",
       websiteURL: new URL("https://my-order.com/"),
       logo: path.resolve("logo.svg"),
+      icon: path.resolve("logo.svg"),
       connectionForm: app.connectionForm,
       settingsForm: undefined,
       connect: undefined,
@@ -51,6 +53,7 @@ describe("OrderApp", () => {
       description: "My order description",
       websiteURL: "https://my-order.com/",
       logo: path.resolve("logo.svg"),
+      icon: path.resolve("logo.svg"),
       connectionForm: pojo.form(),
       settingsForm: pojo.form(),
       connect () {},
@@ -78,6 +81,7 @@ describe("OrderApp", () => {
       description: "My order description",
       websiteURL: new URL("https://my-order.com/"),
       logo: path.resolve("logo.svg"),
+      icon: path.resolve("logo.svg"),
       connectionForm: app.connectionForm,
       settingsForm: app.settingsForm,
       sdkVersion: parseFloat(sdkManifest.version),
@@ -103,6 +107,7 @@ describe("OrderApp", () => {
       description: "",
       websiteURL: "https://my-order.com/",
       logo: path.resolve("logo.svg"),
+      icon: path.resolve("logo.svg"),
       connectionForm: pojo.form(),
       connect () {},
       getSalesOrdersByDate () {},
@@ -120,6 +125,7 @@ describe("OrderApp", () => {
       description: "",
       websiteURL: new URL("https://my-order.com/"),
       logo: path.resolve("logo.svg"),
+      icon: path.resolve("logo.svg"),
       connectionForm: app.connectionForm,
       settingsForm: undefined,
       shipmentCreated: undefined,
@@ -150,6 +156,7 @@ describe("OrderApp", () => {
         name: "My order",
         websiteURL: "https://my-order.com/",
         logo: path.resolve("logo.svg"),
+        icon: path.resolve("logo.svg"),
         getSalesOrdersByDate () {},
         manifest: {
           name: "@company/order",
@@ -168,6 +175,7 @@ describe("OrderApp", () => {
         name: "  My \nOrder  ",
         websiteURL: "https://my-order.com/",
         logo: path.resolve("logo.svg"),
+        icon: path.resolve("logo.svg"),
         getSalesOrdersByDate () {},
         manifest: {
           name: "@company/order",
@@ -187,6 +195,7 @@ describe("OrderApp", () => {
         name: "My order",
         websiteURL: "https://my-order.com/",
         logo: path.resolve("logo.svg"),
+        icon: path.resolve("logo.svg"),
         getSalesOrdersByDate () {},
         description: 12345,
         manifest: {
@@ -205,6 +214,7 @@ describe("OrderApp", () => {
         id: "12345678-1234-1234-1234-123456789012",
         name: "My order",
         websiteURL: "https://my-order.com/",
+        icon: path.resolve("logo.svg"),
         logo: "logo.svg",
         getSalesOrdersByDate () {},
         manifest: {
@@ -224,6 +234,7 @@ describe("OrderApp", () => {
         name: "My order",
         websiteURL: "https://my-order.com/",
         logo: path.resolve("logo.jpg"),
+        icon: path.resolve("logo.svg"),
         getSalesOrdersByDate () {},
         manifest: {
           name: "@company/order",
@@ -233,6 +244,25 @@ describe("OrderApp", () => {
       ).to.throw(
         "Invalid ShipEngine Integration Platform order app: \n" +
         "  logo must be a .svg file"
+      );
+    });
+
+    it("should throw an error if the icon is not an SVG", () => {
+      expect(() => new OrderApp({
+        id: "12345678-1234-1234-1234-123456789012",
+        name: "My order",
+        websiteURL: "https://my-order.com/",
+        logo: path.resolve("logo.svg"),
+        icon: path.resolve("logo.jpg"),
+        getSalesOrdersByDate () {},
+        manifest: {
+          name: "@company/order",
+          version: "1.0.0"
+        }
+      })
+      ).to.throw(
+        "Invalid ShipEngine Integration Platform order app: \n" +
+        "  icon must be a .svg file"
       );
     });
 

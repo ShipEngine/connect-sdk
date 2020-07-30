@@ -13,6 +13,7 @@ describe("CarrierApp", () => {
       name: "My carrier",
       websiteURL: "https://my-carrier.com/",
       logo: path.resolve("logo.svg"),
+      icon: path.resolve("logo.svg"),
       connectionForm: pojo.form(),
       deliveryServices: [pojo.deliveryService()],
       manifest: {
@@ -28,6 +29,7 @@ describe("CarrierApp", () => {
       description: "",
       websiteURL: new URL("https://my-carrier.com/"),
       logo: path.resolve("logo.svg"),
+      icon: path.resolve("logo.svg"),
       manifestLocations: undefined,
       manifestShipments: undefined,
       connectionForm: app.connectionForm,
@@ -60,6 +62,7 @@ describe("CarrierApp", () => {
       description: "My carrier description",
       websiteURL: "https://my-carrier.com/",
       logo: path.resolve("logo.svg"),
+      icon: path.resolve("logo.svg"),
       manifestLocations: "single_location",
       manifestShipments: "explicit_shipments",
       connectionForm: pojo.form(),
@@ -95,6 +98,7 @@ describe("CarrierApp", () => {
       description: "My carrier description",
       websiteURL: new URL("https://my-carrier.com/"),
       logo: path.resolve("logo.svg"),
+      icon: path.resolve("logo.svg"),
       manifestLocations: "single_location",
       manifestShipments: "explicit_shipments",
       connectionForm: app.connectionForm,
@@ -123,6 +127,7 @@ describe("CarrierApp", () => {
       name: "My carrier",
       description: "",
       websiteURL: "https://my-carrier.com/",
+      icon: path.resolve("logo.svg"),
       logo: path.resolve("logo.svg"),
       connectionForm: pojo.form(),
       deliveryServices: [pojo.deliveryService()],
@@ -139,6 +144,7 @@ describe("CarrierApp", () => {
       name: "My carrier",
       description: "",
       websiteURL: new URL("https://my-carrier.com/"),
+      icon: path.resolve("logo.svg"),
       logo: path.resolve("logo.svg"),
       manifestLocations: undefined,
       manifestShipments: undefined,
@@ -172,6 +178,7 @@ describe("CarrierApp", () => {
         id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
+        icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
         connectionForm: pojo.form(),
         deliveryServices: [
@@ -202,6 +209,7 @@ describe("CarrierApp", () => {
         id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
+        icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
         connectionForm: pojo.form(),
         deliveryServices: [
@@ -231,6 +239,7 @@ describe("CarrierApp", () => {
         id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
+        icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
         connectionForm: pojo.form(),
         deliveryServices: [
@@ -255,6 +264,7 @@ describe("CarrierApp", () => {
         id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
+        icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
         connectionForm: pojo.form(),
         deliveryServices: [
@@ -279,6 +289,7 @@ describe("CarrierApp", () => {
         id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
+        icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
         connectionForm: pojo.form(),
         deliveryServices: [
@@ -302,6 +313,7 @@ describe("CarrierApp", () => {
         id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
+        icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
         connectionForm: pojo.form(),
         deliveryServices: [
@@ -327,6 +339,7 @@ describe("CarrierApp", () => {
         id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
+        icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
         connectionForm: pojo.form(),
         deliveryServices: [
@@ -354,6 +367,7 @@ describe("CarrierApp", () => {
         id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
+        icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
         connectionForm: pojo.form(),
         deliveryServices: [
@@ -386,6 +400,7 @@ describe("CarrierApp", () => {
         id: "12345",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
+        icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
         deliveryServices: [pojo.deliveryService()],
         manifest: {
@@ -404,6 +419,7 @@ describe("CarrierApp", () => {
         id: "12345678-1234-1234-1234-123456789012",
         name: "  My \nCarrier  ",
         websiteURL: "https://my-carrier.com/",
+        icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
         deliveryServices: [pojo.deliveryService()],
         manifest: {
@@ -423,6 +439,7 @@ describe("CarrierApp", () => {
         id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
+        icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
         deliveryServices: [pojo.deliveryService()],
         description: 12345,
@@ -442,6 +459,7 @@ describe("CarrierApp", () => {
         id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
+        icon: path.resolve("logo.svg"),
         logo: "logo.svg",
         deliveryServices: [pojo.deliveryService()],
         manifest: {
@@ -460,6 +478,7 @@ describe("CarrierApp", () => {
         id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
+        icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.jpg"),
         deliveryServices: [pojo.deliveryService()],
         manifest: {
@@ -470,6 +489,25 @@ describe("CarrierApp", () => {
       ).to.throw(
         "Invalid ShipEngine Integration Platform carrier app: \n" +
         "  logo must be a .svg file"
+      );
+    });
+
+    it("should throw an error if the icon is not an SVG", () => {
+      expect(() => new CarrierApp({
+        id: "12345678-1234-1234-1234-123456789012",
+        name: "My carrier",
+        websiteURL: "https://my-carrier.com/",
+        icon: path.resolve("icon.png"),
+        logo: path.resolve("logo.svg"),
+        deliveryServices: [pojo.deliveryService()],
+        manifest: {
+          name: "@company/carrier",
+          version: "1.0.0"
+        }
+      })
+      ).to.throw(
+        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "  icon must be a .svg file"
       );
     });
 

@@ -19,6 +19,7 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
       allowsMultiplePackages: Joi.boolean(),
       isInsurable: Joi.boolean(),
       isTrackable: Joi.boolean(),
+      supportsReturns: Joi.boolean(),
       hasSandbox: Joi.boolean(),
       labelFormats: Joi.array().items(Joi.string().enum(DocumentFormat)),
       labelSizes: Joi.array().items(Joi.string().enum(DocumentSize)),
@@ -44,6 +45,7 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
   public readonly allowsMultiplePackages: boolean;
   public readonly isInsurable: boolean;
   public readonly isTrackable: boolean;
+  public readonly supportsReturns: boolean;
   public readonly hasSandbox: boolean;
   public readonly labelFormats: ReadonlyArray<DocumentFormat>;
   public readonly labelSizes: ReadonlyArray<DocumentSize>;
@@ -78,6 +80,7 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
     this.allowsMultiplePackages = pojo.allowsMultiplePackages || false;
     this.isInsurable = pojo.isInsurable || false;
     this.isTrackable = pojo.isTrackable || false;
+    this.supportsReturns = pojo.supportsReturns || false;
     this.hasSandbox = pojo.hasSandbox || false;
     this.labelFormats = pojo.labelFormats || [];
     this.labelSizes = pojo.labelSizes || [];

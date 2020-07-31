@@ -32,6 +32,7 @@ describe("CarrierApp", () => {
       icon: path.resolve("logo.svg"),
       manifestLocations: undefined,
       manifestShipments: undefined,
+      supportsReturns: false,
       connectionForm: app.connectionForm,
       settingsForm: undefined,
       deliveryServices: [app.deliveryServices[0]],
@@ -102,6 +103,7 @@ describe("CarrierApp", () => {
       manifestLocations: "single_location",
       manifestShipments: "explicit_shipments",
       connectionForm: app.connectionForm,
+      supportsReturns: false,
       settingsForm: app.settingsForm,
       deliveryServices: [app.deliveryServices[0]],
       pickupServices: [app.pickupServices[0]],
@@ -148,6 +150,7 @@ describe("CarrierApp", () => {
       logo: path.resolve("logo.svg"),
       manifestLocations: undefined,
       manifestShipments: undefined,
+      supportsReturns: false,
       connectionForm: app.connectionForm,
       settingsForm: undefined,
       deliveryServices: [app.deliveryServices[0]],
@@ -358,6 +361,52 @@ describe("CarrierApp", () => {
       expect(app.destinationCountries).to.have.members(["CN", "CA", "US"]);
       expect(app.destinationCountries).to.not.have.members(["MX", "FR"]);
     });
+
+    it("supportsReturns should be false if no delivery services support shipment returns", () => {
+      let app = new CarrierApp({
+        id: "12345678-1234-1234-1234-123456789012",
+        name: "My carrier",
+        websiteURL: "https://my-carrier.com/",
+        icon: path.resolve("logo.svg"),
+        logo: path.resolve("logo.svg"),
+        connectionForm: pojo.form(),
+        deliveryServices: [
+          pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"]}),
+          pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"]}),
+          pojo.deliveryService({ originCountries: ["FR"]}),
+        ],
+
+        manifest: {
+          name: "@company/carrier",
+          version: "1.0.0"
+        },
+      });
+
+      expect(app.supportsReturns).to.equal(false);
+    });
+
+    it("supportsReturns should be true if a delivery service support shipment returns", () => {
+      let app = new CarrierApp({
+        id: "12345678-1234-1234-1234-123456789012",
+        name: "My carrier",
+        websiteURL: "https://my-carrier.com/",
+        icon: path.resolve("logo.svg"),
+        logo: path.resolve("logo.svg"),
+        connectionForm: pojo.form(),
+        deliveryServices: [
+          pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"]}),
+          pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"]}),
+          pojo.deliveryService({ originCountries: ["FR"], supportsReturns: true }),
+        ],
+
+        manifest: {
+          name: "@company/carrier",
+          version: "1.0.0"
+        },
+      });
+
+      expect(app.supportsReturns).to.equal(true);
+    });
   });
 
 
@@ -508,6 +557,25 @@ describe("CarrierApp", () => {
       ).to.throw(
         "Invalid ShipEngine Integration Platform carrier app: \n" +
         "  icon must be a .svg file"
+      );
+    });
+
+    it("should throw an error if the icon is not an absolute path", () => {
+      expect(() => new CarrierApp({
+        id: "12345678-1234-1234-1234-123456789012",
+        name: "My carrier",
+        websiteURL: "https://my-carrier.com/",
+        logo: path.resolve("logo.svg"),
+        icon: "logo.svg",
+        deliveryServices: [pojo.deliveryService()],
+        manifest: {
+          name: "@company/carrier",
+          version: "1.0.0"
+        }
+      })
+      ).to.throw(
+        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "  icon must be an absolute file path"
       );
     });
 

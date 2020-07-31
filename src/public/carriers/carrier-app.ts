@@ -205,6 +205,11 @@ export interface CarrierApp extends ConnectionApp {
   readonly deliveryConfirmations: ReadonlyArray<DeliveryConfirmation>;
 
   /**
+   * Indicates if any of the delivery services in the carrier app support return shipments.
+   */
+  readonly supportsReturns: boolean;
+
+  /**
    * Creates a new shipment, including its labels, tracking numbers, customs forms, etc.
    */
   createShipment?(transaction: TransactionPOJO, shipment: NewShipmentPOJO): Promise<ShipmentConfirmation>;

@@ -60,6 +60,11 @@ export interface DeliveryServiceDefinition extends DefinitionIdentifierPOJO {
   isTrackable?: boolean;
 
   /**
+   * Indicates if return shipments are supported
+   */
+  supportsReturns?: boolean;
+
+  /**
    * Indicates whether the carrier provides a sandbox/development API for this delivery service.
    * A sandbox should mimic real functionality as much as possible but MUST NOT incur any actual
    * costs or affect production data.
@@ -175,6 +180,11 @@ export interface DeliveryService extends DefinitionIdentifier {
    * Indicates whether tracking numbers are provided
    */
   readonly isTrackable: boolean;
+
+  /**
+   * Indicates is return shipments are supported
+   */
+  readonly supportsReturns: boolean;
 
   /**
    * Indicates whether the carrier provides a sandbox/development API for this delivery service.

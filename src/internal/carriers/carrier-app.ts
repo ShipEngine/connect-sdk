@@ -62,6 +62,7 @@ export class CarrierApp extends ConnectionApp implements ICarrierApp {
   public readonly manifestShipments?: ManifestShipment;
   public readonly deliveryServices: ReadonlyArray<DeliveryService>;
   public readonly pickupServices: ReadonlyArray<PickupService>;
+  public readonly supportsReturns: boolean;
 
   public get serviceArea(): ServiceArea {
     return getMaxServiceArea(this.deliveryServices);
@@ -164,6 +165,8 @@ export class CarrierApp extends ConnectionApp implements ICarrierApp {
     this.deliveryServices = pojo.deliveryServices.map((svc) => new DeliveryService(svc, this));
     this.pickupServices = pojo.pickupServices
       ? pojo.pickupServices.map((svc) => new PickupService(svc, this)) : [];
+
+    this.supportsReturns = this.deliveryServices.some((ds) => ds.supportsReturns);
 
     this[_private] = {
       // Store any user-defined methods as private fields.

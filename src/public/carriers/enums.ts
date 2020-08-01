@@ -63,6 +63,14 @@ export enum PickupCancellationReason {
 }
 
 /**
+ * The types of manifests that the carrier supports
+ */
+export enum ManifestType {
+  Physical = "physical",
+  Digital = "digital"
+}
+
+/**
  * Indicates who to bill for delivery charges, duties, or fees
  */
 export enum BilledParty {

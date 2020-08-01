@@ -1,4 +1,4 @@
-import { AppType, CancellationStatus, CancelPickups, CancelShipments, CarrierApp as ICarrierApp, CarrierAppPOJO, Country, CreateManifest, CreateShipment, DocumentFormat, DocumentSize, ErrorCode, ManifestLocation, ManifestShipment, NewManifestPOJO, NewShipmentPOJO, Packaging, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, RateShipment, SchedulePickup, ServiceArea, ShipmentCancellationPOJO, TrackingCriteriaPOJO, TrackShipment, TransactionPOJO } from "../../public";
+import { AppType, CancellationStatus, CancelPickups, CancelShipments, CarrierApp as ICarrierApp, CarrierAppPOJO, Country, CreateManifest, CreateShipment, DocumentFormat, DocumentSize, ErrorCode, ManifestLocation, ManifestShipment, ManifestType, NewManifestPOJO, NewShipmentPOJO, Packaging, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, RateShipment, SchedulePickup, ServiceArea, ShipmentCancellationPOJO, TrackingCriteriaPOJO, TrackShipment, TransactionPOJO } from "../../public";
 import { ConnectionApp, error, hideAndFreeze, Joi, Transaction, validate, validateArray, _internal } from "../common";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService } from "./delivery-service";
@@ -32,6 +32,8 @@ export class CarrierApp extends ConnectionApp implements ICarrierApp {
         .when("createManifest", { is: Joi.function().required(), then: Joi.required() }),
       manifestShipments: Joi.string().enum(ManifestShipment)
         .when("createManifest", { is: Joi.function().required(), then: Joi.required() }),
+
+      manifestType: Joi.string().enum(ManifestType).required(),
       deliveryServices: Joi.array().min(1).items(DeliveryService[_internal].schema).required(),
       pickupServices: Joi.array().items(PickupService[_internal].schema),
       createShipment: Joi.function(),
@@ -60,6 +62,7 @@ export class CarrierApp extends ConnectionApp implements ICarrierApp {
   public readonly type: AppType;
   public readonly manifestLocations?: ManifestLocation;
   public readonly manifestShipments?: ManifestShipment;
+  public readonly manifestType: ManifestType;
   public readonly deliveryServices: ReadonlyArray<DeliveryService>;
   public readonly pickupServices: ReadonlyArray<PickupService>;
   public readonly supportsReturns: boolean;
@@ -162,6 +165,7 @@ export class CarrierApp extends ConnectionApp implements ICarrierApp {
     this.type = AppType.Carrier;
     this.manifestLocations = pojo.manifestLocations;
     this.manifestShipments = pojo.manifestShipments;
+    this.manifestType = pojo.manifestType;
     this.deliveryServices = pojo.deliveryServices.map((svc) => new DeliveryService(svc, this));
     this.pickupServices = pojo.pickupServices
       ? pojo.pickupServices.map((svc) => new PickupService(svc, this)) : [];

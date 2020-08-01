@@ -36,6 +36,7 @@ const pojo = module.exports = {
     return {
       ...pojo.connectionApp(),
       deliveryServices: [pojo.deliveryService()],
+      manifestType: "digital",
       ...props,
     };
   },
@@ -56,6 +57,7 @@ const pojo = module.exports = {
       grade: "standard",
       originCountries: ["US"],
       destinationCountries: ["US"],
+      manifestType: "digital",
       packaging: [pojo.packaging()],
       ...props,
     };

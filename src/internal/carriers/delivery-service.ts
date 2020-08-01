@@ -1,4 +1,4 @@
-import { Country, DeliveryService as IDeliveryService, DeliveryServiceClass, DeliveryServiceGrade, DeliveryServicePOJO, DocumentFormat, DocumentSize, FulfillmentService, ServiceArea } from "../../public";
+import { Country, DeliveryService as IDeliveryService, DeliveryServiceClass, DeliveryServiceGrade, DeliveryServicePOJO, DocumentFormat, DocumentSize, FulfillmentService, ManifestType, ServiceArea } from "../../public";
 import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../common";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { Packaging } from "./packaging";
@@ -19,6 +19,7 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
       allowsMultiplePackages: Joi.boolean(),
       isInsurable: Joi.boolean(),
       isTrackable: Joi.boolean(),
+      manifestType: Joi.string().enum(ManifestType).required(),
       supportsReturns: Joi.boolean(),
       hasSandbox: Joi.boolean(),
       labelFormats: Joi.array().items(Joi.string().enum(DocumentFormat)),
@@ -45,6 +46,7 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
   public readonly allowsMultiplePackages: boolean;
   public readonly isInsurable: boolean;
   public readonly isTrackable: boolean;
+  public readonly manifestType: ManifestType;
   public readonly supportsReturns: boolean;
   public readonly hasSandbox: boolean;
   public readonly labelFormats: ReadonlyArray<DocumentFormat>;
@@ -80,6 +82,8 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
     this.allowsMultiplePackages = pojo.allowsMultiplePackages || false;
     this.isInsurable = pojo.isInsurable || false;
     this.isTrackable = pojo.isTrackable || false;
+    this.manifestType = pojo.manifestType;
+
     this.supportsReturns = pojo.supportsReturns || false;
     this.hasSandbox = pojo.hasSandbox || false;
     this.labelFormats = pojo.labelFormats || [];

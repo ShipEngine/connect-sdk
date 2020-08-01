@@ -16,6 +16,7 @@ describe("CarrierApp", () => {
       icon: path.resolve("logo.svg"),
       connectionForm: pojo.form(),
       deliveryServices: [pojo.deliveryService()],
+      manifestType: "digital",
       manifest: {
         name: "@company/carrier",
         version: "1.0.0"
@@ -34,6 +35,7 @@ describe("CarrierApp", () => {
       manifestShipments: undefined,
       supportsReturns: false,
       connectionForm: app.connectionForm,
+      manifestType: "digital",
       settingsForm: undefined,
       deliveryServices: [app.deliveryServices[0]],
       pickupServices: [],
@@ -66,6 +68,7 @@ describe("CarrierApp", () => {
       icon: path.resolve("logo.svg"),
       manifestLocations: "single_location",
       manifestShipments: "explicit_shipments",
+      manifestType: "digital",
       connectionForm: pojo.form(),
       settingsForm: pojo.form(),
       deliveryServices: [pojo.deliveryService()],
@@ -102,6 +105,7 @@ describe("CarrierApp", () => {
       icon: path.resolve("logo.svg"),
       manifestLocations: "single_location",
       manifestShipments: "explicit_shipments",
+      manifestType: "digital",
       connectionForm: app.connectionForm,
       supportsReturns: false,
       settingsForm: app.settingsForm,
@@ -133,6 +137,7 @@ describe("CarrierApp", () => {
       logo: path.resolve("logo.svg"),
       connectionForm: pojo.form(),
       deliveryServices: [pojo.deliveryService()],
+      manifestType: "digital",
       manifest: {
         name: "@company/carrier",
         version: "1.0.0",
@@ -150,6 +155,7 @@ describe("CarrierApp", () => {
       logo: path.resolve("logo.svg"),
       manifestLocations: undefined,
       manifestShipments: undefined,
+      manifestType: "digital",
       supportsReturns: false,
       connectionForm: app.connectionForm,
       settingsForm: undefined,
@@ -183,6 +189,7 @@ describe("CarrierApp", () => {
         websiteURL: "https://my-carrier.com/",
         icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
+        manifestType: "digital",
         connectionForm: pojo.form(),
         deliveryServices: [
           pojo.deliveryService({ deliveryConfirmations: [pojo.deliveryConfirmation()]}),
@@ -214,6 +221,7 @@ describe("CarrierApp", () => {
         websiteURL: "https://my-carrier.com/",
         icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
+        manifestType: "digital",
         connectionForm: pojo.form(),
         deliveryServices: [
           pojo.deliveryService(),
@@ -245,6 +253,8 @@ describe("CarrierApp", () => {
         icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
         connectionForm: pojo.form(),
+        manifestType: "digital",
+
         deliveryServices: [
           pojo.deliveryService({ labelFormats: ["pdf"]}),
           pojo.deliveryService({ labelFormats: ["pdf", "zpl"]}),
@@ -270,6 +280,8 @@ describe("CarrierApp", () => {
         icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
         connectionForm: pojo.form(),
+        manifestType: "digital",
+
         deliveryServices: [
           pojo.deliveryService({ labelSizes: ["A4", "letter", "A6"]}),
           pojo.deliveryService({ labelSizes: ["A4", "4x6"]}),
@@ -295,6 +307,8 @@ describe("CarrierApp", () => {
         icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
         connectionForm: pojo.form(),
+        manifestType: "digital",
+
         deliveryServices: [
           pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"]}),
           pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"]}),
@@ -319,6 +333,8 @@ describe("CarrierApp", () => {
         icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
         connectionForm: pojo.form(),
+        manifestType: "digital",
+
         deliveryServices: [
           pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"]}),
           pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"]}),
@@ -345,6 +361,7 @@ describe("CarrierApp", () => {
         icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
         connectionForm: pojo.form(),
+        manifestType: "digital",
         deliveryServices: [
           pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"]}),
           pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"]}),
@@ -370,6 +387,7 @@ describe("CarrierApp", () => {
         icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
         connectionForm: pojo.form(),
+        manifestType: "digital",
         deliveryServices: [
           pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"]}),
           pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"]}),
@@ -393,6 +411,7 @@ describe("CarrierApp", () => {
         icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
         connectionForm: pojo.form(),
+        manifestType: "digital",
         deliveryServices: [
           pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"]}),
           pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"]}),
@@ -418,6 +437,7 @@ describe("CarrierApp", () => {
         websiteURL: "https://my-carrier.com/",
         icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
+        manifestType: "digital",
         connectionForm: pojo.form(),
         deliveryServices: [
           pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"]}),

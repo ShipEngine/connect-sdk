@@ -1,7 +1,7 @@
 import type { AppPOJO, AppType, Connect, ConnectionApp, ConnectionAppDefinition, Country, FormPOJO, InlineOrReference, InlineOrReferenceArray, TransactionPOJO } from "../common";
 import type { DeliveryConfirmation } from "./delivery-confirmation";
 import type { DeliveryService, DeliveryServiceDefinition, DeliveryServicePOJO } from "./delivery-service";
-import type { DocumentFormat, DocumentSize, ManifestLocation, ManifestShipment, ServiceArea } from "./enums";
+import type { DocumentFormat, DocumentSize, ManifestLocation, ManifestShipment, ManifestType, ServiceArea } from "./enums";
 import type { ManifestConfirmation } from "./manifests/manifest-confirmation";
 import type { NewManifestPOJO } from "./manifests/new-manifest";
 import type { CancelPickups, CancelShipments, CreateManifest, CreateShipment, RateShipment, SchedulePickup, TrackShipment } from "./methods";
@@ -35,6 +35,11 @@ export interface CarrierAppDefinition extends ConnectionAppDefinition {
    * This field is required if the `createManifest` method is implemented.
    */
   manifestShipments?: ManifestShipment;
+
+  /**
+   * Indicates what type of manifests the carrier supports
+   */
+  manifestType: ManifestType;
 
   /**
    * The delivery services that are offered by the carrier
@@ -123,6 +128,11 @@ export interface CarrierApp extends ConnectionApp {
    * This field is required if the `createManifest` method is implemented.
    */
   readonly manifestShipments?: ManifestShipment;
+
+  /**
+   * Indicates what type of manifests the carrier supports
+   */
+  manifestType: ManifestType;
 
   /**
    * The delivery services that are offered by this carrier

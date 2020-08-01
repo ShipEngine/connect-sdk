@@ -1,6 +1,6 @@
 import type { Country, DefinitionIdentifier, DefinitionIdentifierPOJO, InlineOrReference, InlineOrReferenceArray } from "../common";
 import type { DeliveryConfirmation, DeliveryConfirmationDefinition, DeliveryConfirmationPOJO } from "./delivery-confirmation";
-import type { DeliveryServiceClass, DeliveryServiceGrade, DocumentFormat, DocumentSize, ServiceArea } from "./enums";
+import type { DeliveryServiceClass, DeliveryServiceGrade, DocumentFormat, DocumentSize, ManifestType, ServiceArea } from "./enums";
 import type { FulfillmentService } from "./fulfillment-service";
 import type { Packaging, PackagingDefinition, PackagingPOJO } from "./packaging";
 
@@ -58,6 +58,11 @@ export interface DeliveryServiceDefinition extends DefinitionIdentifierPOJO {
    * Indicates whether tracking numbers are provided
    */
   isTrackable?: boolean;
+
+  /**
+   * Indicates what type of manifests the carrier supports
+   */
+  manifestType: ManifestType;
 
   /**
    * Indicates if return shipments are supported
@@ -185,6 +190,11 @@ export interface DeliveryService extends DefinitionIdentifier {
    * Indicates is return shipments are supported
    */
   readonly supportsReturns: boolean;
+
+  /**
+   * Indicates what type of manifests the carrier supports
+   */
+  manifestType: ManifestType;
 
   /**
    * Indicates whether the carrier provides a sandbox/development API for this delivery service.

@@ -245,7 +245,7 @@ describe("rateShipment", () => {
 
     it("should throw an error if called with no arguments", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        rateShipment() { }
+        rateShipment () { }
       }));
 
       try {
@@ -263,7 +263,7 @@ describe("rateShipment", () => {
 
     it("should throw an error if called without a shipment", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        rateShipment() { }
+        rateShipment () { }
       }));
 
       try {
@@ -281,7 +281,7 @@ describe("rateShipment", () => {
 
     it("should throw an error if called with an invalid shipment", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        rateShipment() { }
+        rateShipment () { }
       }));
 
       try {
@@ -309,7 +309,7 @@ describe("rateShipment", () => {
 
     it("should throw an error if nothing is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        rateShipment() { }
+        rateShipment () { }
       }));
 
       try {

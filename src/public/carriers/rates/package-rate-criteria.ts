@@ -11,13 +11,13 @@ export interface PackageRateCriteriaPOJO {
    * The packaging that may be used. If not specified, then rate quotes should be
    * returned for all applicable packaging.
    */
-  packaging?: ReadonlyArray<PackagingIdentifierPOJO>;
+  packaging?: ReadonlyArray<PackagingIdentifierPOJO | string>;
 
   /**
    * The delivery confirmations that may be used. If not specified, then rate quotes
    * should be returned for all applicable delivery confirmations.
    */
-  deliveryConfirmations?: ReadonlyArray<DeliveryConfirmationIdentifierPOJO>;
+  deliveryConfirmations?: ReadonlyArray<DeliveryConfirmationIdentifierPOJO | string>;
 
   /**
    * The package dimensions

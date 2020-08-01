@@ -8,7 +8,10 @@ export class RateCriteria implements IRateCriteria {
   public static readonly [_internal] = {
     label: "shipment",
     schema: Joi.object({
-      deliveryService: DefinitionIdentifier[_internal].schema.unknown(true),
+      deliveryService: Joi.alternatives(
+        DefinitionIdentifier[_internal].schema.unknown(true),
+        Joi.string()
+      ),
       fulfillmentService: Joi.string().enum(FulfillmentService),
       shipDateTime: DateTimeZone[_internal].schema.required(),
       deliveryDateTime: DateTimeZone[_internal].schema,

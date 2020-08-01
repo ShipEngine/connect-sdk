@@ -9,7 +9,10 @@ export class NewShipment implements INewShipment {
   public static readonly [_internal] = {
     label: "shipment",
     schema: Joi.object({
-      deliveryService: DefinitionIdentifier[_internal].schema.unknown(true).required(),
+      deliveryService: Joi.alternatives(
+        DefinitionIdentifier[_internal].schema.unknown(true),
+        Joi.string()
+      ).required(),
       shipFrom: AddressWithContactInfo[_internal].schema.required(),
       shipTo: AddressWithContactInfo[_internal].schema.required(),
       returnTo: AddressWithContactInfo[_internal].schema,

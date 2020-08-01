@@ -4,7 +4,7 @@ import { ShipEngineConstructor } from "./types";
 import { _internal } from "./utils";
 import { Joi, validate } from "./validation";
 
-interface ClassInstance { id: UUID; }
+interface ClassInstance { id: UUID; code?: string; }
 
 interface Reference {
   type: ShipEngineConstructor;
@@ -46,6 +46,11 @@ export class ReferenceMap {
         throw error(ErrorCode.Validation, `Cannot add new ${type[_internal].label} after the app has loaded`);
       }
 
+      // Certain definitions need to be referenced by their code identifier rather than their GUID ID.
+      if (instance.code) {
+        // Add this new reference
+        map.set(instance.code, { type, instance });
+      }
       // Add this new reference
       map.set(instance.id, { type, instance });
     }
@@ -55,20 +60,29 @@ export class ReferenceMap {
    * Returns the class instance implements Iinstance with the specified ID, if any
    */
   public get<T extends ClassInstance>(
-    instance: ClassInstance | undefined, type: ShipEngineConstructor<T>): T | undefined {
+    instance: ClassInstance | string | undefined, type: ShipEngineConstructor<T>): T | undefined {
 
     // This is for optional references
     if (!instance) return undefined;
 
-    validate(instance, type[_internal].label, classInstanceSchema);
-
     let { map } = this[_private];
-    let reference = map.get(instance.id);
-
-    if (reference && reference.type !== type) {
-      throw error(ErrorCode.Validation,
-        `${instance.id} is a ${reference.type[_internal].label} ID not a ${type[_internal].label} ID`);
+    let reference;
+    if (typeof instance === "string") {
+      reference = map.get(instance);
+      if (reference && reference.type !== type) {
+        throw error(ErrorCode.Validation,
+          `${instance} is a ${reference.type[_internal].label} not a ${type[_internal].label}`);
+      }
     }
+    else {
+      validate(instance, type[_internal].label, classInstanceSchema);
+      reference = map.get(instance.id);
+      if (reference && reference.type !== type) {
+        throw error(ErrorCode.Validation,
+          `${instance.id} is a ${reference.type[_internal].label} ID not a ${type[_internal].label} ID`);
+      }
+    }
+
 
     return reference && reference.instance as T;
   }
@@ -77,11 +91,9 @@ export class ReferenceMap {
    * Returns the class instance that corresponds to the specified UUID, or throws an error if not found
    */
   public lookup<T extends ClassInstance>(
-    instance: ClassInstance, type: ShipEngineConstructor<T>): T;
+    instance: ClassInstance | string, type: ShipEngineConstructor<T>): T;
   public lookup<T extends ClassInstance>(
-    instance: ClassInstance | undefined, type: ShipEngineConstructor<T>): T | undefined;
-  public lookup<T extends ClassInstance>(
-    instance: ClassInstance | undefined, type: ShipEngineConstructor<T>): T | undefined {
+    instance: ClassInstance | string | undefined, type: ShipEngineConstructor<T>): T | undefined {
 
     // This is for optional references
     if (!instance) return undefined;
@@ -89,7 +101,12 @@ export class ReferenceMap {
     let value = this.get<T>(instance, type);
 
     if (!value) {
-      throw error(ErrorCode.Validation, `Unable to find ${type[_internal].label} ID: ${instance.id}`);
+      if (typeof instance === "string") {
+        throw error(ErrorCode.Validation, `Unable to find ${type[_internal].label}: ${instance}`);
+      }
+      else {
+        throw error(ErrorCode.Validation, `Unable to find ${type[_internal].label} ID: ${instance.id}`);
+      }
     }
 
     return value;

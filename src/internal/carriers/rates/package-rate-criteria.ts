@@ -7,8 +7,10 @@ export class PackageRateCriteria implements IPackageRateCriteria {
   public static readonly [_internal] = {
     label: "package",
     schema: Joi.object({
-      packaging: Joi.array().items(DefinitionIdentifier[_internal].schema.unknown(true)),
-      deliveryConfirmations: Joi.array().items(DefinitionIdentifier[_internal].schema.unknown(true)),
+      packaging: Joi.array()
+        .items(Joi.alternatives(DefinitionIdentifier[_internal].schema.unknown(true), Joi.string())),
+      deliveryConfirmations: Joi.array()
+        .items(Joi.alternatives(DefinitionIdentifier[_internal].schema.unknown(true), Joi.string())),
       dimensions: Dimensions[_internal].schema,
       weight: Weight[_internal].schema,
       insuredValue: MonetaryValue[_internal].schema,

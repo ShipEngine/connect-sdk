@@ -10,7 +10,10 @@ export class NewPackage implements INewPackage {
   public static readonly [_internal] = {
     label: "package",
     schema: Joi.object({
-      packaging: DefinitionIdentifier[_internal].schema.unknown(true).required(),
+      packaging: Joi.alternatives(
+        DefinitionIdentifier[_internal].schema.unknown(true),
+        Joi.string()
+      ).required(),
       deliveryConfirmation: DefinitionIdentifier[_internal].schema.unknown(true),
       dimensions: Dimensions[_internal].schema,
       weight: Weight[_internal].schema,

@@ -1,8 +1,6 @@
 import type { AddressWithContactInfo, AddressWithContactInfoPOJO, Country, DateTimeZone, DateTimeZonePOJO, MonetaryValue } from "../../common";
 import type { DeliveryService, DeliveryServiceIdentifierPOJO } from "../delivery-service";
-import type { BilledParty } from "../enums";
 import type { NewPackage, NewPackagePOJO } from "../packages/new-package";
-import type { ShipmentIdentifier, ShipmentIdentifierPOJO } from "./shipment-identifier";
 
 /**
  * The information needed to create a new shipment
@@ -11,7 +9,7 @@ export interface NewShipmentPOJO {
   /**
    * The delivery service to use for the shipment
    */
-  deliveryService: DeliveryServiceIdentifierPOJO;
+  deliveryService: DeliveryServiceIdentifierPOJO | string;
 
   /**
    * The sender's contact info and address

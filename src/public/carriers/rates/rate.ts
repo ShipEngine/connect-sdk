@@ -10,7 +10,7 @@ export interface RatePOJO {
   /**
    * The delivery service this rate is for
    */
-  deliveryService: DeliveryServiceIdentifierPOJO;
+  deliveryService: DeliveryServiceIdentifierPOJO | string;
 
   /**
    * The date/time that the package is expected to ship.

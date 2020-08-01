@@ -8,7 +8,10 @@ export class PickupShipment extends ShipmentIdentifierBase implements IPickupShi
   public static readonly [_internal] = {
     label: "shipment",
     schema: ShipmentIdentifier[_internal].schema.keys({
-      deliveryService: DefinitionIdentifier[_internal].schema.unknown(true).required(),
+      deliveryService: Joi.alternatives(
+        DefinitionIdentifier[_internal].schema.unknown(true),
+        Joi.string()
+      ).required(),
       metadata: Joi.object(),
       packages: Joi.array().min(1).items(PickupPackage[_internal].schema).required(),
     }),

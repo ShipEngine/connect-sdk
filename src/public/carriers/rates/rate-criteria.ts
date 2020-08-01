@@ -13,7 +13,7 @@ export interface RateCriteriaPOJO {
    * `fulfillmentService` are specified, then rate quotes should be returned for all
    * applicable services.
    */
-  deliveryService?: DeliveryServiceIdentifierPOJO;
+  deliveryService?: DeliveryServiceIdentifierPOJO | string;
 
   /**
    * Well-known carrier services that may be used to fulfill the shipment.

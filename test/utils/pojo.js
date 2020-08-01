@@ -52,6 +52,7 @@ const pojo = module.exports = {
   deliveryService (props = {}) {
     return {
       id: "22222222-2222-2222-2222-222222222222",
+      code: "dummy-ds-code",
       name: "Dummy Delivery Service",
       class: "ground",
       grade: "standard",
@@ -74,6 +75,7 @@ const pojo = module.exports = {
   packaging (props = {}) {
     return {
       id: "44444444-4444-4444-4444-444444444444",
+      code: "dummy-packaging-code",
       name: "Dummy Packaging",
       ...props,
     };
@@ -82,6 +84,7 @@ const pojo = module.exports = {
   deliveryConfirmation (props = {}) {
     return {
       id: "55555555-5555-5555-5555-555555555555",
+      code: "dummy-confirmation-code",
       name: "Dummy Confirmation",
       type: "signature",
       ...props,

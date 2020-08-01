@@ -8,12 +8,12 @@ export interface RatePackagePOJO {
   /**
    * The packaging this rate is for
    */
-  packaging: PackagingIdentifierPOJO;
+  packaging: PackagingIdentifierPOJO | string;
 
   /**
    * The delivery confirmation included in this rate
    */
-  deliveryConfirmation?: DeliveryConfirmationIdentifierPOJO;
+  deliveryConfirmation?: DeliveryConfirmationIdentifierPOJO | string;
 }
 
 

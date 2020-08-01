@@ -61,6 +61,64 @@ describe("createShipment", () => {
     });
   });
 
+  it("should return a shipment from using a delivery service code", async () => {
+    let app = new CarrierApp(pojo.carrierApp({
+      createShipment: () => ({
+        charges: [{
+          type: "shipping",
+          amount: {
+            value: 123.456,
+            currency: "CAD",
+          },
+        }],
+        documents: [{
+          type: "label",
+          size: "letter",
+          format: "pdf",
+          data: Buffer.from("data"),
+        }],
+        packages: [{
+        }]
+      })
+    }));
+
+    const newShipment = pojo.newShipment();
+    newShipment.deliveryService = "dummy-ds-code";
+
+    let confirmation = await app.createShipment(pojo.transaction(), newShipment);
+
+    expect(confirmation).to.deep.equal({
+      trackingNumber: "",
+      identifiers: {},
+      deliveryDateTime: undefined,
+      charges: [{
+        name: "",
+        type: "shipping",
+        amount: {
+          value: "123.46",
+          currency: "CAD",
+        }
+      }],
+      documents: [{
+        name: "Label",
+        type: "label",
+        size: "letter",
+        format: "pdf",
+        data: Buffer.from("data"),
+        referenceFields: [],
+      }],
+      totalAmount: {
+        value: "123.46",
+        currency: "CAD",
+      },
+      packages: [{
+        trackingNumber: "",
+        identifiers: {},
+        metadata: {}
+      }],
+    });
+  });
+
   it("should return a shipment from all possible return values", async () => {
     let app = new CarrierApp(pojo.carrierApp({
       createShipment: () => ({

@@ -9,7 +9,10 @@ export class PickupCancellation implements IPickupCancellation {
     schema: Joi.object({
       cancellationID: Joi.string().uuid().required(),
       id: Joi.string().trim().singleLine().min(1).max(100).required(),
-      pickupService: DefinitionIdentifier[_internal].schema.unknown(true).required(),
+      pickupService: Joi.alternatives(
+        DefinitionIdentifier[_internal].schema.unknown(true),
+        Joi.string()
+      ).required(),
       identifiers: Identifiers[_internal].schema,
       reason: Joi.string().enum(PickupCancellationReason).required(),
       notes: Note[_internal].notesSchema,

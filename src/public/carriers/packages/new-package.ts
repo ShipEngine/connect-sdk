@@ -12,7 +12,7 @@ export interface NewPackagePOJO {
   /**
    * The packaging used for this package
    */
-  packaging: PackagingIdentifierPOJO;
+  packaging: PackagingIdentifierPOJO | string;
 
   /**
    * The requested delivery confirmation

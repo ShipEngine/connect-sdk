@@ -61,6 +61,78 @@ describe("rateShipment", () => {
     }]);
   });
 
+  it("should return a rate from using a delivery service, packaging, and confirmation codes", async () => {
+
+    const carrierAppDef = pojo.carrierApp({
+      rateShipment: () => [{
+        deliveryService: "dummy-ds-code",
+        charges: [{
+          type: "shipping",
+          amount: {
+            value: 123.456,
+            currency: "CAD",
+          },
+        }],
+        packages: [{
+          packaging: "dummy-packaging-code",
+          deliveryConfirmation: "dummy-confirmation-code"
+        }]
+      }]
+    });
+
+    carrierAppDef.deliveryServices[0].deliveryConfirmations = [pojo.deliveryConfirmation()];
+
+    let app = new CarrierApp(carrierAppDef);
+
+    const rateCriteria = pojo.rateCriteria({
+      deliveryService: "dummy-ds-code"
+    });
+
+    rateCriteria.packages[0].deliveryConfirmations = ["dummy-confirmation-code"];
+
+    let rates = await app.rateShipment(pojo.transaction(), rateCriteria);
+
+    expect(rates).to.deep.equal([{
+      deliveryService: {
+        ...rates[0].deliveryService,
+        id: "22222222-2222-2222-2222-222222222222",
+        code: "dummy-ds-code"
+      },
+      shipDateTime: undefined,
+      deliveryDateTime: undefined,
+      isNegotiatedRate: false,
+      isTrackable: false,
+      notes: [],
+      totalAmount: {
+        value: "123.46",
+        currency: "CAD",
+      },
+      charges: [{
+        name: "",
+        type: "shipping",
+        amount: {
+          value: "123.46",
+          currency: "CAD",
+        }
+      }],
+      packages: [{
+        packaging: {
+          ...rates[0].packages[0].packaging,
+          id: "44444444-4444-4444-4444-444444444444",
+          code: "dummy-packaging-code"
+        },
+        deliveryConfirmation: {
+          id: "55555555-5555-5555-5555-555555555555",
+          code: "dummy-confirmation-code",
+          name: "Dummy Confirmation",
+          description: "",
+          identifiers: {},
+          type: "signature"
+        },
+      }],
+    }]);
+  });
+
   it("should return a rate from all possible return values", async () => {
     let app = new CarrierApp(pojo.carrierApp({
       deliveryServices: [
@@ -173,7 +245,7 @@ describe("rateShipment", () => {
 
     it("should throw an error if called with no arguments", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        rateShipment () {}
+        rateShipment() { }
       }));
 
       try {
@@ -191,7 +263,7 @@ describe("rateShipment", () => {
 
     it("should throw an error if called without a shipment", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        rateShipment () {}
+        rateShipment() { }
       }));
 
       try {
@@ -209,12 +281,13 @@ describe("rateShipment", () => {
 
     it("should throw an error if called with an invalid shipment", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        rateShipment () {}
+        rateShipment() { }
       }));
 
       try {
         await app.rateShipment(pojo.transaction(), {
-          deliveryService: "12345678-1234-1234-1234-123456789012",
+          deliveryService: 12345678123412341234123456789012,
+
           deliveryDateTime: "9999-99-99T99:99:99.999Z",
           packages: [],
         });
@@ -224,7 +297,7 @@ describe("rateShipment", () => {
         expect(error.message).to.equal(
           "Invalid input to the rateShipment method. \n" +
           "Invalid shipment: \n" +
-          "  deliveryService must be of type object \n" +
+          "  deliveryService must be one of object, string \n" +
           "  shipDateTime is required \n" +
           "  deliveryDateTime must be a valid date/time \n" +
           "  shipFrom is required \n" +
@@ -236,7 +309,7 @@ describe("rateShipment", () => {
 
     it("should throw an error if nothing is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        rateShipment () {}
+        rateShipment() { }
       }));
 
       try {

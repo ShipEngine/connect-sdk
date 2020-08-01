@@ -9,7 +9,7 @@ export interface PickupRequestPOJO {
   /**
    * The requested pickup service
    */
-  pickupService: PickupServiceIdentifierPOJO;
+  pickupService: PickupServiceIdentifierPOJO | string;
 
   /**
    * The requested window of time for the carrier to arrive.

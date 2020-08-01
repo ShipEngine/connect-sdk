@@ -25,7 +25,7 @@ export interface PickupCancellationPOJO {
   /**
    * The requested pickup service
    */
-  pickupService: PickupServiceIdentifierPOJO;
+  pickupService: PickupServiceIdentifierPOJO | string;
 
   /**
    * The reason for the cancellation

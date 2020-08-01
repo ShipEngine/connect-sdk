@@ -8,7 +8,7 @@ export interface PackageTrackingInfoPOJO {
   /**
    * The actual packaging that was used, as determined by the carrier
    */
-  packaging?: PackagingIdentifierPOJO;
+  packaging?: PackagingIdentifierPOJO | string;
 
   /**
    * The actual package dimensions as measured by the carrier

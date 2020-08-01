@@ -9,7 +9,7 @@ export interface PickupShipmentPOJO extends ShipmentIdentifierPOJO {
   /**
    * The delivery service to use for this shipment
    */
-  deliveryService: DeliveryServiceIdentifierPOJO;
+  deliveryService: DeliveryServiceIdentifierPOJO | string;
 
   /**
    * Arbitrary data about this shipment that was previously persisted by the ShipEngine Platform.

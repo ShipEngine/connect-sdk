@@ -6,7 +6,10 @@ export class PackageTrackingInfo implements IPackageTrackingInfo {
   public static readonly [_internal] = {
     label: "package",
     schema: Joi.object({
-      packaging: DefinitionIdentifier[_internal].schema.unknown(true),
+      packaging: Joi.alternatives(
+        DefinitionIdentifier[_internal].schema.unknown(true),
+        Joi.string()
+      ),
       dimensions: Dimensions[_internal].schema,
       weight: Weight[_internal].schema,
     }),

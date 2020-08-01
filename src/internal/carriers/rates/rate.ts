@@ -7,7 +7,10 @@ export class Rate implements IRate {
   public static readonly [_internal] = {
     label: "rate",
     schema: Joi.object({
-      deliveryService: DefinitionIdentifier[_internal].schema.unknown(true).required(),
+      deliveryService: Joi.alternatives(
+        DefinitionIdentifier[_internal].schema.unknown(true),
+        Joi.string()
+      ).required(),
       shipDateTime: DateTimeZone[_internal].schema,
       deliveryDateTime: DateTimeZone[_internal].schema,
       isNegotiatedRate: Joi.boolean(),

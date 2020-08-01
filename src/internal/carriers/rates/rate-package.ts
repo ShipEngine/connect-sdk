@@ -7,8 +7,14 @@ export class RatePackage implements IRatePackage {
   public static readonly [_internal] = {
     label: "package",
     schema: Joi.object({
-      packaging: DefinitionIdentifier[_internal].schema.unknown(true).required(),
-      deliveryConfirmation: DefinitionIdentifier[_internal].schema.unknown(true),
+      packaging: Joi.alternatives(
+        DefinitionIdentifier[_internal].schema.unknown(true),
+        Joi.string()
+      ).required(),
+      deliveryConfirmation: Joi.alternatives(
+        DefinitionIdentifier[_internal].schema.unknown(true),
+        Joi.string()
+      )
     }),
   };
 

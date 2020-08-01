@@ -10,7 +10,7 @@ export interface PickupPackagePOJO extends PackageIdentifierPOJO {
   /**
    * The packaging used for this package
    */
-  packaging: PackagingIdentifierPOJO;
+  packaging: PackagingIdentifierPOJO | string;
 
   /**
    * The package dimensions

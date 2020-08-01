@@ -7,7 +7,10 @@ export class PickupRequest implements IPickupRequest {
   public static readonly [_internal] = {
     label: "pickup request",
     schema: Joi.object({
-      pickupService: DefinitionIdentifier[_internal].schema.unknown(true).required(),
+      pickupService: Joi.alternatives(
+        DefinitionIdentifier[_internal].schema.unknown(true),
+        Joi.string()
+      ).required(),
       timeWindow: TimeRange[_internal].schema.required(),
       address: Address[_internal].schema.required(),
       contact: ContactInfo[_internal].schema.required(),

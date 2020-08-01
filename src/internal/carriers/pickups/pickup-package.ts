@@ -7,7 +7,10 @@ export class PickupPackage extends PackageIdentifierBase implements IPickupPacka
   public static readonly [_internal] = {
     label: "package",
     schema: PackageIdentifier[_internal].schema.keys({
-      packaging: DefinitionIdentifier[_internal].schema.unknown(true).required(),
+      packaging: Joi.alternatives(
+        DefinitionIdentifier[_internal].schema.unknown(true),
+        Joi.string()
+      ).required(),
       dimensions: Dimensions[_internal].schema,
       weight: Weight[_internal].schema,
       metadata: Joi.object(),

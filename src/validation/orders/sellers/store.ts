@@ -1,9 +1,9 @@
-import { Store as IStore, StorePOJO } from "../../../definitions";
+import { Store as IStore, Store as StorePOJO } from "../../../definitions";
 import { hideAndFreeze, Identifiers, Joi, _internal } from "../../common";
 import { Warehouse } from "./warehouse";
 
 export class Store implements IStore {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "store",
     schema: Joi.object({
       id: Joi.string().trim().singleLine().min(1).max(100).required(),
@@ -13,10 +13,10 @@ export class Store implements IStore {
     }),
   };
 
-  public readonly id: string;
-  public readonly identifiers: Identifiers;
-  public readonly name: string;
-  public readonly warehouses: ReadonlyArray<Warehouse>;
+  public id: string;
+  public identifiers: Identifiers;
+  public name: string;
+  public warehouses: Array<Warehouse>;
 
   public constructor(pojo: StorePOJO) {
     this.id = pojo.id;

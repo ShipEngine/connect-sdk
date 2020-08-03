@@ -1,9 +1,9 @@
-import { TrackingCriteria as ITrackingCriteria, TrackingCriteriaPOJO } from "../../../definitions";
+import { TrackingCriteria as ITrackingCriteria, TrackingCriteria as TrackingCriteriaPOJO } from "../../../definitions";
 import { hideAndFreeze, Joi, _internal } from "../../common";
 import { ShipmentIdentifier, ShipmentIdentifierBase } from "../shipments/shipment-identifier";
 
 export class TrackingCriteria extends ShipmentIdentifierBase implements ITrackingCriteria {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "shipment",
     schema: ShipmentIdentifier[_internal].schema.keys({
       returns: Joi.object({
@@ -13,11 +13,11 @@ export class TrackingCriteria extends ShipmentIdentifierBase implements ITrackin
     }),
   };
 
-  public readonly returns: {
-    readonly isReturn: boolean;
+  public returns: {
+    isReturn: boolean;
   };
 
-  public readonly metadata: object;
+  public metadata: object;
 
   public constructor(pojo: TrackingCriteriaPOJO) {
     super(pojo);

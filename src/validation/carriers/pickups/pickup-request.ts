@@ -1,10 +1,10 @@
-import { PickupRequest as IPickupRequest, PickupRequestPOJO } from "../../../definitions";
+import { PickupRequest as IPickupRequest, PickupRequest as PickupRequestPOJO } from "../../../definitions";
 import { Address, App, ContactInfo, createNotes, DefinitionIdentifier, hideAndFreeze, Joi, Note, TimeRange, _internal } from "../../common";
 import { PickupService } from "./pickup-service";
 import { PickupShipment } from "./pickup-shipment";
 
 export class PickupRequest implements IPickupRequest {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "pickup request",
     schema: Joi.object({
       pickupService: Joi.alternatives(
@@ -19,12 +19,12 @@ export class PickupRequest implements IPickupRequest {
     }),
   };
 
-  public readonly pickupService: PickupService;
-  public readonly timeWindow: TimeRange;
-  public readonly address: Address;
-  public readonly contact: ContactInfo;
-  public readonly notes: ReadonlyArray<Note>;
-  public readonly shipments: ReadonlyArray<PickupShipment>;
+  public pickupService: PickupService;
+  public timeWindow: TimeRange;
+  public address: Address;
+  public contact: ContactInfo;
+  public notes: Array<Note>;
+  public shipments: Array<PickupShipment>;
 
   public constructor(pojo: PickupRequestPOJO, app: App) {
     this.pickupService = app[_internal].references.lookup(pojo.pickupService, PickupService);

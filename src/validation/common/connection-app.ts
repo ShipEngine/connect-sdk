@@ -1,4 +1,4 @@
-import { Connect, ConnectionApp as IConnectionApp, ConnectionAppPOJO, ErrorCode, FilePath, TransactionPOJO } from "../../definitions";
+import { Connect, ConnectionApp as IConnectionApp, ConnectionApp as ConnectionAppPOJO, ErrorCode, FilePath, Transaction as TransactionPOJO } from "../../definitions";
 import { App } from "./app";
 import { error } from "./errors";
 import { Form } from "./form";
@@ -9,7 +9,7 @@ import { Joi, validate } from "./validation";
 const _private = Symbol("private fields");
 
 export abstract class ConnectionApp extends App implements IConnectionApp {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "ShipEngine Integration Platform app",
     schema: App[_internal].schema.keys({
       name: Joi.string().trim().singleLine().min(1).max(100).required(),
@@ -23,24 +23,24 @@ export abstract class ConnectionApp extends App implements IConnectionApp {
     }),
   };
 
-  private readonly [_private]: {
-    readonly connect?: Connect;
+  private [_private]: {
+    connect?: Connect;
   };
 
-  public readonly name: string;
-  public readonly description: string;
-  public readonly websiteURL: URL;
-  public readonly logo: FilePath;
-  public readonly icon: FilePath;
-  public readonly connectionForm: Form;
-  public readonly settingsForm?: Form;
+  public name: string;
+  public description: string;
+  public websiteURL: URL;
+  public logo: FilePath;
+  public icon: FilePath;
+  public connectionForm: Form;
+  public settingsForm?: Form;
 
   public constructor(pojo: ConnectionAppPOJO) {
     super(pojo);
 
     this.name = pojo.name;
     this.description = pojo.description || "";
-    this.websiteURL = new URL(pojo.websiteURL);
+    this.websiteURL = pojo.websiteURL;
     this.logo =  pojo.logo;
     this.icon =  pojo.icon;
     this.connectionForm = new Form(pojo.connectionForm);

@@ -1,12 +1,12 @@
 import * as currency from "currency.js";
-import { PackageItem as IPackageItem, PackageItemPOJO } from "../../../definitions";
-import { hideAndFreeze, Identifiers, Joi, MonetaryValue, Quantity, _internal } from "../../common";
+import { PackageItem as IPackageItem, PackageItem as PackageItemPOJO } from "../../../definitions";
+import { hideAndFreeze, Identifiers, Joi, MonetaryValue, _internal } from "../../common";
 import { SalesOrderIdentifier } from "../../orders/sales-order-identifier";
 import { SalesOrderItemIdentifier } from "../../orders/sales-order-item-identifier";
 import { ProductIdentifier } from "../../products";
 
 export class PackageItem implements IPackageItem {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "package item",
     schema: Joi.object({
       sku: Joi.string().trim().singleLine().allow("").max(100),
@@ -14,22 +14,22 @@ export class PackageItem implements IPackageItem {
       salesOrder: SalesOrderIdentifier[_internal].schema.unknown(true),
       salesOrderItem: SalesOrderItemIdentifier[_internal].schema.unknown(true),
       product: ProductIdentifier[_internal].schema.unknown(true),
-      quantity: Quantity[_internal].schema.required(),
+      quantity: Joi.number().required(),
       unitPrice: MonetaryValue[_internal].schema.required(),
     }),
   };
 
-  public readonly sku: string;
-  public readonly identifiers: Identifiers;
-  public readonly salesOrder?: SalesOrderIdentifier;
-  public readonly salesOrderItem?: SalesOrderItemIdentifier;
-  public readonly product?: ProductIdentifier;
-  public readonly quantity: Quantity;
-  public readonly unitPrice: MonetaryValue;
+  public sku: string;
+  public identifiers: Identifiers;
+  public salesOrder?: SalesOrderIdentifier;
+  public salesOrderItem?: SalesOrderItemIdentifier;
+  public product?: ProductIdentifier;
+  public quantity: Number;
+  public unitPrice: MonetaryValue;
 
   public get totalPrice(): MonetaryValue {
     return new MonetaryValue({
-      value: currency(this.unitPrice.value).multiply(this.quantity.value).toString(),
+      value: currency(this.unitPrice.value).multiply(this.quantity as number).toString(),
       currency: this.unitPrice.currency,
     });
   }
@@ -40,7 +40,7 @@ export class PackageItem implements IPackageItem {
     this.salesOrder = pojo.salesOrder && new SalesOrderIdentifier(pojo.salesOrder);
     this.salesOrderItem = pojo.salesOrderItem && new SalesOrderItemIdentifier(pojo.salesOrderItem);
     this.product = pojo.product && new ProductIdentifier(pojo.product);
-    this.quantity = new Quantity(pojo.quantity);
+    this.quantity = pojo.quantity;
     this.unitPrice = new MonetaryValue(pojo.unitPrice);
 
     // Make this object immutable

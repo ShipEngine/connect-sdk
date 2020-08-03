@@ -1,8 +1,8 @@
-import { Warehouse as IWarehouse, WarehousePOJO } from "../../../definitions";
+import { Warehouse as IWarehouse, Warehouse as WarehousePOJO } from "../../../definitions";
 import { Address, hideAndFreeze, Identifiers, Joi, _internal } from "../../common";
 
 export class Warehouse implements IWarehouse {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "warehouse",
     schema: Joi.object({
       id: Joi.string().trim().singleLine().min(1).max(100).required(),
@@ -13,11 +13,11 @@ export class Warehouse implements IWarehouse {
     }),
   };
 
-  public readonly id: string;
-  public readonly identifiers: Identifiers;
-  public readonly name: string;
-  public readonly shipFrom: Address;
-  public readonly returnTo: Address;
+  public id: string;
+  public identifiers: Identifiers;
+  public name: string;
+  public shipFrom: Address;
+  public returnTo: Address;
 
   public constructor(pojo: WarehousePOJO) {
     this.id = pojo.id;

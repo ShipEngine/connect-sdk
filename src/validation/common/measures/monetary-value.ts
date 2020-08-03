@@ -1,5 +1,5 @@
 import * as currency from "currency.js";
-import { ErrorCode, MonetaryValue as IMonetaryValue, MonetaryValuePOJO } from "../../../definitions";
+import { ErrorCode, MonetaryValue as IMonetaryValue, MonetaryValue as MonetaryValuePOJO } from "../../../definitions";
 import { error } from "../errors";
 import { hideAndFreeze, _internal } from "../utils";
 import { Joi } from "../validation";
@@ -8,7 +8,7 @@ import { Joi } from "../validation";
  * A monetary value in a supported currency
  */
 export class MonetaryValue implements IMonetaryValue {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "monetary value",
     schema: Joi.object({
       value: Joi.alternatives(Joi.number(), Joi.string().money()).required(),
@@ -16,8 +16,8 @@ export class MonetaryValue implements IMonetaryValue {
     }),
   };
 
-  public readonly value: string;
-  public readonly currency: string;
+  public value: string;
+  public currency: string;
 
   public constructor(pojo: MonetaryValuePOJO) {
     this.value = currency(pojo.value).toString();

@@ -1,10 +1,10 @@
-import { DefinitionIdentifier as IDefinitionIdentifier, DefinitionIdentifierPOJO, UUID } from "../../definitions";
+import { DefinitionIdentifier as IDefinitionIdentifier, DefinitionIdentifier as DefinitionIdentifierPOJO, UUID } from "../../definitions";
 import { Identifiers } from "./identifiers";
 import { _internal } from "./utils";
 import { Joi } from "./validation";
 
 export abstract class DefinitionIdentifier implements IDefinitionIdentifier {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "object",
     schema: Joi.object({
       id: Joi.string().uuid().required(),
@@ -13,10 +13,10 @@ export abstract class DefinitionIdentifier implements IDefinitionIdentifier {
     }),
   };
 
-  public readonly id: UUID;
-  public readonly code: string;
+  public id: UUID;
+  public code: string;
 
-  public readonly identifiers: Identifiers;
+  public identifiers: Identifiers;
 
   public constructor(pojo: DefinitionIdentifierPOJO) {
     this.id = pojo.id;

@@ -1,10 +1,10 @@
-import { ErrorCode, FulfillmentService, Rate as IRate, RatePOJO } from "../../../definitions";
+import {  Rate as IRate, Rate as RatePOJO } from "../../../definitions";
 import { App, calculateTotalCharges, Charge, createNotes, DateTimeZone, DefinitionIdentifier, error, hideAndFreeze, Joi, MonetaryValue, Note, TimeRange, _internal } from "../../common";
 import { DeliveryService } from "../delivery-service";
 import { RatePackage } from "./rate-package";
 
 export class Rate implements IRate {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "rate",
     schema: Joi.object({
       deliveryService: Joi.alternatives(
@@ -21,15 +21,15 @@ export class Rate implements IRate {
     }),
   };
 
-  public readonly deliveryService: DeliveryService;
-  public readonly shipDateTime?: DateTimeZone;
-  public readonly deliveryDateTime?: DateTimeZone;
-  public readonly isNegotiatedRate: boolean;
-  public readonly isTrackable: boolean;
-  public readonly charges: ReadonlyArray<Charge>;
-  public readonly totalAmount: MonetaryValue;
-  public readonly notes: ReadonlyArray<Note>;
-  public readonly packages: ReadonlyArray<RatePackage>;
+  public deliveryService: DeliveryService;
+  public shipDateTime?: DateTimeZone;
+  public deliveryDateTime?: DateTimeZone;
+  public isNegotiatedRate: boolean;
+  public isTrackable: boolean;
+  public charges: Array<Charge>;
+  public totalAmount: MonetaryValue;
+  public notes: Array<Note>;
+  public packages: Array<RatePackage>;
 
   public get package(): RatePackage {
     return this.packages[0];

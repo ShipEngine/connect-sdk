@@ -6,7 +6,7 @@ import { error, MonetaryValue } from "../common";
  * Returns the widest service area of the given values
  *
  */
-export function getMaxServiceArea(things: ReadonlyArray<{ serviceArea?: ServiceArea }>): ServiceArea {
+export function getMaxServiceArea(things: Array<{ serviceArea?: ServiceArea }>): ServiceArea {
   let maxArea = 0;
   let serviceAreas = [
     ServiceArea.Regional,
@@ -38,9 +38,9 @@ export function getMaxServiceArea(things: ReadonlyArray<{ serviceArea?: ServiceA
  * which is the sum of the insured value of all packages.
  *
  */
-export function calculateTotalInsuranceAmount(packages: ReadonlyArray<{ insuredValue: MonetaryValue }>): MonetaryValue;
-export function calculateTotalInsuranceAmount(packages: ReadonlyArray<{ insuredValue?: MonetaryValue }>): MonetaryValue | undefined;
-export function calculateTotalInsuranceAmount(packages: ReadonlyArray<{ insuredValue?: MonetaryValue }>): MonetaryValue | undefined {
+export function calculateTotalInsuranceAmount(packages: Array<{ insuredValue: MonetaryValue }>): MonetaryValue;
+export function calculateTotalInsuranceAmount(packages: Array<{ insuredValue?: MonetaryValue }>): MonetaryValue | undefined;
+export function calculateTotalInsuranceAmount(packages: Array<{ insuredValue?: MonetaryValue }>): MonetaryValue | undefined {
   try {
     let insuredValues = packages.map((parcel) => parcel.insuredValue).filter(Boolean) as MonetaryValue[];
     if (insuredValues.length > 0) {

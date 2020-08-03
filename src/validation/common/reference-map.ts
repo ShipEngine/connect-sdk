@@ -18,7 +18,7 @@ const _private = Symbol("private fields");
  * Maps ShipEngine Integration Platform classes by their UUIDs
  */
 export class ReferenceMap {
-  private readonly [_private] = {
+  private [_private] = {
     map: new Map<UUID, Reference>(),
     isFinishedLoading: false,
   };

@@ -1,8 +1,8 @@
-import { CancellationStatus, PickupCancellationOutcome as IPickupCancellationOutcome, PickupCancellationOutcomePOJO, UUID } from "../../../definitions";
+import { CancellationStatus, PickupCancellationOutcome as IPickupCancellationOutcome, PickupCancellationOutcome as PickupCancellationOutcomePOJO, UUID } from "../../../definitions";
 import { createNotes, hideAndFreeze, Joi, Note, _internal } from "../../common";
 
 export class PickupCancellationOutcome implements IPickupCancellationOutcome {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "pickup",
     schema: Joi.object({
       cancellationID: Joi.string().uuid().required(),
@@ -15,13 +15,13 @@ export class PickupCancellationOutcome implements IPickupCancellationOutcome {
     }),
   };
 
-  public readonly cancellationID: UUID;
-  public readonly status: CancellationStatus;
-  public readonly confirmationNumber: string;
-  public readonly code: string;
-  public readonly description: string;
-  public readonly notes: ReadonlyArray<Note>;
-  public readonly metadata: object;
+  public cancellationID: UUID;
+  public status: CancellationStatus;
+  public confirmationNumber?: string;
+  public code?: string;
+  public description?: string;
+  public notes?: Array<Note>;
+  public metadata?: object;
 
   public constructor(pojo: PickupCancellationOutcomePOJO) {
     this.cancellationID = pojo.cancellationID;

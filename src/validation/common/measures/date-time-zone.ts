@@ -1,12 +1,12 @@
 import * as moment from "moment-timezone";
 
-import { DateTimeZone as IDateTimeZone, DateTimeZonePOJO } from "../../../definitions";
+import { DateTimeZone as IDateTimeZone, DateTimeZone as DateTimeZonePOJO } from "../../../definitions";
 import { hideAndFreeze, regex, _internal } from "../utils";
 import { Joi } from "../validation";
 
 
 export class DateTimeZone implements IDateTimeZone {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "date/time",
     schema: Joi.alternatives(
       Joi.date(),
@@ -18,9 +18,9 @@ export class DateTimeZone implements IDateTimeZone {
     ),
   };
 
-  public readonly value: string;
-  public readonly timeZone: string;
-  public readonly offset: string;
+  public value: string;
+  public timeZone: string;
+  public offset: string;
 
   public get isUTC(): boolean {
     return this.offset.slice(1) === "00:00";

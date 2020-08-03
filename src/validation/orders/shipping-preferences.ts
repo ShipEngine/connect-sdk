@@ -1,8 +1,8 @@
-import { DeliveryConfirmationType, ShippingPreferences as IShippingPreferences, ShippingPreferencesPOJO } from "../../definitions";
+import { DeliveryConfirmationType, ShippingPreferences as IShippingPreferences, ShippingPreferences as ShippingPreferencesPOJO } from "../../definitions";
 import { DateTimeZone, hideAndFreeze, Joi, MonetaryValue, _internal } from "../common";
 
 export class ShippingPreferences implements IShippingPreferences {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "shipping preferences",
     schema: Joi.object({
       deliveryConfirmationType: Joi.string().enum(DeliveryConfirmationType),
@@ -13,11 +13,11 @@ export class ShippingPreferences implements IShippingPreferences {
     }),
   };
 
-  public readonly deliveryConfirmationType?: DeliveryConfirmationType;
-  public readonly deliveryDateTime?: DateTimeZone;
-  public readonly containsAlcohol: boolean;
-  public readonly saturdayDelivery: boolean;
-  public readonly insuredValue?: MonetaryValue;
+  public deliveryConfirmationType?: DeliveryConfirmationType;
+  public deliveryDateTime?: DateTimeZone;
+  public containsAlcohol: boolean;
+  public saturdayDelivery: boolean;
+  public insuredValue?: MonetaryValue;
 
   public constructor(pojo: ShippingPreferencesPOJO) {
     this.deliveryConfirmationType = pojo.deliveryConfirmationType;

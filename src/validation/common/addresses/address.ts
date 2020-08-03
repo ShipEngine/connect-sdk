@@ -1,10 +1,10 @@
-import { Address as IAddress, AddressPOJO, Country } from "../../../definitions";
+import { Address as IAddress, Address as AddressPOJO, Country } from "../../../definitions";
 import { hideAndFreeze, _internal } from "../utils";
 import { Joi } from "../validation";
 import { PartialAddress, PartialAddressBase } from "./partial-address";
 
 export abstract class AddressBase  extends PartialAddressBase implements IAddress {
-  public readonly country!: Country;
+  public country!: Country;
 
   public toString(): string {
     let address = [];
@@ -18,7 +18,7 @@ export abstract class AddressBase  extends PartialAddressBase implements IAddres
 
 
 export class Address extends AddressBase {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "address",
     schema: PartialAddress[_internal].schema.keys({
       addressLines: Joi.array().min(1).items(Joi.string().trim().singleLine().min(1).max(100)).required(),

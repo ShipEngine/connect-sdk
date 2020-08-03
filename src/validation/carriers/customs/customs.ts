@@ -1,9 +1,9 @@
-import { Customs as ICustoms, CustomsPOJO, NonDeliveryOption } from "../../../definitions";
+import { Customs as ICustoms, Customs as CustomsPOJO, NonDeliveryOption } from "../../../definitions";
 import { hideAndFreeze, Joi, _internal } from "../../common";
 import { CustomsItem } from "./customs-item";
 
 export class Customs implements ICustoms {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "customs",
     schema: Joi.object({
       nonDeliveryOption: Joi.string().enum(NonDeliveryOption),
@@ -11,8 +11,8 @@ export class Customs implements ICustoms {
     }),
   };
 
-  public readonly nonDeliveryOption?: NonDeliveryOption;
-  public readonly contents: ReadonlyArray<CustomsItem>;
+  public nonDeliveryOption?: NonDeliveryOption;
+  public contents: Array<CustomsItem>;
 
   public constructor(pojo: CustomsPOJO) {
     this.nonDeliveryOption = pojo.nonDeliveryOption;

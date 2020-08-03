@@ -1,10 +1,10 @@
-import { Manifest as IManifest, ManifestPOJO } from "../../../definitions";
+import { Manifest as IManifest, Manifest as ManifestPOJO } from "../../../definitions";
 import { createNotes, hideAndFreeze, Identifiers, Joi, Note, _internal } from "../../common";
 import { Document } from "../documents/document";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 
 export class Manifest implements IManifest {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "manifest",
     schema: Joi.object({
       id: Joi.string().trim().singleLine().allow("").max(100),
@@ -17,12 +17,12 @@ export class Manifest implements IManifest {
     }),
   };
 
-  public readonly id: string;
-  public readonly identifiers: Identifiers;
-  public readonly shipments: ReadonlyArray<ShipmentIdentifier>;
-  public readonly document?: Document;
-  public readonly notes: ReadonlyArray<Note>;
-  public readonly metadata: object;
+  public id: string;
+  public identifiers: Identifiers;
+  public shipments: Array<ShipmentIdentifier>;
+  public document?: Document;
+  public notes: Array<Note>;
+  public metadata: object;
 
   public constructor(pojo: ManifestPOJO) {
     this.id = pojo.id || "";

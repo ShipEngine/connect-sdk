@@ -1,4 +1,4 @@
-import { Note as INote, NotePOJO, NoteType } from "../../definitions";
+import { Note as INote, Note as NotePOJO, NoteType } from "../../definitions";
 import { hideAndFreeze, _internal } from "./utils";
 import { Joi } from "./validation";
 
@@ -6,7 +6,7 @@ import { Joi } from "./validation";
 /**
  * Normalizes any form of notes as an array of Note objects
  */
-export function createNotes(notes?: string | ReadonlyArray<string | NotePOJO>): Note[] {
+export function createNotes(notes?: string | Array<string | NotePOJO>): Note[] {
   if (!notes) {
     return [];
   }
@@ -19,7 +19,7 @@ export function createNotes(notes?: string | ReadonlyArray<string | NotePOJO>): 
 
 
 export class Note implements INote {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "note",
     schema: Joi.object({
       type: Joi.string().enum(NoteType).required(),
@@ -37,8 +37,8 @@ export class Note implements INote {
     ),
   };
 
-  public readonly type: NoteType;
-  public readonly text: string;
+  public type: NoteType;
+  public text: string;
 
   public constructor(pojo: string | NotePOJO) {
     if (typeof pojo === "string") {

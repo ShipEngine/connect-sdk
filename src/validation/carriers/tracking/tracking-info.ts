@@ -1,11 +1,11 @@
-import { ShipmentStatus, TrackingInfo as ITrackingInfo, TrackingInfoPOJO } from "../../../definitions";
+import { ShipmentStatus, TrackingInfo as ITrackingInfo, TrackingInfo as TrackingInfoPOJO } from "../../../definitions";
 import { App, DateTimeZone, hideAndFreeze, Joi, _internal } from "../../common";
 import { ShipmentIdentifierBase } from "../shipments/shipment-identifier";
 import { PackageTrackingInfo } from "./package-tracking-info";
 import { TrackingEvent } from "./tracking-event";
 
 export class TrackingInfo extends ShipmentIdentifierBase implements ITrackingInfo {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "shipment",
     schema: Joi.object({
       deliveryDateTime: DateTimeZone[_internal].schema,
@@ -14,9 +14,9 @@ export class TrackingInfo extends ShipmentIdentifierBase implements ITrackingInf
     }),
   };
 
-  public readonly deliveryDateTime?: DateTimeZone;
-  public readonly packages: ReadonlyArray<PackageTrackingInfo>;
-  public readonly events: ReadonlyArray<TrackingEvent>;
+  public deliveryDateTime?: DateTimeZone;
+  public packages: Array<PackageTrackingInfo>;
+  public events: Array<TrackingEvent>;
 
   public get package(): PackageTrackingInfo {
     return this.packages[0];

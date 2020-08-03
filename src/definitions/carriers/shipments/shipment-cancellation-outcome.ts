@@ -17,28 +17,28 @@ export interface ShipmentCancellationOutcome {
   /**
    * The confirmation number of the cancellation
    */
-  confirmationNumber: string;
+  confirmationNumber?: string;
 
   /**
    * The carrier's code for this cancellation outcome
    */
-  code: string;
+  code?: string;
 
   /**
    * The carrier's description of the cancellation outcome.
    * This description should not be specific to this particular shipment.
    */
-  description: string;
+  description?: string;
 
   /**
    * Human-readable information/instructions regarding the cancellation
    * (e.g. "Please call ###-#### to cancel", "Cannot cancel because driver is en-route")
    */
-  notes: Array<Note>;
+  notes?: Array<Note>;
 
   /**
    * Arbitrary data about this shipment that will be persisted by the ShipEngine Integration Platform.
    * Must be JSON serializable.
    */
-  metadata: object;
+  metadata?: object;
 }

@@ -1,4 +1,4 @@
-import { Country, DeliveryService as IDeliveryService, DeliveryServiceClass, DeliveryServiceGrade, DeliveryServicePOJO, DocumentFormat, DocumentSize, FulfillmentService, ManifestType, ServiceArea } from "../../definitions";
+import { Country, DeliveryService as IDeliveryService, DeliveryServiceClass, DeliveryServiceGrade, DeliveryService as DeliveryServicePOJO, DocumentFormat, DocumentSize, ManifestType, ServiceArea } from "../../definitions";
 import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../common";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { Packaging } from "./packaging";
@@ -6,14 +6,13 @@ import { Packaging } from "./packaging";
 const _private = Symbol("private fields");
 
 export class DeliveryService extends DefinitionIdentifier implements IDeliveryService {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "delivery service",
     schema: DefinitionIdentifier[_internal].schema.keys({
       name: Joi.string().trim().singleLine().min(1).max(100).required(),
       description: Joi.string().trim().singleLine().allow("").max(1000),
       class: Joi.string().enum(DeliveryServiceClass).required(),
       grade: Joi.string().enum(DeliveryServiceGrade).required(),
-      fulfillmentService: Joi.string().enum(FulfillmentService),
       serviceArea: Joi.string().enum(ServiceArea),
       isConsolidationService: Joi.boolean(),
       allowsMultiplePackages: Joi.boolean(),
@@ -32,33 +31,32 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
   };
 
 
-  private readonly [_private]: {
-    readonly app: App;
+  private [_private]: {
+    app: App;
   };
 
-  public readonly name: string;
-  public readonly description: string;
-  public readonly class: DeliveryServiceClass;
-  public readonly grade: DeliveryServiceGrade;
-  public readonly fulfillmentService?: FulfillmentService;
-  public readonly serviceArea?: ServiceArea;
-  public readonly isConsolidationService: boolean;
-  public readonly allowsMultiplePackages: boolean;
-  public readonly isInsurable: boolean;
-  public readonly isTrackable: boolean;
-  public readonly manifestType: ManifestType;
-  public readonly supportsReturns: boolean;
-  public readonly hasSandbox: boolean;
-  public readonly labelFormats: ReadonlyArray<DocumentFormat>;
-  public readonly labelSizes: ReadonlyArray<DocumentSize>;
-  public readonly originCountries: ReadonlyArray<Country>;
-  public readonly destinationCountries: ReadonlyArray<Country>;
-  public readonly packaging: ReadonlyArray<Packaging>;
-  public readonly deliveryConfirmations: ReadonlyArray<DeliveryConfirmation>;
+  public name: string;
+  public description: string;
+  public class: DeliveryServiceClass;
+  public grade: DeliveryServiceGrade;
+  public serviceArea?: ServiceArea;
+  public isConsolidationService: boolean;
+  public allowsMultiplePackages: boolean;
+  public isInsurable: boolean;
+  public isTrackable: boolean;
+  public manifestType: ManifestType;
+  public supportsReturns: boolean;
+  public hasSandbox: boolean;
+  public labelFormats: Array<DocumentFormat>;
+  public labelSizes: Array<DocumentSize>;
+  public originCountries: Array<Country>;
+  public destinationCountries: Array<Country>;
+  public packaging: Array<Packaging>;
+  public deliveryConfirmations: Array<DeliveryConfirmation>;
 
-  public get countries(): ReadonlyArray<Country> {
+  public get countries(): Array<Country> {
     let countries = new Set(this.originCountries.concat(this.destinationCountries));
-    return Object.freeze([...countries]);
+    return [...countries];
   }
 
   public get requiresWeight(): boolean {
@@ -76,7 +74,6 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
     this.description = pojo.description || "";
     this.class = pojo.class;
     this.grade = pojo.grade;
-    this.fulfillmentService = pojo.fulfillmentService;
     this.serviceArea = pojo.serviceArea;
     this.isConsolidationService = pojo.isConsolidationService || false;
     this.allowsMultiplePackages = pojo.allowsMultiplePackages || false;

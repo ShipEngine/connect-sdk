@@ -1,11 +1,11 @@
-import { PickupShipment as IPickupShipment, PickupShipmentPOJO } from "../../../definitions";
+import { PickupShipment as IPickupShipment, PickupShipment as PickupShipmentPOJO } from "../../../definitions";
 import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../../common";
 import { DeliveryService } from "../delivery-service";
 import { ShipmentIdentifier, ShipmentIdentifierBase } from "../shipments/shipment-identifier";
 import { PickupPackage } from "./pickup-package";
 
 export class PickupShipment extends ShipmentIdentifierBase implements IPickupShipment {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "shipment",
     schema: ShipmentIdentifier[_internal].schema.keys({
       deliveryService: Joi.alternatives(
@@ -17,9 +17,9 @@ export class PickupShipment extends ShipmentIdentifierBase implements IPickupShi
     }),
   };
 
-  public readonly deliveryService: DeliveryService;
-  public readonly metadata: object;
-  public readonly packages: ReadonlyArray<PickupPackage>;
+  public deliveryService: DeliveryService;
+  public metadata: object;
+  public packages: Array<PickupPackage>;
 
   public get package(): PickupPackage {
     return this.packages[0];

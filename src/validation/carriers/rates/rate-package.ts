@@ -1,10 +1,10 @@
-import { RatePackage as IRatePackage, RatePackagePOJO } from "../../../definitions";
+import { RatePackage as IRatePackage, RatePackage as RatePackagePOJO } from "../../../definitions";
 import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../../common";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { Packaging } from "../packaging";
 
 export class RatePackage implements IRatePackage {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "package",
     schema: Joi.object({
       packaging: Joi.alternatives(
@@ -18,8 +18,8 @@ export class RatePackage implements IRatePackage {
     }),
   };
 
-  public readonly packaging: Packaging;
-  public readonly deliveryConfirmation?: DeliveryConfirmation;
+  public packaging: Packaging;
+  public deliveryConfirmation?: DeliveryConfirmation;
 
   public constructor(pojo: RatePackagePOJO, app: App) {
     this.packaging = app[_internal].references.lookup(pojo.packaging, Packaging);

@@ -1,10 +1,10 @@
-import { ErrorCode, ManifestLocation, NewManifest as INewManifest, NewManifestPOJO } from "../../../definitions";
+import { ErrorCode, ManifestLocation, NewManifest as INewManifest, NewManifest as NewManifestPOJO } from "../../../definitions";
 import { Address, DateTimeZone, error, hideAndFreeze, Joi, _internal } from "../../common";
 import { CarrierApp } from "../carrier-app";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 
 export class NewManifest implements INewManifest {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "manifest",
     schema: Joi.object({
       shipFrom: Address[_internal].schema.required(),
@@ -14,10 +14,10 @@ export class NewManifest implements INewManifest {
     }),
   };
 
-  public readonly shipFrom?: Address;
-  public readonly openDateTime: DateTimeZone;
-  public readonly closeDateTime: DateTimeZone;
-  public readonly shipments: ReadonlyArray<ShipmentIdentifier>;
+  public shipFrom?: Address;
+  public openDateTime: DateTimeZone;
+  public closeDateTime: DateTimeZone;
+  public shipments: Array<ShipmentIdentifier>;
 
   public constructor(pojo: NewManifestPOJO, carrier: CarrierApp) {
     this.shipFrom = pojo.shipFrom && new Address(pojo.shipFrom);

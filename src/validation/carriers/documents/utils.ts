@@ -1,4 +1,4 @@
-import { DocumentPOJO, DocumentType } from "../../../definitions";
+import { Label as DocumentPOJO, DocumentType } from "../../../definitions";
 import { Document } from "./document";
 import { Label } from "./label";
 

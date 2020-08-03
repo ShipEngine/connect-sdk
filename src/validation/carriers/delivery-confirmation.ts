@@ -1,10 +1,10 @@
-import { DeliveryConfirmation as IDeliveryConfirmation, DeliveryConfirmationPOJO, DeliveryConfirmationType } from "../../definitions";
+import { DeliveryConfirmation as IDeliveryConfirmation, DeliveryConfirmation as DeliveryConfirmationPOJO, DeliveryConfirmationType } from "../../definitions";
 import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../common";
 
 const _private = Symbol("private fields");
 
 export class DeliveryConfirmation extends DefinitionIdentifier implements IDeliveryConfirmation {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "delivery confirmation",
     schema: DefinitionIdentifier[_internal].schema.keys({
       name: Joi.string().trim().singleLine().min(1).max(100).required(),
@@ -14,12 +14,12 @@ export class DeliveryConfirmation extends DefinitionIdentifier implements IDeliv
   };
 
 
-  private readonly [_private]: {
-    readonly app: App;
+  private [_private]: {
+    app: App;
   };
 
-  public readonly name: string;
-  public readonly description: string;
+  public name: string;
+  public description: string;
   public type: DeliveryConfirmationType;
 
   public constructor(pojo: DeliveryConfirmationPOJO, app: App) {

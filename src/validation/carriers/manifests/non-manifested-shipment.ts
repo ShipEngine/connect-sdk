@@ -1,9 +1,9 @@
-import { NonManifestedShipment as INonManifestedShipment, NonManifestedShipmentPOJO } from "../../../definitions";
+import { NonManifestedShipment as INonManifestedShipment, NonManifestedShipment as NonManifestedShipmentPOJO } from "../../../definitions";
 import { createNotes, hideAndFreeze, Joi, Note, _internal } from "../../common";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 
 export class NonManifestedShipment implements INonManifestedShipment {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "manifest confirmation",
     schema: ShipmentIdentifier[_internal].schema.keys({
       code: Joi.string().trim().singleLine().allow("").max(100),
@@ -12,9 +12,9 @@ export class NonManifestedShipment implements INonManifestedShipment {
     }),
   };
 
-  public readonly code: string;
-  public readonly description: string;
-  public readonly notes: ReadonlyArray<Note>;
+  public code: string;
+  public description: string;
+  public notes: Array<Note>;
 
   public constructor(pojo: NonManifestedShipmentPOJO) {
     this.code = pojo.code || "";

@@ -1,10 +1,10 @@
-import { PackageRateCriteria as IPackageRateCriteria, PackageRateCriteriaPOJO } from "../../../definitions";
+import { PackageRateCriteria as IPackageRateCriteria, PackageRateCriteria as PackageRateCriteriaPOJO } from "../../../definitions";
 import { App, DefinitionIdentifier, Dimensions, hideAndFreeze, Joi, MonetaryValue, Weight, _internal } from "../../common";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { Packaging } from "../packaging";
 
 export class PackageRateCriteria implements IPackageRateCriteria {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "package",
     schema: Joi.object({
       packaging: Joi.array()
@@ -19,13 +19,13 @@ export class PackageRateCriteria implements IPackageRateCriteria {
     }),
   };
 
-  public readonly packaging: ReadonlyArray<Packaging>;
-  public readonly deliveryConfirmations: ReadonlyArray<DeliveryConfirmation>;
-  public readonly dimensions?: Dimensions;
-  public readonly weight?: Weight;
-  public readonly insuredValue?: MonetaryValue;
-  public readonly containsAlcohol: boolean;
-  public readonly isNonMachinable: boolean;
+  public packaging: Array<Packaging>;
+  public deliveryConfirmations: Array<DeliveryConfirmation>;
+  public dimensions?: Dimensions;
+  public weight?: Weight;
+  public insuredValue?: MonetaryValue;
+  public containsAlcohol: boolean;
+  public isNonMachinable: boolean;
 
   public constructor(pojo: PackageRateCriteriaPOJO, app: App) {
     this.packaging = (pojo.packaging || [])

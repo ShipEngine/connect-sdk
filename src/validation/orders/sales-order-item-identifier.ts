@@ -1,10 +1,10 @@
-import { SalesOrderItemIdentifier as ISalesOrderItemIdentifier, SalesOrderItemIdentifierPOJO } from "../../definitions";
+import { SalesOrderItemIdentifier as ISalesOrderItemIdentifier, SalesOrderItemIdentifier as SalesOrderItemIdentifierPOJO } from "../../definitions";
 import { hideAndFreeze, Identifiers, Joi, _internal } from "../common";
 
 export abstract class SalesOrderItemIdentifierBase implements ISalesOrderItemIdentifier {
-  public readonly id: string;
-  public readonly sku: string;
-  public readonly identifiers: Identifiers;
+  public id: string;
+  public sku: string;
+  public identifiers: Identifiers;
 
   public constructor(pojo: SalesOrderItemIdentifierPOJO) {
     this.id = pojo.id;
@@ -15,7 +15,7 @@ export abstract class SalesOrderItemIdentifierBase implements ISalesOrderItemIde
 
 
 export class SalesOrderItemIdentifier extends SalesOrderItemIdentifierBase {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "sales order item",
     schema: Joi.object({
       id: Joi.string().trim().singleLine().min(1).max(100).required(),

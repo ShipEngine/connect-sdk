@@ -1,12 +1,12 @@
-import { Document as IDocument, DocumentFormat, DocumentPOJO, DocumentSize, DocumentType, ErrorCode } from "../../../definitions";
+import { Document as IDocument, DocumentFormat, Document as DocumentPOJO, DocumentSize, DocumentType, ErrorCode } from "../../../definitions";
 import { error, hideAndFreeze, Joi, _internal } from "../../common";
 
 export abstract class DocumentBase implements IDocument {
-  public readonly name: string;
-  public readonly type: DocumentType;
-  public readonly size: DocumentSize;
-  public readonly format: DocumentFormat;
-  public readonly data: Buffer;
+  public name: string;
+  public type: DocumentType;
+  public size: DocumentSize;
+  public format: DocumentFormat;
+  public data: Buffer;
 
   public constructor(pojo: DocumentPOJO) {
     this.name = getDocumentName(pojo);
@@ -22,7 +22,7 @@ export abstract class DocumentBase implements IDocument {
 }
 
 export class Document extends DocumentBase {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "document",
     schema: Joi.object({
       name: Joi.string().trim().singleLine().allow("").max(100),

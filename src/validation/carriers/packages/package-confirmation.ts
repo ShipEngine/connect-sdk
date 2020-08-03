@@ -1,17 +1,17 @@
-import { PackageConfirmation as IPackageConfirmation, PackageConfirmationPOJO } from "../../../definitions";
+import { PackageConfirmation as IPackageConfirmation, PackageConfirmation as PackageConfirmationPOJO } from "../../../definitions";
 import { hideAndFreeze, Joi, _internal } from "../../common";
 
 import { PackageIdentifier, PackageIdentifierBase } from "./package-identifier";
 
 export class PackageConfirmation extends PackageIdentifierBase implements IPackageConfirmation {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "package",
     schema: PackageIdentifier[_internal].schema.keys({
       metadata: Joi.object(),
     }),
   };
 
-  public readonly metadata: object;
+  public metadata: object;
 
   public constructor(pojo: PackageConfirmationPOJO) {
     super(pojo);

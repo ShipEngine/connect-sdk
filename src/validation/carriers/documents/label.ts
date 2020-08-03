@@ -1,9 +1,9 @@
-import { Label as ILabel, LabelPOJO } from "../../../definitions";
+import { Label as ILabel, Label as LabelPOJO } from "../../../definitions";
 import { hideAndFreeze, Joi, _internal } from "../../common";
 import { Document, DocumentBase } from "./document";
 
 export class Label extends DocumentBase implements ILabel {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "label",
     schema: Document[_internal].schema.keys({
       referenceFields: Joi.array().items(
@@ -12,7 +12,7 @@ export class Label extends DocumentBase implements ILabel {
     }),
   };
 
-  public readonly referenceFields: ReadonlyArray<string>;
+  public referenceFields: Array<string>;
 
   public constructor(pojo: LabelPOJO) {
     super(pojo);

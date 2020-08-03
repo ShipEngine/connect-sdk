@@ -1,8 +1,8 @@
-import { Buyer as IBuyer, BuyerPOJO } from "../../definitions";
+import { Buyer as IBuyer, Buyer as BuyerPOJO } from "../../definitions";
 import { Address, ContactInfo, ContactInfoBase, hideAndFreeze, Joi, _internal } from "../common";
 
 export class Buyer extends ContactInfoBase implements IBuyer {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "buyer",
     schema: ContactInfo[_internal].schema.keys({
       id: Joi.string().trim().singleLine().min(1).max(100).required(),
@@ -10,8 +10,8 @@ export class Buyer extends ContactInfoBase implements IBuyer {
     })
   };
 
-  public readonly id: string;
-  public readonly address?: Address;
+  public id: string;
+  public address?: Address;
 
   public constructor(pojo: BuyerPOJO) {
     super(pojo);

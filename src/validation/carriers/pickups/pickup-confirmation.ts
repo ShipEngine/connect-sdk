@@ -1,9 +1,9 @@
-import { PickupConfirmation as IPickupConfirmation, PickupConfirmationPOJO } from "../../../definitions";
+import { PickupConfirmation as IPickupConfirmation, PickupConfirmation as PickupConfirmationPOJO } from "../../../definitions";
 import { calculateTotalCharges, Charge, createNotes, hideAndFreeze, Identifiers, Joi, MonetaryValue, Note, TimeRange, _internal } from "../../common";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 
 export class PickupConfirmation implements IPickupConfirmation {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "pickup",
     schema: Joi.object({
       id: Joi.string().trim().singleLine().min(1).max(100).required(),
@@ -16,14 +16,14 @@ export class PickupConfirmation implements IPickupConfirmation {
     }),
   };
 
-  public readonly id: string;
-  public readonly identifiers: Identifiers;
-  public readonly timeWindows: ReadonlyArray<TimeRange>;
-  public readonly charges: ReadonlyArray<Charge>;
-  public readonly totalAmount: MonetaryValue;
-  public readonly shipments: ReadonlyArray<ShipmentIdentifier>;
-  public readonly notes: ReadonlyArray<Note>;
-  public readonly metadata: object;
+  public id: string;
+  public identifiers: Identifiers;
+  public timeWindows: Array<TimeRange>;
+  public charges: Array<Charge>;
+  public totalAmount: MonetaryValue;
+  public shipments: Array<ShipmentIdentifier>;
+  public notes: Array<Note>;
+  public metadata: object;
 
   public constructor(pojo: PickupConfirmationPOJO) {
     this.id = pojo.id;

@@ -1,9 +1,9 @@
-import { PackageIdentifier as IPackageIdentifier, PackageIdentifierPOJO } from "../../../definitions";
+import { PackageIdentifier as IPackageIdentifier, PackageIdentifier as PackageIdentifierPOJO } from "../../../definitions";
 import { hideAndFreeze, Identifiers, Joi, _internal } from "../../common";
 
 export abstract class PackageIdentifierBase implements IPackageIdentifier {
-  public readonly trackingNumber: string;
-  public readonly identifiers: Identifiers;
+  public trackingNumber: string;
+  public identifiers: Identifiers;
 
   public constructor(pojo: PackageIdentifierPOJO) {
     this.trackingNumber = pojo.trackingNumber || "";
@@ -13,7 +13,7 @@ export abstract class PackageIdentifierBase implements IPackageIdentifier {
 
 
 export class PackageIdentifier extends PackageIdentifierBase {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "package",
     schema: Joi.object({
       trackingNumber: Joi.string().trim().singleLine().allow("").max(100),

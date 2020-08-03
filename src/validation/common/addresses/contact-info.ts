@@ -1,12 +1,12 @@
-import { ContactInfo as IContactInfo, ContactInfoPOJO } from "../../../definitions";
+import { ContactInfo as IContactInfo, ContactInfo as ContactInfoPOJO } from "../../../definitions";
 import { hideAndFreeze, _internal } from "../utils";
 import { Joi } from "../validation";
 import { PersonName } from "./person-name";
 
 export class ContactInfoBase implements IContactInfo {
-  public readonly name: PersonName;
-  public readonly email: string;
-  public readonly phoneNumber: string;
+  public name: PersonName;
+  public email: string;
+  public phoneNumber: string;
 
   public constructor(pojo: ContactInfoPOJO) {
     this.name = new PersonName(pojo.name);
@@ -16,7 +16,7 @@ export class ContactInfoBase implements IContactInfo {
 }
 
 export class ContactInfo extends ContactInfoBase {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "contact info",
     schema: Joi.object({
       name: PersonName[_internal].schema.required(),

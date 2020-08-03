@@ -1,4 +1,4 @@
-import { DocumentType, ShipmentConfirmation as IShipmentConfirmation, ShipmentConfirmationPOJO } from "../../../definitions";
+import { DocumentType, ShipmentConfirmation as IShipmentConfirmation, ShipmentConfirmation as ShipmentConfirmationPOJO } from "../../../definitions";
 import { calculateTotalCharges, Charge, DateTimeZone, hideAndFreeze, Joi, MonetaryValue, _internal } from "../../common";
 import { Document } from "../documents/document";
 import { Label } from "../documents/label";
@@ -7,7 +7,7 @@ import { PackageConfirmation } from "../packages/package-confirmation";
 import { ShipmentIdentifier, ShipmentIdentifierBase } from "./shipment-identifier";
 
 export class ShipmentConfirmation extends ShipmentIdentifierBase implements IShipmentConfirmation {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "shipment",
     schema: ShipmentIdentifier[_internal].schema.keys({
       documents: Joi.array().min(1).items(
@@ -22,11 +22,11 @@ export class ShipmentConfirmation extends ShipmentIdentifierBase implements IShi
     }),
   };
 
-  public readonly documents: ReadonlyArray<Document | Label>;
-  public readonly deliveryDateTime?: DateTimeZone;
-  public readonly charges: ReadonlyArray<Charge>;
-  public readonly totalAmount: MonetaryValue;
-  public readonly packages: ReadonlyArray<PackageConfirmation>;
+  public documents: Array<Document | Label>;
+  public deliveryDateTime?: DateTimeZone;
+  public charges: Array<Charge>;
+  public totalAmount: MonetaryValue;
+  public packages: Array<PackageConfirmation>;
 
   public get isTrackable(): boolean {
     return Boolean(this.trackingNumber);

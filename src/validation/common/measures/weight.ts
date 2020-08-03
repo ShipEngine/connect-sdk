@@ -1,9 +1,9 @@
-import { Weight as IWeight, WeightPOJO, WeightUnit } from "../../../definitions";
+import { Weight as IWeight, Weight as WeightPOJO, WeightUnit } from "../../../definitions";
 import { hideAndFreeze, _internal } from "../utils";
 import { Joi } from "../validation";
 
 export class Weight implements IWeight {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "weight",
     schema: Joi.object({
       value: Joi.number().min(1).required(),
@@ -11,8 +11,8 @@ export class Weight implements IWeight {
     }),
   };
 
-  public readonly value: number;
-  public readonly unit: WeightUnit;
+  public value: number;
+  public unit: WeightUnit;
 
   public constructor(pojo: WeightPOJO) {
     this.value = pojo.value;

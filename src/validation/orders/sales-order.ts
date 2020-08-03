@@ -1,4 +1,4 @@
-import { PaymentMethod, SalesOrder as ISalesOrder, SalesOrderPOJO, SalesOrderStatus } from "../../definitions";
+import { PaymentMethod, SalesOrder as ISalesOrder, SalesOrder as SalesOrderPOJO, SalesOrderStatus } from "../../definitions";
 import { AddressWithContactInfo, calculateTotalCharges, Charge, createNotes, DateTimeZone, hideAndFreeze, Joi, MonetaryValue, Note, _internal } from "../common";
 import { Buyer } from "./buyer";
 import { SalesOrderIdentifier, SalesOrderIdentifierBase } from "./sales-order-identifier";
@@ -7,7 +7,7 @@ import { ShippingPreferences } from "./shipping-preferences";
 
 
 export class SalesOrder extends SalesOrderIdentifierBase implements ISalesOrder {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "sales order",
     schema: SalesOrderIdentifier[_internal].schema.keys({
       createdDateTime: DateTimeZone[_internal].schema.required(),
@@ -25,19 +25,19 @@ export class SalesOrder extends SalesOrderIdentifierBase implements ISalesOrder 
     }),
   };
 
-  public readonly createdDateTime: DateTimeZone;
-  public readonly modifiedDateTime: DateTimeZone;
-  public readonly status: SalesOrderStatus;
-  public readonly paymentMethod?: PaymentMethod;
-  public readonly orderURL?: URL;
-  public readonly shipTo: AddressWithContactInfo;
-  public readonly buyer: Buyer;
-  public readonly shippingPreferences: ShippingPreferences;
-  public readonly charges: ReadonlyArray<Charge>;
-  public readonly totalCharges: MonetaryValue;
-  public readonly items: ReadonlyArray<SalesOrderItem>;
-  public readonly notes: ReadonlyArray<Note>;
-  public readonly metadata: object;
+  public createdDateTime: DateTimeZone;
+  public modifiedDateTime: DateTimeZone;
+  public status: SalesOrderStatus;
+  public paymentMethod?: PaymentMethod;
+  public orderURL?: URL;
+  public shipTo: AddressWithContactInfo;
+  public buyer: Buyer;
+  public shippingPreferences: ShippingPreferences;
+  public charges: Array<Charge>;
+  public totalCharges: MonetaryValue;
+  public items: Array<SalesOrderItem>;
+  public notes: Array<Note>;
+  public metadata: object;
 
   public constructor(pojo: SalesOrderPOJO) {
     super(pojo);
@@ -46,7 +46,7 @@ export class SalesOrder extends SalesOrderIdentifierBase implements ISalesOrder 
     this.modifiedDateTime = pojo.modifiedDateTime ? new DateTimeZone(pojo.modifiedDateTime) : this.createdDateTime;
     this.status = pojo.status;
     this.paymentMethod = pojo.paymentMethod;
-    this.orderURL = pojo.orderURL ? new URL(pojo.orderURL as string) : undefined;
+    this.orderURL = pojo.orderURL ? pojo.orderURL : undefined;
     this.shipTo = new AddressWithContactInfo(pojo.shipTo);
     this.buyer = new Buyer(pojo.buyer);
     this.shippingPreferences = new ShippingPreferences(pojo.shippingPreferences || {});

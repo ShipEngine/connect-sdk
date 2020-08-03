@@ -6,8 +6,8 @@ import { ValidationSchema } from "./validation";
  */
 export interface ShipEngineClass {
   [_internal]: {
-    readonly label: string;
-    readonly schema: ValidationSchema;
+    label: string;
+    schema: ValidationSchema;
   };
 }
 
@@ -15,7 +15,7 @@ export interface ShipEngineClass {
  * A constructor function for a ShipEngine Integration Platform SDK class.
  */
 export interface ShipEngineConstructor<T extends object = object> extends ShipEngineClass {
-  readonly name: string;
+  name: string;
   new(...args: unknown[]): T;
 }
 
@@ -26,6 +26,6 @@ export interface ShipEngineConstructor<T extends object = object> extends ShipEn
  */
 export interface Constructor<T extends object = object> {
   prototype: T;
-  readonly name: string;
+  name: string;
   new(...args: unknown[]): T;
 }

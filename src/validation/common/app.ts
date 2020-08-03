@@ -1,11 +1,11 @@
-import { App as IApp, AppManifest, AppPOJO, AppType, UUID } from "../../definitions";
+import { App as IApp, AppManifest, App as AppPOJO, AppType, UUID } from "../../definitions";
 import { ReferenceMap } from "./reference-map";
 import { sdk } from "./sdk";
 import { _internal } from "./utils";
 import { Joi } from "./validation";
 
 export abstract class App implements IApp {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "ShipEngine Integration Platform app",
     schema: Joi.object({
       id: Joi.string().uuid().required(),
@@ -19,14 +19,14 @@ export abstract class App implements IApp {
     }),
   };
 
-  public readonly [_internal] = {
+  public [_internal] = {
     references: new ReferenceMap(),
   };
 
-  public abstract readonly type: AppType;
-  public readonly id: UUID;
-  public readonly manifest: AppManifest;
-  public readonly sdkVersion: number;
+  public abstract type: AppType;
+  public id: UUID;
+  public manifest: AppManifest;
+  public sdkVersion: number;
 
   public constructor(pojo: AppPOJO) {
     this.id = pojo.id;

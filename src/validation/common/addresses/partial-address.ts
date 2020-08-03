@@ -1,15 +1,15 @@
-import { Country, PartialAddress as IPartialAddress, PartialAddressPOJO } from "../../../definitions";
+import { Country, PartialAddress as IPartialAddress, PartialAddress as PartialAddressPOJO } from "../../../definitions";
 import { hideAndFreeze, _internal } from "../utils";
 import { Joi } from "../validation";
 
 export abstract class PartialAddressBase implements IPartialAddress {
-  public readonly company: string;
-  public readonly addressLines: ReadonlyArray<string>;
-  public readonly cityLocality: string;
-  public readonly stateProvince: string;
-  public readonly postalCode: string;
-  public readonly country?: Country;
-  public readonly isResidential?: boolean;
+  public company: string;
+  public addressLines: Array<string>;
+  public cityLocality: string;
+  public stateProvince: string;
+  public postalCode: string;
+  public country?: Country;
+  public isResidential?: boolean;
 
   public constructor(pojo: PartialAddressPOJO) {
     this.company = pojo.company || "";
@@ -24,7 +24,7 @@ export abstract class PartialAddressBase implements IPartialAddress {
 
 
 export class PartialAddress extends PartialAddressBase {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "address",
     schema: Joi.object({
       company: Joi.string().trim().singleLine().allow("").max(100),

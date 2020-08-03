@@ -1,11 +1,11 @@
-import { Transaction as ITransaction, TransactionPOJO, UUID } from "../../definitions";
+import { Transaction as ITransaction, Transaction as TransactionPOJO, UUID } from "../../definitions";
 import { hideAndFreeze, _internal } from "./utils";
 import { Joi, validate } from "./validation";
 
 const _private = Symbol("private fields");
 
 export class Transaction<T extends object = object> implements ITransaction<T> {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "transaction",
     schema: Joi.object({
       id: Joi.string().uuid().required(),
@@ -15,13 +15,13 @@ export class Transaction<T extends object = object> implements ITransaction<T> {
     }),
   };
 
-  private readonly [_private]: {
+  private [_private]: {
     session: T;
   };
 
-  public readonly id: UUID;
-  public readonly isRetry: boolean;
-  public readonly useSandbox: boolean;
+  public id: UUID;
+  public isRetry: boolean;
+  public useSandbox: boolean;
 
   public get session(): T {
     return this[_private].session;

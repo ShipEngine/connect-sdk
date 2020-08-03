@@ -1,9 +1,9 @@
-import { PersonName as IPersonName, PersonNamePOJO } from "../../../definitions";
+import { PersonName as IPersonName, PersonName as PersonNamePOJO } from "../../../definitions";
 import { hideAndFreeze, _internal } from "../utils";
 import { Joi } from "../validation";
 
 export class PersonName implements IPersonName {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "name",
     schema: Joi.alternatives(
       Joi.string().trim().singleLine().min(1).max(100),
@@ -17,11 +17,11 @@ export class PersonName implements IPersonName {
     ),
   };
 
-  public readonly title: string;
-  public readonly given: string;
-  public readonly middle: string;
-  public readonly family: string;
-  public readonly suffix: string;
+  public title?: string;
+  public given?: string;
+  public middle?: string;
+  public family?: string;
+  public suffix?: string;
 
   public constructor(pojo: string | PersonNamePOJO) {
     if (typeof pojo === "string") {

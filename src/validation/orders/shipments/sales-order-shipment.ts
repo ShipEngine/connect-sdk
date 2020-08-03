@@ -1,10 +1,10 @@
-import { SalesOrderShipment as ISalesOrderShipment, SalesOrderShipmentPOJO } from "../../../definitions";
+import { SalesOrderShipment as ISalesOrderShipment, SalesOrderShipment as SalesOrderShipmentPOJO } from "../../../definitions";
 import { ShipmentIdentifier, ShipmentIdentifierBase } from "../../carriers";
 import { AddressWithContactInfo, DateTimeZone, hideAndFreeze, Joi, _internal } from "../../common";
 import { SalesOrderPackageItem } from "./sales-order-package-item";
 
 export class SalesOrderShipment extends ShipmentIdentifierBase implements ISalesOrderShipment {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "shipment",
     schema: ShipmentIdentifier[_internal].schema.keys({
       trackingURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
@@ -16,18 +16,18 @@ export class SalesOrderShipment extends ShipmentIdentifierBase implements ISales
     }),
   };
 
-  public readonly trackingURL?: URL;
-  public readonly fulfillmentService?: string;
-  public readonly shipFrom?: AddressWithContactInfo;
-  public readonly shipTo: AddressWithContactInfo;
-  public readonly shipDateTime: DateTimeZone;
-  public readonly contents: ReadonlyArray<SalesOrderPackageItem>;
+  public trackingURL?: URL;
+  public fulfillmentService?: string;
+  public shipFrom?: AddressWithContactInfo;
+  public shipTo: AddressWithContactInfo;
+  public shipDateTime: DateTimeZone;
+  public contents: Array<SalesOrderPackageItem>;
 
 
   public constructor(pojo: SalesOrderShipmentPOJO) {
     super(pojo);
 
-    this.trackingURL = pojo.trackingURL ? new URL(pojo.trackingURL as string) : undefined;
+    this.trackingURL = pojo.trackingURL ? pojo.trackingURL : undefined;
     this.fulfillmentService = pojo.fulfillmentService;
     this.shipFrom = pojo.shipFrom && new AddressWithContactInfo(pojo.shipFrom);
     this.shipTo = new AddressWithContactInfo(pojo.shipTo);

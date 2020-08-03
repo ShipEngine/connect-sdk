@@ -1,10 +1,10 @@
-import { PickupPackage as IPickupPackage, PickupPackagePOJO } from "../../../definitions";
+import { PickupPackage as IPickupPackage, PickupPackage as PickupPackagePOJO } from "../../../definitions";
 import { App, DefinitionIdentifier, Dimensions, hideAndFreeze, Joi, Weight, _internal } from "../../common";
 import { PackageIdentifier, PackageIdentifierBase } from "../packages/package-identifier";
 import { Packaging } from "../packaging";
 
 export class PickupPackage extends PackageIdentifierBase implements IPickupPackage {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "package",
     schema: PackageIdentifier[_internal].schema.keys({
       packaging: Joi.alternatives(
@@ -17,10 +17,10 @@ export class PickupPackage extends PackageIdentifierBase implements IPickupPacka
     }),
   };
 
-  public readonly packaging: Packaging;
-  public readonly dimensions?: Dimensions;
-  public readonly weight?: Weight;
-  public readonly metadata: object;
+  public packaging: Packaging;
+  public dimensions?: Dimensions;
+  public weight?: Weight;
+  public metadata: object;
 
   public constructor(pojo: PickupPackagePOJO, app: App) {
     super(pojo);

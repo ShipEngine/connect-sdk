@@ -1,8 +1,8 @@
-import { DocumentFormat, DocumentSize, NewLabel as INewLabel, NewLabelPOJO } from "../../../definitions";
+import { DocumentFormat, DocumentSize, NewLabel as INewLabel, NewLabel as NewLabelPOJO } from "../../../definitions";
 import { hideAndFreeze, Joi, _internal } from "../../common";
 
 export class NewLabel implements INewLabel {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "label",
     schema: Joi.object({
       format: Joi.string().enum(DocumentFormat).required(),
@@ -13,9 +13,9 @@ export class NewLabel implements INewLabel {
     }),
   };
 
-  public readonly format: DocumentFormat;
-  public readonly size: DocumentSize;
-  public readonly referenceFields: ReadonlyArray<string>;
+  public format: DocumentFormat;
+  public size: DocumentSize;
+  public referenceFields: Array<string>;
 
   public constructor(pojo: NewLabelPOJO) {
     this.format = pojo.format;

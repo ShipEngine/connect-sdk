@@ -1,9 +1,9 @@
-import { ProductIdentifier as IProductIdentifier, ProductIdentifierPOJO } from "../../definitions";
+import { ProductIdentifier as IProductIdentifier, ProductIdentifier as ProductIdentifierPOJO } from "../../definitions";
 import { hideAndFreeze, Identifiers, Joi, _internal } from "../common";
 
 
 export class ProductIdentifier implements IProductIdentifier {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "product",
     schema: Joi.object({
       id: Joi.string().trim().singleLine().min(1).max(100).required(),
@@ -12,9 +12,9 @@ export class ProductIdentifier implements IProductIdentifier {
     }),
   };
 
-  public readonly id: string;
-  public readonly sku: string;
-  public readonly identifiers: Identifiers;
+  public id: string;
+  public sku: string;
+  public identifiers: Identifiers;
 
   public constructor(pojo: ProductIdentifierPOJO) {
     this.id = pojo.id;

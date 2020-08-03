@@ -1,10 +1,10 @@
-import { ManifestConfirmation as IManifestConfirmation, ManifestConfirmationPOJO } from "../../../definitions";
+import { ManifestConfirmation as IManifestConfirmation, ManifestConfirmation as ManifestConfirmationPOJO } from "../../../definitions";
 import { hideAndFreeze, Joi, _internal } from "../../common";
 import { Manifest } from "./manifest";
 import { NonManifestedShipment } from "./non-manifested-shipment";
 
 export class ManifestConfirmation implements IManifestConfirmation {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "manifest confirmation",
     schema: Joi.object({
       manifests: Joi.array().min(1).items(Manifest[_internal].schema).required(),
@@ -12,8 +12,8 @@ export class ManifestConfirmation implements IManifestConfirmation {
     }),
   };
 
-  public readonly manifests: ReadonlyArray<Manifest>;
-  public readonly notManifested: ReadonlyArray<NonManifestedShipment>;
+  public manifests: Array<Manifest>;
+  public notManifested: Array<NonManifestedShipment>;
 
   public constructor(pojo: ManifestConfirmationPOJO) {
     this.manifests = pojo.manifests.map((manifest) => new Manifest(manifest));

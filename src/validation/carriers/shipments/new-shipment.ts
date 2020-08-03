@@ -1,4 +1,4 @@
-import { BilledParty, Country, NewShipment as INewShipment, NewShipmentPOJO } from "../../../definitions";
+import { BilledParty, Country, NewShipment as INewShipment, NewShipment as NewShipmentPOJO } from "../../../definitions";
 import { AddressWithContactInfo, App, DateTimeZone, DefinitionIdentifier, hideAndFreeze, Joi, MonetaryValue, _internal } from "../../common";
 import { DeliveryService } from "../delivery-service";
 import { NewPackage } from "../packages/new-package";
@@ -6,7 +6,7 @@ import { calculateTotalInsuranceAmount } from "../utils";
 import { ShipmentIdentifier } from "./shipment-identifier";
 
 export class NewShipment implements INewShipment {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "shipment",
     schema: Joi.object({
       deliveryService: Joi.alternatives(
@@ -25,23 +25,23 @@ export class NewShipment implements INewShipment {
     }),
   };
 
-  public readonly deliveryService: DeliveryService;
-  public readonly shipFrom: AddressWithContactInfo;
-  public readonly shipTo: AddressWithContactInfo;
-  public readonly returnTo: AddressWithContactInfo;
-  public readonly shipDateTime: DateTimeZone;
-  public readonly totalInsuredValue: MonetaryValue;
+  public deliveryService: DeliveryService;
+  public shipFrom: AddressWithContactInfo;
+  public shipTo: AddressWithContactInfo;
+  public returnTo: AddressWithContactInfo;
+  public shipDateTime: DateTimeZone;
+  public totalInsuredValue: MonetaryValue;
 
   public get isNonMachinable(): boolean {
     return this.packages.some((pkg) => pkg.isNonMachinable);
   }
 
-  public readonly returns: {
-    readonly isReturn: boolean;
-    readonly rmaNumber: string;
+  public returns: {
+    isReturn: boolean;
+    rmaNumber: string;
   };
 
-  public readonly packages: ReadonlyArray<NewPackage>;
+  public packages: Array<NewPackage>;
 
   public get package(): NewPackage {
     return this.packages[0];

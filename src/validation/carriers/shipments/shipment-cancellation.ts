@@ -1,9 +1,9 @@
-import { ShipmentCancellation as IShipmentCancellation, ShipmentCancellationPOJO, UUID } from "../../../definitions";
+import { ShipmentCancellation as IShipmentCancellation, ShipmentCancellation as ShipmentCancellationPOJO, UUID } from "../../../definitions";
 import { hideAndFreeze, Joi, _internal } from "../../common";
 import { ShipmentIdentifier, ShipmentIdentifierBase } from "./shipment-identifier";
 
 export class ShipmentCancellation extends ShipmentIdentifierBase implements IShipmentCancellation {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "shipment",
     schema: ShipmentIdentifier[_internal].schema.keys({
       cancellationID: Joi.string().uuid().required(),
@@ -11,8 +11,8 @@ export class ShipmentCancellation extends ShipmentIdentifierBase implements IShi
     }),
   };
 
-  public readonly cancellationID: UUID;
-  public readonly metadata: object;
+  public cancellationID: UUID;
+  public metadata: object;
 
   public constructor(pojo: ShipmentCancellationPOJO) {
     super(pojo);

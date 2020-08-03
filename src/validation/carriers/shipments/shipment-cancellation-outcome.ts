@@ -1,9 +1,9 @@
-import { CancellationStatus, ShipmentCancellationOutcome as IShipmentCancellationOutcome, ShipmentCancellationOutcomePOJO, UUID } from "../../../definitions";
+import { CancellationStatus, ShipmentCancellationOutcome as IShipmentCancellationOutcome, ShipmentCancellationOutcome as ShipmentCancellationOutcomePOJO, UUID } from "../../../definitions";
 import { createNotes, hideAndFreeze, Joi, Note, _internal } from "../../common";
 import { ShipmentIdentifier } from "./shipment-identifier";
 
 export class ShipmentCancellationOutcome implements IShipmentCancellationOutcome {
-  public static readonly [_internal] = {
+  public static [_internal] = {
     label: "shipment",
     schema: ShipmentIdentifier[_internal].schema.keys({
       cancellationID: Joi.string().uuid().required(),
@@ -16,13 +16,13 @@ export class ShipmentCancellationOutcome implements IShipmentCancellationOutcome
     }),
   };
 
-  public readonly cancellationID: UUID;
-  public readonly status: CancellationStatus;
-  public readonly confirmationNumber: string;
-  public readonly code: string;
-  public readonly description: string;
-  public readonly notes: ReadonlyArray<Note>;
-  public readonly metadata: object;
+  public cancellationID: UUID;
+  public status: CancellationStatus;
+  public confirmationNumber: string;
+  public code: string;
+  public description: string;
+  public notes: Array<Note>;
+  public metadata: object;
 
   public constructor(pojo: ShipmentCancellationOutcomePOJO) {
     this.cancellationID = pojo.cancellationID;

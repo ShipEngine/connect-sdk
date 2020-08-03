@@ -1,23 +1,23 @@
-import type { AddressWithContactInfo, AddressWithContactInfoPOJO, Charge, ChargePOJO, DateTimeZone, DateTimeZonePOJO, MonetaryValue, Note, NotePOJO, URLString } from "../common";
-import type { Buyer, BuyerPOJO } from "./buyer";
+import type { AddressWithContactInfo, Charge, DateTimeZone, MonetaryValue, Note } from "../common";
+import type { Buyer } from "./buyer";
 import type { PaymentMethod, SalesOrderStatus } from "./enums";
-import type { SalesOrderIdentifier, SalesOrderIdentifierPOJO } from "./sales-order-identifier";
-import type { SalesOrderItem, SalesOrderItemPOJO } from "./sales-order-item";
-import type { ShippingPreferences, ShippingPreferencesPOJO } from "./shipping-preferences";
+import type { SalesOrderIdentifier } from "./sales-order-identifier";
+import type { SalesOrderItem } from "./sales-order-item";
+import type { ShippingPreferences } from "./shipping-preferences";
 
 /**
  * A sales order
  */
-export interface SalesOrderPOJO extends SalesOrderIdentifierPOJO {
+export interface SalesOrder extends SalesOrderIdentifier {
   /**
    * The date/time that the sales order was originally placed
    */
-  createdDateTime: DateTimeZonePOJO | Date | string;
+  createdDateTime: DateTimeZone;
 
   /**
-   * The date/time that the sales order was last updated. Defaults to the `createdDateTime`.
+   * The date/time that the sales order was last updated.
    */
-  modifiedDateTime?: DateTimeZonePOJO | Date | string;
+  modifiedDateTime: DateTimeZone;
 
   /**
    * The current status
@@ -32,113 +32,46 @@ export interface SalesOrderPOJO extends SalesOrderIdentifierPOJO {
   /**
    * The URL of a webpage where the customer can view the order
    */
-  orderURL?: URLString | URL;
+  orderURL?: URL;
 
   /**
    * The address where the order should be shipped
    */
-  shipTo: AddressWithContactInfoPOJO;
+  shipTo: AddressWithContactInfo;
 
   /**
    * The buyer who bought the order. This is not necessarily the same person as the `shipTo`
    */
-  buyer: BuyerPOJO;
+  buyer: Buyer;
 
   /**
    * Preferences on how this order should be fulfilled
    */
-  shippingPreferences?: ShippingPreferencesPOJO;
+  shippingPreferences: ShippingPreferences;
 
   /**
    * The breakdown of charges for this sales order
    */
-  charges?: ReadonlyArray<ChargePOJO>;
-
-  /**
-   * The items in this sales order
-   */
-  items: ReadonlyArray<SalesOrderItemPOJO>;
-
-  /**
-   * Human-readable information regarding this sales order, such as gift notes, backorder notices, etc.
-   */
-  notes?: string | ReadonlyArray<string | NotePOJO>;
-
-  /**
-   * Arbitrary data about this sales order that will be persisted by the ShipEngine Integration Platform.
-   * Must be JSON serializable.
-   */
-  metadata?: object;
-}
-
-
-/**
- * A sales order
- */
-export interface SalesOrder extends SalesOrderIdentifier {
-  /**
-   * The date/time that the sales order was originally placed
-   */
-  readonly createdDateTime: DateTimeZone;
-
-  /**
-   * The date/time that the sales order was last updated.
-   */
-  readonly modifiedDateTime: DateTimeZone;
-
-  /**
-   * The current status
-   */
-  readonly status: SalesOrderStatus;
-
-  /**
-   * Indicates how the customer has paid for the order
-   */
-  readonly paymentMethod?: PaymentMethod;
-
-  /**
-   * The URL of a webpage where the customer can view the order
-   */
-  readonly orderURL?: URL;
-
-  /**
-   * The address where the order should be shipped
-   */
-  readonly shipTo: AddressWithContactInfo;
-
-  /**
-   * The buyer who bought the order. This is not necessarily the same person as the `shipTo`
-   */
-  readonly buyer: Buyer;
-
-  /**
-   * Preferences on how this order should be fulfilled
-   */
-  readonly shippingPreferences: ShippingPreferences;
-
-  /**
-   * The breakdown of charges for this sales order
-   */
-  readonly charges: ReadonlyArray<Charge>;
+  charges: Array<Charge>;
 
   /**
    * The total cost of all charges for this sales order
    */
-  readonly totalCharges: MonetaryValue;
+  totalCharges: MonetaryValue;
 
   /**
    * The items in this sales order
    */
-  readonly items: ReadonlyArray<SalesOrderItem>;
+  items: Array<SalesOrderItem>;
 
   /**
    * Human-readable information regarding this sales order, such as gift notes, backorder notices, etc.
    */
-  readonly notes: ReadonlyArray<Note>;
+  notes: Array<Note>;
 
   /**
    * Arbitrary data about this sales order that will be persisted by the ShipEngine Integration Platform.
    * Must be JSON serializable.
    */
-  readonly metadata: object;
+  metadata: object;
 }

@@ -1,10 +1,10 @@
-import type { Identifiers, IdentifiersPOJO } from "../../common";
-import type { Warehouse, WarehousePOJO } from "./warehouse";
+import type { Identifiers } from "../../common";
+import type { Warehouse } from "./warehouse";
 
 /**
  * A store in a marketplace where a seller sells their goods
  */
-export interface StorePOJO {
+export interface Store {
   /**
    * The marketplace's unique ID for the store
    */
@@ -13,7 +13,7 @@ export interface StorePOJO {
   /**
    * Your own identifiers for this store
    */
-  identifiers?: IdentifiersPOJO;
+  identifiers: Identifiers;
 
   /**
    * The store's name
@@ -23,31 +23,5 @@ export interface StorePOJO {
   /**
    * The store's warehouse locations
    */
-  warehouses?: ReadonlyArray<WarehousePOJO>;
-}
-
-
-/**
- * A store in a marketplace where a seller sells their goods
- */
-export interface Store {
-  /**
-   * The marketplace's unique ID for the store
-   */
-  readonly id: string;
-
-  /**
-   * Your own identifiers for this store
-   */
-  readonly identifiers: Identifiers;
-
-  /**
-   * The store's name
-   */
-  readonly name: string;
-
-  /**
-   * The store's warehouse locations
-   */
-  readonly warehouses: ReadonlyArray<Warehouse>;
+  warehouses: Array<Warehouse>;
 }

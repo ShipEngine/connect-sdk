@@ -7,7 +7,6 @@ export * from "./documents/document";
 export * from "./documents/label";
 export * from "./documents/new-label";
 export * from "./enums";
-export * from "./fulfillment-service";
 export * from "./manifests/manifest";
 export * from "./manifests/manifest-confirmation";
 export * from "./manifests/new-manifest";

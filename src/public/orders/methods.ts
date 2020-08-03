@@ -1,5 +1,5 @@
 import type { Transaction } from "../common";
-import { SalesOrderArrayPOJO } from "./sales-order-array";
+import { SalesOrderArray } from "./sales-order-array";
 import type { SalesOrderTimeRange } from "./sales-order-time-range";
 import { SalesOrderShipment } from "./shipments/sales-order-shipment";
 
@@ -7,7 +7,7 @@ import { SalesOrderShipment } from "./shipments/sales-order-shipment";
  * Returns all orders that were created and/or modified within a given timeframe
  */
 export type GetSalesOrdersByDate = (transaction: Transaction, range: SalesOrderTimeRange)
-  => SalesOrderArrayPOJO | Promise<SalesOrderArrayPOJO >;
+  => SalesOrderArray | Promise<SalesOrderArray >;
 
 /**
  * Called when a shipment is created for one or more items in one or more sales orders.

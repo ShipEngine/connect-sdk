@@ -1,4 +1,4 @@
-import type { TimeRange, TimeRangePOJO } from "../common";
+import type { TimeRange } from "../common";
 
 
 export interface SalesOrderPaging {
@@ -15,21 +15,6 @@ export interface SalesOrderPaging {
   cursor?: string;
 }
 
-
-/**
- * Specifies a date/time range to retrieve sales orders for
- */
-export interface SalesOrderTimeRangePOJO extends TimeRangePOJO {
-  /**
-   * Indicates whether orders that were modified during the date/time range should be returned.
-   * If `false` (the default), then only orders that were *created* durng the date/time are returned.
-   */
-  includeChanges?: boolean;
-
-  paging?: SalesOrderPaging;
-}
-
-
 /**
  * Specifies a date/time range to retrieve sales orders for
  */
@@ -38,7 +23,7 @@ export interface SalesOrderTimeRange extends TimeRange {
    * Indicates whether orders that were modified during the date/time range should be returned.
    * If `false` (the default), then only orders that were *created* durng the date/time are returned.
    */
-  readonly includeChanges: boolean;
+  includeChanges: boolean;
 
-  readonly paging?: Readonly<SalesOrderPaging>;
+  paging?: Readonly<SalesOrderPaging>;
 }

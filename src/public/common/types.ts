@@ -40,4 +40,4 @@ export type InlineOrReference<T> = T | FilePath | DynamicImport<T>;
  *    - referenced via an external JSON/YAML file
  *    - dynamically imported via `require()` or `import()`
  */
-export type InlineOrReferenceArray<T> = ReadonlyArray<InlineOrReference<T>> | FilePath | DynamicImport<ReadonlyArray<InlineOrReference<T>>>;
+export type InlineOrReferenceArray<T> = Array<InlineOrReference<T>> | FilePath | DynamicImport<Array<InlineOrReference<T>>>;

@@ -15,7 +15,6 @@ export * from "./identifiers";
 export * from "./measures/date-time-zone";
 export * from "./measures/dimensions";
 export * from "./measures/monetary-value";
-export * from "./measures/quantity";
 export * from "./measures/time-range";
 export * from "./measures/weight";
 export * from "./methods";

@@ -1,34 +1,6 @@
-import type { Dimensions, DimensionsPOJO, Weight, WeightPOJO } from "../../common";
-import type { PackageIdentifier, PackageIdentifierPOJO } from "../packages/package-identifier";
-import type { PackagingIdentifier, PackagingIdentifierPOJO } from "../packaging";
-
-
-/**
- * The package information needed to schedule a pickup
- */
-export interface PickupPackagePOJO extends PackageIdentifierPOJO {
-  /**
-   * The packaging used for this package
-   */
-  packaging: PackagingIdentifierPOJO | string;
-
-  /**
-   * The package dimensions
-   */
-  dimensions?: DimensionsPOJO;
-
-  /**
-   * The package weight
-   */
-  weight?: WeightPOJO;
-
-  /**
-   * Arbitrary data about this package that will be persisted by the ShipEngine Integration Platform.
-   * Must be JSON serializable.
-   */
-  metadata?: object;
-}
-
+import type { Dimensions, Weight } from "../../common";
+import type { PackageIdentifier } from "../packages/package-identifier";
+import type { PackagingIdentifier } from "../packaging";
 
 /**
  * The package information needed to schedule a pickup
@@ -37,21 +9,21 @@ export interface PickupPackage extends PackageIdentifier {
   /**
    * The packaging used for this package
    */
-  readonly packaging: PackagingIdentifier;
+  packaging: PackagingIdentifier;
 
   /**
    * The package dimensions
    */
-  readonly dimensions?: Dimensions;
+  dimensions?: Dimensions;
 
   /**
    * The package weight
    */
-  readonly weight?: Weight;
+  weight?: Weight;
 
   /**
    * Arbitrary data about this package that will be persisted by the ShipEngine Integration Platform.
    * Must be JSON serializable.
    */
-  readonly metadata?: object;
+  metadata?: object;
 }

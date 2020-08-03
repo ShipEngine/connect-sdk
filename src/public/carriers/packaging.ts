@@ -1,10 +1,10 @@
-import type { DefinitionIdentifier, DefinitionIdentifierPOJO } from "../common";
+import type { DefinitionIdentifier } from "../common";
 
 
 /**
  * Describes a type of packaging
  */
-export interface PackagingDefinition extends DefinitionIdentifierPOJO {
+export interface PackagingDefinition extends DefinitionIdentifier {
   /**
    * The user-friendly name for this packaging (e.g. "Flat-Rate Box", "Large Padded Envelope")
    */
@@ -29,18 +29,6 @@ export interface PackagingDefinition extends DefinitionIdentifierPOJO {
 
 
 /**
- * Describes a type of packaging
- */
-export type PackagingPOJO = PackagingDefinition;
-
-
-/**
- * Identifies a type of packaging
- */
-export type PackagingIdentifierPOJO = DefinitionIdentifierPOJO;
-
-
-/**
  * Identifies a type of packaging
  */
 export type PackagingIdentifier = DefinitionIdentifier;
@@ -53,20 +41,20 @@ export interface Packaging extends DefinitionIdentifier {
   /**
    * The user-friendly name for this packaging (e.g. "Flat-Rate Box", "Large Padded Envelope")
    */
-  readonly name: string;
+  name: string;
 
   /**
    * A short, user-friendly description of the packaging
    */
-  readonly description: string;
+  description: string;
 
   /**
    * Indicates whether the weight must be specified when using this packaging
    */
-  readonly requiresWeight: boolean;
+  requiresWeight: boolean;
 
   /**
    * Indicates whether the dimensions must be specified when using this packaging
    */
-  readonly requiresDimensions: boolean;
+  requiresDimensions: boolean;
 }

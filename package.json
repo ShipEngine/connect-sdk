@@ -24,8 +24,8 @@
     "type": "git",
     "url": "https://github.com/ShipEngine/shipengine-integration-platform-sdk.git"
   },
-  "main": "lib/public/index.js",
-  "types": "lib/public/index.d.ts",
+  "main": "lib/definitions/index.js",
+  "types": "lib/definitions/index.d.ts",
   "files": [
     "lib"
   ],

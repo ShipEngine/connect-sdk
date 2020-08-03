@@ -16,7 +16,7 @@ export class SalesOrderTimeRange extends TimeRangeBase implements ISalesOrderTim
   };
 
   public readonly includeChanges: boolean;
-  public readonly paging: {
+  public readonly paging?: {
     readonly pageSize: number;
     readonly pageNumber: number;
     readonly pageCount?: number;

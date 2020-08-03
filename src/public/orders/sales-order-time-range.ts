@@ -26,7 +26,7 @@ export interface SalesOrderTimeRangePOJO extends TimeRangePOJO {
    */
   includeChanges?: boolean;
 
-  paging: SalesOrderPaging;
+  paging?: SalesOrderPaging;
 }
 
 
@@ -40,5 +40,5 @@ export interface SalesOrderTimeRange extends TimeRange {
    */
   readonly includeChanges: boolean;
 
-  readonly paging: Readonly<SalesOrderPaging>;
+  readonly paging?: Readonly<SalesOrderPaging>;
 }

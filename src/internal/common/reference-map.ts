@@ -93,7 +93,7 @@ export class ReferenceMap {
   public lookup<T extends ClassInstance>(
     instance: ClassInstance | string, type: ShipEngineConstructor<T>): T;
   public lookup<T extends ClassInstance>(
-    instance: ClassInstance | string | undefined, type: ShipEngineConstructor<T>): T | undefined
+    instance: ClassInstance | string | undefined, type: ShipEngineConstructor<T>): T | undefined;
   public lookup<T extends ClassInstance>(
     instance: ClassInstance | string | undefined, type: ShipEngineConstructor<T>): T | undefined {
 

@@ -48,13 +48,13 @@ describe("schedulePickup", () => {
         name: "",
         type: "pickup",
         amount: {
-          value: "12.34",
+          value: 12.34,
           currency: "AUD",
         }
       }],
       shipments: [confirmation.shipments[0]],
       totalAmount: {
-        value: "12.34",
+        value: 12.34,
         currency: "AUD",
       }
     });
@@ -131,7 +131,7 @@ describe("schedulePickup", () => {
           name: "Pickup Charge",
           type: "pickup",
           amount: {
-            value: "12.34",
+            value: 12.34,
             currency: "AUD",
           }
         },
@@ -139,13 +139,13 @@ describe("schedulePickup", () => {
           name: "Pickup Tax",
           type: "tax",
           amount: {
-            value: "2.50",
+            value: 2.50,
             currency: "AUD",
           }
         },
       ],
       totalAmount: {
-        value: "14.84",
+        value: 14.84,
         currency: "AUD",
       },
       shipments: [{

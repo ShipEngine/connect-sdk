@@ -43,7 +43,7 @@ export class SalesOrderItem extends SalesOrderItemIdentifierBase implements ISal
     this.quantity = new Quantity(pojo.quantity);
     this.unitPrice = new MonetaryValue(pojo.unitPrice);
     this.totalPrice = new MonetaryValue({
-      value: currency(this.unitPrice.value).multiply(this.quantity.value).toString(),
+      value: currency(this.unitPrice.value).multiply(this.quantity.value).value,
       currency: this.unitPrice.currency,
     });
     this.unitWeight = pojo.unitWeight && new Weight(pojo.unitWeight);

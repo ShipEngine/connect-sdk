@@ -28,7 +28,7 @@ export class CustomsItem implements ICustomsItem {
 
   public get totalValue(): MonetaryValue {
     return new MonetaryValue({
-      value: currency(this.unitValue.value).multiply(this.quantity.value).toString(),
+      value: currency(this.unitValue.value).multiply(this.quantity.value).value,
       currency: this.unitValue.currency,
     });
   }

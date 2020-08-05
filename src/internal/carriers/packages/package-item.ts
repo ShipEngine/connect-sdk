@@ -29,7 +29,7 @@ export class PackageItem implements IPackageItem {
 
   public get totalPrice(): MonetaryValue {
     return new MonetaryValue({
-      value: currency(this.unitPrice.value).multiply(this.quantity.value).toString(),
+      value: currency(this.unitPrice.value).multiply(this.quantity.value).value,
       currency: this.unitPrice.currency,
     });
   }

@@ -11,16 +11,16 @@ export class MonetaryValue implements IMonetaryValue {
   public static readonly [_internal] = {
     label: "monetary value",
     schema: Joi.object({
-      value: Joi.alternatives(Joi.number(), Joi.string().money()).required(),
+      value: Joi.alternatives(Joi.number()).required(),
       currency: Joi.string().required(),
     }),
   };
 
-  public readonly value: string;
+  public readonly value: number;
   public readonly currency: string;
 
   public constructor(pojo: MonetaryValuePOJO) {
-    this.value = currency(pojo.value).toString();
+    this.value = currency(pojo.value).value;
     this.currency = pojo.currency;
 
     // Make this object immutable
@@ -54,7 +54,7 @@ export class MonetaryValue implements IMonetaryValue {
 
     return new MonetaryValue({
       currency: [...uniqueCurrencies][0] || "usd",
-      value: total.toString(),
+      value: total.value,
     });
   }
 }

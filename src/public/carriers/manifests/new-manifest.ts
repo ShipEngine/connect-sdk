@@ -6,7 +6,7 @@ import type { ShipmentIdentifier, ShipmentIdentifierPOJO } from "../shipments/sh
  */
 export interface NewManifestPOJO {
   /**
-   * The address of the location that is performaing end-of-day manifesting.
+   * The address of the location that is performing end-of-day manifesting.
    *
    * NOTE: This field is required if the carrier's `manifestLocations` setting is `single_location`.
    */
@@ -41,7 +41,7 @@ export interface NewManifestPOJO {
  */
 export interface NewManifest {
   /**
-   * The address of the location that is performaing end-of-day manifesting.
+   * The address of the location that is performing end-of-day manifesting.
    *
    * NOTE: This field is required if the carrier's `manifestLocations` setting is `single_location`.
    */

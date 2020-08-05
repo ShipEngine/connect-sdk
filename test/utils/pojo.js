@@ -275,7 +275,7 @@ const pojo = module.exports = {
 
   monetaryValue (props = {}) {
     return {
-      value: "12.34",
+      value: 12.34,
       currency: "USD",
       ...props,
     };

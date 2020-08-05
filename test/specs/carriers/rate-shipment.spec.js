@@ -40,14 +40,14 @@ describe("rateShipment", () => {
       isTrackable: false,
       notes: [],
       totalAmount: {
-        value: "123.46",
+        value: 123.46,
         currency: "CAD",
       },
       charges: [{
         name: "",
         type: "shipping",
         amount: {
-          value: "123.46",
+          value: 123.46,
           currency: "CAD",
         }
       }],
@@ -104,14 +104,14 @@ describe("rateShipment", () => {
       isTrackable: false,
       notes: [],
       totalAmount: {
-        value: "123.46",
+        value: 123.46,
         currency: "CAD",
       },
       charges: [{
         name: "",
         type: "shipping",
         amount: {
-          value: "123.46",
+          value: 123.46,
           currency: "CAD",
         }
       }],
@@ -207,7 +207,7 @@ describe("rateShipment", () => {
         }
       ],
       totalAmount: {
-        value: "124.96",
+        value: 124.96,
         currency: "CAD",
       },
       charges: [
@@ -215,7 +215,7 @@ describe("rateShipment", () => {
           name: "Shipping Charge",
           type: "shipping",
           amount: {
-            value: "123.46",
+            value: 123.46,
             currency: "CAD",
           }
         },
@@ -223,7 +223,7 @@ describe("rateShipment", () => {
           name: "Delivery Confirmation Charge",
           type: "delivery_confirmation",
           amount: {
-            value: "1.50",
+            value: 1.50,
             currency: "CAD",
           }
         }

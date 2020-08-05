@@ -37,7 +37,7 @@ describe("createShipment", () => {
         name: "",
         type: "shipping",
         amount: {
-          value: "123.46",
+          value: 123.46,
           currency: "CAD",
         }
       }],
@@ -50,7 +50,7 @@ describe("createShipment", () => {
         referenceFields: [],
       }],
       totalAmount: {
-        value: "123.46",
+        value: 123.46,
         currency: "CAD",
       },
       packages: [{
@@ -95,7 +95,7 @@ describe("createShipment", () => {
         name: "",
         type: "shipping",
         amount: {
-          value: "123.46",
+          value: 123.46,
           currency: "CAD",
         }
       }],
@@ -108,7 +108,7 @@ describe("createShipment", () => {
         referenceFields: [],
       }],
       totalAmount: {
-        value: "123.46",
+        value: 123.46,
         currency: "CAD",
       },
       packages: [{
@@ -191,7 +191,7 @@ describe("createShipment", () => {
           name: "Shipping Charges",
           type: "shipping",
           amount: {
-            value: "8.95",
+            value: 8.95,
             currency: "GBP",
           }
         },
@@ -199,13 +199,13 @@ describe("createShipment", () => {
           name: "VAT",
           type: "tax",
           amount: {
-            value: "2.00",
+            value: 2.00,
             currency: "GBP",
           }
         },
       ],
       totalAmount: {
-        value: "10.95",
+        value: 10.95,
         currency: "GBP",
       },
       documents: [
@@ -275,12 +275,12 @@ describe("createShipment", () => {
         name: "",
         type: "shipping",
         amount: {
-          value: "123.46",
+          value: 123.46,
           currency: "CAD",
         }
       }],
       totalAmount: {
-        value: "123.46",
+        value: 123.46,
         currency: "CAD",
       },
       documents: [{

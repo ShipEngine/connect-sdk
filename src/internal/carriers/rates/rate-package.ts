@@ -1,9 +1,9 @@
-import { RatePackage as IRatePackage, RatePackagePOJO } from "../../../public";
+import { RatePackage as RatePackagePOJO } from "../../../public";
 import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../../common";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { Packaging } from "../packaging";
 
-export class RatePackage implements IRatePackage {
+export class RatePackage {
   public static readonly [_internal] = {
     label: "package",
     schema: Joi.object({

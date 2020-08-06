@@ -1,46 +1,6 @@
-import type { Identifiers, IdentifiersPOJO, MonetaryValue, MonetaryValuePOJO, Quantity, QuantityPOJO } from "../../common";
-import type { SalesOrderIdentifier, SalesOrderIdentifierPOJO, SalesOrderItemIdentifier, SalesOrderItemIdentifierPOJO } from "../../orders";
-import type { ProductIdentifier, ProductIdentifierPOJO } from "../../products";
-
-/**
- * An item inside a package
- */
-export interface PackageItemPOJO {
-  /**
-   * The Stock Keeping Unit code
-   */
-  sku?: string;
-
-  /**
-   * Your own identifiers for this item
-   */
-  identifiers?: IdentifiersPOJO;
-
-  /**
-   * The sales order associated with this item
-   */
-  salesOrder?: SalesOrderIdentifierPOJO;
-
-  /**
-   * The sales order item associated with this item
-   */
-  salesOrderItem?: SalesOrderItemIdentifierPOJO;
-
-  /**
-   * The product associated with this item
-   */
-  product?: ProductIdentifierPOJO;
-
-  /**
-   * The quantity of this item in the package
-   */
-  quantity: QuantityPOJO;
-
-  /**
-   * The sale price of each item
-   */
-  unitPrice: MonetaryValuePOJO;
-}
+import type { Identifiers, MonetaryValue, Quantity } from "../../common";
+import type { SalesOrderIdentifier, SalesOrderItemIdentifier } from "../../orders";
+import type { ProductIdentifier } from "../../products";
 
 
 /**

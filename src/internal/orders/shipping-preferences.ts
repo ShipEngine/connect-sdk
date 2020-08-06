@@ -1,7 +1,7 @@
-import { DeliveryConfirmationType, ShippingPreferences as IShippingPreferences, ShippingPreferencesPOJO } from "../../public";
+import { DeliveryConfirmationType, ShippingPreferences as ShippingPreferencesPOJO } from "../../public";
 import { DateTimeZone, hideAndFreeze, Joi, MonetaryValue, _internal } from "../common";
 
-export class ShippingPreferences implements IShippingPreferences {
+export class ShippingPreferences {
   public static readonly [_internal] = {
     label: "shipping preferences",
     schema: Joi.object({

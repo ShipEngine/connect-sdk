@@ -1,8 +1,20 @@
-import { Country, PartialAddress as IPartialAddress, PartialAddressPOJO } from "../../../public";
+import { AddressPOJO, Country } from "../../../public";
 import { hideAndFreeze, _internal } from "../utils";
 import { Joi } from "../validation";
 
-export abstract class PartialAddressBase implements IPartialAddress {
+export type PartialAddressPOJO = Partial<AddressPOJO>;
+
+export interface PartialAddress {
+  readonly company: string;
+  readonly addressLines: ReadonlyArray<string>;
+  readonly cityLocality: string;
+  readonly stateProvince: string;
+  readonly postalCode: string;
+  readonly country?: Country;
+  readonly isResidential?: boolean;
+}
+
+export abstract class PartialAddressBase {
   public readonly company: string;
   public readonly addressLines: ReadonlyArray<string>;
   public readonly cityLocality: string;

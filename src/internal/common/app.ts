@@ -1,10 +1,16 @@
-import { App as IApp, AppManifest, AppPOJO, AppType, UUID } from "../../public";
+import { AppDefinition, AppManifest, AppType, UUID } from "../../public";
 import { ReferenceMap } from "./reference-map";
-import { sdk } from "./sdk";
+import { AppManifestPOJO, sdk } from "./sdk";
 import { _internal } from "./utils";
 import { Joi } from "./validation";
 
-export abstract class App implements IApp {
+
+export interface AppPOJO extends AppDefinition {
+  manifest: AppManifestPOJO;
+}
+
+
+export abstract class App {
   public static readonly [_internal] = {
     label: "ShipEngine Integration Platform app",
     schema: Joi.object({

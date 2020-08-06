@@ -1,10 +1,10 @@
-import type { Identifiers, IdentifiersPOJO } from "./identifiers";
+import type { Identifiers } from "./identifiers";
 import type { UUID } from "./types";
 
 /**
  * Identifies an object in an app definition
  */
-export interface DefinitionIdentifierPOJO {
+export interface Definition {
   /**
    * A UUID that uniquely identifies the object. This ID should never change.
    */
@@ -13,7 +13,7 @@ export interface DefinitionIdentifierPOJO {
   /**
    * Your own identifiers for the object
    */
-  identifiers?: IdentifiersPOJO;
+  identifiers?: Identifiers;
 
   /**
    * Optional code used to map to what the carrier or marketplace uses to identify the resource
@@ -39,5 +39,4 @@ export interface DefinitionIdentifier {
    * Optional code used to map to what the carrier or marketplace uses to identify the resource
    */
   readonly code: string;
-
 }

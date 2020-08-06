@@ -1,9 +1,22 @@
-import { BilledParty, Country, NewShipment as INewShipment, NewShipmentPOJO } from "../../../public";
+import { AddressWithContactInfoPOJO, DateTimeZonePOJO, DeliveryServiceIdentifierPOJO, NewShipment as INewShipment } from "../../../public";
 import { AddressWithContactInfo, App, DateTimeZone, DefinitionIdentifier, hideAndFreeze, Joi, MonetaryValue, _internal } from "../../common";
 import { DeliveryService } from "../delivery-service";
-import { NewPackage } from "../packages/new-package";
+import { NewPackage, NewPackagePOJO } from "../packages/new-package";
 import { calculateTotalInsuranceAmount } from "../utils";
-import { ShipmentIdentifier } from "./shipment-identifier";
+
+export interface NewShipmentPOJO {
+  deliveryService: DeliveryServiceIdentifierPOJO | string;
+  shipFrom: AddressWithContactInfoPOJO;
+  shipTo: AddressWithContactInfoPOJO;
+  returnTo?: AddressWithContactInfoPOJO;
+  shipDateTime: DateTimeZonePOJO | Date | string;
+  returns?: {
+    isReturn?: boolean;
+    rmaNumber?: string;
+  };
+  packages: ReadonlyArray<NewPackagePOJO>;
+}
+
 
 export class NewShipment implements INewShipment {
   public static readonly [_internal] = {

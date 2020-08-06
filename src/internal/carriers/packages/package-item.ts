@@ -1,9 +1,20 @@
 import * as currency from "currency.js";
-import { PackageItem as IPackageItem, PackageItemPOJO } from "../../../public";
+import { MonetaryValuePOJO, PackageItem as IPackageItem, ProductIdentifierPOJO, QuantityPOJO, SalesOrderIdentifierPOJO, SalesOrderItemIdentifierPOJO } from "../../../public";
 import { hideAndFreeze, Identifiers, Joi, MonetaryValue, Quantity, _internal } from "../../common";
 import { SalesOrderIdentifier } from "../../orders/sales-order-identifier";
 import { SalesOrderItemIdentifier } from "../../orders/sales-order-item-identifier";
 import { ProductIdentifier } from "../../products";
+
+export interface PackageItemPOJO {
+  sku?: string;
+  identifiers?: Identifiers;
+  salesOrder?: SalesOrderIdentifierPOJO;
+  salesOrderItem?: SalesOrderItemIdentifierPOJO;
+  product?: ProductIdentifierPOJO;
+  quantity: QuantityPOJO;
+  unitPrice: MonetaryValuePOJO;
+}
+
 
 export class PackageItem implements IPackageItem {
   public static readonly [_internal] = {

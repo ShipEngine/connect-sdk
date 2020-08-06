@@ -1,12 +1,17 @@
 import { JSONSchema6 } from "json-schema";
 import { UiSchema } from "react-jsonschema-form";
-import { Form as IForm, FormPOJO } from "../../public";
+import { FormDefinition } from "../../public";
 import { hideAndFreeze, _internal } from "./utils";
 import { Joi } from "./validation";
 
-const _private = Symbol("private fields");
 
-export class Form implements IForm {
+export interface FormPOJO extends FormDefinition {
+  dataSchema: JSONSchema6;
+  uiSchema: UiSchema;
+}
+
+
+export class Form {
   public static readonly [_internal] = {
     label: "form",
     schema: Joi.object({

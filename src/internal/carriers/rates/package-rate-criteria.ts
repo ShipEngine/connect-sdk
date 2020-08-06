@@ -1,7 +1,19 @@
-import { PackageRateCriteria as IPackageRateCriteria, PackageRateCriteriaPOJO } from "../../../public";
+import { DeliveryConfirmationIdentifierPOJO, DimensionsPOJO, MonetaryValuePOJO, PackageRateCriteria as IPackageRateCriteria, PackagingIdentifierPOJO, WeightPOJO } from "../../../public";
 import { App, DefinitionIdentifier, Dimensions, hideAndFreeze, Joi, MonetaryValue, Weight, _internal } from "../../common";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 import { Packaging } from "../packaging";
+
+
+export interface PackageRateCriteriaPOJO {
+  packaging?: ReadonlyArray<PackagingIdentifierPOJO | string>;
+  deliveryConfirmations?: ReadonlyArray<DeliveryConfirmationIdentifierPOJO | string>;
+  dimensions?: DimensionsPOJO;
+  weight?: WeightPOJO;
+  insuredValue?: MonetaryValuePOJO;
+  containsAlcohol?: boolean;
+  isNonMachinable?: boolean;
+}
+
 
 export class PackageRateCriteria implements IPackageRateCriteria {
   public static readonly [_internal] = {

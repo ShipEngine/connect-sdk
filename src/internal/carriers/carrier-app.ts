@@ -1,28 +1,44 @@
-import { AppType, CancellationStatus, CancelPickups, CancelShipments, CarrierApp as ICarrierApp, CarrierAppPOJO, Country, CreateManifest, CreateShipment, DocumentFormat, DocumentSize, ErrorCode, ManifestLocation, ManifestShipment, ManifestType, NewManifestPOJO, NewShipmentPOJO, Packaging, PickupCancellationPOJO, PickupRequestPOJO, RateCriteriaPOJO, RateShipment, SchedulePickup, ServiceArea, ShipmentCancellationPOJO, TrackingCriteriaPOJO, TrackShipment, TransactionPOJO } from "../../public";
-import { ConnectionApp, error, hideAndFreeze, Joi, Transaction, validate, validateArray, _internal } from "../common";
+import { AppType, CancellationStatus, CancelPickups, CancelShipments, CarrierAppDefinition, Connect, Country, CreateManifest, CreateShipment, DocumentFormat, DocumentSize, ErrorCode, ManifestLocation, ManifestShipment, ManifestType, Packaging, RateShipment, SchedulePickup, ServiceArea, TrackShipment } from "../../public";
+import { AppPOJO, ConnectionApp, error, FormPOJO, hideAndFreeze, Joi, Transaction, TransactionPOJO, validate, validateArray, _internal } from "../common";
 import { DeliveryConfirmation } from "./delivery-confirmation";
-import { DeliveryService } from "./delivery-service";
+import { DeliveryService, DeliveryServicePOJO } from "./delivery-service";
 import { ManifestConfirmation } from "./manifests/manifest-confirmation";
-import { NewManifest } from "./manifests/new-manifest";
-import { PickupCancellation } from "./pickups/pickup-cancellation";
+import { NewManifest, NewManifestPOJO } from "./manifests/new-manifest";
+import { PickupCancellation, PickupCancellationPOJO } from "./pickups/pickup-cancellation";
 import { PickupCancellationOutcome } from "./pickups/pickup-cancellation-outcome";
 import { PickupConfirmation } from "./pickups/pickup-confirmation";
-import { PickupRequest } from "./pickups/pickup-request";
-import { PickupService } from "./pickups/pickup-service";
+import { PickupRequest, PickupRequestPOJO } from "./pickups/pickup-request";
+import { PickupService, PickupServicePOJO } from "./pickups/pickup-service";
 import { Rate } from "./rates/rate";
-import { RateCriteria } from "./rates/rate-criteria";
-import { NewShipment } from "./shipments/new-shipment";
-import { ShipmentCancellation } from "./shipments/shipment-cancellation";
+import { RateCriteria, RateCriteriaPOJO } from "./rates/rate-criteria";
+import { NewShipment, NewShipmentPOJO } from "./shipments/new-shipment";
+import { ShipmentCancellation, ShipmentCancellationPOJO } from "./shipments/shipment-cancellation";
 import { ShipmentCancellationOutcome } from "./shipments/shipment-cancellation-outcome";
 import { ShipmentConfirmation } from "./shipments/shipment-confirmation";
-import { TrackingCriteria } from "./tracking/tracking-criteria";
+import { TrackingCriteria, TrackingCriteriaPOJO } from "./tracking/tracking-criteria";
 import { TrackingInfo } from "./tracking/tracking-info";
 import { getMaxServiceArea } from "./utils";
 
 const _private = Symbol("private fields");
 
 
-export class CarrierApp extends ConnectionApp implements ICarrierApp {
+export interface CarrierAppPOJO extends CarrierAppDefinition, AppPOJO {
+  connectionForm: FormPOJO;
+  settingsForm?: FormPOJO;
+  deliveryServices: ReadonlyArray<DeliveryServicePOJO>;
+  pickupServices?: ReadonlyArray<PickupServicePOJO>;
+  connect?: Connect;
+  createShipment?: CreateShipment;
+  cancelShipments?: CancelShipments;
+  rateShipment?: RateShipment;
+  trackShipment?: TrackShipment;
+  createManifest?: CreateManifest;
+  schedulePickup?: SchedulePickup;
+  cancelPickups?: CancelPickups;
+}
+
+
+export class CarrierApp extends ConnectionApp {
   //#region Private/Internal Fields
 
   public static readonly [_internal] = {

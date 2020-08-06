@@ -1,4 +1,4 @@
-import type { Identifiers, IdentifiersPOJO } from "../../common";
+import type { Identifiers } from "../../common";
 
 /**
  * Identifies a shipment
@@ -15,7 +15,7 @@ export interface ShipmentIdentifierPOJO {
   /**
    * Your own identifiers for this shipment
    */
-  identifiers?: IdentifiersPOJO;
+  identifiers?: Identifiers;
 }
 
 

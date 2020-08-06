@@ -1,7 +1,9 @@
-import { Packaging as IPackaging, PackagingPOJO } from "../../public";
+import { Packaging as IPackaging, PackagingDefinition } from "../../public";
 import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../common";
 
 const _private = Symbol("private fields");
+
+export type PackagingPOJO = PackagingDefinition;
 
 export class Packaging extends DefinitionIdentifier implements IPackaging {
   public static readonly [_internal] = {

@@ -1,7 +1,6 @@
 import { Charge as ICharge, ChargePOJO, ChargeType, ErrorCode, ShipEngineError } from "../../public";
 import { error } from "./errors";
 import { MonetaryValue } from "./measures/monetary-value";
-import { createNotes, Note } from "./note";
 import { hideAndFreeze, _internal } from "./utils";
 import { Joi } from "./validation";
 

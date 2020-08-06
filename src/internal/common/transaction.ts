@@ -1,10 +1,19 @@
-import { Transaction as ITransaction, TransactionPOJO, UUID } from "../../public";
+import { Transaction as ITransaction, UUID } from "../../public";
 import { hideAndFreeze, _internal } from "./utils";
 import { Joi, validate } from "./validation";
 
 const _private = Symbol("private fields");
 
-export class Transaction<T extends object = object> implements ITransaction<T> {
+
+export interface TransactionPOJO<T extends object = object> {
+  id: UUID;
+  isRetry?: boolean;
+  useSandbox?: boolean;
+  session?: T;
+}
+
+
+export class Transaction<T extends object = object> implements ITransaction {
   public static readonly [_internal] = {
     label: "transaction",
     schema: Joi.object({

@@ -1,4 +1,4 @@
-import { PaymentMethod, SalesOrder as ISalesOrder, SalesOrderPOJO, SalesOrderStatus } from "../../public";
+import { PaymentMethod, SalesOrder as SalesOrderPOJO, SalesOrderStatus } from "../../public";
 import { AddressWithContactInfo, calculateTotalCharges, Charge, createNotes, DateTimeZone, hideAndFreeze, Joi, MonetaryValue, Note, _internal } from "../common";
 import { Buyer } from "./buyer";
 import { SalesOrderIdentifier, SalesOrderIdentifierBase } from "./sales-order-identifier";
@@ -6,7 +6,7 @@ import { SalesOrderItem } from "./sales-order-item";
 import { ShippingPreferences } from "./shipping-preferences";
 
 
-export class SalesOrder extends SalesOrderIdentifierBase implements ISalesOrder {
+export class SalesOrder extends SalesOrderIdentifierBase {
   public static readonly [_internal] = {
     label: "sales order",
     schema: SalesOrderIdentifier[_internal].schema.keys({

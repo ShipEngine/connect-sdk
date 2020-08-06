@@ -1,7 +1,22 @@
-import { PickupCancellation as IPickupCancellation, PickupCancellationPOJO, PickupCancellationReason, UUID } from "../../../public";
+import { AddressPOJO, ContactInfoPOJO, NotePOJO, PickupCancellation as IPickupCancellation, PickupCancellationReason, TimeRangePOJO, UUID } from "../../../public";
 import { Address, App, ContactInfo, createNotes, DefinitionIdentifier, hideAndFreeze, Identifiers, Joi, Note, TimeRange, _internal } from "../../common";
-import { PickupService } from "./pickup-service";
-import { PickupShipment } from "./pickup-shipment";
+import { PickupService, PickupServiceIdentifierPOJO } from "./pickup-service";
+import { PickupShipment, PickupShipmentPOJO } from "./pickup-shipment";
+
+export interface PickupCancellationPOJO {
+  cancellationID: UUID;
+  id: string;
+  identifiers?: Identifiers;
+  pickupService: PickupServiceIdentifierPOJO | string;
+  reason: PickupCancellationReason;
+  notes?: string | ReadonlyArray<string | NotePOJO>;
+  address: AddressPOJO;
+  contact: ContactInfoPOJO;
+  timeWindows: ReadonlyArray<TimeRangePOJO>;
+  shipments: ReadonlyArray<PickupShipmentPOJO>;
+  metadata?: object;
+}
+
 
 export class PickupCancellation implements IPickupCancellation {
   public static readonly [_internal] = {

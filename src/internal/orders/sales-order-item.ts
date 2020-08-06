@@ -1,10 +1,10 @@
 import * as currency from "currency.js";
-import { SalesOrderItem as ISalesOrderItem, SalesOrderItemPOJO } from "../../public";
+import { SalesOrderItem as SalesOrderItemPOJO } from "../../public";
 import { createNotes, hideAndFreeze, Joi, MonetaryValue, Note, Quantity, Weight, _internal } from "../common";
 import { ProductIdentifier } from "../products";
 import { SalesOrderItemIdentifier, SalesOrderItemIdentifierBase } from "./sales-order-item-identifier";
 
-export class SalesOrderItem extends SalesOrderItemIdentifierBase implements ISalesOrderItem {
+export class SalesOrderItem extends SalesOrderItemIdentifierBase {
   public static readonly [_internal] = {
     label: "sales order item",
     schema: SalesOrderItemIdentifier[_internal].schema.keys({

@@ -1,7 +1,15 @@
-import { PickupPackage as IPickupPackage, PickupPackagePOJO } from "../../../public";
+import { DimensionsPOJO, PackageIdentifierPOJO, PackagingIdentifierPOJO, PickupPackage as IPickupPackage, WeightPOJO } from "../../../public";
 import { App, DefinitionIdentifier, Dimensions, hideAndFreeze, Joi, Weight, _internal } from "../../common";
 import { PackageIdentifier, PackageIdentifierBase } from "../packages/package-identifier";
 import { Packaging } from "../packaging";
+
+export interface PickupPackagePOJO extends PackageIdentifierPOJO {
+  packaging: PackagingIdentifierPOJO | string;
+  dimensions?: DimensionsPOJO;
+  weight?: WeightPOJO;
+  metadata?: object;
+}
+
 
 export class PickupPackage extends PackageIdentifierBase implements IPickupPackage {
   public static readonly [_internal] = {

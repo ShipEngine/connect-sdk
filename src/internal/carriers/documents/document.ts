@@ -1,7 +1,7 @@
-import { Document as IDocument, DocumentFormat, DocumentPOJO, DocumentSize, DocumentType, ErrorCode } from "../../../public";
+import { Document as DocumentPOJO, DocumentFormat, DocumentSize, DocumentType, ErrorCode } from "../../../public";
 import { error, hideAndFreeze, Joi, _internal } from "../../common";
 
-export abstract class DocumentBase implements IDocument {
+export abstract class DocumentBase {
   public readonly name: string;
   public readonly type: DocumentType;
   public readonly size: DocumentSize;

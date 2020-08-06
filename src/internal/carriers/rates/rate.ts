@@ -1,9 +1,9 @@
-import { ErrorCode, FulfillmentService, Rate as IRate, RatePOJO } from "../../../public";
-import { App, calculateTotalCharges, Charge, createNotes, DateTimeZone, DefinitionIdentifier, error, hideAndFreeze, Joi, MonetaryValue, Note, TimeRange, _internal } from "../../common";
+import { Rate as RatePOJO } from "../../../public";
+import { App, calculateTotalCharges, Charge, createNotes, DateTimeZone, DefinitionIdentifier, hideAndFreeze, Joi, MonetaryValue, Note, _internal } from "../../common";
 import { DeliveryService } from "../delivery-service";
 import { RatePackage } from "./rate-package";
 
-export class Rate implements IRate {
+export class Rate {
   public static readonly [_internal] = {
     label: "rate",
     schema: Joi.object({

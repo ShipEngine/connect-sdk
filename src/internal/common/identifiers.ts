@@ -1,6 +1,12 @@
-import { Identifiers as IIdentifiers, IdentifiersPOJO } from "../../public";
+import { Identifiers as IIdentifiers } from "../../public";
 import { hideAndFreeze, _internal } from "./utils";
 import { Joi } from "./validation";
+
+
+export interface IdentifiersPOJO {
+  [key: string]: string | undefined;
+}
+
 
 export class Identifiers implements IIdentifiers {
   public static readonly [_internal] = {
@@ -10,13 +16,15 @@ export class Identifiers implements IIdentifiers {
     ),
   };
 
-  readonly [key: string]: string | undefined;
+  readonly [key: string]: string;
 
   public constructor(pojo: IdentifiersPOJO = {}) {
     // NOTE: Don't use Object.assign() here because it also copies Symbol properties
     for (let [key, value] of Object.entries(pojo)) {
-      // @ts-expect-error
-      this[key] = value;
+      if (typeof value === "string") {
+        // @ts-expect-error
+        this[key] = value;
+      }
     }
 
     // Make this object immutable

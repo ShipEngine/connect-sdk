@@ -1,10 +1,10 @@
-import type { DefinitionIdentifier, DefinitionIdentifierPOJO, DeliveryConfirmationType, InlineOrReference } from "../common";
+import type { Definition, DefinitionIdentifier, DeliveryConfirmationType } from "../common";
 
 
 /**
  * A delivery confirmation option offered by a carrier
  */
-export interface DeliveryConfirmationDefinition extends DefinitionIdentifierPOJO {
+export interface DeliveryConfirmationDefinition extends Definition {
   /**
    * The user-friendly name for this delivery confirmation (e.g. "Adult Signature", "Authority to Leave")
    */
@@ -24,27 +24,21 @@ export interface DeliveryConfirmationDefinition extends DefinitionIdentifierPOJO
 
 
 /**
- * A delivery confirmation option offered by a carrier
- */
-export type DeliveryConfirmationPOJO = DeliveryConfirmationDefinition;
-
-
-/**
- * Identifies a delivery confirmation option offered by a carrier
- */
-export type DeliveryConfirmationIdentifierPOJO = DefinitionIdentifierPOJO;
-
-
-/**
  * Identifies a delivery confirmation option offered by a carrier
  */
 export type DeliveryConfirmationIdentifier = DefinitionIdentifier;
 
 
 /**
+ * Identifies a delivery confirmation option offered by a carrier
+ */
+export type DeliveryConfirmationIdentifierPOJO = Definition;
+
+
+/**
  * Delivery confirmation options offered by a carrier
  */
-export interface DeliveryConfirmation extends DefinitionIdentifier {
+export interface DeliveryConfirmation extends DeliveryConfirmationIdentifier {
   /**
    * The user-friendly name for this delivery confirmation (e.g. "Adult Signature", "Authority to Leave")
    */

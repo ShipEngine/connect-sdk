@@ -1,9 +1,7 @@
 import * as moment from "moment-timezone";
-
 import { DateTimeZone as IDateTimeZone, DateTimeZonePOJO } from "../../../public";
 import { hideAndFreeze, regex, _internal } from "../utils";
 import { Joi } from "../validation";
-
 
 export class DateTimeZone implements IDateTimeZone {
   public static readonly [_internal] = {

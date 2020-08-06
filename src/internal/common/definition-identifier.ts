@@ -1,7 +1,15 @@
-import { DefinitionIdentifier as IDefinitionIdentifier, DefinitionIdentifierPOJO, UUID } from "../../public";
-import { Identifiers } from "./identifiers";
+import { DefinitionIdentifier as IDefinitionIdentifier, UUID } from "../../public";
+import { Identifiers, IdentifiersPOJO } from "./identifiers";
 import { _internal } from "./utils";
 import { Joi } from "./validation";
+
+
+export interface DefinitionIdentifierPOJO {
+  id: UUID;
+  identifiers?: IdentifiersPOJO;
+  code?: string;
+}
+
 
 export abstract class DefinitionIdentifier implements IDefinitionIdentifier {
   public static readonly [_internal] = {

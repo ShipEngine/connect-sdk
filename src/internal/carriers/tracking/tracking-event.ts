@@ -1,7 +1,7 @@
-import { ShipmentStatus, TrackingEvent as ITrackingEvent, TrackingEventPOJO } from "../../../public";
+import { ShipmentStatus, TrackingEvent as TrackingEventPOJO } from "../../../public";
 import { createNotes, DateTimeZone, hideAndFreeze, Joi, Note, PartialAddress, PersonName, _internal } from "../../common";
 
-export class TrackingEvent implements ITrackingEvent {
+export class TrackingEvent {
   public static readonly [_internal] = {
     label: "tracking event",
     schema: Joi.object({

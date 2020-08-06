@@ -1,8 +1,4 @@
-import {
-  Dimensions as IDimensions,
-  DimensionsPOJO,
-  LengthUnit,
-} from "../../../public";
+import { Dimensions as IDimensions, DimensionsPOJO, LengthUnit } from "../../../public";
 import { hideAndFreeze, _internal } from "../utils";
 import { Joi } from "../validation";
 

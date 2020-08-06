@@ -1,7 +1,18 @@
-import { SalesOrderShipment as ISalesOrderShipment, SalesOrderShipmentPOJO } from "../../../public";
+import { AddressWithContactInfoPOJO, DateTimeZonePOJO, SalesOrderShipment as ISalesOrderShipment, ShipmentIdentifierPOJO, URLString } from "../../../public";
 import { ShipmentIdentifier, ShipmentIdentifierBase } from "../../carriers";
 import { AddressWithContactInfo, DateTimeZone, hideAndFreeze, Joi, _internal } from "../../common";
-import { SalesOrderPackageItem } from "./sales-order-package-item";
+import { SalesOrderPackageItem, SalesOrderPackageItemPOJO } from "./sales-order-package-item";
+
+
+export interface SalesOrderShipmentPOJO extends ShipmentIdentifierPOJO {
+  trackingURL?: URLString | URL;
+  fulfillmentService?: string;
+  shipFrom?: AddressWithContactInfoPOJO;
+  shipTo: AddressWithContactInfoPOJO;
+  shipDateTime: DateTimeZonePOJO | Date | string;
+  contents: ReadonlyArray<SalesOrderPackageItemPOJO>;
+}
+
 
 export class SalesOrderShipment extends ShipmentIdentifierBase implements ISalesOrderShipment {
   public static readonly [_internal] = {

@@ -1,14 +1,22 @@
-import { Connect, ConnectionApp as IConnectionApp, ConnectionAppPOJO, ErrorCode, FilePath, TransactionPOJO } from "../../public";
-import { App } from "./app";
+import { Connect, ConnectionAppDefinition, ErrorCode, FilePath } from "../../public";
+import { App, AppPOJO } from "./app";
 import { error } from "./errors";
-import { Form } from "./form";
-import { Transaction } from "./transaction";
+import { Form, FormPOJO } from "./form";
+import { Transaction, TransactionPOJO } from "./transaction";
 import { _internal } from "./utils";
 import { Joi, validate } from "./validation";
 
 const _private = Symbol("private fields");
 
-export abstract class ConnectionApp extends App implements IConnectionApp {
+
+export interface ConnectionAppPOJO extends ConnectionAppDefinition, AppPOJO {
+  connectionForm: FormPOJO;
+  settingsForm?: FormPOJO;
+  connect?: Connect;
+}
+
+
+export abstract class ConnectionApp extends App {
   public static readonly [_internal] = {
     label: "ShipEngine Integration Platform app",
     schema: App[_internal].schema.keys({

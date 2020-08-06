@@ -1,6 +1,12 @@
-import { ShipmentCancellation as IShipmentCancellation, ShipmentCancellationPOJO, UUID } from "../../../public";
+import { ShipmentCancellation as IShipmentCancellation, ShipmentIdentifierPOJO, UUID } from "../../../public";
 import { hideAndFreeze, Joi, _internal } from "../../common";
 import { ShipmentIdentifier, ShipmentIdentifierBase } from "./shipment-identifier";
+
+export interface ShipmentCancellationPOJO extends ShipmentIdentifierPOJO {
+  cancellationID: UUID;
+  metadata?: object;
+}
+
 
 export class ShipmentCancellation extends ShipmentIdentifierBase implements IShipmentCancellation {
   public static readonly [_internal] = {

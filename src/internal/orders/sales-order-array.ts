@@ -1,7 +1,7 @@
-import { SalesOrderArray as ISalesOrderArray, SalesOrderArrayPOJO, SalesOrderPaging } from "../../../public";
-import { hideAndFreeze, Joi, _internal } from "../../common";
+import { SalesOrderArray as SalesOrderArrayPOJO, SalesOrderPaging } from "../../public";
+import { hideAndFreeze, Joi, _internal } from "../common";
 
-export class SalesOrderArray extends Array implements ISalesOrderArray {
+export class SalesOrderArray extends Array {
   // TODO: Add better validation and unit tests
   public static readonly [_internal] = {
     label: "sales order array",
@@ -12,7 +12,13 @@ export class SalesOrderArray extends Array implements ISalesOrderArray {
 
   public constructor(pojo: SalesOrderArrayPOJO) {
     super();
-    this.paging = pojo.paging;
+
+    this.paging = {
+      ...pojo.paging,
+      pageNumber: 1,
+      pageCount: 1,
+      pageSize: this.length,
+    };
 
     // Make this object immutable
     hideAndFreeze(this);

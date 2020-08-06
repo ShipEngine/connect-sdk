@@ -1,9 +1,9 @@
-import { PackageConfirmation as IPackageConfirmation, PackageConfirmationPOJO } from "../../../public";
+import { PackageConfirmation as PackageConfirmationPOJO } from "../../../public";
 import { hideAndFreeze, Joi, _internal } from "../../common";
-
 import { PackageIdentifier, PackageIdentifierBase } from "./package-identifier";
 
-export class PackageConfirmation extends PackageIdentifierBase implements IPackageConfirmation {
+
+export class PackageConfirmation extends PackageIdentifierBase {
   public static readonly [_internal] = {
     label: "package",
     schema: PackageIdentifier[_internal].schema.keys({

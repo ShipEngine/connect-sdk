@@ -1,4 +1,4 @@
-import { DocumentType, ShipmentConfirmation as IShipmentConfirmation, ShipmentConfirmationPOJO } from "../../../public";
+import { DocumentType, ShipmentConfirmation as ShipmentConfirmationPOJO } from "../../../public";
 import { calculateTotalCharges, Charge, DateTimeZone, hideAndFreeze, Joi, MonetaryValue, _internal } from "../../common";
 import { Document } from "../documents/document";
 import { Label } from "../documents/label";
@@ -6,7 +6,7 @@ import { createDocument, isLabel } from "../documents/utils";
 import { PackageConfirmation } from "../packages/package-confirmation";
 import { ShipmentIdentifier, ShipmentIdentifierBase } from "./shipment-identifier";
 
-export class ShipmentConfirmation extends ShipmentIdentifierBase implements IShipmentConfirmation {
+export class ShipmentConfirmation extends ShipmentIdentifierBase {
   public static readonly [_internal] = {
     label: "shipment",
     schema: ShipmentIdentifier[_internal].schema.keys({

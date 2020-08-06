@@ -1,7 +1,7 @@
-import { CancellationStatus, PickupCancellationOutcome as IPickupCancellationOutcome, PickupCancellationOutcomePOJO, UUID } from "../../../public";
+import { CancellationStatus, PickupCancellationOutcome as PickupCancellationOutcomePOJO, UUID } from "../../../public";
 import { createNotes, hideAndFreeze, Joi, Note, _internal } from "../../common";
 
-export class PickupCancellationOutcome implements IPickupCancellationOutcome {
+export class PickupCancellationOutcome {
   public static readonly [_internal] = {
     label: "pickup",
     schema: Joi.object({

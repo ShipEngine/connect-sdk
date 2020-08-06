@@ -1,50 +1,6 @@
-import type { Dimensions, DimensionsPOJO, MonetaryValue, MonetaryValuePOJO, Weight, WeightPOJO } from "../../common";
-import type { DeliveryConfirmation, DeliveryConfirmationIdentifierPOJO } from "../delivery-confirmation";
-import type { Packaging, PackagingIdentifierPOJO } from "../packaging";
-
-
-/**
- * The package details needed for a rate quote
- */
-export interface PackageRateCriteriaPOJO {
-  /**
-   * The packaging that may be used. If not specified, then rate quotes should be
-   * returned for all applicable packaging.
-   */
-  packaging?: ReadonlyArray<PackagingIdentifierPOJO | string>;
-
-  /**
-   * The delivery confirmations that may be used. If not specified, then rate quotes
-   * should be returned for all applicable delivery confirmations.
-   */
-  deliveryConfirmations?: ReadonlyArray<DeliveryConfirmationIdentifierPOJO | string>;
-
-  /**
-   * The package dimensions
-   */
-  dimensions?: DimensionsPOJO;
-
-  /**
-   * The package weight
-   */
-  weight?: WeightPOJO;
-
-  /**
-   * The insured value of this package.
-   * If specified, then rate quotes should include carrier-provided insurance.
-   */
-  insuredValue?: MonetaryValuePOJO;
-
-  /**
-   * Indicates whether the package contains alcohol
-   */
-  containsAlcohol?: boolean;
-
-  /**
-   * Indicates whether the
-   */
-  isNonMachinable?: boolean;
-}
+import type { Dimensions, MonetaryValue, Weight } from "../../common";
+import type { DeliveryConfirmation } from "../delivery-confirmation";
+import type { Packaging } from "../packaging";
 
 
 /**

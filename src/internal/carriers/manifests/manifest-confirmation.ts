@@ -1,9 +1,9 @@
-import { ManifestConfirmation as IManifestConfirmation, ManifestConfirmationPOJO } from "../../../public";
+import { ManifestConfirmation as ManifestConfirmationPOJO } from "../../../public";
 import { hideAndFreeze, Joi, _internal } from "../../common";
 import { Manifest } from "./manifest";
 import { NonManifestedShipment } from "./non-manifested-shipment";
 
-export class ManifestConfirmation implements IManifestConfirmation {
+export class ManifestConfirmation {
   public static readonly [_internal] = {
     label: "manifest confirmation",
     schema: Joi.object({

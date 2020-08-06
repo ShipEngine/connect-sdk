@@ -1,8 +1,8 @@
 import * as currency from "currency.js";
-import { Country, CustomsItem as ICustomsItem, CustomsItemPOJO, CustomsItemType } from "../../../public";
+import { Country, CustomsItem as CustomsItemPOJO, CustomsItemType } from "../../../public";
 import { hideAndFreeze, Joi, MonetaryValue, Quantity, _internal } from "../../common";
 
-export class CustomsItem implements ICustomsItem {
+export class CustomsItem {
   public static readonly [_internal] = {
     label: "customs item",
     schema: Joi.object({

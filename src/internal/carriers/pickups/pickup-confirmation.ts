@@ -1,8 +1,8 @@
-import { PickupConfirmation as IPickupConfirmation, PickupConfirmationPOJO } from "../../../public";
+import { PickupConfirmation as PickupConfirmationPOJO } from "../../../public";
 import { calculateTotalCharges, Charge, createNotes, hideAndFreeze, Identifiers, Joi, MonetaryValue, Note, TimeRange, _internal } from "../../common";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 
-export class PickupConfirmation implements IPickupConfirmation {
+export class PickupConfirmation {
   public static readonly [_internal] = {
     label: "pickup",
     schema: Joi.object({

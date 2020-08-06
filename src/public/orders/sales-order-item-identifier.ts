@@ -1,4 +1,4 @@
-import type { Identifiers, IdentifiersPOJO } from "../common";
+import type { Identifiers } from "../common";
 
 
 /**
@@ -18,7 +18,7 @@ export interface SalesOrderItemIdentifierPOJO {
   /**
    * Your own identifiers for this item
    */
-  identifiers?: IdentifiersPOJO;
+  identifiers?: Identifiers;
 }
 
 

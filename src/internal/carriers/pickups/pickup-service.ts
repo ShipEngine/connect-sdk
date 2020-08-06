@@ -1,7 +1,10 @@
-import { PickupService as IPickupService, PickupServicePOJO } from "../../../public";
-import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../../common";
+import { PickupService as IPickupService, PickupServiceDefinition } from "../../../public";
+import { App, DefinitionIdentifier, DefinitionIdentifierPOJO, hideAndFreeze, Joi, _internal } from "../../common";
 
 const _private = Symbol("private fields");
+
+export type PickupServicePOJO = PickupServiceDefinition;
+export type PickupServiceIdentifierPOJO = DefinitionIdentifierPOJO;
 
 export class PickupService extends DefinitionIdentifier implements IPickupService {
   public static readonly [_internal] = {

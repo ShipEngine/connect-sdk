@@ -1,8 +1,8 @@
-import { PackageTrackingInfo as IPackageTrackingInfo, PackageTrackingInfoPOJO } from "../../../public";
+import { PackageTrackingInfo as PackageTrackingInfoPOJO } from "../../../public";
 import { App, DefinitionIdentifier, Dimensions, hideAndFreeze, Joi, Weight, _internal } from "../../common";
 import { Packaging } from "../packaging";
 
-export class PackageTrackingInfo implements IPackageTrackingInfo {
+export class PackageTrackingInfo {
   public static readonly [_internal] = {
     label: "package",
     schema: Joi.object({

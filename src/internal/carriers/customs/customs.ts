@@ -1,8 +1,8 @@
-import { Customs as ICustoms, CustomsPOJO, NonDeliveryOption } from "../../../public";
+import { Customs as CustomsPOJO, NonDeliveryOption } from "../../../public";
 import { hideAndFreeze, Joi, _internal } from "../../common";
 import { CustomsItem } from "./customs-item";
 
-export class Customs implements ICustoms {
+export class Customs {
   public static readonly [_internal] = {
     label: "customs",
     schema: Joi.object({

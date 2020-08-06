@@ -1,9 +1,18 @@
-import { Country, DeliveryService as IDeliveryService, DeliveryServiceClass, DeliveryServiceGrade, DeliveryServicePOJO, DocumentFormat, DocumentSize, FulfillmentService, ManifestType, ServiceArea } from "../../public";
+import { Country, DeliveryService as IDeliveryService, DeliveryServiceClass, DeliveryServiceDefinition, DeliveryServiceGrade, DocumentFormat, DocumentSize, FulfillmentService, ManifestType, ServiceArea } from "../../public";
 import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../common";
-import { DeliveryConfirmation } from "./delivery-confirmation";
-import { Packaging } from "./packaging";
+import { DeliveryConfirmation, DeliveryConfirmationPOJO } from "./delivery-confirmation";
+import { Packaging, PackagingPOJO } from "./packaging";
 
 const _private = Symbol("private fields");
+
+
+export interface DeliveryServicePOJO extends DeliveryServiceDefinition {
+  originCountries: Country[];
+  destinationCountries: Country[];
+  packaging: ReadonlyArray<PackagingPOJO>;
+  deliveryConfirmations?: ReadonlyArray<DeliveryConfirmationPOJO>;
+}
+
 
 export class DeliveryService extends DefinitionIdentifier implements IDeliveryService {
   public static readonly [_internal] = {

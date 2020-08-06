@@ -1,7 +1,16 @@
-import { ErrorCode, ManifestLocation, NewManifest as INewManifest, NewManifestPOJO } from "../../../public";
+import { AddressPOJO, DateTimeZonePOJO, ErrorCode, ManifestLocation, NewManifest as INewManifest, ShipmentIdentifierPOJO } from "../../../public";
 import { Address, DateTimeZone, error, hideAndFreeze, Joi, _internal } from "../../common";
 import { CarrierApp } from "../carrier-app";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
+
+
+export interface NewManifestPOJO {
+  shipFrom?: AddressPOJO;
+  openDateTime: DateTimeZonePOJO | Date | string;
+  closeDateTime: DateTimeZonePOJO | Date | string;
+  shipments: ReadonlyArray<ShipmentIdentifierPOJO>;
+}
+
 
 export class NewManifest implements INewManifest {
   public static readonly [_internal] = {

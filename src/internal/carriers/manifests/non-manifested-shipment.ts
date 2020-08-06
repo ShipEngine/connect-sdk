@@ -1,8 +1,8 @@
-import { NonManifestedShipment as INonManifestedShipment, NonManifestedShipmentPOJO } from "../../../public";
+import { NonManifestedShipment as NonManifestedShipmentPOJO } from "../../../public";
 import { createNotes, hideAndFreeze, Joi, Note, _internal } from "../../common";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 
-export class NonManifestedShipment implements INonManifestedShipment {
+export class NonManifestedShipment  {
   public static readonly [_internal] = {
     label: "manifest confirmation",
     schema: ShipmentIdentifier[_internal].schema.keys({

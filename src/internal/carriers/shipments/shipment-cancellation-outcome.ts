@@ -1,8 +1,8 @@
-import { CancellationStatus, ShipmentCancellationOutcome as IShipmentCancellationOutcome, ShipmentCancellationOutcomePOJO, UUID } from "../../../public";
+import { CancellationStatus, ShipmentCancellationOutcome as ShipmentCancellationOutcomePOJO, UUID } from "../../../public";
 import { createNotes, hideAndFreeze, Joi, Note, _internal } from "../../common";
 import { ShipmentIdentifier } from "./shipment-identifier";
 
-export class ShipmentCancellationOutcome implements IShipmentCancellationOutcome {
+export class ShipmentCancellationOutcome {
   public static readonly [_internal] = {
     label: "shipment",
     schema: ShipmentIdentifier[_internal].schema.keys({

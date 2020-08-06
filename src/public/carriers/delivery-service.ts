@@ -1,13 +1,13 @@
-import type { Country, DefinitionIdentifier, DefinitionIdentifierPOJO, InlineOrReference, InlineOrReferenceArray } from "../common";
-import type { DeliveryConfirmation, DeliveryConfirmationDefinition, DeliveryConfirmationPOJO } from "./delivery-confirmation";
+import type { Country, Definition, DefinitionIdentifier, InlineOrReference, InlineOrReferenceArray } from "../common";
+import type { DeliveryConfirmation, DeliveryConfirmationDefinition } from "./delivery-confirmation";
 import type { DeliveryServiceClass, DeliveryServiceGrade, DocumentFormat, DocumentSize, ManifestType, ServiceArea } from "./enums";
 import type { FulfillmentService } from "./fulfillment-service";
-import type { Packaging, PackagingDefinition, PackagingPOJO } from "./packaging";
+import type { Packaging, PackagingDefinition } from "./packaging";
 
 /**
  * A delivery service that is offered by a carrier
  */
-export interface DeliveryServiceDefinition extends DefinitionIdentifierPOJO {
+export interface DeliveryServiceDefinition extends Definition {
   /**
    * The user-friendly service name (e.g. "Priority Overnight", "2-Day Air")
    */
@@ -105,25 +105,7 @@ export interface DeliveryServiceDefinition extends DefinitionIdentifierPOJO {
    * The types of package delivery confirmations offered for this service
    */
   deliveryConfirmations?: InlineOrReferenceArray<DeliveryConfirmationDefinition>;
-
 }
-
-
-/**
- * A delivery service that is offered by a carrier
- */
-export interface DeliveryServicePOJO extends DeliveryServiceDefinition {
-  originCountries: Country[];
-  destinationCountries: Country[];
-  packaging: ReadonlyArray<PackagingPOJO>;
-  deliveryConfirmations?: ReadonlyArray<DeliveryConfirmationPOJO>;
-}
-
-
-/**
- * Identifies a delivery service that is offered by a carrier
- */
-export type DeliveryServiceIdentifierPOJO = DefinitionIdentifierPOJO;
 
 
 /**
@@ -131,11 +113,16 @@ export type DeliveryServiceIdentifierPOJO = DefinitionIdentifierPOJO;
  */
 export type DeliveryServiceIdentifier = DefinitionIdentifier;
 
+/**
+ * Identifies a delivery service that is offered by a carrier
+ */
+export type DeliveryServiceIdentifierPOJO = Definition;
+
 
 /**
  * A delivery service that is offered by a carrier
  */
-export interface DeliveryService extends DefinitionIdentifier {
+export interface DeliveryService extends DeliveryServiceIdentifier {
   /**
    * The user-friendly service name (e.g. "Priority Overnight", "2-Day Air")
    */

@@ -1,6 +1,5 @@
 import type { ChargeType } from "./enums";
 import type { MonetaryValue, MonetaryValuePOJO } from "./measures/monetary-value";
-import type { Note, NotePOJO } from "./note";
 
 /**
  * An itemized charge or credit for a shipment or sales order

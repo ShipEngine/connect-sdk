@@ -1,59 +1,6 @@
-import type { AddressWithContactInfo, AddressWithContactInfoPOJO, Country, DateTimeZone, DateTimeZonePOJO, MonetaryValue } from "../../common";
-import type { DeliveryService, DeliveryServiceIdentifierPOJO } from "../delivery-service";
-import type { NewPackage, NewPackagePOJO } from "../packages/new-package";
-
-/**
- * The information needed to create a new shipment
- */
-export interface NewShipmentPOJO {
-  /**
-   * The delivery service to use for the shipment
-   */
-  deliveryService: DeliveryServiceIdentifierPOJO | string;
-
-  /**
-   * The sender's contact info and address
-   */
-  shipFrom: AddressWithContactInfoPOJO;
-
-  /**
-   * The recipient's contact info and address
-   */
-  shipTo: AddressWithContactInfoPOJO;
-
-  /**
-   * The return address. Defaults to the `shipFrom` address
-   */
-  returnTo?: AddressWithContactInfoPOJO;
-
-  /**
-   * The date/time that the shipment is expected to ship.
-   * This is not guaranteed to be in the future.
-   */
-  shipDateTime: DateTimeZonePOJO | Date | string;
-
-  /**
-   * Return shipment details. If `undefined`, then it is assumed that the shipment is not a return.
-   */
-  returns?: {
-    /**
-     * Indicates whether this is a return shipment
-     */
-    isReturn?: boolean;
-
-    /**
-     * A return merchandise authorization (RMA) is an associated number assigned to process the return,
-     * this number is often printed on the label, and used when the original shipper processes the inbound return.
-     */
-    rmaNumber?: string;
-  };
-
-  /**
-   * The list of packages in the shipment
-   */
-  packages: ReadonlyArray<NewPackagePOJO>;
-}
-
+import type { AddressWithContactInfo, DateTimeZone, MonetaryValue } from "../../common";
+import type { DeliveryService } from "../delivery-service";
+import type { NewPackage } from "../packages/new-package";
 
 /**
  * The information needed to create a new shipment

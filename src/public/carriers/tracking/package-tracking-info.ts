@@ -1,10 +1,10 @@
-import type { Dimensions, DimensionsPOJO, Weight, WeightPOJO } from "../../common";
-import type { Packaging, PackagingIdentifierPOJO } from "../packaging";
+import type { DimensionsPOJO, WeightPOJO } from "../../common";
+import type { PackagingIdentifierPOJO } from "../packaging";
 
 /**
  * The actual package info, as determined by the carrier
  */
-export interface PackageTrackingInfoPOJO {
+export interface PackageTrackingInfo {
   /**
    * The actual packaging that was used, as determined by the carrier
    */
@@ -19,25 +19,4 @@ export interface PackageTrackingInfoPOJO {
    * The actual package weight as measured by the carrier
    */
   weight?: WeightPOJO;
-}
-
-
-/**
- * The actual package info, as determined by the carrier
- */
-export interface PackageTrackingInfo {
-  /**
-   * The ID of the actual packaging that was used, as determined by the carrier
-   */
-  readonly packaging?: Packaging;
-
-  /**
-   * The actual package dimensions as measured by the carrier
-   */
-  readonly dimensions?: Dimensions;
-
-  /**
-   * The actual package weight as measured by the carrier
-   */
-  readonly weight?: Weight;
 }

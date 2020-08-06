@@ -1,8 +1,21 @@
-import { FulfillmentService, RateCriteria as IRateCriteria, RateCriteriaPOJO } from "../../../public";
+import { AddressWithContactInfoPOJO, DateTimeZonePOJO, DeliveryServiceIdentifierPOJO, FulfillmentService, RateCriteria as IRateCriteria } from "../../../public";
 import { AddressWithContactInfo, App, DateTimeZone, DefinitionIdentifier, hideAndFreeze, Joi, MonetaryValue, _internal } from "../../common";
 import { DeliveryService } from "../delivery-service";
 import { calculateTotalInsuranceAmount } from "../utils";
-import { PackageRateCriteria } from "./package-rate-criteria";
+import { PackageRateCriteria, PackageRateCriteriaPOJO } from "./package-rate-criteria";
+
+
+export interface RateCriteriaPOJO {
+  deliveryService?: DeliveryServiceIdentifierPOJO | string;
+  fulfillmentService?: FulfillmentService;
+  shipDateTime: DateTimeZonePOJO | Date | string;
+  deliveryDateTime?: DateTimeZonePOJO | Date | string;
+  shipFrom: AddressWithContactInfoPOJO;
+  shipTo: AddressWithContactInfoPOJO;
+  returns?: { isReturn?: boolean };
+  packages: ReadonlyArray<PackageRateCriteriaPOJO>;
+}
+
 
 export class RateCriteria implements IRateCriteria {
   public static readonly [_internal] = {

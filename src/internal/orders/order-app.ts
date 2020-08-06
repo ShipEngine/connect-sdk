@@ -1,13 +1,24 @@
-import { AppType, ErrorCode, GetSalesOrdersByDate, OrderApp as IOrderApp, OrderAppPOJO, SalesOrderShipmentPOJO, SalesOrderTimeRangePOJO, ShipmentCancelled, ShipmentCreated, TransactionPOJO } from "../../public";
-import { ConnectionApp, error, hideAndFreeze, Joi, Transaction, validate, _internal } from "../common";
+import { AppType, Connect, ErrorCode, GetSalesOrdersByDate, OrderAppDefinition, ShipmentCancelled, ShipmentCreated } from "../../public";
+import { AppPOJO, ConnectionApp, error, FormPOJO, hideAndFreeze, Joi, Transaction, TransactionPOJO, validate, _internal } from "../common";
 import { SalesOrder } from "./sales-order";
-import { SalesOrderTimeRange } from "./sales-order-time-range";
-import { SalesOrderShipment } from "./shipments/sales-order-shipment";
+import { SalesOrderTimeRange, SalesOrderTimeRangePOJO } from "./sales-order-time-range";
+import { SalesOrderShipment, SalesOrderShipmentPOJO } from "./shipments/sales-order-shipment";
 import { getAsyncIterable } from "./utils";
 
 const _private = Symbol("private fields");
 
-export class OrderApp extends ConnectionApp implements IOrderApp {
+
+export interface OrderAppPOJO extends OrderAppDefinition, AppPOJO {
+  connectionForm: FormPOJO;
+  settingsForm?: FormPOJO;
+  connect?: Connect;
+  getSalesOrdersByDate?: GetSalesOrdersByDate;
+  shipmentCreated?: ShipmentCreated;
+  shipmentCancelled?: ShipmentCancelled;
+}
+
+
+export class OrderApp extends ConnectionApp {
   public static readonly [_internal] = {
     label: "ShipEngine Integration Platform order app",
     schema: ConnectionApp[_internal].schema.keys({

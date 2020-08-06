@@ -1,7 +1,10 @@
-import { DeliveryConfirmation as IDeliveryConfirmation, DeliveryConfirmationPOJO, DeliveryConfirmationType } from "../../public";
+import { DeliveryConfirmation as IDeliveryConfirmation, DeliveryConfirmationDefinition, DeliveryConfirmationType } from "../../public";
 import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../common";
 
 const _private = Symbol("private fields");
+
+export type DeliveryConfirmationPOJO = DeliveryConfirmationDefinition;
+
 
 export class DeliveryConfirmation extends DefinitionIdentifier implements IDeliveryConfirmation {
   public static readonly [_internal] = {

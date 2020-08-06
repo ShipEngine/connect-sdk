@@ -1,10 +1,24 @@
-import { NewPackage as INewPackage, NewPackagePOJO } from "../../../public";
+import { Customs as CustomsPOJO, DeliveryConfirmationIdentifierPOJO, DimensionsPOJO, MonetaryValuePOJO, NewPackage as INewPackage, PackagingIdentifierPOJO, WeightPOJO } from "../../../public";
 import { App, DefinitionIdentifier, Dimensions, hideAndFreeze, Joi, MonetaryValue, Weight, _internal } from "../../common";
 import { Customs } from "../customs/customs";
 import { DeliveryConfirmation } from "../delivery-confirmation";
-import { NewLabel } from "../documents/new-label";
+import { NewLabel, NewLabelPOJO } from "../documents/new-label";
 import { Packaging } from "../packaging";
-import { PackageItem } from "./package-item";
+import { PackageItem, PackageItemPOJO } from "./package-item";
+
+export interface NewPackagePOJO {
+  packaging: PackagingIdentifierPOJO | string;
+  deliveryConfirmation?: DeliveryConfirmationIdentifierPOJO;
+  dimensions?: DimensionsPOJO;
+  weight?: WeightPOJO;
+  insuredValue?: MonetaryValuePOJO;
+  containsAlcohol?: boolean;
+  isNonMachinable?: boolean;
+  label: NewLabelPOJO;
+  customs?: CustomsPOJO;
+  contents?: ReadonlyArray<PackageItemPOJO>;
+}
+
 
 export class NewPackage implements INewPackage {
   public static readonly [_internal] = {

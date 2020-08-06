@@ -1,9 +1,9 @@
-import { Manifest as IManifest, ManifestPOJO } from "../../../public";
+import { Manifest as ManifestPOJO } from "../../../public";
 import { createNotes, hideAndFreeze, Identifiers, Joi, Note, _internal } from "../../common";
 import { Document } from "../documents/document";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 
-export class Manifest implements IManifest {
+export class Manifest {
   public static readonly [_internal] = {
     label: "manifest",
     schema: Joi.object({

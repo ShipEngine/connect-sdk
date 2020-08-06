@@ -10,5 +10,5 @@ export interface IdentifiersPOJO {
  * Custom identifiers for a resource
  */
 export interface Identifiers {
-  readonly [key: string]: string | undefined;
+  readonly [key: string]: string;
 }

@@ -1,8 +1,8 @@
-import { Label as ILabel, LabelPOJO } from "../../../public";
+import { Label as LabelPOJO } from "../../../public";
 import { hideAndFreeze, Joi, _internal } from "../../common";
 import { Document, DocumentBase } from "./document";
 
-export class Label extends DocumentBase implements ILabel {
+export class Label extends DocumentBase {
   public static readonly [_internal] = {
     label: "label",
     schema: Document[_internal].schema.keys({

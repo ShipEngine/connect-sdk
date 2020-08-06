@@ -1,5 +1,12 @@
-import { SalesOrderTimeRange as ISalesOrderTimeRange, SalesOrderTimeRangePOJO } from "../../public";
+import { SalesOrderPaging, SalesOrderTimeRange as ISalesOrderTimeRange, TimeRangePOJO } from "../../public";
 import { hideAndFreeze, Joi, TimeRange, TimeRangeBase, _internal } from "../common";
+
+
+export interface SalesOrderTimeRangePOJO extends TimeRangePOJO {
+  includeChanges?: boolean;
+  paging: SalesOrderPaging;
+}
+
 
 export class SalesOrderTimeRange extends TimeRangeBase implements ISalesOrderTimeRange {
   public static readonly [_internal] = {
@@ -16,10 +23,10 @@ export class SalesOrderTimeRange extends TimeRangeBase implements ISalesOrderTim
   };
 
   public readonly includeChanges: boolean;
-  public readonly paging?: {
+  public readonly paging: {
     readonly pageSize: number;
     readonly pageNumber: number;
-    readonly pageCount?: number;
+    readonly pageCount: number;
     readonly cursor?: string;
   };
 

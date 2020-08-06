@@ -1,4 +1,4 @@
-import type { Identifiers, IdentifiersPOJO } from "../../common";
+import type { Identifiers } from "../../common";
 
 /**
  * Identifies a package
@@ -12,7 +12,7 @@ export interface PackageIdentifierPOJO {
   /**
    * Your own identifiers for this package
    */
-  identifiers?: IdentifiersPOJO;
+  identifiers?: Identifiers;
 }
 
 

@@ -1,7 +1,7 @@
-import { Buyer as IBuyer, BuyerPOJO } from "../../public";
+import { Buyer as BuyerPOJO } from "../../public";
 import { Address, ContactInfo, ContactInfoBase, hideAndFreeze, Joi, _internal } from "../common";
 
-export class Buyer extends ContactInfoBase implements IBuyer {
+export class Buyer extends ContactInfoBase {
   public static readonly [_internal] = {
     label: "buyer",
     schema: ContactInfo[_internal].schema.keys({

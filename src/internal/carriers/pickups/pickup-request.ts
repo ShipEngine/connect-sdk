@@ -1,7 +1,17 @@
-import { PickupRequest as IPickupRequest, PickupRequestPOJO } from "../../../public";
+import { AddressPOJO, ContactInfoPOJO, NotePOJO, PickupRequest as IPickupRequest, TimeRangePOJO } from "../../../public";
 import { Address, App, ContactInfo, createNotes, DefinitionIdentifier, hideAndFreeze, Joi, Note, TimeRange, _internal } from "../../common";
-import { PickupService } from "./pickup-service";
-import { PickupShipment } from "./pickup-shipment";
+import { PickupService, PickupServiceIdentifierPOJO } from "./pickup-service";
+import { PickupShipment, PickupShipmentPOJO } from "./pickup-shipment";
+
+export interface PickupRequestPOJO {
+  pickupService: PickupServiceIdentifierPOJO | string;
+  timeWindow: TimeRangePOJO;
+  address: AddressPOJO;
+  contact: ContactInfoPOJO;
+  notes?: string | ReadonlyArray<string | NotePOJO>;
+  shipments: ReadonlyArray<PickupShipmentPOJO>;
+}
+
 
 export class PickupRequest implements IPickupRequest {
   public static readonly [_internal] = {

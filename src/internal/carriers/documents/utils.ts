@@ -1,4 +1,4 @@
-import { DocumentPOJO, DocumentType } from "../../../public";
+import { Document as DocumentPOJO, DocumentType } from "../../../public";
 import { Document } from "./document";
 import { Label } from "./label";
 

@@ -1,5 +1,12 @@
-import { DocumentFormat, DocumentSize, NewLabel as INewLabel, NewLabelPOJO } from "../../../public";
+import { DocumentFormat, DocumentSize, NewLabel as INewLabel } from "../../../public";
 import { hideAndFreeze, Joi, _internal } from "../../common";
+
+export interface NewLabelPOJO {
+  size: DocumentSize;
+  format: DocumentFormat;
+  referenceFields?: string[];
+}
+
 
 export class NewLabel implements INewLabel {
   public static readonly [_internal] = {

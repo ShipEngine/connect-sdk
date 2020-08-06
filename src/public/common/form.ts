@@ -17,20 +17,3 @@ export interface FormDefinition {
    */
   uiSchema: InlineOrReference<UiSchema>;
 }
-
-
-/**
- * Defines a user-interface form that collects data from the user.
- */
-export interface FormPOJO extends FormDefinition {
-  dataSchema: JSONSchema6;
-  uiSchema: UiSchema;
-}
-
-/**
- * Defines a user-interface form that collects data from the user.
- */
-export interface Form {
-  readonly dataSchema: JSONSchema6;
-  readonly uiSchema: UiSchema;
-}

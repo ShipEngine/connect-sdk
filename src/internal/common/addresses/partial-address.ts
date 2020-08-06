@@ -6,7 +6,7 @@ export type PartialAddressPOJO = Partial<AddressPOJO>;
 
 export interface PartialAddress {
   readonly company: string;
-  readonly addressLines: ReadonlyArray<string>;
+  readonly addressLines: readonly string[];
   readonly cityLocality: string;
   readonly stateProvince: string;
   readonly postalCode: string;
@@ -16,7 +16,7 @@ export interface PartialAddress {
 
 export abstract class PartialAddressBase {
   public readonly company: string;
-  public readonly addressLines: ReadonlyArray<string>;
+  public readonly addressLines: readonly string[];
   public readonly cityLocality: string;
   public readonly stateProvince: string;
   public readonly postalCode: string;

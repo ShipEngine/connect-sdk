@@ -25,7 +25,7 @@ export class TrackingEvent {
   public readonly description: string;
   public readonly address?: PartialAddress;
   public readonly signer?: PersonName;
-  public readonly notes: ReadonlyArray<Note>;
+  public readonly notes: readonly Note[];
 
   public constructor(pojo: TrackingEventPOJO) {
     this.name = pojo.name || "";

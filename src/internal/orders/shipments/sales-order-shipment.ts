@@ -10,7 +10,7 @@ export interface SalesOrderShipmentPOJO extends ShipmentIdentifierPOJO {
   shipFrom?: AddressWithContactInfoPOJO;
   shipTo: AddressWithContactInfoPOJO;
   shipDateTime: DateTimeZonePOJO | Date | string;
-  contents: ReadonlyArray<SalesOrderPackageItemPOJO>;
+  contents: readonly SalesOrderPackageItemPOJO[];
 }
 
 
@@ -32,7 +32,7 @@ export class SalesOrderShipment extends ShipmentIdentifierBase implements ISales
   public readonly shipFrom?: AddressWithContactInfo;
   public readonly shipTo: AddressWithContactInfo;
   public readonly shipDateTime: DateTimeZone;
-  public readonly contents: ReadonlyArray<SalesOrderPackageItem>;
+  public readonly contents: readonly SalesOrderPackageItem[];
 
 
   public constructor(pojo: SalesOrderShipmentPOJO) {

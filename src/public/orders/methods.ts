@@ -7,7 +7,7 @@ import { SalesOrderShipment } from "./shipments/sales-order-shipment";
  * Returns all orders that were created and/or modified within a given timeframe
  */
 export type GetSalesOrdersByDate = (transaction: Transaction, range: SalesOrderTimeRange)
-  => SalesOrderArray | Promise<SalesOrderArray>;
+=> SalesOrderArray | Promise<SalesOrderArray>;
 
 /**
  * Called when a shipment is created for one or more items in one or more sales orders.
@@ -16,7 +16,7 @@ export type GetSalesOrdersByDate = (transaction: Transaction, range: SalesOrderT
  * may be fulfilled by multiple shipments.
  */
 export type ShipmentCreated = (transaction: Transaction, shipment: SalesOrderShipment)
-  => void | Promise<void>;
+=> void | Promise<void>;
 
 /**
  * Called when a shipment is cancelled for one or more items in one or more sales orders.
@@ -25,4 +25,4 @@ export type ShipmentCreated = (transaction: Transaction, shipment: SalesOrderShi
  * may be fulfilled by multiple shipments.
  */
 export type ShipmentCancelled = (transaction: Transaction, shipment: SalesOrderShipment)
-  => void | Promise<void>;
+=> void | Promise<void>;

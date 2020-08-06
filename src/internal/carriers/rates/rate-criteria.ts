@@ -13,7 +13,7 @@ export interface RateCriteriaPOJO {
   shipFrom: AddressWithContactInfoPOJO;
   shipTo: AddressWithContactInfoPOJO;
   returns?: { isReturn?: boolean };
-  packages: ReadonlyArray<PackageRateCriteriaPOJO>;
+  packages: readonly PackageRateCriteriaPOJO[];
 }
 
 
@@ -44,7 +44,7 @@ export class RateCriteria implements IRateCriteria {
   public readonly shipFrom: AddressWithContactInfo;
   public readonly shipTo: AddressWithContactInfo;
   public readonly totalInsuredValue?: MonetaryValue;
-  public readonly packages: ReadonlyArray<PackageRateCriteria>;
+  public readonly packages: readonly PackageRateCriteria[];
   public readonly returns: {
     readonly isReturn: boolean;
   };

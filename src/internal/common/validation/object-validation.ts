@@ -1,5 +1,4 @@
 import * as joi from "@hapi/joi";
-import { regex } from "../utils";
 
 /**
  * Extended Joi object validation schema

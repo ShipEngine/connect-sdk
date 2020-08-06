@@ -19,9 +19,9 @@ export class Manifest {
 
   public readonly id: string;
   public readonly identifiers: Identifiers;
-  public readonly shipments: ReadonlyArray<ShipmentIdentifier>;
+  public readonly shipments: readonly ShipmentIdentifier[];
   public readonly document?: Document;
-  public readonly notes: ReadonlyArray<Note>;
+  public readonly notes: readonly Note[];
   public readonly metadata: object;
 
   public constructor(pojo: ManifestPOJO) {

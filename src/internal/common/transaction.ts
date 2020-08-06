@@ -51,7 +51,7 @@ export class Transaction<T extends object = object> implements ITransaction {
         session[key] = (value as Record<string, unknown>)[key];
       }
       else {
-        // tslint:disable-next-line: no-dynamic-delete
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete session[key];
       }
     }

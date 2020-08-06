@@ -4,7 +4,7 @@ import { ShipEngineConstructor } from "./types";
 import { _internal } from "./utils";
 import { Joi, validate } from "./validation";
 
-interface ClassInstance { id: UUID; code?: string; }
+interface ClassInstance { id: UUID; code?: string }
 
 interface Reference {
   type: ShipEngineConstructor;

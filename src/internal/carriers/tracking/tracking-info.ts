@@ -15,8 +15,8 @@ export class TrackingInfo extends ShipmentIdentifierBase {
   };
 
   public readonly deliveryDateTime?: DateTimeZone;
-  public readonly packages: ReadonlyArray<PackageTrackingInfo>;
-  public readonly events: ReadonlyArray<TrackingEvent>;
+  public readonly packages: readonly PackageTrackingInfo[];
+  public readonly events: readonly TrackingEvent[];
 
   public get package(): PackageTrackingInfo {
     return this.packages[0];

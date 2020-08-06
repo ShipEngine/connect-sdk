@@ -9,10 +9,10 @@ export interface ManifestConfirmation {
    * The shipments that are included on this manifest.
    * If not specified, the assumption is that the manifest includes all of the shipments.
    */
-  manifests: ReadonlyArray<Manifest>;
+  manifests: readonly Manifest[];
 
   /**
    * An array of the shipments that could not be manifested, and why
    */
-  notManifested?: ReadonlyArray<NonManifestedShipment>;
+  notManifested?: readonly NonManifestedShipment[];
 }

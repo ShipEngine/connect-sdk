@@ -1,5 +1,5 @@
 // NOTE: We can't use `import` syntax here because package.json is outside the TypeScript root dir
-// tslint:disable-next-line: no-var-requires no-require-imports
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
 const manifest = require("../../../package.json");
 
 /**

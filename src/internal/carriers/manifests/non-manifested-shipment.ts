@@ -2,7 +2,7 @@ import { NonManifestedShipment as NonManifestedShipmentPOJO } from "../../../pub
 import { createNotes, hideAndFreeze, Joi, Note, _internal } from "../../common";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 
-export class NonManifestedShipment  {
+export class NonManifestedShipment {
   public static readonly [_internal] = {
     label: "manifest confirmation",
     schema: ShipmentIdentifier[_internal].schema.keys({
@@ -14,7 +14,7 @@ export class NonManifestedShipment  {
 
   public readonly code: string;
   public readonly description: string;
-  public readonly notes: ReadonlyArray<Note>;
+  public readonly notes: readonly Note[];
 
   public constructor(pojo: NonManifestedShipmentPOJO) {
     this.code = pojo.code || "";

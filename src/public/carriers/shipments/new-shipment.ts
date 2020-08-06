@@ -64,7 +64,7 @@ export interface NewShipment {
   /**
    * The list of packages in the shipment
    */
-  readonly packages: ReadonlyArray<NewPackage>;
+  readonly packages: readonly NewPackage[];
 
   /**
    * Returns the first package in the `packages` array.

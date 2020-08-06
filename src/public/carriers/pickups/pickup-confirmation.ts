@@ -18,20 +18,20 @@ export interface PickupConfirmation {
   /**
    * A list of dates and times when the carrier intends to be available to pickup
    */
-  timeWindows: ReadonlyArray<TimeRangePOJO>;
+  timeWindows: readonly TimeRangePOJO[];
 
   /**
    * The breakdown of charges for this pickup.
    * If the carrier does not provide a detailed breakdown, then just use a single
    * charge of type "pickup".
    */
-  charges: ReadonlyArray<ChargePOJO>;
+  charges: readonly ChargePOJO[];
 
   /**
    * The shipments to be picked-up.
    * If not specified, the assumption is that all of the shipments will be picked up.
    */
-  shipments?: ReadonlyArray<ShipmentIdentifierPOJO>;
+  shipments?: readonly ShipmentIdentifierPOJO[];
 
   /**
    * Human-readable information about the pickup confirmation

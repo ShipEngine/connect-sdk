@@ -30,10 +30,10 @@ export interface PickupRequest {
   /**
    * Additional information about the pickup
    */
-  readonly notes: ReadonlyArray<Note>;
+  readonly notes: readonly Note[];
 
   /**
    * The shipments to be picked up
    */
-  readonly shipments: ReadonlyArray<PickupShipment>;
+  readonly shipments: readonly PickupShipment[];
 }

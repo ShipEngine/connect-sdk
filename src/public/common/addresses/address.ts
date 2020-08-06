@@ -5,7 +5,7 @@ import type { Country } from "../country";
  */
 export interface AddressPOJO {
   company?: string;
-  addressLines: ReadonlyArray<string>;
+  addressLines: readonly string[];
   cityLocality: string;
   stateProvince: string;
   postalCode: string;
@@ -19,7 +19,7 @@ export interface AddressPOJO {
  */
 export interface Address {
   readonly company: string;
-  readonly addressLines: ReadonlyArray<string>;
+  readonly addressLines: readonly string[];
   readonly cityLocality: string;
   readonly stateProvince: string;
   readonly postalCode: string;

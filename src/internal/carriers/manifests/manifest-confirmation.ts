@@ -12,8 +12,8 @@ export class ManifestConfirmation {
     }),
   };
 
-  public readonly manifests: ReadonlyArray<Manifest>;
-  public readonly notManifested: ReadonlyArray<NonManifestedShipment>;
+  public readonly manifests: readonly Manifest[];
+  public readonly notManifested: readonly NonManifestedShipment[];
 
   public constructor(pojo: ManifestConfirmationPOJO) {
     this.manifests = pojo.manifests.map((manifest) => new Manifest(manifest));

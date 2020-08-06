@@ -3,7 +3,7 @@ import { hideAndFreeze, _internal } from "../utils";
 import { Joi } from "../validation";
 import { PartialAddress, PartialAddressBase } from "./partial-address";
 
-export abstract class AddressBase  extends PartialAddressBase implements IAddress {
+export abstract class AddressBase extends PartialAddressBase implements IAddress {
   public readonly country!: Country;
 
   public toString(): string {

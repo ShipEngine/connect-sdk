@@ -16,7 +16,7 @@ export interface NewPackagePOJO {
   isNonMachinable?: boolean;
   label: NewLabelPOJO;
   customs?: CustomsPOJO;
-  contents?: ReadonlyArray<PackageItemPOJO>;
+  contents?: readonly PackageItemPOJO[];
 }
 
 
@@ -48,7 +48,7 @@ export class NewPackage implements INewPackage {
   public readonly containsAlcohol: boolean;
   public readonly isNonMachinable: boolean;
   public readonly label: NewLabel;
-  public readonly contents: ReadonlyArray<PackageItem>;
+  public readonly contents: readonly PackageItem[];
   public readonly customs: Customs;
 
   public constructor(pojo: NewPackagePOJO, app: App) {

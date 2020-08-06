@@ -40,7 +40,7 @@ export class DateTimeZone implements IDateTimeZone {
     this.value = value;
     this.timeZone = timeZone;
 
-    if (timeZone[0] === "+" || timeZone[0] === "-") {
+    if (timeZone.startsWith("+") || timeZone.startsWith("-")) {
       // The timeZone is already a UTC offset
       this.offset = timeZone;
     }

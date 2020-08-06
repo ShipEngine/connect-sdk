@@ -7,7 +7,7 @@ import { PickupPackage, PickupPackagePOJO } from "./pickup-package";
 export interface PickupShipmentPOJO extends ShipmentIdentifierPOJO {
   deliveryService: DeliveryServiceIdentifierPOJO | string;
   metadata?: object;
-  packages: ReadonlyArray<PickupPackagePOJO>;
+  packages: readonly PickupPackagePOJO[];
 }
 
 
@@ -26,7 +26,7 @@ export class PickupShipment extends ShipmentIdentifierBase implements IPickupShi
 
   public readonly deliveryService: DeliveryService;
   public readonly metadata: object;
-  public readonly packages: ReadonlyArray<PickupPackage>;
+  public readonly packages: readonly PickupPackage[];
 
   public get package(): PickupPackage {
     return this.packages[0];

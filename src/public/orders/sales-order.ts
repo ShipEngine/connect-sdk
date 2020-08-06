@@ -52,12 +52,12 @@ export interface SalesOrder extends SalesOrderIdentifierPOJO {
   /**
    * The breakdown of charges for this sales order
    */
-  charges?: ReadonlyArray<ChargePOJO>;
+  charges?: readonly ChargePOJO[];
 
   /**
    * The items in this sales order
    */
-  items: ReadonlyArray<SalesOrderItem>;
+  items: readonly SalesOrderItem[];
 
   /**
    * Human-readable information regarding this sales order, such as gift notes, backorder notices, etc.

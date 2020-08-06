@@ -26,10 +26,10 @@ export class Rate {
   public readonly deliveryDateTime?: DateTimeZone;
   public readonly isNegotiatedRate: boolean;
   public readonly isTrackable: boolean;
-  public readonly charges: ReadonlyArray<Charge>;
+  public readonly charges: readonly Charge[];
   public readonly totalAmount: MonetaryValue;
-  public readonly notes: ReadonlyArray<Note>;
-  public readonly packages: ReadonlyArray<RatePackage>;
+  public readonly notes: readonly Note[];
+  public readonly packages: readonly RatePackage[];
 
   public get package(): RatePackage {
     return this.packages[0];

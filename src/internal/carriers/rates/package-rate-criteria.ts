@@ -31,8 +31,8 @@ export class PackageRateCriteria implements IPackageRateCriteria {
     }),
   };
 
-  public readonly packaging: ReadonlyArray<Packaging>;
-  public readonly deliveryConfirmations: ReadonlyArray<DeliveryConfirmation>;
+  public readonly packaging: readonly Packaging[];
+  public readonly deliveryConfirmations: readonly DeliveryConfirmation[];
   public readonly dimensions?: Dimensions;
   public readonly weight?: Weight;
   public readonly insuredValue?: MonetaryValue;

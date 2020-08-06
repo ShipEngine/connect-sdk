@@ -31,9 +31,7 @@
   ],
   "scripts": {
     "clean": "shx rm -rf .nyc_output coverage lib",
-    "lint": "npm run lint:typescript && npm run lint:javascript",
-    "lint:typescript": "tslint -p tsconfig.json",
-    "lint:javascript": "eslint test",
+    "lint": "eslint src test",
     "build": "tsc",
     "watch": "tsc --watch",
     "test": "mocha && npm run lint",
@@ -47,10 +45,9 @@
   },
   "engineStrict": true,
   "devDependencies": {
-    "@jsdevtools/eslint-config-modular": "^8.0.4",
+    "@jsdevtools/eslint-config": "^1.1.2",
     "@jsdevtools/host-environment": "^2.1.2",
     "@jsdevtools/readdir-enhanced": "^6.0.4",
-    "@jsdevtools/tslint-modular": "^2.0.7",
     "@jsdevtools/version-bump-prompt": "^6.0.6",
     "@types/chai": "^4.2.12",
     "@types/hapi__joi": "^17.1.4",
@@ -63,9 +60,7 @@
     "nyc": "^15.1.0",
     "shx": "^0.3.2",
     "source-map-support": "^0.5.19",
-    "tslint": "^6.1.3",
-    "typescript": "^3.9.7",
-    "typescript-tslint-plugin": "^0.5.0"
+    "typescript": "^3.9.7"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",

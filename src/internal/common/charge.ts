@@ -8,7 +8,7 @@ import { Joi } from "./validation";
 /**
  * Calculates the total of an array of charges
  */
-export function calculateTotalCharges(charges: ReadonlyArray<Charge>): MonetaryValue {
+export function calculateTotalCharges(charges: readonly Charge[]): MonetaryValue {
   try {
     let insuredValues = charges.map((charge) => charge.amount);
     return MonetaryValue.sum(insuredValues);

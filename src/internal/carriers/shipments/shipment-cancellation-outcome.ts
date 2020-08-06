@@ -21,7 +21,7 @@ export class ShipmentCancellationOutcome {
   public readonly confirmationNumber: string;
   public readonly code: string;
   public readonly description: string;
-  public readonly notes: ReadonlyArray<Note>;
+  public readonly notes: readonly Note[];
   public readonly metadata: object;
 
   public constructor(pojo: ShipmentCancellationOutcomePOJO) {

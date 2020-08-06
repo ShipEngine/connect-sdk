@@ -33,13 +33,13 @@ export function getMaxServiceArea(things: ReadonlyArray<{ serviceArea?: ServiceA
 }
 
 
+export function calculateTotalInsuranceAmount(packages: ReadonlyArray<{ insuredValue: MonetaryValue }>): MonetaryValue;
+export function calculateTotalInsuranceAmount(packages: ReadonlyArray<{ insuredValue?: MonetaryValue }>): MonetaryValue | undefined;
+
 /**
  * Calculates the total insurance amount for the shipment,
  * which is the sum of the insured value of all packages.
- *
  */
-export function calculateTotalInsuranceAmount(packages: ReadonlyArray<{ insuredValue: MonetaryValue }>): MonetaryValue;
-export function calculateTotalInsuranceAmount(packages: ReadonlyArray<{ insuredValue?: MonetaryValue }>): MonetaryValue | undefined;
 export function calculateTotalInsuranceAmount(packages: ReadonlyArray<{ insuredValue?: MonetaryValue }>): MonetaryValue | undefined {
   try {
     let insuredValues = packages.map((parcel) => parcel.insuredValue).filter(Boolean) as MonetaryValue[];

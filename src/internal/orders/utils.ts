@@ -18,6 +18,7 @@ export function getAsyncIterable<T>(iterable: Iterable<T> | AsyncIterable<T>): A
           let iterator = syncIterable[Symbol.iterator]();
 
           return {
+            // eslint-disable-next-line @typescript-eslint/require-await
             async next() {
               return iterator.next();
             }

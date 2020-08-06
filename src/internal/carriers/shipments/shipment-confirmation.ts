@@ -24,9 +24,9 @@ export class ShipmentConfirmation extends ShipmentIdentifierBase {
 
   public readonly documents: ReadonlyArray<Document | Label>;
   public readonly deliveryDateTime?: DateTimeZone;
-  public readonly charges: ReadonlyArray<Charge>;
+  public readonly charges: readonly Charge[];
   public readonly totalAmount: MonetaryValue;
-  public readonly packages: ReadonlyArray<PackageConfirmation>;
+  public readonly packages: readonly PackageConfirmation[];
 
   public get isTrackable(): boolean {
     return Boolean(this.trackingNumber);

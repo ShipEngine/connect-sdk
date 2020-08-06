@@ -25,8 +25,8 @@ const _private = Symbol("private fields");
 export interface CarrierAppPOJO extends CarrierAppDefinition, AppPOJO {
   connectionForm: FormPOJO;
   settingsForm?: FormPOJO;
-  deliveryServices: ReadonlyArray<DeliveryServicePOJO>;
-  pickupServices?: ReadonlyArray<PickupServicePOJO>;
+  deliveryServices: readonly DeliveryServicePOJO[];
+  pickupServices?: readonly PickupServicePOJO[];
   connect?: Connect;
   createShipment?: CreateShipment;
   cancelShipments?: CancelShipments;
@@ -39,7 +39,7 @@ export interface CarrierAppPOJO extends CarrierAppDefinition, AppPOJO {
 
 
 export class CarrierApp extends ConnectionApp {
-  //#region Private/Internal Fields
+  // #region Private/Internal Fields
 
   public static readonly [_internal] = {
     label: "ShipEngine Integration Platform carrier app",
@@ -72,15 +72,15 @@ export class CarrierApp extends ConnectionApp {
     readonly cancelPickups?: CancelPickups;
   };
 
-  //#endregion
-  //#region Public Fields
+  // #endregion
+  // #region Public Fields
 
   public readonly type: AppType;
   public readonly manifestLocations?: ManifestLocation;
   public readonly manifestShipments?: ManifestShipment;
   public readonly manifestType: ManifestType;
-  public readonly deliveryServices: ReadonlyArray<DeliveryService>;
-  public readonly pickupServices: ReadonlyArray<PickupService>;
+  public readonly deliveryServices: readonly DeliveryService[];
+  public readonly pickupServices: readonly PickupService[];
   public readonly supportsReturns: boolean;
 
   public get serviceArea(): ServiceArea {
@@ -106,7 +106,7 @@ export class CarrierApp extends ConnectionApp {
     return found;
   }
 
-  public get labelFormats(): ReadonlyArray<DocumentFormat> {
+  public get labelFormats(): readonly DocumentFormat[] {
     let labelFormats = new Set<DocumentFormat>();
     for (let service of this.deliveryServices) {
       for (let labelFormat of service.labelFormats) {
@@ -116,7 +116,7 @@ export class CarrierApp extends ConnectionApp {
     return Object.freeze([...labelFormats]);
   }
 
-  public get labelSizes(): ReadonlyArray<DocumentSize> {
+  public get labelSizes(): readonly DocumentSize[] {
     let labelSizes = new Set<DocumentSize>();
     for (let service of this.deliveryServices) {
       for (let labelSize of service.labelSizes) {
@@ -126,12 +126,12 @@ export class CarrierApp extends ConnectionApp {
     return Object.freeze([...labelSizes]);
   }
 
-  public get countries(): ReadonlyArray<Country> {
+  public get countries(): readonly Country[] {
     let countries = new Set(this.originCountries.concat(this.destinationCountries));
     return Object.freeze([...countries]);
   }
 
-  public get originCountries(): ReadonlyArray<Country> {
+  public get originCountries(): readonly Country[] {
     let countries = new Set<Country>();
     for (let service of this.deliveryServices) {
       for (let country of service.originCountries) {
@@ -141,7 +141,7 @@ export class CarrierApp extends ConnectionApp {
     return Object.freeze([...countries]);
   }
 
-  public get destinationCountries(): ReadonlyArray<Country> {
+  public get destinationCountries(): readonly Country[] {
     let countries = new Set<Country>();
     for (let service of this.deliveryServices) {
       for (let country of service.destinationCountries) {
@@ -151,7 +151,7 @@ export class CarrierApp extends ConnectionApp {
     return Object.freeze([...countries]);
   }
 
-  public get packaging(): ReadonlyArray<Packaging> {
+  public get packaging(): readonly Packaging[] {
     let packaging = new Map<string, Packaging>();
     for (let service of this.deliveryServices) {
       for (let parcel of service.packaging) {
@@ -161,7 +161,7 @@ export class CarrierApp extends ConnectionApp {
     return Object.freeze(Array.from(packaging.values()));
   }
 
-  public get deliveryConfirmations(): ReadonlyArray<DeliveryConfirmation> {
+  public get deliveryConfirmations(): readonly DeliveryConfirmation[] {
     let deliveryConfirmations = new Map<string, DeliveryConfirmation>();
     for (let service of this.deliveryServices) {
       for (let deliveryConfirmation of service.deliveryConfirmations) {
@@ -171,7 +171,7 @@ export class CarrierApp extends ConnectionApp {
     return Object.freeze(Array.from(deliveryConfirmations.values()));
   }
 
-  //#endregion
+  // #endregion
 
   public constructor(pojo: CarrierAppPOJO) {
     validate(pojo, CarrierApp);
@@ -207,7 +207,7 @@ export class CarrierApp extends ConnectionApp {
     this[_internal].references.finishedLoading();
   }
 
-  //#region  Methods
+  // #region  Methods
 
   public async createShipment?(
     transaction: TransactionPOJO, shipment: NewShipmentPOJO): Promise<ShipmentConfirmation> {
@@ -229,7 +229,7 @@ export class CarrierApp extends ConnectionApp {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in the createShipment method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, "Error in the createShipment method.", { originalError, transactionID });
     }
   }
 
@@ -264,7 +264,7 @@ export class CarrierApp extends ConnectionApp {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in the cancelShipments method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, "Error in the cancelShipments method.", { originalError, transactionID });
     }
   }
 
@@ -288,7 +288,7 @@ export class CarrierApp extends ConnectionApp {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in the rateShipment method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, "Error in the rateShipment method.", { originalError, transactionID });
     }
   }
 
@@ -312,7 +312,7 @@ export class CarrierApp extends ConnectionApp {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in the trackShipment method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, "Error in the trackShipment method.", { originalError, transactionID });
     }
   }
 
@@ -336,7 +336,7 @@ export class CarrierApp extends ConnectionApp {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in the createManifest method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, "Error in the createManifest method.", { originalError, transactionID });
     }
   }
 
@@ -366,7 +366,7 @@ export class CarrierApp extends ConnectionApp {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in the schedulePickup method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, "Error in the schedulePickup method.", { originalError, transactionID });
     }
   }
 
@@ -400,9 +400,9 @@ export class CarrierApp extends ConnectionApp {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in the cancelPickups method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, "Error in the cancelPickups method.", { originalError, transactionID });
     }
   }
 
-  //#endregion
+  // #endregion
 }

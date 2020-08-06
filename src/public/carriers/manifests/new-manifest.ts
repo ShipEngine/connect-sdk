@@ -33,5 +33,5 @@ export interface NewManifest {
    * `exclude_shipments`: This field specifies which shipments should _not_ be manifested.
    * All other shipments will be manifested.
    */
-  readonly shipments: ReadonlyArray<ShipmentIdentifier>;
+  readonly shipments: readonly ShipmentIdentifier[];
 }

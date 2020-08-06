@@ -14,7 +14,7 @@ export interface NewShipmentPOJO {
     isReturn?: boolean;
     rmaNumber?: string;
   };
-  packages: ReadonlyArray<NewPackagePOJO>;
+  packages: readonly NewPackagePOJO[];
 }
 
 
@@ -54,7 +54,7 @@ export class NewShipment implements INewShipment {
     readonly rmaNumber: string;
   };
 
-  public readonly packages: ReadonlyArray<NewPackage>;
+  public readonly packages: readonly NewPackage[];
 
   public get package(): NewPackage {
     return this.packages[0];

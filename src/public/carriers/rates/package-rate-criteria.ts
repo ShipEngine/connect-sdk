@@ -11,13 +11,13 @@ export interface PackageRateCriteria {
    * The packaging that may be used. If not specified, then rate quotes should be
    * returned for all applicable packaging.
    */
-  readonly packaging: ReadonlyArray<Packaging>;
+  readonly packaging: readonly Packaging[];
 
   /**
    * The delivery confirmations that may be used. If not specified, then rate quotes
    * should be returned for all applicable delivery confirmations.
    */
-  readonly deliveryConfirmations: ReadonlyArray<DeliveryConfirmation>;
+  readonly deliveryConfirmations: readonly DeliveryConfirmation[];
 
   /**
    * The package dimensions

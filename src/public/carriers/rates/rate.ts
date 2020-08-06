@@ -37,7 +37,7 @@ export interface Rate {
    * If the carrier does not provide a detailed breakdown, then just use a single
    * charge of type "shipping".
    */
-  charges: ReadonlyArray<ChargePOJO>;
+  charges: readonly ChargePOJO[];
 
   /**
    * Human-readable information regarding this rate quote, such as limitations or restrictions
@@ -47,5 +47,5 @@ export interface Rate {
   /**
    * The list of packages in the shipment
    */
-  packages: ReadonlyArray<RatePackage>;
+  packages: readonly RatePackage[];
 }

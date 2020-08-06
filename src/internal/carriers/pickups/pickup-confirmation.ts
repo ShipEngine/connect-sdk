@@ -18,11 +18,11 @@ export class PickupConfirmation {
 
   public readonly id: string;
   public readonly identifiers: Identifiers;
-  public readonly timeWindows: ReadonlyArray<TimeRange>;
-  public readonly charges: ReadonlyArray<Charge>;
+  public readonly timeWindows: readonly TimeRange[];
+  public readonly charges: readonly Charge[];
   public readonly totalAmount: MonetaryValue;
-  public readonly shipments: ReadonlyArray<ShipmentIdentifier>;
-  public readonly notes: ReadonlyArray<Note>;
+  public readonly shipments: readonly ShipmentIdentifier[];
+  public readonly notes: readonly Note[];
   public readonly metadata: object;
 
   public constructor(pojo: PickupConfirmationPOJO) {

@@ -22,7 +22,7 @@ export class NewLabel implements INewLabel {
 
   public readonly format: DocumentFormat;
   public readonly size: DocumentSize;
-  public readonly referenceFields: ReadonlyArray<string>;
+  public readonly referenceFields: readonly string[];
 
   public constructor(pojo: NewLabelPOJO) {
     this.format = pojo.format;

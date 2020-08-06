@@ -12,7 +12,7 @@ export class Customs {
   };
 
   public readonly nonDeliveryOption?: NonDeliveryOption;
-  public readonly contents: ReadonlyArray<CustomsItem>;
+  public readonly contents: readonly CustomsItem[];
 
   public constructor(pojo: CustomsPOJO) {
     this.nonDeliveryOption = pojo.nonDeliveryOption;

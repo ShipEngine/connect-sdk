@@ -12,8 +12,8 @@ export interface PickupCancellationPOJO {
   notes?: string | ReadonlyArray<string | NotePOJO>;
   address: AddressPOJO;
   contact: ContactInfoPOJO;
-  timeWindows: ReadonlyArray<TimeRangePOJO>;
-  shipments: ReadonlyArray<PickupShipmentPOJO>;
+  timeWindows: readonly TimeRangePOJO[];
+  shipments: readonly PickupShipmentPOJO[];
   metadata?: object;
 }
 
@@ -44,11 +44,11 @@ export class PickupCancellation implements IPickupCancellation {
   public readonly identifiers: Identifiers;
   public readonly pickupService: PickupService;
   public readonly reason: PickupCancellationReason;
-  public readonly notes: ReadonlyArray<Note>;
+  public readonly notes: readonly Note[];
   public readonly address: Address;
   public readonly contact: ContactInfo;
-  public readonly timeWindows: ReadonlyArray<TimeRange>;
-  public readonly shipments: ReadonlyArray<PickupShipment>;
+  public readonly timeWindows: readonly TimeRange[];
+  public readonly shipments: readonly PickupShipment[];
   public readonly metadata: object;
 
   public constructor(pojo: PickupCancellationPOJO, app: App) {

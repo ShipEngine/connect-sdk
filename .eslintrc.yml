@@ -1,0 +1,13 @@
+# ESLint config
+# http://eslint.org/docs/user-guide/configuring
+# https://jstools.dev/eslint-config/
+
+root: true
+extends: "@jsdevtools"
+env:
+  node: true
+
+rules:
+  # Disable this rule until we upgrade to TypeScript 4.0,
+  # since TypeScript 3.x treats catch bindings as `any` instead of `unknown`
+  "@typescript-eslint/no-unsafe-assignment": "off"

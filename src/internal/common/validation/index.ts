@@ -19,11 +19,12 @@ const joiOptions = {
 };
 
 
+export function validateArray<T>(value: T[], type: ShipEngineConstructor, schema?: ValidationSchema): T[];
+export function validateArray<T>(value: T[], type: string, schema: ValidationSchema): T[];
+
 /**
  * Validates an array of values against a Joi schema. If validation fails, an error is thrown.
  */
-export function validateArray<T>(value: T[], type: ShipEngineConstructor, schema?: ValidationSchema): T[];
-export function validateArray<T>(value: T[], type: string, schema: ValidationSchema): T[];
 export function validateArray<T>(value: T[], arg2: ShipEngineConstructor | string, arg3?: ValidationSchema): T[] {
   let label = typeof arg2 === "string" ? arg2 : arg2[_internal].label;
   let itemSchema = arg3 || (arg2 as ShipEngineConstructor)[_internal].schema;
@@ -32,11 +33,12 @@ export function validateArray<T>(value: T[], arg2: ShipEngineConstructor | strin
 }
 
 
+export function validate<T>(value: T, type: ShipEngineConstructor, schema?: ValidationSchema): T;
+export function validate<T>(value: T, type: string, schema: ValidationSchema): T;
+
 /**
  * Validates a value against a Joi schema. If validation fails, an error is thrown.
  */
-export function validate<T>(value: T, type: ShipEngineConstructor, schema?: ValidationSchema): T;
-export function validate<T>(value: T, type: string, schema: ValidationSchema): T;
 export function validate<T>(value: T, arg2: ShipEngineConstructor | string, arg3?: ValidationSchema): T {
   let label = typeof arg2 === "string" ? arg2 : arg2[_internal].label;
   let schema = arg3 || (arg2 as ShipEngineConstructor)[_internal].schema;
@@ -92,5 +94,5 @@ export interface JoiExtended extends joi.Root {
 /**
  * The Joi validation schema, with our custom extensions
  */
-// tslint:disable-next-line: variable-name
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const Joi = joi.extend(stringValidation, objectValidation) as JoiExtended;

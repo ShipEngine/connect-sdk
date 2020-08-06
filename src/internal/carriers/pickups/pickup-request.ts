@@ -9,7 +9,7 @@ export interface PickupRequestPOJO {
   address: AddressPOJO;
   contact: ContactInfoPOJO;
   notes?: string | ReadonlyArray<string | NotePOJO>;
-  shipments: ReadonlyArray<PickupShipmentPOJO>;
+  shipments: readonly PickupShipmentPOJO[];
 }
 
 
@@ -33,8 +33,8 @@ export class PickupRequest implements IPickupRequest {
   public readonly timeWindow: TimeRange;
   public readonly address: Address;
   public readonly contact: ContactInfo;
-  public readonly notes: ReadonlyArray<Note>;
-  public readonly shipments: ReadonlyArray<PickupShipment>;
+  public readonly notes: readonly Note[];
+  public readonly shipments: readonly PickupShipment[];
 
   public constructor(pojo: PickupRequestPOJO, app: App) {
     this.pickupService = app[_internal].references.lookup(pojo.pickupService, PickupService);

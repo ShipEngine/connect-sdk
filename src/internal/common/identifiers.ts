@@ -8,6 +8,7 @@ export interface IdentifiersPOJO {
 }
 
 
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class Identifiers implements IIdentifiers {
   public static readonly [_internal] = {
     label: "identifiers",
@@ -22,7 +23,7 @@ export class Identifiers implements IIdentifiers {
     // NOTE: Don't use Object.assign() here because it also copies Symbol properties
     for (let [key, value] of Object.entries(pojo)) {
       if (typeof value === "string") {
-        // @ts-expect-error
+        // @ts-expect-error - writing to a read-only index
         this[key] = value;
       }
     }

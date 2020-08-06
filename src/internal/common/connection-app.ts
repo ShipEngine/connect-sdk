@@ -49,8 +49,8 @@ export abstract class ConnectionApp extends App {
     this.name = pojo.name;
     this.description = pojo.description || "";
     this.websiteURL = new URL(pojo.websiteURL);
-    this.logo =  pojo.logo;
-    this.icon =  pojo.icon;
+    this.logo = pojo.logo;
+    this.icon = pojo.icon;
     this.connectionForm = new Form(pojo.connectionForm);
     this.settingsForm = pojo.settingsForm && new Form(pojo.settingsForm);
 
@@ -76,7 +76,7 @@ export abstract class ConnectionApp extends App {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, `Error in the connect method.`, { originalError, transactionID });
+      throw error(ErrorCode.AppError, "Error in the connect method.", { originalError, transactionID });
     }
   }
 }

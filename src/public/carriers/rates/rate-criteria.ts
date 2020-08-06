@@ -62,7 +62,7 @@ export interface RateCriteria {
   /**
    * The list of packages in the shipment
    */
-  readonly packages: ReadonlyArray<PackageRateCriteria>;
+  readonly packages: readonly PackageRateCriteria[];
 
   /**
    * Returns the first package in the `packages` array.

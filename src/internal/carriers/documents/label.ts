@@ -12,7 +12,7 @@ export class Label extends DocumentBase {
     }),
   };
 
-  public readonly referenceFields: ReadonlyArray<string>;
+  public readonly referenceFields: readonly string[];
 
   public constructor(pojo: LabelPOJO) {
     super(pojo);

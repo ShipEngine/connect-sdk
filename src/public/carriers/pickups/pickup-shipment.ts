@@ -19,7 +19,7 @@ export interface PickupShipment extends ShipmentIdentifier {
   /**
    * The list of packages in the shipment
    */
-  readonly packages: ReadonlyArray<PickupPackage>;
+  readonly packages: readonly PickupPackage[];
 
   /**
    * The first package in the `packages` array.

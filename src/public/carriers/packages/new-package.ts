@@ -58,5 +58,5 @@ export interface NewPackage {
   /**
    * Describes the items inside the package
    */
-  readonly contents: ReadonlyArray<PackageItem>;
+  readonly contents: readonly PackageItem[];
 }

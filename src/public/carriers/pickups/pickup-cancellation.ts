@@ -35,7 +35,7 @@ export interface PickupCancellation {
   /**
    * Information about why the customer is cancelling the pickup
    */
-  readonly notes: ReadonlyArray<Note>;
+  readonly notes: readonly Note[];
 
   /**
    * The address where the pickup was requested
@@ -50,12 +50,12 @@ export interface PickupCancellation {
   /**
    * A list of dates and times when the carrier intended to pickup
    */
-  readonly timeWindows: ReadonlyArray<TimeRange>;
+  readonly timeWindows: readonly TimeRange[];
 
   /**
    * The shipments to be picked up
    */
-  readonly shipments: ReadonlyArray<PickupShipment>;
+  readonly shipments: readonly PickupShipment[];
 
   /**
    * Arbitrary data about this pickup that was previously persisted by the ShipEngine Platform.

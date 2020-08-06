@@ -9,8 +9,8 @@ const _private = Symbol("private fields");
 export interface DeliveryServicePOJO extends DeliveryServiceDefinition {
   originCountries: Country[];
   destinationCountries: Country[];
-  packaging: ReadonlyArray<PackagingPOJO>;
-  deliveryConfirmations?: ReadonlyArray<DeliveryConfirmationPOJO>;
+  packaging: readonly PackagingPOJO[];
+  deliveryConfirmations?: readonly DeliveryConfirmationPOJO[];
 }
 
 
@@ -58,14 +58,14 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
   public readonly manifestType: ManifestType;
   public readonly supportsReturns: boolean;
   public readonly hasSandbox: boolean;
-  public readonly labelFormats: ReadonlyArray<DocumentFormat>;
-  public readonly labelSizes: ReadonlyArray<DocumentSize>;
-  public readonly originCountries: ReadonlyArray<Country>;
-  public readonly destinationCountries: ReadonlyArray<Country>;
-  public readonly packaging: ReadonlyArray<Packaging>;
-  public readonly deliveryConfirmations: ReadonlyArray<DeliveryConfirmation>;
+  public readonly labelFormats: readonly DocumentFormat[];
+  public readonly labelSizes: readonly DocumentSize[];
+  public readonly originCountries: readonly Country[];
+  public readonly destinationCountries: readonly Country[];
+  public readonly packaging: readonly Packaging[];
+  public readonly deliveryConfirmations: readonly DeliveryConfirmation[];
 
-  public get countries(): ReadonlyArray<Country> {
+  public get countries(): readonly Country[] {
     let countries = new Set(this.originCountries.concat(this.destinationCountries));
     return Object.freeze([...countries]);
   }

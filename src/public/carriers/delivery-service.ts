@@ -193,38 +193,38 @@ export interface DeliveryService extends DeliveryServiceIdentifier {
   /**
    * The label formats that are offered for this service
    */
-  readonly labelFormats: ReadonlyArray<DocumentFormat>;
+  readonly labelFormats: readonly DocumentFormat[];
 
   /**
    * The label dimensions that are used for this service
    */
-  readonly labelSizes: ReadonlyArray<DocumentSize>;
+  readonly labelSizes: readonly DocumentSize[];
 
   /**
    * The countries that can be shipped from using this service
    */
-  readonly originCountries: ReadonlyArray<Country>;
+  readonly originCountries: readonly Country[];
 
   /**
    * The countries that can be shipped to using this service
    */
-  readonly destinationCountries: ReadonlyArray<Country>;
+  readonly destinationCountries: readonly Country[];
 
   /**
    * The types of packaging that are provided/allowed for this service
    */
-  readonly packaging: ReadonlyArray<Packaging>;
+  readonly packaging: readonly Packaging[];
 
   /**
    * The types of package delivery confirmations offered for this service
    */
-  readonly deliveryConfirmations: ReadonlyArray<DeliveryConfirmation>;
+  readonly deliveryConfirmations: readonly DeliveryConfirmation[];
 
   /**
    * All countries that this service ships to or from.
    * This list includes all unique origin and destination countries.
    */
-  readonly countries: ReadonlyArray<Country>;
+  readonly countries: readonly Country[];
 
   /**
    * Indicates whether the weight may be required when using this service.

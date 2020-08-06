@@ -33,10 +33,10 @@ export class SalesOrder extends SalesOrderIdentifierBase {
   public readonly shipTo: AddressWithContactInfo;
   public readonly buyer: Buyer;
   public readonly shippingPreferences: ShippingPreferences;
-  public readonly charges: ReadonlyArray<Charge>;
+  public readonly charges: readonly Charge[];
   public readonly totalCharges: MonetaryValue;
-  public readonly items: ReadonlyArray<SalesOrderItem>;
-  public readonly notes: ReadonlyArray<Note>;
+  public readonly items: readonly SalesOrderItem[];
+  public readonly notes: readonly Note[];
   public readonly metadata: object;
 
   public constructor(pojo: SalesOrderPOJO) {

@@ -31,7 +31,7 @@ export class SalesOrderItem extends SalesOrderItemIdentifierBase {
   public readonly itemURL?: URL;
   public readonly thumbnailURL?: URL;
 
-  public readonly notes: ReadonlyArray<Note>;
+  public readonly notes: readonly Note[];
   public readonly metadata: object;
 
   public constructor(pojo: SalesOrderItemPOJO) {

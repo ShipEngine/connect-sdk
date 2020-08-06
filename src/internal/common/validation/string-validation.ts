@@ -1,6 +1,6 @@
 import * as joi from "@hapi/joi";
 import * as path from "path";
-import { ParsedPath } from "path"; // tslint:disable-line: no-duplicate-imports
+import { ParsedPath } from "path";
 import { regex } from "../utils";
 
 /**
@@ -88,7 +88,7 @@ export const stringValidation: joi.Extension = {
   rules: {
     singleLine: {
       validate(value: string, helpers: joi.CustomHelpers) {
-        const multiline =  /\n|\r|\t/;
+        const multiline = /\n|\r|\t/;
         if (multiline.test(value)) {
           return helpers.error("string.singleLine");
         }
@@ -97,7 +97,7 @@ export const stringValidation: joi.Extension = {
     },
     isoDateTime: {
       method(args: { timeZone: boolean }) {
-        return this.$_addRule({ name: "isoDateTime", args});
+        return this.$_addRule({ name: "isoDateTime", args });
       },
       validate(value: string, helpers: joi.CustomHelpers, args: { timeZone: boolean }) {
         let match = regex.isoDateTime.exec(value);
@@ -191,7 +191,7 @@ export const stringValidation: joi.Extension = {
     },
     filePath: {
       method(args: Partial<ParsedPath>) {
-        return this.$_addRule({ name: "filePath", args});
+        return this.$_addRule({ name: "filePath", args });
       },
       validate(value: string, helpers: joi.CustomHelpers, args: Partial<ParsedPath>) {
         if (!path.isAbsolute(value)) {
@@ -221,7 +221,7 @@ function isValidTimeZone(timeZone: string): boolean {
 
   // Determine whether this time zone is valid
   try {
-    let zone = new Intl.DateTimeFormat("en", { timeZone });
+    new Intl.DateTimeFormat("en", { timeZone });  // eslint-disable-line no-new
     return ianaTimeZones[timeZone] = true;
   }
   catch (_) {

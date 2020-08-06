@@ -8,7 +8,7 @@ export interface NewManifestPOJO {
   shipFrom?: AddressPOJO;
   openDateTime: DateTimeZonePOJO | Date | string;
   closeDateTime: DateTimeZonePOJO | Date | string;
-  shipments: ReadonlyArray<ShipmentIdentifierPOJO>;
+  shipments: readonly ShipmentIdentifierPOJO[];
 }
 
 
@@ -26,7 +26,7 @@ export class NewManifest implements INewManifest {
   public readonly shipFrom?: Address;
   public readonly openDateTime: DateTimeZone;
   public readonly closeDateTime: DateTimeZone;
-  public readonly shipments: ReadonlyArray<ShipmentIdentifier>;
+  public readonly shipments: readonly ShipmentIdentifier[];
 
   public constructor(pojo: NewManifestPOJO, carrier: CarrierApp) {
     this.shipFrom = pojo.shipFrom && new Address(pojo.shipFrom);

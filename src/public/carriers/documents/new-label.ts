@@ -31,5 +31,5 @@ export interface NewLabel {
    *       such as "RMA Number" or "Order ID". Those should be set using the correspond
    *       properties of the shipment.
    */
-  readonly referenceFields: ReadonlyArray<string>;
+  readonly referenceFields: readonly string[];
 }

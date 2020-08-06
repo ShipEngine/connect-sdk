@@ -148,7 +148,7 @@ const pojo = module.exports = {
       ...pojo.shipmentIdentifier(),
       charges: [pojo.charge()],
       packages: [pojo.packageConfirmation()],
-      documents: [pojo.document()],
+      label: pojo.document(),
       ...props,
     };
   },

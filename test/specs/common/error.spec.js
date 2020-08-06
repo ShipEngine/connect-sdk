@@ -163,17 +163,17 @@ describe("Errors", () => {
         message:
           "Error in the createShipment method. \n" +
           "Invalid shipment: \n" +
-          "  documents is required \n" +
+          "  label is required \n" +
           "  charges is required \n" +
           "  packages is required",
         details: [
           {
             type: "any.required",
-            message: "documents is required",
-            path: ["documents"],
+            message: "label is required",
+            path: ["label"],
             context: {
-              label: "documents",
-              key: "documents",
+              label: "label",
+              key: "label",
             },
           },
           {

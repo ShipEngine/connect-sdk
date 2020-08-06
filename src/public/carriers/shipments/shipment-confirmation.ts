@@ -9,9 +9,14 @@ import type { ShipmentIdentifierPOJO } from "./shipment-identifier";
  */
 export interface ShipmentConfirmation extends ShipmentIdentifierPOJO {
   /**
-   * The documents for this package, such as shipping labels, customs forms, etc.
+   * Shipment label
    */
-  documents: ReadonlyArray<Document | Label>;
+  label: Label;
+
+  /**
+   * A document that is associated with the shipment, such as a customs form.
+   */
+  form?: Document;
 
   /**
    * The estimated date and time the shipment will be delivered

@@ -31,6 +31,7 @@ describe("OrderApp", () => {
       icon: path.resolve("logo.svg"),
       connectionForm: app.connectionForm,
       sendMail: false,
+      canConfigureTimeZone: false,
       settingsForm: undefined,
       connect: undefined,
       getSalesOrdersByDate: undefined,
@@ -58,6 +59,7 @@ describe("OrderApp", () => {
       connectionForm: pojo.form(),
       settingsForm: pojo.form(),
       sendMail: true,
+      canConfigureTimeZone: true,
       connect () {},
       getSalesOrdersByDate () {},
       shipmentCreated () {},
@@ -88,6 +90,7 @@ describe("OrderApp", () => {
       settingsForm: app.settingsForm,
       sdkVersion: parseFloat(sdkManifest.version),
       sendMail: true,
+      canConfigureTimeZone: true,
       manifest: {
         name: "@my-company/my-order",
         version: "123.45.678",
@@ -135,6 +138,7 @@ describe("OrderApp", () => {
       shipmentCancelled: undefined,
       sdkVersion: parseFloat(sdkManifest.version),
       sendMail: false,
+      canConfigureTimeZone: false,
       manifest: {
         name: "@company/order",
         version: "1.0.0",

@@ -32,4 +32,9 @@ export interface OrderAppDefinition extends ConnectionAppDefinition {
    * Indicates whether to allow emails to be sent to customers with shipping or order updates
    */
   sendMail?: boolean;
+
+  /**
+   * Indicates to show time zone related settings to the user.
+   */
+  canConfigureTimeZone?: boolean;
 }

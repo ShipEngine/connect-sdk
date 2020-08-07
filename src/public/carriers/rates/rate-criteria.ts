@@ -1,4 +1,4 @@
-import type { AddressWithContactInfo, DateTimeZone, MonetaryValue } from "../../common";
+import type { AddressWithContactInfo, DateTimeZone } from "../../common";
 import type { DeliveryService } from "../delivery-service";
 import type { FulfillmentService } from "../fulfillment-service";
 import type { PackageRateCriteria } from "./package-rate-criteria";
@@ -51,12 +51,6 @@ export interface RateCriteria {
   readonly shipTo: AddressWithContactInfo;
 
   /**
-   * The total insured value of all packages in the shipment.
-   * If specified, then rate quotes should include carrier-provided insurance.
-   */
-  readonly totalInsuredValue?: MonetaryValue;
-
-  /**
    * Return shipment details
    */
   readonly returns: {
@@ -67,13 +61,8 @@ export interface RateCriteria {
   };
 
   /**
-   * The list of packages in the shipment
-   */
-  readonly packages: readonly PackageRateCriteria[];
-
-  /**
-   * Returns the first package in the `packages` array.
-   * Useful for carriers that only support single-piece shipments.
+   * The package in the shipment
    */
   readonly package: PackageRateCriteria;
+
 }

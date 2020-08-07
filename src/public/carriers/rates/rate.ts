@@ -45,7 +45,7 @@ export interface Rate {
   notes?: string | ReadonlyArray<string | NotePOJO>;
 
   /**
-   * The list of packages in the shipment
+   * Package in the shipment
    */
-  packages: readonly RatePackage[];
+  package: RatePackage;
 }

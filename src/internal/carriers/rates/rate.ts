@@ -17,7 +17,7 @@ export class Rate {
       isTrackable: Joi.boolean(),
       charges: Joi.array().min(1).items(Charge[_internal].schema).required(),
       notes: Note[_internal].notesSchema,
-      packages: Joi.array().min(1).items(RatePackage[_internal].schema).required(),
+      package: RatePackage[_internal].schema.required(),
     }),
   };
 
@@ -29,11 +29,7 @@ export class Rate {
   public readonly charges: readonly Charge[];
   public readonly totalAmount: MonetaryValue;
   public readonly notes: readonly Note[];
-  public readonly packages: readonly RatePackage[];
-
-  public get package(): RatePackage {
-    return this.packages[0];
-  }
+  public readonly package: RatePackage;
 
   public constructor(pojo: RatePOJO, app: App) {
     this.deliveryService = app[_internal].references.lookup(pojo.deliveryService, DeliveryService);
@@ -44,7 +40,7 @@ export class Rate {
     this.charges = pojo.charges.map((charge) => new Charge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);
     this.notes = createNotes(pojo.notes);
-    this.packages = pojo.packages.map((parcel) => new RatePackage(parcel, app));
+    this.package = new RatePackage(pojo.package, app);
 
     // Make this object immutable
     hideAndFreeze(this);

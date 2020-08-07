@@ -52,6 +52,7 @@ export class CarrierApp extends ConnectionApp {
       manifestType: Joi.string().enum(ManifestType).required(),
       deliveryServices: Joi.array().min(1).items(DeliveryService[_internal].schema).required(),
       pickupServices: Joi.array().items(PickupService[_internal].schema),
+      trackingUrlTemplate: Joi.string().pattern(new RegExp(/{}/)).website(),
       createShipment: Joi.function(),
       cancelShipments: Joi.function(),
       rateShipment: Joi.function(),
@@ -82,6 +83,7 @@ export class CarrierApp extends ConnectionApp {
   public readonly deliveryServices: readonly DeliveryService[];
   public readonly pickupServices: readonly PickupService[];
   public readonly supportsReturns: boolean;
+  public readonly trackingUrlTemplate?: string;
 
   public get serviceArea(): ServiceArea {
     return getMaxServiceArea(this.deliveryServices);
@@ -187,6 +189,8 @@ export class CarrierApp extends ConnectionApp {
       ? pojo.pickupServices.map((svc) => new PickupService(svc, this)) : [];
 
     this.supportsReturns = this.deliveryServices.some((ds) => ds.supportsReturns);
+
+    this.trackingUrlTemplate = pojo.trackingUrlTemplate;
 
     this[_private] = {
       // Store any user-defined methods as private fields.

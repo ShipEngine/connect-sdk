@@ -14,8 +14,8 @@ describe("CarrierApp", () => {
       websiteURL: "https://my-carrier.com/",
       logo: path.resolve("logo.svg"),
       icon: path.resolve("logo.svg"),
-      connectionForm: pojo.form(),
       deliveryServices: [pojo.deliveryService()],
+      connectionForm: pojo.form(),
       manifestType: "digital",
       manifest: {
         name: "@company/carrier",
@@ -29,6 +29,7 @@ describe("CarrierApp", () => {
       name: "My carrier",
       description: "",
       websiteURL: new URL("https://my-carrier.com/"),
+      trackingUrlTemplate: undefined,
       logo: path.resolve("logo.svg"),
       icon: path.resolve("logo.svg"),
       manifestLocations: undefined,
@@ -69,6 +70,7 @@ describe("CarrierApp", () => {
       manifestLocations: "single_location",
       manifestShipments: "explicit_shipments",
       manifestType: "digital",
+      trackingUrlTemplate: "http://trackingurlTemplate.com/{}",
       connectionForm: pojo.form(),
       settingsForm: pojo.form(),
       deliveryServices: [pojo.deliveryService()],
@@ -106,6 +108,7 @@ describe("CarrierApp", () => {
       manifestLocations: "single_location",
       manifestShipments: "explicit_shipments",
       manifestType: "digital",
+      trackingUrlTemplate: "http://trackingurlTemplate.com/{}",
       connectionForm: app.connectionForm,
       supportsReturns: false,
       settingsForm: app.settingsForm,
@@ -153,6 +156,7 @@ describe("CarrierApp", () => {
       websiteURL: new URL("https://my-carrier.com/"),
       icon: path.resolve("logo.svg"),
       logo: path.resolve("logo.svg"),
+      trackingUrlTemplate: undefined,
       manifestLocations: undefined,
       manifestShipments: undefined,
       manifestType: "digital",
@@ -539,6 +543,28 @@ describe("CarrierApp", () => {
       ).to.throw(
         "Invalid ShipEngine Integration Platform carrier app: \n" +
         "  logo must be an absolute file path"
+      );
+    });
+
+    it("should throw an error if the trackingUrlTemplate is not formatted correctly", () => {
+      expect(() => new CarrierApp({
+        id: "12345678-1234-1234-1234-123456789012",
+        name: "My carrier",
+        websiteURL: "https://my-carrier.com/",
+        icon: path.resolve("logo.svg"),
+        logo: path.resolve("logo.svg"),
+        trackingUrlTemplate: "https://tracking.com",
+        deliveryServices: [pojo.deliveryService()],
+        connectionForm: pojo.form(),
+        manifestType: "digital",
+        manifest: {
+          name: "@company/carrier",
+          version: "1.0.0"
+        }
+      })
+      ).to.throw(
+        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "  trackingUrlTemplate with value \"https://tracking.com\" fails to match the required pattern: /{}/"
       );
     });
 

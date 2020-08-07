@@ -25,6 +25,12 @@ export interface CarrierAppDefinition extends ConnectionAppDefinition {
    */
   manifestType: ManifestType;
 
+
+  /**
+   * Tracking url format for the carrier.
+   */
+  trackingUrlTemplate?: string;
+
   /**
    * The delivery services that are offered by the carrier
    */

@@ -29,7 +29,7 @@ describe("CarrierApp", () => {
       name: "My carrier",
       description: "",
       websiteURL: new URL("https://my-carrier.com/"),
-      trackingUrlTemplate: undefined,
+      trackingURLTemplate: undefined,
       logo: path.resolve("logo.svg"),
       icon: path.resolve("logo.svg"),
       manifestLocations: undefined,
@@ -70,7 +70,7 @@ describe("CarrierApp", () => {
       manifestLocations: "single_location",
       manifestShipments: "explicit_shipments",
       manifestType: "digital",
-      trackingUrlTemplate: "http://trackingurlTemplate.com/{}",
+      trackingURLTemplate: "http://trackingURLTemplate.com/{}",
       connectionForm: pojo.form(),
       settingsForm: pojo.form(),
       deliveryServices: [pojo.deliveryService()],
@@ -108,7 +108,7 @@ describe("CarrierApp", () => {
       manifestLocations: "single_location",
       manifestShipments: "explicit_shipments",
       manifestType: "digital",
-      trackingUrlTemplate: "http://trackingurlTemplate.com/{}",
+      trackingURLTemplate: "http://trackingURLTemplate.com/{}",
       connectionForm: app.connectionForm,
       supportsReturns: false,
       settingsForm: app.settingsForm,
@@ -156,7 +156,7 @@ describe("CarrierApp", () => {
       websiteURL: new URL("https://my-carrier.com/"),
       icon: path.resolve("logo.svg"),
       logo: path.resolve("logo.svg"),
-      trackingUrlTemplate: undefined,
+      trackingURLTemplate: undefined,
       manifestLocations: undefined,
       manifestShipments: undefined,
       manifestType: "digital",
@@ -546,14 +546,14 @@ describe("CarrierApp", () => {
       );
     });
 
-    it("should throw an error if the trackingUrlTemplate is not formatted correctly", () => {
+    it("should throw an error if the trackingURLTemplate is not formatted correctly", () => {
       expect(() => new CarrierApp({
         id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
         icon: path.resolve("logo.svg"),
         logo: path.resolve("logo.svg"),
-        trackingUrlTemplate: "https://tracking.com",
+        trackingURLTemplate: "https://tracking.com",
         deliveryServices: [pojo.deliveryService()],
         connectionForm: pojo.form(),
         manifestType: "digital",
@@ -564,7 +564,7 @@ describe("CarrierApp", () => {
       })
       ).to.throw(
         "Invalid ShipEngine Integration Platform carrier app: \n" +
-        "  trackingUrlTemplate with value \"https://tracking.com\" fails to match the required pattern: /{}/"
+        "  trackingURLTemplate with value \"https://tracking.com\" fails to match the required pattern: /{}/"
       );
     });
 

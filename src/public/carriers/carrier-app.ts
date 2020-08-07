@@ -29,7 +29,7 @@ export interface CarrierAppDefinition extends ConnectionAppDefinition {
   /**
    * Tracking url format for the carrier.
    */
-  trackingUrlTemplate?: string;
+  trackingURLTemplate?: string;
 
   /**
    * The delivery services that are offered by the carrier

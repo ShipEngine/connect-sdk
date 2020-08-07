@@ -61,6 +61,78 @@ describe("rateShipment", () => {
     }]);
   });
 
+  it.only("should return a rate when a delivery confirmation type is used", async () => {
+
+    const appDef = pojo.carrierApp({
+      rateShipment: () => [{
+        deliveryService: {
+          id: "22222222-2222-2222-2222-222222222222"
+        },
+        charges: [{
+          type: "shipping",
+          amount: {
+            value: 123.456,
+            currency: "CAD",
+          },
+        }],
+        packages: [{
+          packaging: {
+            id: "44444444-4444-4444-4444-444444444444",
+          }
+        }]
+      }]
+    });
+
+    const deliveryConfirmation = {
+      id: "66666666-6666-6666-6666-666666666666",
+      code: "another-dummy-confirmation-code",
+      name: "Another Dummy Confirmation",
+      type: "adult_signature",
+    };
+
+    appDef.deliveryServices[0].deliveryConfirmations = [pojo.deliveryConfirmation(), deliveryConfirmation];
+
+    let app = new CarrierApp(appDef);
+
+    const rateCriteria = pojo.rateCriteria();
+    rateCriteria.deliveryService = "dummy-ds-code";
+    // Specify the delivery confirmation type
+    rateCriteria.deliveryConfirmation = "adult_signature";
+
+    let rates = await app.rateShipment(pojo.transaction(), rateCriteria);
+
+    expect(rates).to.deep.equal([{
+      deliveryService: {
+        ...rates[0].deliveryService,
+        id: "22222222-2222-2222-2222-222222222222",
+      },
+      shipDateTime: undefined,
+      deliveryDateTime: undefined,
+      isNegotiatedRate: false,
+      isTrackable: false,
+      notes: [],
+      totalAmount: {
+        value: 123.46,
+        currency: "CAD",
+      },
+      charges: [{
+        name: "",
+        type: "shipping",
+        amount: {
+          value: 123.46,
+          currency: "CAD",
+        }
+      }],
+      packages: [{
+        packaging: {
+          ...rates[0].packages[0].packaging,
+          id: "44444444-4444-4444-4444-444444444444",
+        },
+        deliveryConfirmation: undefined,
+      }],
+    }]);
+  });
+
   it("should return a rate from using a delivery service, packaging, and confirmation codes", async () => {
 
     const carrierAppDef = pojo.carrierApp({

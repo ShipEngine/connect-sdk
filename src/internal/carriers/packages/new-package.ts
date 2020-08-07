@@ -1,14 +1,12 @@
-import { Customs as CustomsPOJO, DeliveryConfirmationIdentifierPOJO, DimensionsPOJO, MonetaryValuePOJO, NewPackage as INewPackage, PackagingIdentifierPOJO, WeightPOJO } from "../../../public";
+import { Customs as CustomsPOJO, DimensionsPOJO, MonetaryValuePOJO, NewPackage as INewPackage, PackagingIdentifierPOJO, WeightPOJO } from "../../../public";
 import { App, DefinitionIdentifier, Dimensions, hideAndFreeze, Joi, MonetaryValue, Weight, _internal } from "../../common";
 import { Customs } from "../customs/customs";
-import { DeliveryConfirmation } from "../delivery-confirmation";
 import { NewLabel, NewLabelPOJO } from "../documents/new-label";
 import { Packaging } from "../packaging";
 import { PackageItem, PackageItemPOJO } from "./package-item";
 
 export interface NewPackagePOJO {
   packaging: PackagingIdentifierPOJO | string;
-  deliveryConfirmation?: DeliveryConfirmationIdentifierPOJO;
   dimensions?: DimensionsPOJO;
   weight?: WeightPOJO;
   insuredValue?: MonetaryValuePOJO;
@@ -28,7 +26,6 @@ export class NewPackage implements INewPackage {
         DefinitionIdentifier[_internal].schema.unknown(true),
         Joi.string()
       ).required(),
-      deliveryConfirmation: DefinitionIdentifier[_internal].schema.unknown(true),
       dimensions: Dimensions[_internal].schema,
       weight: Weight[_internal].schema,
       insuredValue: MonetaryValue[_internal].schema,
@@ -41,7 +38,6 @@ export class NewPackage implements INewPackage {
   };
 
   public readonly packaging: Packaging;
-  public readonly deliveryConfirmation?: DeliveryConfirmation;
   public readonly dimensions?: Dimensions;
   public readonly weight?: Weight;
   public readonly insuredValue: MonetaryValue;
@@ -53,7 +49,6 @@ export class NewPackage implements INewPackage {
 
   public constructor(pojo: NewPackagePOJO, app: App) {
     this.packaging = app[_internal].references.lookup(pojo.packaging, Packaging);
-    this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmation, DeliveryConfirmation);
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
     this.insuredValue = new MonetaryValue(pojo.insuredValue || { value: 0, currency: "usd" });

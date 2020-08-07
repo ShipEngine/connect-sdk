@@ -1,6 +1,7 @@
 import type { AddressWithContactInfo, DateTimeZone, MonetaryValue } from "../../common";
 import type { DeliveryService } from "../delivery-service";
 import type { NewPackage } from "../packages/new-package";
+import { DeliveryConfirmation } from "../delivery-confirmation";
 
 /**
  * The information needed to create a new shipment
@@ -65,6 +66,11 @@ export interface NewShipment {
    * The list of packages in the shipment
    */
   readonly packages: readonly NewPackage[];
+
+  /**
+   * The requested delivery confirmation
+   */
+  readonly deliveryConfirmation?: DeliveryConfirmation;
 
   /**
    * Returns the first package in the `packages` array.

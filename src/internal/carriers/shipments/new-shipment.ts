@@ -1,8 +1,9 @@
-import { AddressWithContactInfoPOJO, DateTimeZonePOJO, DeliveryServiceIdentifierPOJO, NewShipment as INewShipment } from "../../../public";
+import { AddressWithContactInfoPOJO, DateTimeZonePOJO, DeliveryServiceIdentifierPOJO, NewShipment as INewShipment, DeliveryConfirmationIdentifierPOJO, DeliveryConfirmationType } from "../../../public";
 import { AddressWithContactInfo, App, DateTimeZone, DefinitionIdentifier, hideAndFreeze, Joi, MonetaryValue, _internal } from "../../common";
 import { DeliveryService } from "../delivery-service";
 import { NewPackage, NewPackagePOJO } from "../packages/new-package";
 import { calculateTotalInsuranceAmount } from "../utils";
+import { DeliveryConfirmation } from "../delivery-confirmation";
 
 export interface NewShipmentPOJO {
   deliveryService: DeliveryServiceIdentifierPOJO | string;
@@ -15,6 +16,7 @@ export interface NewShipmentPOJO {
     rmaNumber?: string;
   };
   packages: readonly NewPackagePOJO[];
+  deliveryConfirmation?: DeliveryConfirmationIdentifierPOJO | DeliveryConfirmationType;
 }
 
 
@@ -34,6 +36,10 @@ export class NewShipment implements INewShipment {
         isReturn: Joi.boolean(),
         rmaNumber: Joi.string().trim().singleLine().allow("").max(100)
       }),
+      deliveryConfirmation: Joi.alternatives(
+        DefinitionIdentifier[_internal].schema.unknown(true),
+        Joi.string()
+      ),
       packages: Joi.array().min(1).items(NewPackage[_internal].schema).required(),
     }),
   };
@@ -44,6 +50,7 @@ export class NewShipment implements INewShipment {
   public readonly returnTo: AddressWithContactInfo;
   public readonly shipDateTime: DateTimeZone;
   public readonly totalInsuredValue: MonetaryValue;
+  public readonly deliveryConfirmation?: DeliveryConfirmation;
 
   public get isNonMachinable(): boolean {
     return this.packages.some((pkg) => pkg.isNonMachinable);
@@ -66,6 +73,8 @@ export class NewShipment implements INewShipment {
     this.shipTo = new AddressWithContactInfo(pojo.shipTo);
     this.returnTo = pojo.returnTo ? new AddressWithContactInfo(pojo.returnTo) : this.shipFrom;
     this.shipDateTime = new DateTimeZone(pojo.shipDateTime);
+
+    this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmation, DeliveryConfirmation);
 
     // If there's no return info, then the shipment is not a return
     let returns = pojo.returns || {};

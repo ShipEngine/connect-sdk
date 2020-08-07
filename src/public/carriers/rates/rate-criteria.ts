@@ -2,6 +2,7 @@ import type { AddressWithContactInfo, DateTimeZone, MonetaryValue } from "../../
 import type { DeliveryService } from "../delivery-service";
 import type { FulfillmentService } from "../fulfillment-service";
 import type { PackageRateCriteria } from "./package-rate-criteria";
+import type { DeliveryConfirmation } from "../delivery-confirmation";
 
 
 /**
@@ -21,6 +22,12 @@ export interface RateCriteria {
    * should be returned for all applicable services.
    */
   readonly fulfillmentService?: FulfillmentService;
+
+  /**
+   * The delivery confirmation that may be used. If not specified, then rate quotes
+   * should be returned for all applicable delivery confirmations.
+   */
+  readonly deliveryConfirmation?: DeliveryConfirmation;
 
   /**
    * The date/time that the shipment is expected to ship.

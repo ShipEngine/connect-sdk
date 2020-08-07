@@ -1,6 +1,5 @@
 import type { Dimensions, MonetaryValue, Weight } from "../../common";
 import { Customs } from "../customs/customs";
-import type { DeliveryConfirmation } from "../delivery-confirmation";
 import type { NewLabel } from "../documents/new-label";
 import type { Packaging } from "../packaging";
 import type { PackageItem } from "./package-item";
@@ -13,11 +12,6 @@ export interface NewPackage {
    * The packaging used
    */
   readonly packaging: Packaging;
-
-  /**
-   * The requested delivery confirmation
-   */
-  readonly deliveryConfirmation?: DeliveryConfirmation;
 
   /**
    * The package dimensions

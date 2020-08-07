@@ -1,5 +1,4 @@
 import type { Dimensions, MonetaryValue, Weight } from "../../common";
-import type { DeliveryConfirmation } from "../delivery-confirmation";
 import type { Packaging } from "../packaging";
 
 
@@ -12,12 +11,6 @@ export interface PackageRateCriteria {
    * returned for all applicable packaging.
    */
   readonly packaging: readonly Packaging[];
-
-  /**
-   * The delivery confirmations that may be used. If not specified, then rate quotes
-   * should be returned for all applicable delivery confirmations.
-   */
-  readonly deliveryConfirmations: readonly DeliveryConfirmation[];
 
   /**
    * The package dimensions

@@ -121,6 +121,80 @@ describe("createShipment", () => {
     });
   });
 
+  it("should return a shipment when a delivery confirmation type is used", async () => {
+
+    const appDef = pojo.carrierApp({
+      createShipment: () => ({
+        charges: [{
+          type: "shipping",
+          amount: {
+            value: 123.456,
+            currency: "CAD",
+          },
+        }],
+        label: {
+          type: "label",
+          size: "letter",
+          format: "pdf",
+          data: Buffer.from("data"),
+        },
+        packages: [{
+        }]
+      })
+    });
+
+    const deliveryConfirmation = {
+      id: "66666666-6666-6666-6666-666666666666",
+      code: "another-dummy-confirmation-code",
+      name: "Another Dummy Confirmation",
+      type: "adult_signature",
+    };
+
+    appDef.deliveryServices[0].deliveryConfirmations = [pojo.deliveryConfirmation(), deliveryConfirmation];
+
+    let app = new CarrierApp(appDef);
+
+    const newShipment = pojo.newShipment();
+    newShipment.deliveryService = "dummy-ds-code";
+    // Specify the delivery confirmation type
+    newShipment.deliveryConfirmation = "adult_signature";
+
+
+    let confirmation = await app.createShipment(pojo.transaction(), newShipment);
+
+    expect(confirmation).to.deep.equal({
+      trackingNumber: "",
+      identifiers: {},
+      deliveryDateTime: undefined,
+      charges: [{
+        name: "",
+        type: "shipping",
+        amount: {
+          value: 123.46,
+          currency: "CAD",
+        }
+      }],
+      label: {
+        name: "Label",
+        type: "label",
+        size: "letter",
+        format: "pdf",
+        data: Buffer.from("data"),
+        referenceFields: [],
+      },
+      form: undefined,
+      totalAmount: {
+        value: 123.46,
+        currency: "CAD",
+      },
+      packages: [{
+        trackingNumber: "",
+        identifiers: {},
+        metadata: {}
+      }],
+    });
+  });
+
   it("should return a shipment from all possible return values", async () => {
     let app = new CarrierApp(pojo.carrierApp({
       createShipment: () => ({
@@ -302,7 +376,7 @@ describe("createShipment", () => {
 
     it("should throw an error if called with no arguments", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        createShipment () { }
+        createShipment() { }
       }));
 
       try {
@@ -320,7 +394,7 @@ describe("createShipment", () => {
 
     it("should throw an error if called without a shipment", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        createShipment () { }
+        createShipment() { }
       }));
 
       try {
@@ -338,7 +412,7 @@ describe("createShipment", () => {
 
     it("should throw an error if called with an invalid shipment", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        createShipment () { }
+        createShipment() { }
       }));
 
       try {
@@ -365,7 +439,7 @@ describe("createShipment", () => {
 
     it("should throw an error if nothing is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        createShipment () { }
+        createShipment() { }
       }));
 
       try {

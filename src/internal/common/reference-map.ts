@@ -4,7 +4,7 @@ import { ShipEngineConstructor } from "./types";
 import { _internal } from "./utils";
 import { Joi, validate } from "./validation";
 
-interface ClassInstance { id: UUID; code?: string }
+interface ClassInstance { id: UUID; code?: string; type?: string }
 
 interface Reference {
   type: ShipEngineConstructor;
@@ -50,6 +50,10 @@ export class ReferenceMap {
       if (instance.code) {
         // Add this new reference
         map.set(instance.code, { type, instance });
+      }
+      // Delivery Confirmations need to be able to be referenced by their "type" property
+      if (instance.type) {
+        map.set(instance.type, { type, instance });
       }
       // Add this new reference
       map.set(instance.id, { type, instance });

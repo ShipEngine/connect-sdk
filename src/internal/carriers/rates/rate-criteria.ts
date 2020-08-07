@@ -1,8 +1,9 @@
-import { AddressWithContactInfoPOJO, DateTimeZonePOJO, DeliveryServiceIdentifierPOJO, FulfillmentService, RateCriteria as IRateCriteria } from "../../../public";
+import { DeliveryConfirmationIdentifierPOJO, AddressWithContactInfoPOJO, DateTimeZonePOJO, DeliveryServiceIdentifierPOJO, FulfillmentService, RateCriteria as IRateCriteria } from "../../../public";
 import { AddressWithContactInfo, App, DateTimeZone, DefinitionIdentifier, hideAndFreeze, Joi, MonetaryValue, _internal } from "../../common";
 import { DeliveryService } from "../delivery-service";
 import { calculateTotalInsuranceAmount } from "../utils";
 import { PackageRateCriteria, PackageRateCriteriaPOJO } from "./package-rate-criteria";
+import { DeliveryConfirmation } from "../delivery-confirmation";
 
 
 export interface RateCriteriaPOJO {
@@ -14,6 +15,7 @@ export interface RateCriteriaPOJO {
   shipTo: AddressWithContactInfoPOJO;
   returns?: { isReturn?: boolean };
   packages: readonly PackageRateCriteriaPOJO[];
+  deliveryConfirmation?: DeliveryConfirmationIdentifierPOJO | string;
 }
 
 
@@ -34,6 +36,10 @@ export class RateCriteria implements IRateCriteria {
         isReturn: Joi.boolean()
       }),
       packages: Joi.array().min(1).items(PackageRateCriteria[_internal].schema).required(),
+      deliveryConfirmation: Joi.alternatives(
+        DefinitionIdentifier[_internal].schema.unknown(true),
+        Joi.string()
+      ),
     }),
   };
 
@@ -45,6 +51,8 @@ export class RateCriteria implements IRateCriteria {
   public readonly shipTo: AddressWithContactInfo;
   public readonly totalInsuredValue?: MonetaryValue;
   public readonly packages: readonly PackageRateCriteria[];
+  public readonly deliveryConfirmation?: DeliveryConfirmation;
+
   public readonly returns: {
     readonly isReturn: boolean;
   };
@@ -69,6 +77,8 @@ export class RateCriteria implements IRateCriteria {
 
     this.packages = pojo.packages.map((parcel) => new PackageRateCriteria(parcel, app));
     this.totalInsuredValue = calculateTotalInsuranceAmount(this.packages);
+
+    this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmation, DeliveryConfirmation);
 
     // Make this object immutable
     hideAndFreeze(this);

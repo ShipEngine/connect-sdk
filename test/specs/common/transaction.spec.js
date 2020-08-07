@@ -13,7 +13,6 @@ describe("Transaction", () => {
 
     expect(transaction).to.deep.equal({
       id: "12345678-1234-1234-1234-123456789012",
-      isRetry: false,
       useSandbox: false,
       session: {},
     });
@@ -22,7 +21,6 @@ describe("Transaction", () => {
   it("should create a Transaction with all possible fields", () => {
     let transaction = new Transaction({
       id: "12345678-1234-1234-1234-123456789012",
-      isRetry: true,
       useSandbox: false,
       session: {
         foo: "bar",
@@ -34,7 +32,6 @@ describe("Transaction", () => {
 
     expect(transaction).to.deep.equal({
       id: "12345678-1234-1234-1234-123456789012",
-      isRetry: true,
       useSandbox: false,
       session: {
         foo: "bar",
@@ -61,7 +58,6 @@ describe("Transaction", () => {
 
     expect(transactionPOJO).to.deep.equal({
       id: "12345678-1234-1234-1234-123456789012",
-      isRetry: false,
       useSandbox: false,
       session: {
         foo: "bar",
@@ -176,23 +172,6 @@ describe("Transaction", () => {
       }
     });
 
-    it("should throw an error if called with an invalid isRetry flag", async () => {
-      try {
-        await createTransaction({
-          id: "12345678-1234-1234-1234-123456789012",
-          isRetry: "yes"
-        });
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the connect method. \n" +
-          "Invalid transaction: \n" +
-          "  isRetry must be a boolean"
-        );
-      }
-    });
-
     it("should throw an error if called with an invalid useSandbox flag", async () => {
       try {
         await createTransaction({
@@ -233,7 +212,6 @@ describe("Transaction", () => {
       });
 
       expect(() => transaction.id = "abc").to.throw(TypeError, "Cannot assign to read only property");
-      expect(() => transaction.isRetry = true).to.throw(TypeError, "Cannot assign to read only property");
       expect(() => transaction.useSandbox = true).to.throw(TypeError, "Cannot assign to read only property");
       expect(() => transaction.newProperty = "hello").to.throw(TypeError, "Cannot add property newProperty, object is not extensible");
     });

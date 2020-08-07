@@ -7,7 +7,6 @@ const _private = Symbol("private fields");
 
 export interface TransactionPOJO<T extends object = object> {
   id: UUID;
-  isRetry?: boolean;
   useSandbox?: boolean;
   session?: T;
 }
@@ -18,7 +17,6 @@ export class Transaction<T extends object = object> implements ITransaction {
     label: "transaction",
     schema: Joi.object({
       id: Joi.string().uuid().required(),
-      isRetry: Joi.boolean(),
       useSandbox: Joi.boolean(),
       session: Joi.object(),
     }),
@@ -29,7 +27,6 @@ export class Transaction<T extends object = object> implements ITransaction {
   };
 
   public readonly id: UUID;
-  public readonly isRetry: boolean;
   public readonly useSandbox: boolean;
 
   public get session(): T {
@@ -59,7 +56,6 @@ export class Transaction<T extends object = object> implements ITransaction {
 
   public constructor(pojo: TransactionPOJO<T>) {
     this.id = pojo.id;
-    this.isRetry = pojo.isRetry || false;
     this.useSandbox = pojo.useSandbox || false;
 
     this[_private] = {

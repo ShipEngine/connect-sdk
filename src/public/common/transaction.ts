@@ -12,15 +12,6 @@ export interface Transaction<T extends object = object> {
   readonly id: UUID;
 
   /**
-   * Indicates whether this transaction is a retry, in which case the `id` will be the same as the
-   * original attempt.
-   *
-   * If `isRetry` is `true`, then the operation should try to continue the original transaction
-   * where it left-off. Efforts should be made to prevent duplicate data or double charges.
-   */
-  readonly isRetry: boolean;
-
-  /**
    * Indicates whether the operation should use the carrier's sandbox/development API rather than
    * the normal/production API.
    *

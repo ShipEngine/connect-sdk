@@ -51,12 +51,12 @@ describe("rateShipment", () => {
           currency: "CAD",
         }
       }],
+      deliveryConfirmation: undefined,
       package: {
         packaging: {
           ...rates[0].package.packaging,
           id: "44444444-4444-4444-4444-444444444444",
         },
-        deliveryConfirmation: undefined,
       },
     }]);
   });
@@ -123,13 +123,13 @@ describe("rateShipment", () => {
           currency: "CAD",
         }
       }],
+      deliveryConfirmation: undefined,
       package: {
         packaging: {
           ...rates[0].package.packaging,
           id: "44444444-4444-4444-4444-444444444444",
-        },
-        deliveryConfirmation: undefined,
-      },
+        }
+      }
     }]);
   });
 
@@ -145,9 +145,9 @@ describe("rateShipment", () => {
             currency: "CAD",
           },
         }],
+        deliveryConfirmation: "dummy-confirmation-code",
         package: {
           packaging: "dummy-packaging-code",
-          deliveryConfirmation: "dummy-confirmation-code"
         }
       }]
     });
@@ -160,7 +160,7 @@ describe("rateShipment", () => {
       deliveryService: "dummy-ds-code"
     });
 
-    rateCriteria.package.deliveryConfirmations = ["dummy-confirmation-code"];
+    rateCriteria.deliveryConfirmation = "dummy-confirmation-code";
 
     let rates = await app.rateShipment(pojo.transaction(), rateCriteria);
 
@@ -187,21 +187,21 @@ describe("rateShipment", () => {
           currency: "CAD",
         }
       }],
+      deliveryConfirmation: {
+        id: "55555555-5555-5555-5555-555555555555",
+        code: "dummy-confirmation-code",
+        name: "Dummy Confirmation",
+        description: "",
+        identifiers: {},
+        type: "signature"
+      },
       package: {
         packaging: {
           ...rates[0].package.packaging,
           id: "44444444-4444-4444-4444-444444444444",
           code: "dummy-packaging-code"
-        },
-        deliveryConfirmation: {
-          id: "55555555-5555-5555-5555-555555555555",
-          code: "dummy-confirmation-code",
-          name: "Dummy Confirmation",
-          description: "",
-          identifiers: {},
-          type: "signature"
-        },
-      },
+        }
+      }
     }]);
   });
 
@@ -240,13 +240,13 @@ describe("rateShipment", () => {
             },
           },
         ],
+        deliveryConfirmation: {
+          id: "55555555-5555-5555-5555-555555555555",
+          identifiers: {},
+        },
         package: {
           packaging: {
             id: "44444444-4444-4444-4444-444444444444",
-            identifiers: {},
-          },
-          deliveryConfirmation: {
-            id: "55555555-5555-5555-5555-555555555555",
             identifiers: {},
           }
         }
@@ -300,14 +300,18 @@ describe("rateShipment", () => {
           }
         }
       ],
+      deliveryConfirmation: {
+        id: "55555555-5555-5555-5555-555555555555",
+        identifiers: {},
+        name: "Dummy Confirmation",
+        code: "dummy-confirmation-code",
+        description: "",
+        type: "signature"
+      },
       package: {
         packaging: {
           ...rates[0].package.packaging,
-          id: "44444444-4444-4444-4444-444444444444",
-        },
-        deliveryConfirmation: {
-          ...rates[0].package.deliveryConfirmation,
-          id: "55555555-5555-5555-5555-555555555555",
+          id: "44444444-4444-4444-4444-444444444444"
         },
       }
     }]);
@@ -404,10 +408,10 @@ describe("rateShipment", () => {
           isNegotiatedRate: "no",
           charges: [],
           notes: false,
+          deliveryConfirmation: {
+            id: "Handshake",
+          },
           package: {
-            deliveryConfirmation: {
-              id: "Handshake",
-            }
           }
         }]
       }));
@@ -426,7 +430,7 @@ describe("rateShipment", () => {
           "  [0].charges must contain at least 1 items \n" +
           "  [0].notes must be one of string, array \n" +
           "  [0].package.packaging is required \n" +
-          "  [0].package.deliveryConfirmation.id must be a valid GUID"
+          "  [0].deliveryConfirmation.id must be a valid GUID"
         );
       }
     });
@@ -483,11 +487,11 @@ describe("rateShipment", () => {
       let app = new CarrierApp(pojo.carrierApp({
         rateShipment: () => [
           pojo.rate({
+            deliveryConfirmation: {
+              id: "22222222-2222-2222-2222-222222222222",
+            },
             package:
               pojo.ratePackage({
-                deliveryConfirmation: {
-                  id: "22222222-2222-2222-2222-222222222222",
-                }
               })
           })
         ]

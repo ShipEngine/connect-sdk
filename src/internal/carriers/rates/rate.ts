@@ -2,6 +2,7 @@ import { Rate as RatePOJO } from "../../../public";
 import { App, calculateTotalCharges, Charge, createNotes, DateTimeZone, DefinitionIdentifier, hideAndFreeze, Joi, MonetaryValue, Note, _internal } from "../../common";
 import { DeliveryService } from "../delivery-service";
 import { RatePackage } from "./rate-package";
+import { DeliveryConfirmation } from "../delivery-confirmation";
 
 export class Rate {
   public static readonly [_internal] = {
@@ -18,6 +19,10 @@ export class Rate {
       charges: Joi.array().min(1).items(Charge[_internal].schema).required(),
       notes: Note[_internal].notesSchema,
       package: RatePackage[_internal].schema.required(),
+      deliveryConfirmation: Joi.alternatives(
+        DefinitionIdentifier[_internal].schema.unknown(true),
+        Joi.string()
+      )
     }),
   };
 
@@ -30,6 +35,7 @@ export class Rate {
   public readonly totalAmount: MonetaryValue;
   public readonly notes: readonly Note[];
   public readonly package: RatePackage;
+  public readonly deliveryConfirmation?: DeliveryConfirmation;
 
   public constructor(pojo: RatePOJO, app: App) {
     this.deliveryService = app[_internal].references.lookup(pojo.deliveryService, DeliveryService);
@@ -41,6 +47,8 @@ export class Rate {
     this.totalAmount = calculateTotalCharges(this.charges);
     this.notes = createNotes(pojo.notes);
     this.package = new RatePackage(pojo.package, app);
+    this.deliveryConfirmation =
+      app[_internal].references.lookup(pojo.deliveryConfirmation, DeliveryConfirmation);
 
     // Make this object immutable
     hideAndFreeze(this);

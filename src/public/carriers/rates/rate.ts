@@ -1,6 +1,7 @@
 import type { ChargePOJO, DateTimeZonePOJO, NotePOJO } from "../../common";
 import type { DeliveryServiceIdentifierPOJO } from "../delivery-service";
 import type { RatePackage } from "./rate-package";
+import type { DeliveryConfirmationIdentifierPOJO } from "../delivery-confirmation";
 
 /**
  * A quoted shipping rate based on the specified rate criteria
@@ -48,4 +49,9 @@ export interface Rate {
    * Package in the shipment
    */
   package: RatePackage;
+
+  /**
+   * The delivery confirmation included in this rate
+   */
+  deliveryConfirmation?: DeliveryConfirmationIdentifierPOJO | string;
 }

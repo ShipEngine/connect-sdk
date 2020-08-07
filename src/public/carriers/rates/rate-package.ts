@@ -1,4 +1,3 @@
-import type { DeliveryConfirmationIdentifierPOJO } from "../delivery-confirmation";
 import type { PackagingIdentifierPOJO } from "../packaging";
 
 /**
@@ -10,8 +9,4 @@ export interface RatePackage {
    */
   packaging: PackagingIdentifierPOJO | string;
 
-  /**
-   * The delivery confirmation included in this rate
-   */
-  deliveryConfirmation?: DeliveryConfirmationIdentifierPOJO | string;
 }

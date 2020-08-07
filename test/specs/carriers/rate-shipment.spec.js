@@ -61,7 +61,7 @@ describe("rateShipment", () => {
     }]);
   });
 
-  it.only("should return a rate when a delivery confirmation type is used", async () => {
+  it("should return a rate when a delivery confirmation type is used", async () => {
 
     const appDef = pojo.carrierApp({
       rateShipment: () => [{

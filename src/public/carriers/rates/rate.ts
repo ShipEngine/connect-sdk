@@ -43,7 +43,7 @@ export interface Rate {
   /**
    * Human-readable information regarding this rate quote, such as limitations or restrictions
    */
-  notes?: string | ReadonlyArray<string | NotePOJO>;
+  notes?: NotePOJO[];
 
   /**
    * Package in the shipment

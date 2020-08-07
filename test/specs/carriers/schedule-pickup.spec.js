@@ -99,7 +99,7 @@ describe("schedulePickup", () => {
             myShipmentID: "1234567890-ABCDEFG",
           }
         }],
-        notes: "this is a note",
+        notes: [{ type: "internal", text: "this is a note" }],
         metadata: {
           foo: "bar",
           biz: "baz",
@@ -156,7 +156,7 @@ describe("schedulePickup", () => {
       }],
       notes: [
         {
-          type: "uncategorized",
+          type: "internal",
           text: "this is a note",
         }
       ],
@@ -171,7 +171,7 @@ describe("schedulePickup", () => {
 
     it("should throw an error if called with no arguments", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        schedulePickup () {}
+        schedulePickup () { }
       }));
 
       try {
@@ -189,7 +189,7 @@ describe("schedulePickup", () => {
 
     it("should throw an error if called without a PickupRequest", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        schedulePickup () {}
+        schedulePickup () { }
       }));
 
       try {
@@ -207,7 +207,7 @@ describe("schedulePickup", () => {
 
     it("should throw an error if called with an invalid PickupRequest", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        schedulePickup () {}
+        schedulePickup () { }
       }));
 
       try {
@@ -233,7 +233,7 @@ describe("schedulePickup", () => {
           "  timeWindow.endDateTime must be one of date, string, object \n" +
           "  address is required \n" +
           "  contact is required \n" +
-          "  notes must be one of string, array \n" +
+          "  notes must be an array \n" +
           "  shipments must contain at least 1 items"
         );
       }
@@ -241,7 +241,7 @@ describe("schedulePickup", () => {
 
     it("should throw an error if called with an invalid pickupService", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        schedulePickup () {}
+        schedulePickup () { }
       }));
 
       try {
@@ -263,7 +263,7 @@ describe("schedulePickup", () => {
     it("should throw an error if nothing is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         pickupServices: [pojo.pickupService()],
-        schedulePickup () {}
+        schedulePickup () { }
       }));
 
       try {
@@ -301,7 +301,7 @@ describe("schedulePickup", () => {
           "  id must be a string \n" +
           "  timeWindows must contain at least 1 items \n" +
           "  charges is required \n" +
-          "  notes[0] does not match any of the allowed types \n" +
+          "  notes[0] must be of type object \n" +
           "  metadata must be of type object"
         );
       }

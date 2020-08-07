@@ -1,5 +1,5 @@
 import { NonManifestedShipment as NonManifestedShipmentPOJO } from "../../../public";
-import { createNotes, hideAndFreeze, Joi, Note, _internal } from "../../common";
+import { hideAndFreeze, Joi, Note, _internal } from "../../common";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 
 export class NonManifestedShipment {
@@ -19,7 +19,7 @@ export class NonManifestedShipment {
   public constructor(pojo: NonManifestedShipmentPOJO) {
     this.code = pojo.code || "";
     this.description = pojo.description || "";
-    this.notes = createNotes(pojo.notes);
+    this.notes = pojo.notes || [];
 
     // Make this object immutable
     hideAndFreeze(this);

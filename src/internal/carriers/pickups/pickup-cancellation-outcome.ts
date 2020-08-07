@@ -1,5 +1,5 @@
 import { CancellationStatus, PickupCancellationOutcome as PickupCancellationOutcomePOJO, UUID } from "../../../public";
-import { createNotes, hideAndFreeze, Joi, Note, _internal } from "../../common";
+import { hideAndFreeze, Joi, Note, _internal } from "../../common";
 
 export class PickupCancellationOutcome {
   public static readonly [_internal] = {
@@ -29,7 +29,7 @@ export class PickupCancellationOutcome {
     this.confirmationNumber = pojo.confirmationNumber || "";
     this.code = pojo.code || "";
     this.description = pojo.description || "";
-    this.notes = createNotes(pojo.notes);
+    this.notes = pojo.notes || [];
     this.metadata = pojo.metadata || {};
 
     // Make this object immutable

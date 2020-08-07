@@ -34,7 +34,7 @@ export interface PickupCancellationOutcome {
    * Human-readable information/instructions regarding the cancellation
    * (e.g. "Please call ###-#### to cancel", "Cannot cancel because driver is en-route")
    */
-  notes?: string | ReadonlyArray<string | NotePOJO>;
+  notes?: NotePOJO[];
 
   /**
    * Arbitrary data about this pickup that will be persisted by the ShipEngine Integration Platform.

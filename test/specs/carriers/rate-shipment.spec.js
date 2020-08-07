@@ -221,7 +221,7 @@ describe("rateShipment", () => {
         deliveryDateTime: new Date("2005-05-05T05:05:05.005-07:00"),
         isNegotiatedRate: true,
         isTrackable: true,
-        notes: "This is a note",
+        notes: [{ type: "internal", text: "This is a note." }],
         charges: [
           {
             name: "Shipping Charge",
@@ -272,12 +272,10 @@ describe("rateShipment", () => {
       },
       isNegotiatedRate: true,
       isTrackable: true,
-      notes: [
-        {
-          type: "uncategorized",
-          text: "This is a note",
-        }
-      ],
+      notes: [{
+        type: "internal",
+        text: "This is a note."
+      }],
       totalAmount: {
         value: 124.96,
         currency: "CAD",
@@ -428,7 +426,7 @@ describe("rateShipment", () => {
           "  [0].deliveryDateTime must be a valid date/time \n" +
           "  [0].isNegotiatedRate must be a boolean \n" +
           "  [0].charges must contain at least 1 items \n" +
-          "  [0].notes must be one of string, array \n" +
+          "  [0].notes must be an array \n" +
           "  [0].package.packaging is required \n" +
           "  [0].deliveryConfirmation.id must be a valid GUID"
         );

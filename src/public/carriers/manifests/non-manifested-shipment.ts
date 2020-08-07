@@ -20,5 +20,5 @@ export interface NonManifestedShipment extends ShipmentIdentifierPOJO {
    * Human-readable information regarding the error, such as details that are specific
    * to this particular shipment
    */
-  notes?: string | ReadonlyArray<string | NotePOJO>;
+  notes?: NotePOJO[];
 }

@@ -1,5 +1,5 @@
 import { Rate as RatePOJO } from "../../../public";
-import { App, calculateTotalCharges, Charge, createNotes, DateTimeZone, DefinitionIdentifier, hideAndFreeze, Joi, MonetaryValue, Note, _internal } from "../../common";
+import { App, calculateTotalCharges, Charge, DateTimeZone, DefinitionIdentifier, hideAndFreeze, Joi, MonetaryValue, Note, _internal } from "../../common";
 import { DeliveryService } from "../delivery-service";
 import { RatePackage } from "./rate-package";
 import { DeliveryConfirmation } from "../delivery-confirmation";
@@ -45,7 +45,7 @@ export class Rate {
     this.isTrackable = pojo.isTrackable || false;
     this.charges = pojo.charges.map((charge) => new Charge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);
-    this.notes = createNotes(pojo.notes);
+    this.notes = pojo.notes || [];
     this.package = new RatePackage(pojo.package, app);
     this.deliveryConfirmation =
       app[_internal].references.lookup(pojo.deliveryConfirmation, DeliveryConfirmation);

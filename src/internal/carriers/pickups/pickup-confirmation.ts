@@ -1,5 +1,5 @@
 import { PickupConfirmation as PickupConfirmationPOJO } from "../../../public";
-import { calculateTotalCharges, Charge, createNotes, hideAndFreeze, Identifiers, Joi, MonetaryValue, Note, TimeRange, _internal } from "../../common";
+import { calculateTotalCharges, Charge, hideAndFreeze, Identifiers, Joi, MonetaryValue, Note, TimeRange, _internal } from "../../common";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 
 export class PickupConfirmation {
@@ -32,7 +32,7 @@ export class PickupConfirmation {
     this.charges = pojo.charges.map((charge) => new Charge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);
     this.shipments = pojo.shipments!.map((shipment) => new ShipmentIdentifier(shipment));
-    this.notes = createNotes(pojo.notes);
+    this.notes = pojo.notes || [];
     this.metadata = pojo.metadata || {};
 
     // Make this object immutable

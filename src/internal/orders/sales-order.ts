@@ -1,5 +1,5 @@
 import { PaymentMethod, SalesOrder as SalesOrderPOJO, SalesOrderStatus } from "../../public";
-import { AddressWithContactInfo, calculateTotalCharges, Charge, createNotes, DateTimeZone, hideAndFreeze, Joi, MonetaryValue, Note, _internal } from "../common";
+import { AddressWithContactInfo, calculateTotalCharges, Charge, DateTimeZone, hideAndFreeze, Joi, MonetaryValue, Note, _internal } from "../common";
 import { Buyer } from "./buyer";
 import { SalesOrderIdentifier, SalesOrderIdentifierBase } from "./sales-order-identifier";
 import { SalesOrderItem } from "./sales-order-item";
@@ -50,7 +50,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
     this.charges = pojo.charges ? pojo.charges.map((charge) => new Charge(charge)) : [];
     this.totalCharges = calculateTotalCharges(this.charges);
     this.items = pojo.items.map((item) => new SalesOrderItem(item));
-    this.notes = createNotes(pojo.notes);
+    this.notes = pojo.notes || [];
     this.metadata = pojo.metadata || {};
 
     // Make this object immutable

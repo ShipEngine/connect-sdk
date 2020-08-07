@@ -1,5 +1,5 @@
 import { AddressPOJO, ContactInfoPOJO, NotePOJO, PickupCancellation as IPickupCancellation, PickupCancellationReason, TimeRangePOJO, UUID } from "../../../public";
-import { Address, App, ContactInfo, createNotes, DefinitionIdentifier, hideAndFreeze, Identifiers, Joi, Note, TimeRange, _internal } from "../../common";
+import { Address, App, ContactInfo, DefinitionIdentifier, hideAndFreeze, Identifiers, Joi, Note, TimeRange, _internal } from "../../common";
 import { PickupService, PickupServiceIdentifierPOJO } from "./pickup-service";
 import { PickupShipment, PickupShipmentPOJO } from "./pickup-shipment";
 
@@ -9,7 +9,7 @@ export interface PickupCancellationPOJO {
   identifiers?: Identifiers;
   pickupService: PickupServiceIdentifierPOJO | string;
   reason: PickupCancellationReason;
-  notes?: string | ReadonlyArray<string | NotePOJO>;
+  notes?: readonly NotePOJO[];
   address: AddressPOJO;
   contact: ContactInfoPOJO;
   timeWindows: readonly TimeRangePOJO[];
@@ -57,7 +57,7 @@ export class PickupCancellation implements IPickupCancellation {
     this.pickupService = app[_internal].references.lookup(pojo.pickupService, PickupService);
     this.identifiers = new Identifiers(pojo.identifiers);
     this.reason = pojo.reason;
-    this.notes = createNotes(pojo.notes);
+    this.notes = pojo.notes || [];
     this.address = new Address(pojo.address);
     this.contact = new ContactInfo(pojo.contact);
     this.timeWindows = pojo.timeWindows.map((window) => new TimeRange(window));

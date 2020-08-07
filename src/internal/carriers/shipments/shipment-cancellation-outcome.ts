@@ -1,5 +1,5 @@
 import { CancellationStatus, ShipmentCancellationOutcome as ShipmentCancellationOutcomePOJO, UUID } from "../../../public";
-import { createNotes, hideAndFreeze, Joi, Note, _internal } from "../../common";
+import { hideAndFreeze, Joi, Note, _internal } from "../../common";
 import { ShipmentIdentifier } from "./shipment-identifier";
 
 export class ShipmentCancellationOutcome {
@@ -30,7 +30,7 @@ export class ShipmentCancellationOutcome {
     this.confirmationNumber = pojo.confirmationNumber || "";
     this.code = pojo.code || "";
     this.description = pojo.description || "";
-    this.notes = createNotes(pojo.notes);
+    this.notes = pojo.notes || [];
     this.metadata = pojo.metadata || {};
 
     // Make this object immutable

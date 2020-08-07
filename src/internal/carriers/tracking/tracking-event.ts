@@ -1,5 +1,5 @@
 import { ShipmentStatus, TrackingEvent as TrackingEventPOJO } from "../../../public";
-import { createNotes, DateTimeZone, hideAndFreeze, Joi, Note, PartialAddress, PersonName, _internal } from "../../common";
+import { DateTimeZone, hideAndFreeze, Joi, Note, PartialAddress, PersonName, _internal } from "../../common";
 
 export class TrackingEvent {
   public static readonly [_internal] = {
@@ -36,7 +36,7 @@ export class TrackingEvent {
     this.isError = pojo.isError || false;
     this.address = pojo.address && new PartialAddress(pojo.address);
     this.signer = pojo.signer ? new PersonName(pojo.signer) : undefined;
-    this.notes = createNotes(pojo.notes);
+    this.notes = pojo.notes || [];
 
     // Make this object immutable
     hideAndFreeze(this);

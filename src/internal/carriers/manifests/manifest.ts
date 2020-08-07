@@ -1,5 +1,5 @@
 import { Manifest as ManifestPOJO } from "../../../public";
-import { createNotes, hideAndFreeze, Identifiers, Joi, Note, _internal } from "../../common";
+import { hideAndFreeze, Identifiers, Joi, Note, _internal } from "../../common";
 import { Document } from "../documents/document";
 import { ShipmentIdentifier } from "../shipments/shipment-identifier";
 
@@ -32,7 +32,7 @@ export class Manifest {
       ...pojo.document,
       name: pojo.document.name || "SCAN Form",
     });
-    this.notes = createNotes(pojo.notes);
+    this.notes = pojo.notes || [];
     this.metadata = pojo.metadata || {};
 
     // Make this object immutable

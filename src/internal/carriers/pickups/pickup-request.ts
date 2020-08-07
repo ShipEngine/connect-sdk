@@ -1,5 +1,5 @@
 import { AddressPOJO, ContactInfoPOJO, NotePOJO, PickupRequest as IPickupRequest, TimeRangePOJO } from "../../../public";
-import { Address, App, ContactInfo, createNotes, DefinitionIdentifier, hideAndFreeze, Joi, Note, TimeRange, _internal } from "../../common";
+import { Address, App, ContactInfo, DefinitionIdentifier, hideAndFreeze, Joi, Note, TimeRange, _internal } from "../../common";
 import { PickupService, PickupServiceIdentifierPOJO } from "./pickup-service";
 import { PickupShipment, PickupShipmentPOJO } from "./pickup-shipment";
 
@@ -8,7 +8,7 @@ export interface PickupRequestPOJO {
   timeWindow: TimeRangePOJO;
   address: AddressPOJO;
   contact: ContactInfoPOJO;
-  notes?: string | ReadonlyArray<string | NotePOJO>;
+  notes?: readonly NotePOJO[];
   shipments: readonly PickupShipmentPOJO[];
 }
 
@@ -41,7 +41,7 @@ export class PickupRequest implements IPickupRequest {
     this.timeWindow = new TimeRange(pojo.timeWindow);
     this.address = new Address(pojo.address);
     this.contact = new ContactInfo(pojo.contact);
-    this.notes = createNotes(pojo.notes);
+    this.notes = pojo.notes || [];
     this.shipments = pojo.shipments.map((shipment) => new PickupShipment(shipment, app));
 
     // Make this object immutable

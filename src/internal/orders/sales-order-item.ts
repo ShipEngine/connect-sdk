@@ -1,6 +1,6 @@
 import * as currency from "currency.js";
 import { SalesOrderItem as SalesOrderItemPOJO } from "../../public";
-import { createNotes, hideAndFreeze, Joi, MonetaryValue, Note, Quantity, Weight, _internal } from "../common";
+import { hideAndFreeze, Joi, MonetaryValue, Note, Quantity, Weight, _internal } from "../common";
 import { ProductIdentifier } from "../products";
 import { SalesOrderItemIdentifier, SalesOrderItemIdentifierBase } from "./sales-order-item-identifier";
 
@@ -49,7 +49,7 @@ export class SalesOrderItem extends SalesOrderItemIdentifierBase {
     this.unitWeight = pojo.unitWeight && new Weight(pojo.unitWeight);
     this.itemURL = pojo.itemURL ? new URL(pojo.itemURL as string) : undefined;
     this.thumbnailURL = pojo.thumbnailURL ? new URL(pojo.thumbnailURL as string) : undefined;
-    this.notes = createNotes(pojo.notes);
+    this.notes = pojo.notes || [];
     this.metadata = pojo.metadata || {};
 
     // Make this object immutable

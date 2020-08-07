@@ -57,7 +57,7 @@ export interface SalesOrder extends SalesOrderIdentifierPOJO {
   /**
    * Human-readable information regarding this sales order, such as gift notes, backorder notices, etc.
    */
-  notes?: string | ReadonlyArray<string | NotePOJO>;
+  notes?: NotePOJO[];
 
   /**
    * Arbitrary data about this sales order that will be persisted by the ShipEngine Integration Platform.

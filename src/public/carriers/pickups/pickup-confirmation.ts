@@ -36,7 +36,7 @@ export interface PickupConfirmation {
   /**
    * Human-readable information about the pickup confirmation
    */
-  notes?: string | ReadonlyArray<string | NotePOJO>;
+  notes?: NotePOJO[];
 
   /**
    * Arbitrary data about this pickup that will be persisted by the ShipEngine Integration Platform.

@@ -1,4 +1,4 @@
-import type { DateTimeZonePOJO, DeliveryConfirmationType, MonetaryValuePOJO } from "../common";
+import type { DeliveryConfirmationType, MonetaryValuePOJO } from "../common";
 
 
 /**
@@ -9,11 +9,6 @@ export interface ShippingPreferences {
    * The requested delivery confirmation
    */
   deliveryConfirmationType?: DeliveryConfirmationType;
-
-  /**
-   * The date and time that the shipment should be delivered
-   */
-  deliveryDateTime?: DateTimeZonePOJO | Date | string;
 
   /**
    * Indicates whether the shipment needs to be marked as containing alcohol

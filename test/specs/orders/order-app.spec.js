@@ -30,6 +30,7 @@ describe("OrderApp", () => {
       logo: path.resolve("logo.svg"),
       icon: path.resolve("logo.svg"),
       connectionForm: app.connectionForm,
+      sendMail: false,
       settingsForm: undefined,
       connect: undefined,
       getSalesOrdersByDate: undefined,
@@ -56,6 +57,7 @@ describe("OrderApp", () => {
       icon: path.resolve("logo.svg"),
       connectionForm: pojo.form(),
       settingsForm: pojo.form(),
+      sendMail: true,
       connect () {},
       getSalesOrdersByDate () {},
       shipmentCreated () {},
@@ -85,6 +87,7 @@ describe("OrderApp", () => {
       connectionForm: app.connectionForm,
       settingsForm: app.settingsForm,
       sdkVersion: parseFloat(sdkManifest.version),
+      sendMail: true,
       manifest: {
         name: "@my-company/my-order",
         version: "123.45.678",
@@ -131,6 +134,7 @@ describe("OrderApp", () => {
       shipmentCreated: undefined,
       shipmentCancelled: undefined,
       sdkVersion: parseFloat(sdkManifest.version),
+      sendMail: false,
       manifest: {
         name: "@company/order",
         version: "1.0.0",

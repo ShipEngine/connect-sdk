@@ -26,4 +26,10 @@ export interface OrderAppDefinition extends ConnectionAppDefinition {
    * may be fulfilled by multiple shipments.
    */
   shipmentCancelled?: InlineOrReference<ShipmentCancelled>;
+
+
+  /**
+   * Indicates whether to allow emails to be sent to customers with shipping or order updates
+   */
+  sendMail?: boolean;
 }

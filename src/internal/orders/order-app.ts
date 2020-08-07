@@ -25,6 +25,7 @@ export class OrderApp extends ConnectionApp {
       getSalesOrdersByDate: Joi.function(),
       shipmentCreated: Joi.function(),
       shipmentCancelled: Joi.function(),
+      sendMail: Joi.boolean()
     }),
   };
 
@@ -35,6 +36,7 @@ export class OrderApp extends ConnectionApp {
   };
 
   public readonly type: AppType;
+  public readonly sendMail: boolean;
 
   public constructor(pojo: OrderAppPOJO) {
     validate(pojo, OrderApp);
@@ -42,6 +44,7 @@ export class OrderApp extends ConnectionApp {
     super(pojo);
 
     this.type = AppType.Order;
+    this.sendMail = pojo.sendMail || false;
 
     this[_private] = {
       getSalesOrdersByDate:

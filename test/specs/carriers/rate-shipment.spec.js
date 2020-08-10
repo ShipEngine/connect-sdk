@@ -19,11 +19,12 @@ describe("rateShipment", () => {
             currency: "CAD",
           },
         }],
-        package: {
+        deliveryConfirmation: undefined,
+        packages: [{
           packaging: {
             id: "44444444-4444-4444-4444-444444444444",
           }
-        }
+        }]
       }]
     }));
 
@@ -52,12 +53,12 @@ describe("rateShipment", () => {
         }
       }],
       deliveryConfirmation: undefined,
-      package: {
+      packages: [{
         packaging: {
-          ...rates[0].package.packaging,
+          ...rates[0].packages[0].packaging,
           id: "44444444-4444-4444-4444-444444444444",
         },
-      },
+      }],
     }]);
   });
 
@@ -75,11 +76,12 @@ describe("rateShipment", () => {
             currency: "CAD",
           },
         }],
-        package: {
+        deliveryConfirmation: undefined,
+        packages: [{
           packaging: {
             id: "44444444-4444-4444-4444-444444444444",
           }
-        }
+        }]
       }]
     });
 
@@ -124,12 +126,12 @@ describe("rateShipment", () => {
         }
       }],
       deliveryConfirmation: undefined,
-      package: {
+      packages: [{
         packaging: {
-          ...rates[0].package.packaging,
+          ...rates[0].packages[0].packaging,
           id: "44444444-4444-4444-4444-444444444444",
-        }
-      }
+        },
+      }],
     }]);
   });
 
@@ -146,9 +148,9 @@ describe("rateShipment", () => {
           },
         }],
         deliveryConfirmation: "dummy-confirmation-code",
-        package: {
+        packages: [{
           packaging: "dummy-packaging-code",
-        }
+        }]
       }]
     });
 
@@ -160,7 +162,7 @@ describe("rateShipment", () => {
       deliveryService: "dummy-ds-code"
     });
 
-    rateCriteria.deliveryConfirmation = "dummy-confirmation-code";
+    rateCriteria.packages[0].deliveryConfirmations = ["dummy-confirmation-code"];
 
     let rates = await app.rateShipment(pojo.transaction(), rateCriteria);
 
@@ -195,13 +197,13 @@ describe("rateShipment", () => {
         identifiers: {},
         type: "signature"
       },
-      package: {
+      packages: [{
         packaging: {
-          ...rates[0].package.packaging,
+          ...rates[0].packages[0].packaging,
           id: "44444444-4444-4444-4444-444444444444",
           code: "dummy-packaging-code"
-        }
-      }
+        },
+      }],
     }]);
   });
 
@@ -244,12 +246,12 @@ describe("rateShipment", () => {
           id: "55555555-5555-5555-5555-555555555555",
           identifiers: {},
         },
-        package: {
+        packages: [{
           packaging: {
             id: "44444444-4444-4444-4444-444444444444",
             identifiers: {},
           }
-        }
+        }]
       }]
     }));
 
@@ -306,12 +308,12 @@ describe("rateShipment", () => {
         description: "",
         type: "signature"
       },
-      package: {
+      packages: [{
         packaging: {
-          ...rates[0].package.packaging,
-          id: "44444444-4444-4444-4444-444444444444"
+          ...rates[0].packages[0].packaging,
+          id: "44444444-4444-4444-4444-444444444444",
         },
-      }
+      }]
     }]);
   });
 
@@ -363,7 +365,7 @@ describe("rateShipment", () => {
           deliveryService: 12345678123412341234123456789012,
 
           deliveryDateTime: "9999-99-99T99:99:99.999Z",
-          package: undefined,
+          packages: [],
         });
         assert.fail("An error should have been thrown");
       }
@@ -376,7 +378,7 @@ describe("rateShipment", () => {
           "  deliveryDateTime must be a valid date/time \n" +
           "  shipFrom is required \n" +
           "  shipTo is required \n" +
-          "  package is required"
+          "  packages must contain at least 1 items"
         );
       }
     });
@@ -409,8 +411,10 @@ describe("rateShipment", () => {
           deliveryConfirmation: {
             id: "Handshake",
           },
-          package: {
-          }
+          packages: [
+            {
+            }
+          ]
         }]
       }));
 
@@ -427,7 +431,7 @@ describe("rateShipment", () => {
           "  [0].isNegotiatedRate must be a boolean \n" +
           "  [0].charges must contain at least 1 items \n" +
           "  [0].notes must be an array \n" +
-          "  [0].package.packaging is required \n" +
+          "  [0].packages[0].packaging is required \n" +
           "  [0].deliveryConfirmation.id must be a valid GUID"
         );
       }
@@ -460,11 +464,11 @@ describe("rateShipment", () => {
       let app = new CarrierApp(pojo.carrierApp({
         rateShipment: () => [
           pojo.rate({
-            package: {
+            packages: [{
               packaging: {
                 id: "12345678-1234-1234-1234-123456789012",
               }
-            }
+            }]
           })
         ]
       }));
@@ -488,9 +492,10 @@ describe("rateShipment", () => {
             deliveryConfirmation: {
               id: "22222222-2222-2222-2222-222222222222",
             },
-            package:
+            packages: [
               pojo.ratePackage({
               })
+            ]
           })
         ]
       }));

@@ -286,7 +286,7 @@ const pojo = module.exports = {
       shipDateTime: new Date(),
       shipFrom: pojo.addressWithContactInfo(),
       shipTo: pojo.addressWithContactInfo(),
-      package: pojo.rateCriteriaPackage(),
+      packages: [pojo.rateCriteriaPackage()],
       ...props,
     };
   },
@@ -303,7 +303,7 @@ const pojo = module.exports = {
         id: "22222222-2222-2222-2222-222222222222",
       },
       charges: [pojo.charge()],
-      package: pojo.ratePackage(),
+      packages: [pojo.ratePackage()],
       ...props,
     };
   },

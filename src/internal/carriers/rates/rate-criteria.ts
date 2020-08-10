@@ -1,6 +1,7 @@
 import { DeliveryConfirmationIdentifierPOJO, AddressWithContactInfoPOJO, DateTimeZonePOJO, DeliveryServiceIdentifierPOJO, FulfillmentService, RateCriteria as IRateCriteria } from "../../../public";
 import { AddressWithContactInfo, App, DateTimeZone, DefinitionIdentifier, hideAndFreeze, Joi, MonetaryValue, _internal } from "../../common";
 import { DeliveryService } from "../delivery-service";
+import { calculateTotalInsuranceAmount } from "../utils";
 import { PackageRateCriteria, PackageRateCriteriaPOJO } from "./package-rate-criteria";
 import { DeliveryConfirmation } from "../delivery-confirmation";
 
@@ -13,7 +14,7 @@ export interface RateCriteriaPOJO {
   shipFrom: AddressWithContactInfoPOJO;
   shipTo: AddressWithContactInfoPOJO;
   returns?: { isReturn?: boolean };
-  package: PackageRateCriteriaPOJO;
+  packages: readonly PackageRateCriteriaPOJO[];
   deliveryConfirmation?: DeliveryConfirmationIdentifierPOJO | string;
 }
 
@@ -34,7 +35,7 @@ export class RateCriteria implements IRateCriteria {
       returns: Joi.object({
         isReturn: Joi.boolean()
       }),
-      package: PackageRateCriteria[_internal].schema.required(),
+      packages: Joi.array().min(1).items(PackageRateCriteria[_internal].schema).required(),
       deliveryConfirmation: Joi.alternatives(
         DefinitionIdentifier[_internal].schema.unknown(true),
         Joi.string()
@@ -49,12 +50,16 @@ export class RateCriteria implements IRateCriteria {
   public readonly shipFrom: AddressWithContactInfo;
   public readonly shipTo: AddressWithContactInfo;
   public readonly totalInsuredValue?: MonetaryValue;
-  public readonly package: PackageRateCriteria;
+  public readonly packages: readonly PackageRateCriteria[];
   public readonly deliveryConfirmation?: DeliveryConfirmation;
 
   public readonly returns: {
     readonly isReturn: boolean;
   };
+
+  public get package(): PackageRateCriteria {
+    return this.packages[0];
+  }
 
   public constructor(pojo: RateCriteriaPOJO, app: App) {
     this.deliveryService = app[_internal].references.lookup(pojo.deliveryService, DeliveryService);
@@ -63,7 +68,6 @@ export class RateCriteria implements IRateCriteria {
     this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;
     this.shipFrom = new AddressWithContactInfo(pojo.shipFrom);
     this.shipTo = new AddressWithContactInfo(pojo.shipTo);
-    this.package = new PackageRateCriteria(pojo.package, app);
     this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmation, DeliveryConfirmation);
 
     // If there's no return info, then the shipment is not a return
@@ -72,6 +76,10 @@ export class RateCriteria implements IRateCriteria {
       isReturn: returns.isReturn || false,
     };
 
+    this.packages = pojo.packages.map((parcel) => new PackageRateCriteria(parcel, app));
+    this.totalInsuredValue = calculateTotalInsuranceAmount(this.packages);
+
+    this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmation, DeliveryConfirmation);
 
     // Make this object immutable
     hideAndFreeze(this);

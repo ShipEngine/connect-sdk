@@ -46,12 +46,12 @@ export interface Rate {
   notes?: NotePOJO[];
 
   /**
-   * Package in the shipment
+   * The list of packages in the shipment
    */
-  package: RatePackage;
+  packages: readonly RatePackage[];
 
   /**
-   * The delivery confirmation included in this rate
-   */
+ * The delivery confirmation included in this rate
+ */
   deliveryConfirmation?: DeliveryConfirmationIdentifierPOJO | string;
 }

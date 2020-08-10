@@ -4,6 +4,7 @@ import type { PaymentMethod, SalesOrderStatus } from "./enums";
 import type { SalesOrderIdentifierPOJO } from "./sales-order-identifier";
 import type { SalesOrderItem } from "./sales-order-item";
 import type { ShippingPreferences } from "./shipping-preferences";
+import { SalesOrderCharges } from "./sales-order-charges";
 
 /**
  * A sales order
@@ -45,9 +46,14 @@ export interface SalesOrder extends SalesOrderIdentifierPOJO {
   shippingPreferences?: ShippingPreferences;
 
   /**
+   * The breakdown of adjustments for this sales order
+   */
+  adjustments?: readonly ChargePOJO[];
+
+  /**
    * The breakdown of charges for this sales order
    */
-  charges?: readonly ChargePOJO[];
+  charges?: SalesOrderCharges;
 
   /**
    * The items in this sales order

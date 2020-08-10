@@ -1,21 +1,10 @@
-import { PaymentMethod, SalesOrder as SalesOrderPOJO, SalesOrderStatus, SalesOrderChargesPOJO, MonetaryValuePOJO, ShipEngineError, ErrorCode } from "../../public";
+import { PaymentMethod, SalesOrder as SalesOrderPOJO, SalesOrderStatus, SalesOrderCharges as SalesOrderChargesPOJO, MonetaryValuePOJO, ShipEngineError, ErrorCode } from "../../public";
 import { AddressWithContactInfo, calculateTotalCharges, Charge, DateTimeZone, hideAndFreeze, Joi, MonetaryValue, Note, _internal, error } from "../common";
 import { Buyer } from "./buyer";
 import { SalesOrderIdentifier, SalesOrderIdentifierBase } from "./sales-order-identifier";
 import { SalesOrderItem } from "./sales-order-item";
 import { ShippingPreferences } from "./shipping-preferences";
-
-
-export interface SalesOrderCharges {
-  subtotal?: MonetaryValue;
-  taxAmount?: MonetaryValue;
-  shippingAmount?: MonetaryValue;
-  shippingCost?: MonetaryValue;
-  confirmationCost?: MonetaryValue;
-  insuranceCost?: MonetaryValue;
-  otherCost?: MonetaryValue;
-}
-
+import { SalesOrderCharges } from "./sales-order-charges";
 
 export class SalesOrder extends SalesOrderIdentifierBase {
   public static readonly [_internal] = {
@@ -28,6 +17,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
       shipTo: AddressWithContactInfo[_internal].schema.required(),
       buyer: Buyer[_internal].schema.required(),
       shippingPreferences: ShippingPreferences[_internal].schema,
+      charges: SalesOrderCharges[_internal].schema,
       adjustments: Joi.array().min(1).items(Charge[_internal].schema),
       items: Joi.array().min(1).items(SalesOrderItem[_internal].schema).required(),
       notes: Note[_internal].notesSchema,
@@ -44,15 +34,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
   public readonly shippingPreferences: ShippingPreferences;
   public readonly adjustments: readonly Charge[];
 
-  public readonly charges?: {
-    subtotal?: MonetaryValue;
-    taxAmount?: MonetaryValue;
-    shippingAmount?: MonetaryValue;
-    shippingCost?: MonetaryValue;
-    confirmationCost?: MonetaryValue;
-    insuranceCost?: MonetaryValue;
-    otherCost?: MonetaryValue;
-  };
+  public readonly charges?: SalesOrderCharges;
 
   public readonly totalAdjustments: MonetaryValue;
   public readonly totalCharges: MonetaryValue;
@@ -71,6 +53,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
     this.buyer = new Buyer(pojo.buyer);
     this.shippingPreferences = new ShippingPreferences(pojo.shippingPreferences || {});
     this.adjustments = pojo.adjustments ? pojo.adjustments.map((charge) => new Charge(charge)) : [];
+    this.charges = new SalesOrderCharges(pojo.charges);
     this.totalAdjustments = calculateTotalCharges(this.adjustments);
     this.totalCharges = calculateTotalSalesOrderCharges(this.charges);
     this.items = pojo.items.map((item) => new SalesOrderItem(item));

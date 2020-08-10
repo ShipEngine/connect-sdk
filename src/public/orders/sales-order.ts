@@ -1,19 +1,10 @@
-import type { AddressWithContactInfoPOJO, ChargePOJO, DateTimeZonePOJO, NotePOJO, URLString, MonetaryValuePOJO } from "../common";
+import type { AddressWithContactInfoPOJO, ChargePOJO, DateTimeZonePOJO, NotePOJO, URLString } from "../common";
 import type { Buyer } from "./buyer";
 import type { PaymentMethod, SalesOrderStatus } from "./enums";
 import type { SalesOrderIdentifierPOJO } from "./sales-order-identifier";
 import type { SalesOrderItem } from "./sales-order-item";
 import type { ShippingPreferences } from "./shipping-preferences";
-
-export interface SalesOrderChargesPOJO {
-  subtotal?: MonetaryValuePOJO;
-  taxAmount?: MonetaryValuePOJO;
-  shippingAmount?: MonetaryValuePOJO;
-  shippingCost?: MonetaryValuePOJO;
-  confirmationCost?: MonetaryValuePOJO;
-  insuranceCost?: MonetaryValuePOJO;
-  otherCost?: MonetaryValuePOJO;
-}
+import { SalesOrderCharges } from "./sales-order-charges";
 
 /**
  * A sales order
@@ -54,12 +45,15 @@ export interface SalesOrder extends SalesOrderIdentifierPOJO {
    */
   shippingPreferences?: ShippingPreferences;
 
+  /**
+   * The breakdown of adjustments for this sales order
+   */
   adjustments?: readonly ChargePOJO[];
 
   /**
    * The breakdown of charges for this sales order
    */
-  charges?: SalesOrderChargesPOJO;
+  charges?: SalesOrderCharges;
 
   /**
    * The items in this sales order

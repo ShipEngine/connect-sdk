@@ -71,33 +71,6 @@ describe("getSalesOrdersByDate", () => {
     }
   });
 
-  it("should work with an asynchronous generator", async () => {
-    let app = new OrderApp(pojo.orderApp({
-      async *getSalesOrdersByDate () {
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        yield pojo.salesOrder({ id: "Order1" });
-
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        yield pojo.salesOrder({ id: "Order2" });
-
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        yield pojo.salesOrder({ id: "Order3" });
-      }
-    }));
-
-    let salesOrders = await app.getSalesOrdersByDate(pojo.transaction(), pojo.timeRange());
-
-    // It should return an asynchronous iterable
-    expect(salesOrders[Symbol.asyncIterator]).to.be.a("function");
-
-    // The sales orders should be returned in order
-    let index = 0;
-    for await (let salesOrder of salesOrders) {
-      expect(salesOrder).to.be.an.instanceOf(SalesOrder);
-      expect(salesOrder.id).to.equal(`Order${++index}`);
-    }
-  });
-
   describe("Failure tests", () => {
 
     it("should throw an error if called with no arguments", async () => {

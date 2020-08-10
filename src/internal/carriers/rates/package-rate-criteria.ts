@@ -4,7 +4,7 @@ import { Packaging } from "../packaging";
 
 
 export interface PackageRateCriteriaPOJO {
-  packaging?: ReadonlyArray<PackagingIdentifierPOJO | string>;
+  packaging?: PackagingIdentifierPOJO | string;
   dimensions?: DimensionsPOJO;
   weight?: WeightPOJO;
   insuredValue?: MonetaryValuePOJO;
@@ -17,8 +17,7 @@ export class PackageRateCriteria implements IPackageRateCriteria {
   public static readonly [_internal] = {
     label: "package",
     schema: Joi.object({
-      packaging: Joi.array()
-        .items(Joi.alternatives(DefinitionIdentifier[_internal].schema.unknown(true), Joi.string())),
+      packaging: Joi.alternatives(DefinitionIdentifier[_internal].schema.unknown(true), Joi.string()),
       deliveryConfirmations: Joi.array()
         .items(Joi.alternatives(DefinitionIdentifier[_internal].schema.unknown(true), Joi.string())),
       dimensions: Dimensions[_internal].schema,
@@ -29,7 +28,7 @@ export class PackageRateCriteria implements IPackageRateCriteria {
     }),
   };
 
-  public readonly packaging: readonly Packaging[];
+  public readonly packaging?: Packaging;
   public readonly dimensions?: Dimensions;
   public readonly weight?: Weight;
   public readonly insuredValue?: MonetaryValue;
@@ -37,8 +36,7 @@ export class PackageRateCriteria implements IPackageRateCriteria {
   public readonly isNonMachinable: boolean;
 
   public constructor(pojo: PackageRateCriteriaPOJO, app: App) {
-    this.packaging = (pojo.packaging || [])
-      .map((id) => app[_internal].references.lookup(id, Packaging));
+    this.packaging = app[_internal].references.lookup(pojo.packaging, Packaging);
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
     this.insuredValue = pojo.insuredValue && new MonetaryValue(pojo.insuredValue);

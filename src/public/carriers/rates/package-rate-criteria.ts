@@ -10,7 +10,7 @@ export interface PackageRateCriteria {
    * The packaging that may be used. If not specified, then rate quotes should be
    * returned for all applicable packaging.
    */
-  readonly packaging: readonly Packaging[];
+  readonly packaging?: Packaging;
 
   /**
    * The package dimensions

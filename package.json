@@ -1,6 +1,6 @@
 {
   "name": "@shipengine/integration-platform-sdk",
-  "version": "0.0.39",
+  "version": "0.0.40",
   "description": "The official SDK for building ShipEngine Integration Platform apps",
   "keywords": [
     "shipengine",
@@ -45,7 +45,7 @@
   },
   "engineStrict": true,
   "devDependencies": {
-    "@jsdevtools/eslint-config": "^1.1.2",
+    "@jsdevtools/eslint-config": "^1.1.4",
     "@jsdevtools/host-environment": "^2.1.2",
     "@jsdevtools/readdir-enhanced": "^6.0.4",
     "@jsdevtools/version-bump-prompt": "^6.0.6",

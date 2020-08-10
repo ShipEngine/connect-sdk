@@ -1,4 +1,4 @@
-import { SalesOrderCharges as ISalesOrderCharges, MonetaryValuePOJO } from "../../public";
+import { SalesOrderCharges as ISalesOrderCharges } from "../../public";
 import { MonetaryValue, hideAndFreeze, Joi, _internal } from "../common";
 
 export class SalesOrderCharges implements ISalesOrderCharges {
@@ -14,12 +14,12 @@ export class SalesOrderCharges implements ISalesOrderCharges {
     }).unknown(false),
   };
 
-  public readonly subTotal: MonetaryValuePOJO;
-  public readonly taxAmount: MonetaryValuePOJO;
-  public readonly shippingAmount: MonetaryValuePOJO;
-  public readonly confirmationCost: MonetaryValuePOJO;
-  public readonly insuranceCost: MonetaryValuePOJO;
-  public readonly otherCost: MonetaryValuePOJO;
+  public readonly subTotal: MonetaryValue;
+  public readonly taxAmount: MonetaryValue;
+  public readonly shippingAmount: MonetaryValue;
+  public readonly confirmationCost: MonetaryValue;
+  public readonly insuranceCost: MonetaryValue;
+  public readonly otherCost: MonetaryValue;
 
   public constructor(pojo?: ISalesOrderCharges) {
 

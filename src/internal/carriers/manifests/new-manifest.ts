@@ -16,7 +16,7 @@ export class NewManifest implements INewManifest {
   public static readonly [_internal] = {
     label: "manifest",
     schema: Joi.object({
-      shipFrom: Address[_internal].schema.required(),
+      shipFrom: Address[_internal].schema.optional(),
       openDateTime: DateTimeZone[_internal].schema.required(),
       closeDateTime: DateTimeZone[_internal].schema.required(),
       shipments: Joi.array().items(ShipmentIdentifier[_internal].schema.unknown(true)).required(),

@@ -1,5 +1,5 @@
 /**
- * Fields that should only be accessed within the ShipEngine Integration Platform SDK
+ * Fields that should only be accessed within the ShipEngine Connect SDK
  */
 export const _internal = Symbol("internal fields");
 

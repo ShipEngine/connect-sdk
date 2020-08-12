@@ -3,7 +3,7 @@ import type { GetSalesOrdersByDate, ShipmentCancelled, ShipmentCreated } from ".
 
 
 /**
- * A ShipEngine Integration Platform order app
+ * A ShipEngine Connect order app
  */
 export interface OrderAppDefinition extends ConnectionAppDefinition {
   /**

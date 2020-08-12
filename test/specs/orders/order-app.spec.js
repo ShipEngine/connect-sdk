@@ -153,7 +153,7 @@ describe("OrderApp", () => {
 
     it("should throw an error if the pojo is the wrong type", () => {
       expect(() => new OrderApp(12345)).to.throw(
-        "Invalid ShipEngine Integration Platform order app: \n" +
+        "Invalid ShipEngine Connect order app: \n" +
         "  value must be of type object"
       );
     });
@@ -172,7 +172,7 @@ describe("OrderApp", () => {
         }
       })
       ).to.throw(
-        "Invalid ShipEngine Integration Platform order app: \n" +
+        "Invalid ShipEngine Connect order app: \n" +
         "  id must be a valid GUID"
       );
     });
@@ -191,7 +191,7 @@ describe("OrderApp", () => {
         }
       })
       ).to.throw(
-        "Invalid ShipEngine Integration Platform order app: \n" +
+        "Invalid ShipEngine Connect order app: \n" +
         "  name must not have leading or trailing whitespace \n" +
         "  name cannot contain newlines or tabs"
       );
@@ -212,7 +212,7 @@ describe("OrderApp", () => {
         }
       })
       ).to.throw(
-        "Invalid ShipEngine Integration Platform order app: \n" +
+        "Invalid ShipEngine Connect order app: \n" +
         "  description must be a string"
       );
     });
@@ -231,7 +231,7 @@ describe("OrderApp", () => {
         }
       })
       ).to.throw(
-        "Invalid ShipEngine Integration Platform order app: \n" +
+        "Invalid ShipEngine Connect order app: \n" +
         "  logo must be an absolute file path"
       );
     });
@@ -250,7 +250,7 @@ describe("OrderApp", () => {
         }
       })
       ).to.throw(
-        "Invalid ShipEngine Integration Platform order app: \n" +
+        "Invalid ShipEngine Connect order app: \n" +
         "  logo must be a .svg file"
       );
     });
@@ -269,7 +269,7 @@ describe("OrderApp", () => {
         }
       })
       ).to.throw(
-        "Invalid ShipEngine Integration Platform order app: \n" +
+        "Invalid ShipEngine Connect order app: \n" +
         "  icon must be a .svg file"
       );
     });

@@ -13,7 +13,7 @@ export interface ErrorProps {
 
 
 /**
- * Creates a ShipEngine Integration Platform SDK error
+ * Creates a ShipEngine Connect SDK error
  */
 export function error(code: ErrorCode, message: string, { originalError, ...props }: ErrorProps = {}): ShipEngineError {
   // Capture the original error code

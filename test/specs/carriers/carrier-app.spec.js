@@ -463,7 +463,7 @@ describe("CarrierApp", () => {
 
     it("should throw an error if the pojo is the wrong type", () => {
       expect(() => new CarrierApp(12345)).to.throw(
-        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "Invalid ShipEngine Connect carrier app: \n" +
         "  value must be of type object"
       );
     });
@@ -482,7 +482,7 @@ describe("CarrierApp", () => {
         }
       })
       ).to.throw(
-        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "Invalid ShipEngine Connect carrier app: \n" +
         "  id must be a valid GUID"
       );
     });
@@ -501,7 +501,7 @@ describe("CarrierApp", () => {
         }
       })
       ).to.throw(
-        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "Invalid ShipEngine Connect carrier app: \n" +
         "  name must not have leading or trailing whitespace \n" +
         "  name cannot contain newlines or tabs"
       );
@@ -522,7 +522,7 @@ describe("CarrierApp", () => {
         }
       })
       ).to.throw(
-        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "Invalid ShipEngine Connect carrier app: \n" +
         "  description must be a string"
       );
     });
@@ -541,7 +541,7 @@ describe("CarrierApp", () => {
         }
       })
       ).to.throw(
-        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "Invalid ShipEngine Connect carrier app: \n" +
         "  logo must be an absolute file path"
       );
     });
@@ -563,7 +563,7 @@ describe("CarrierApp", () => {
         }
       })
       ).to.throw(
-        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "Invalid ShipEngine Connect carrier app: \n" +
         "  trackingURLTemplate with value \"https://tracking.com\" fails to match the required pattern: /{}/"
       );
     });
@@ -582,7 +582,7 @@ describe("CarrierApp", () => {
         }
       })
       ).to.throw(
-        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "Invalid ShipEngine Connect carrier app: \n" +
         "  logo must be a .svg file"
       );
     });
@@ -601,7 +601,7 @@ describe("CarrierApp", () => {
         }
       })
       ).to.throw(
-        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "Invalid ShipEngine Connect carrier app: \n" +
         "  icon must be a .svg file"
       );
     });
@@ -620,7 +620,7 @@ describe("CarrierApp", () => {
         }
       })
       ).to.throw(
-        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "Invalid ShipEngine Connect carrier app: \n" +
         "  icon must be an absolute file path"
       );
     });

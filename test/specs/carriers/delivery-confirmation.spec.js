@@ -74,7 +74,7 @@ describe("DeliveryConfirmation", () => {
 
     it("should throw an error if the pojo is the wrong type", () => {
       expect(() => createDeliveryConfirmation(12345)).to.throw(
-        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "Invalid ShipEngine Connect carrier app: \n" +
         "  deliveryServices[0].deliveryConfirmations[0] must be of type object"
       );
     });
@@ -86,7 +86,7 @@ describe("DeliveryConfirmation", () => {
         type: "signature",
       })
       ).to.throw(
-        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "Invalid ShipEngine Connect carrier app: \n" +
         "  deliveryServices[0].deliveryConfirmations[0].id must be a valid GUID"
       );
     });
@@ -98,7 +98,7 @@ describe("DeliveryConfirmation", () => {
         type: "signature"
       })
       ).to.throw(
-        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "Invalid ShipEngine Connect carrier app: \n" +
         "  deliveryServices[0].deliveryConfirmations[0].name must not have leading or trailing whitespace \n" +
         "  deliveryServices[0].deliveryConfirmations[0].name cannot contain newlines or tabs"
       );
@@ -112,7 +112,7 @@ describe("DeliveryConfirmation", () => {
         description: 12345,
       })
       ).to.throw(
-        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "Invalid ShipEngine Connect carrier app: \n" +
         "  deliveryServices[0].deliveryConfirmations[0].description must be a string"
       );
     });
@@ -124,7 +124,7 @@ describe("DeliveryConfirmation", () => {
         type: "handshake"
       })
       ).to.throw(
-        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "Invalid ShipEngine Connect carrier app: \n" +
         "  deliveryServices[0].deliveryConfirmations[0].type must be one of delivery, signature, adult_signature, direct_signature"
       );
     });

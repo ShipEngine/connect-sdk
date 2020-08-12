@@ -32,7 +32,7 @@ export interface Manifest {
   notes?: NotePOJO[];
 
   /**
-   * Arbitrary data about this manifest that will be persisted by the ShipEngine Integration Platform.
+   * Arbitrary data about this manifest that will be persisted by the ShipEngine Connect.
    * Must be JSON serializable.
    */
   metadata?: object;

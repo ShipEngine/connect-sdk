@@ -5,7 +5,7 @@ import type { FilePath, InlineOrReference, URLString } from "./types";
 
 
 /**
- * A ShipEngine Integration Platform app that connects to a service, such as a carrier or marketplace
+ * A ShipEngine Connect app that connects to a service, such as a carrier or marketplace
  */
 export interface ConnectionAppDefinition extends AppDefinition {
   /**

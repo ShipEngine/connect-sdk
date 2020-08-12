@@ -104,7 +104,7 @@ describe("App", () => {
 
     it("should throw an error if the pojo is the wrong type", () => {
       expect(() => new CarrierApp(12345)).to.throw(
-        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "Invalid ShipEngine Connect carrier app: \n" +
         "  value must be of type object"
       );
     });
@@ -117,7 +117,7 @@ describe("App", () => {
         }
       }))
       ).to.throw(
-        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "Invalid ShipEngine Connect carrier app: \n" +
         '  manifest.name must be a scoped NPM package name, like "@company-name/app-name"'
       );
     });
@@ -130,7 +130,7 @@ describe("App", () => {
         },
       }))
       ).to.throw(
-        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "Invalid ShipEngine Connect carrier app: \n" +
         '  manifest.name must be a scoped NPM package name, like "@company-name/app-name"'
       );
     });
@@ -143,7 +143,7 @@ describe("App", () => {
         },
       }))
       ).to.throw(
-        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "Invalid ShipEngine Connect carrier app: \n" +
         '  manifest.name must be a scoped NPM package name, like "@company-name/app-name"'
       );
     });
@@ -157,7 +157,7 @@ describe("App", () => {
         },
       }))
       ).to.throw(
-        "Invalid ShipEngine Integration Platform carrier app: \n" +
+        "Invalid ShipEngine Connect carrier app: \n" +
         "  manifest.description must be a string"
       );
     });

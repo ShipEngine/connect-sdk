@@ -1,5 +1,5 @@
 /**
- * The types of ShipEngine Integration Platform apps
+ * The types of ShipEngine Connect apps
  */
 export enum AppType {
   Carrier = "carrier",

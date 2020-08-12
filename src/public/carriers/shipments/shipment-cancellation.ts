@@ -12,7 +12,7 @@ export interface ShipmentCancellation extends ShipmentIdentifier {
   readonly cancellationID: UUID;
 
   /**
-   * Arbitrary data about this shipment that will be persisted by the ShipEngine Integration Platform.
+   * Arbitrary data about this shipment that will be persisted by the ShipEngine Connect.
    * Must be JSON serializable.
    */
   readonly metadata: object;

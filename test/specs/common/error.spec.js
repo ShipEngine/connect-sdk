@@ -35,7 +35,7 @@ describe("Errors", () => {
       validateShipEngineError(error, {
         code: "ERR_INVALID",
         message:
-          "Invalid ShipEngine Integration Platform carrier app: \n" +
+          "Invalid ShipEngine Connect carrier app: \n" +
           "  A value is required",
       });
     }
@@ -51,7 +51,7 @@ describe("Errors", () => {
       validateShipEngineError(error, {
         code: "ERR_INVALID",
         message:
-          "Invalid ShipEngine Integration Platform carrier app: \n" +
+          "Invalid ShipEngine Connect carrier app: \n" +
           "  value must be of type object",
         details: [
           {

@@ -15,7 +15,7 @@ const classInstanceSchema = Joi.object({ id: Joi.string().uuid() }).unknown(true
 const _private = Symbol("private fields");
 
 /**
- * Maps ShipEngine Integration Platform classes by their UUIDs
+ * Maps ShipEngine Connect classes by their UUIDs
  */
 export class ReferenceMap {
   private readonly [_private] = {

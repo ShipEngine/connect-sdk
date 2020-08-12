@@ -23,7 +23,7 @@ export interface PickupPackage extends PackageIdentifier {
   readonly weight?: Weight;
 
   /**
-   * Arbitrary data about this package that will be persisted by the ShipEngine Integration Platform.
+   * Arbitrary data about this package that will be persisted by the ShipEngine Connect.
    * Must be JSON serializable.
    */
   readonly metadata?: object;

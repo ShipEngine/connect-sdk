@@ -42,7 +42,7 @@ export class CarrierApp extends ConnectionApp {
   // #region Private/Internal Fields
 
   public static readonly [_internal] = {
-    label: "ShipEngine Integration Platform carrier app",
+    label: "ShipEngine Connect carrier app",
     schema: ConnectionApp[_internal].schema.keys({
       manifestLocations: Joi.string().enum(ManifestLocation)
         .when("createManifest", { is: Joi.function().required(), then: Joi.required() }),

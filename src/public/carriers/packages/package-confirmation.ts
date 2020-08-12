@@ -6,7 +6,7 @@ import type { PackageIdentifierPOJO } from "./package-identifier";
  */
 export interface PackageConfirmation extends PackageIdentifierPOJO {
   /**
-   * Arbitrary data about this package that will be persisted by the ShipEngine Integration Platform.
+   * Arbitrary data about this package that will be persisted by the ShipEngine Connect.
    * Must be JSON serializable.
    */
   metadata?: object;

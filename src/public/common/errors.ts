@@ -1,7 +1,7 @@
 import type { UUID } from "./types";
 
 /**
- * An error thrown by the ShipEngine Integration Platform SDK
+ * An error thrown by the ShipEngine Connect SDK
  */
 export interface ShipEngineError extends Error {
   code: ErrorCode;
@@ -16,7 +16,7 @@ export interface ShipEngineError extends Error {
 }
 
 /**
- * Error codes for ShipEngine Integration Platform SDK runtime errors
+ * Error codes for ShipEngine Connect SDK runtime errors
  */
 export enum ErrorCode {
   Filesystem = "ERR_FILESYSTEM",

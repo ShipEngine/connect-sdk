@@ -1,7 +1,7 @@
 import type { UUID } from "./types";
 
 /**
- * The ShpEngine Integration Platform passes this object to every method call. It provides information about the
+ * The ShpEngine Connect passes this object to every method call. It provides information about the
  * transaction being performed, including authentication, metadata, etc.
  */
 export interface Transaction<T extends object = object> {

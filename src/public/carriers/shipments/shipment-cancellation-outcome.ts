@@ -37,7 +37,7 @@ export interface ShipmentCancellationOutcome {
   notes?: NotePOJO[];
 
   /**
-   * Arbitrary data about this shipment that will be persisted by the ShipEngine Integration Platform.
+   * Arbitrary data about this shipment that will be persisted by the ShipEngine Connect.
    * Must be JSON serializable.
    */
   metadata?: object;

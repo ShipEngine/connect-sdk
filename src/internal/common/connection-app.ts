@@ -18,7 +18,7 @@ export interface ConnectionAppPOJO extends ConnectionAppDefinition, AppPOJO {
 
 export abstract class ConnectionApp extends App {
   public static readonly [_internal] = {
-    label: "ShipEngine Integration Platform app",
+    label: "ShipEngine Connect app",
     schema: App[_internal].schema.keys({
       name: Joi.string().trim().singleLine().min(1).max(100).required(),
       description: Joi.string().trim().singleLine().allow("").max(1000),

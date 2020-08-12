@@ -53,7 +53,7 @@ export interface SalesOrderItem extends SalesOrderItemIdentifierPOJO {
   notes?: NotePOJO[];
 
   /**
-   * Arbitrary data about this order item that will be persisted by the ShipEngine Integration Platform.
+   * Arbitrary data about this order item that will be persisted by the ShipEngine Connect.
    * Must be JSON serializable.
    */
   metadata?: object;

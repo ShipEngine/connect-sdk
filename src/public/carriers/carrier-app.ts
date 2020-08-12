@@ -5,7 +5,7 @@ import type { CancelPickups, CancelShipments, CreateManifest, CreateShipment, Ra
 import type { PickupServiceDefinition } from "./pickups/pickup-service";
 
 /**
- * A ShipEngine Integration Platform carrier app
+ * A ShipEngine Connect carrier app
  */
 export interface CarrierAppDefinition extends ConnectionAppDefinition {
   /**

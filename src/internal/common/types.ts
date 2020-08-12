@@ -2,7 +2,7 @@ import { _internal } from "./utils";
 import { ValidationSchema } from "./validation";
 
 /**
- * Defines the static class properties implements Iproperties of ShipEngine Integration Platform SDK classes.
+ * Defines the static class properties implements Iproperties of ShipEngine Connect SDK classes.
  */
 export interface ShipEngineClass {
   [_internal]: {
@@ -12,7 +12,7 @@ export interface ShipEngineClass {
 }
 
 /**
- * A constructor function for a ShipEngine Integration Platform SDK class.
+ * A constructor function for a ShipEngine Connect SDK class.
  */
 export interface ShipEngineConstructor<T extends object = object> extends ShipEngineClass {
   readonly name: string;
@@ -22,7 +22,7 @@ export interface ShipEngineConstructor<T extends object = object> extends ShipEn
 
 /**
  * A constructor function. This can be any constructor, not just a
- * ShipEngine Integration Platform SDK class.
+ * ShipEngine Connect SDK class.
  */
 export interface Constructor<T extends object = object> {
   prototype: T;

@@ -20,7 +20,7 @@ export interface OrderAppPOJO extends OrderAppDefinition, AppPOJO {
 
 export class OrderApp extends ConnectionApp {
   public static readonly [_internal] = {
-    label: "ShipEngine Integration Platform order app",
+    label: "ShipEngine Connect order app",
     schema: ConnectionApp[_internal].schema.keys({
       getSalesOrdersByDate: Joi.function(),
       shipmentCreated: Joi.function(),

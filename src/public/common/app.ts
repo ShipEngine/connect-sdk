@@ -2,7 +2,7 @@ import type { UUID } from "./types";
 
 
 /**
- * A ShipEngine Integration Platform app
+ * A ShipEngine Connect app
  */
 export interface AppDefinition {
   /**
@@ -14,7 +14,7 @@ export interface AppDefinition {
 
 
 /**
- * A ShipEngine Integration Platform app manifest (package.json file)
+ * A ShipEngine Connect app manifest (package.json file)
  */
 export interface AppManifest {
   name: string;

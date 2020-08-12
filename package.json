@@ -1,12 +1,11 @@
 {
-  "name": "@shipengine/integration-platform-sdk",
-  "version": "0.0.42",
-  "description": "The official SDK for building ShipEngine Integration Platform apps",
+  "name": "@shipengine/connect-sdk",
+  "version": "1.0.0",
+  "description": "The official SDK for building ShipEngine connect apps",
   "keywords": [
     "shipengine",
-    "integration",
+    "connect",
     "platform",
-    "ipaas",
     "app",
     "sdk",
     "typescript",
@@ -19,10 +18,10 @@
     "url": "https://www.shipengine.com"
   },
   "license": "Apache-2.0",
-  "homepage": "https://www.shipengine.com/docs/integration-platform/",
+  "homepage": "https://www.shipengine.com/docs/connect/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ShipEngine/shipengine-integration-platform-sdk.git"
+    "url": "https://github.com/ShipEngine/connect-sdk.git"
   },
   "main": "lib/public/index.js",
   "types": "lib/public/index.d.ts",

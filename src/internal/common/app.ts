@@ -12,7 +12,7 @@ export interface AppPOJO extends AppDefinition {
 
 export abstract class App {
   public static readonly [_internal] = {
-    label: "ShipEngine Integration Platform app",
+    label: "ShipEngine Connect app",
     schema: Joi.object({
       id: Joi.string().uuid().required(),
       manifest: Joi.object({

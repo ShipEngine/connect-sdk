@@ -387,7 +387,14 @@ const pojo = module.exports = {
       status: "awaiting_shipment",
       shipTo: pojo.addressWithContactInfo(),
       buyer: pojo.buyer(),
-      items: [pojo.salesOrderItem()],
+      requestedFulfillments: [
+        {
+          items: [pojo.salesOrderItem()],
+          shippingPreferences: {
+            saturdayDelivery: true
+          }
+        }
+      ],
       ...props,
     };
   },

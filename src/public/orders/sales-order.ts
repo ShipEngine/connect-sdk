@@ -41,11 +41,6 @@ export interface SalesOrder extends SalesOrderIdentifierPOJO {
   buyer: Buyer;
 
   /**
-   * Preferences on how this order should be fulfilled
-   */
-  shippingPreferences?: ShippingPreferences;
-
-  /**
    * The breakdown of adjustments for this sales order
    */
   adjustments?: readonly ChargePOJO[];
@@ -55,10 +50,19 @@ export interface SalesOrder extends SalesOrderIdentifierPOJO {
    */
   charges?: SalesOrderCharges;
 
-  /**
-   * The items in this sales order
-   */
-  items: readonly SalesOrderItem[];
+
+  requestedFulfillments: Array<{
+    /**
+     * The items in this fulfillment request
+     */
+    items: readonly SalesOrderItem[];
+
+    /**
+     * Shipping preferences for this order fulfillment
+     */
+    shippingPreferences?: ShippingPreferences;
+
+  }>;
 
   /**
    * Human-readable information regarding this sales order, such as gift notes, backorder notices, etc.

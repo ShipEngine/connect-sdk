@@ -132,7 +132,7 @@ describe("getSalesOrdersByDate", () => {
 
     it("should throw an error if nothing is returned", async () => {
       let app = new OrderApp(pojo.orderApp({
-        getSalesOrdersByDate () {}
+        getSalesOrdersByDate () { }
       }));
 
       let iterable = app.getSalesOrdersByDate(pojo.transaction(), pojo.timeRange());
@@ -157,7 +157,11 @@ describe("getSalesOrdersByDate", () => {
             identifiers: true,
             createdDateTime: "9999-99-99T99:99:99.999Z",
             status: 5,
-            items: [],
+            requestedFulfillments: [
+              {
+                items: []
+              }
+            ]
           };
         }
       }));
@@ -179,7 +183,7 @@ describe("getSalesOrdersByDate", () => {
           "  status must be a string \n" +
           "  shipTo is required \n" +
           "  buyer is required \n" +
-          "  items must contain at least 1 items"
+          "  requestedFulfillments[0].items must contain at least 1 items"
         );
       }
     });

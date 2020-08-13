@@ -625,5 +625,30 @@ describe("CarrierApp", () => {
       );
     });
 
+
+    it("should throw an error if a delivery service code is not specified", () => {
+      const carrierAppObj = {
+        id: "12345678-1234-1234-1234-123456789012",
+        name: "My carrier",
+        websiteURL: "https://my-carrier.com/",
+        logo: path.resolve("logo.svg"),
+        icon: path.resolve("logo.svg"),
+        connectionForm: pojo.form(),
+        deliveryServices: [pojo.deliveryService()],
+        manifest: {
+          name: "@company/carrier",
+          version: "1.0.0"
+        }
+      };
+
+      delete carrierAppObj.deliveryServices[0].code;
+
+      expect(() => new CarrierApp(carrierAppObj)
+      ).to.throw(
+        "Invalid ShipEngine Connect carrier app: \n" +
+        "  deliveryServices[0].code is required"
+      );
+    });
+
   });
 });

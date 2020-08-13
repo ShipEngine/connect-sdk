@@ -19,6 +19,11 @@ export interface DeliveryServiceDefinition extends Definition {
   description?: string;
 
   /**
+   * Code used to map to what the carrier uses to identify the resource
+   */
+  code: string;
+
+  /**
    * The class of implements Iof service
    */
   class: DeliveryServiceClass;

@@ -20,6 +20,7 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
     schema: DefinitionIdentifier[_internal].schema.keys({
       name: Joi.string().trim().singleLine().min(1).max(100).required(),
       description: Joi.string().trim().singleLine().allow("").max(1000),
+      code: Joi.string().trim().singleLine().allow("").max(1000).required(),
       class: Joi.string().enum(DeliveryServiceClass).required(),
       grade: Joi.string().enum(DeliveryServiceGrade).required(),
       fulfillmentService: Joi.string().enum(FulfillmentService),
@@ -49,6 +50,7 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
   public readonly description: string;
   public readonly class: DeliveryServiceClass;
   public readonly grade: DeliveryServiceGrade;
+  public readonly code: string;
   public readonly fulfillmentService?: FulfillmentService;
   public readonly serviceArea?: ServiceArea;
   public readonly isConsolidationService: boolean;
@@ -85,6 +87,7 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
     this.description = pojo.description || "";
     this.class = pojo.class;
     this.grade = pojo.grade;
+    this.code = pojo.code;
     this.fulfillmentService = pojo.fulfillmentService;
     this.serviceArea = pojo.serviceArea;
     this.isConsolidationService = pojo.isConsolidationService || false;

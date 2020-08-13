@@ -49,7 +49,7 @@ export class CarrierApp extends ConnectionApp {
       manifestShipments: Joi.string().enum(ManifestShipment)
         .when("createManifest", { is: Joi.function().required(), then: Joi.required() }),
 
-      manifestType: Joi.string().enum(ManifestType).required(),
+      manifestType: Joi.string().enum(ManifestType),
       deliveryServices: Joi.array().min(1).items(DeliveryService[_internal].schema).required(),
       pickupServices: Joi.array().items(PickupService[_internal].schema),
       trackingURLTemplate: Joi.string().pattern(new RegExp(/{}/)).website(),
@@ -79,7 +79,7 @@ export class CarrierApp extends ConnectionApp {
   public readonly type: AppType;
   public readonly manifestLocations?: ManifestLocation;
   public readonly manifestShipments?: ManifestShipment;
-  public readonly manifestType: ManifestType;
+  public readonly manifestType?: ManifestType;
   public readonly deliveryServices: readonly DeliveryService[];
   public readonly pickupServices: readonly PickupService[];
   public readonly supportsReturns: boolean;

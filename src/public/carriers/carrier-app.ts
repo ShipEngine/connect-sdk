@@ -23,7 +23,7 @@ export interface CarrierAppDefinition extends ConnectionAppDefinition {
   /**
    * Indicates what type of manifests the carrier supports
    */
-  manifestType: ManifestType;
+  manifestType?: ManifestType;
 
 
   /**

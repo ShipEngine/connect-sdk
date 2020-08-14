@@ -52,23 +52,23 @@ jobs:
       - name: Run tests
         run: npm run coverage
 
-#      - name: Send code coverage results to Coveralls
-#        uses: coverallsapp/github-action@v1.1.0
-#        with:
-#          github-token: ${{ secrets.GITHUB_TOKEN }}
-#          parallel: true
-#
-#  coverage:
-#    name: Code Coverage
-#    runs-on: ubuntu-latest
-#    timeout-minutes: 10
-#    needs: test
-#    steps:
-#      - name: Let Coveralls know that all tests have finished
-#        uses: coverallsapp/github-action@v1.1.0
-#        with:
-#          github-token: ${{ secrets.GITHUB_TOKEN }}
-#          parallel-finished: true
+      - name: Send code coverage results to Coveralls
+        uses: coverallsapp/github-action@v1.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+
+  coverage:
+    name: Code Coverage
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: test
+    steps:
+      - name: Let Coveralls know that all tests have finished
+        uses: coverallsapp/github-action@v1.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true
 
   deploy:
     name: Publish to NPM

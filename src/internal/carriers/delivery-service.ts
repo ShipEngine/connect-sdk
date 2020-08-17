@@ -29,7 +29,7 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
       allowsMultiplePackages: Joi.boolean(),
       isInsurable: Joi.boolean(),
       isTrackable: Joi.boolean(),
-      manifestType: Joi.string().enum(ManifestType).required(),
+      manifestType: Joi.string().enum(ManifestType),
       supportsReturns: Joi.boolean(),
       hasSandbox: Joi.boolean(),
       labelFormats: Joi.array().items(Joi.string().enum(DocumentFormat)),
@@ -57,7 +57,7 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
   public readonly allowsMultiplePackages: boolean;
   public readonly isInsurable: boolean;
   public readonly isTrackable: boolean;
-  public readonly manifestType: ManifestType;
+  public readonly manifestType?: ManifestType;
   public readonly supportsReturns: boolean;
   public readonly hasSandbox: boolean;
   public readonly labelFormats: readonly DocumentFormat[];

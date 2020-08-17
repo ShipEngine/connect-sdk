@@ -67,7 +67,7 @@ export interface DeliveryServiceDefinition extends Definition {
   /**
    * Indicates what type of manifests the carrier supports
    */
-  manifestType: ManifestType;
+  manifestType?: ManifestType;
 
   /**
    * Indicates if return shipments are supported
@@ -186,7 +186,7 @@ export interface DeliveryService extends DeliveryServiceIdentifier {
   /**
    * Indicates what type of manifests the carrier supports
    */
-  manifestType: ManifestType;
+  manifestType?: ManifestType;
 
   /**
    * Indicates whether the carrier provides a sandbox/development API for this delivery service.

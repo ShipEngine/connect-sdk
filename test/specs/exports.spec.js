@@ -8,20 +8,75 @@ const { expect } = require("chai");
 const { readdirSync } = require("@jsdevtools/readdir-enhanced");
 
 describe("package exports", () => {
-
   it("should not have a default ESM export", () => {
     expect(defaultExport).to.equal(undefined);
     expect(namedExports).not.to.include.key("default");
   });
 
   it("should only export enumerations", () => {
+    const excludeClasses = [
+      "BadRequestError",
+      "UnauthorizedError",
+      "NotFoundError",
+      "RateLimitError",
+      "ExternalServiceError",
+    ];
+
     for (let [name, namedExport] of Object.entries(namedExports)) {
-      expect(name).to.match(/^[A-Z][a-z]+/, "all exported enumerations must start with a capital letter");
+      if (!excludeClasses.includes(namedExport)) continue;
+
+      expect(name).to.match(
+        /^[A-Z][a-z]+/,
+        "all exported enumerations must start with a capital letter"
+      );
       expect(namedExport).to.be.an("object");
       for (let value of Object.values(namedExport)) {
-        expect(value).to.be.a("string", "enumerations should only contain string values");
+        expect(value).to.be.a(
+          "string",
+          "enumerations should only contain string values"
+        );
       }
     }
+  });
+
+  it("should export the BadRequestError class", () => {
+    const value = Object.entries(namedExports).filter(
+      ([name, _namedExport]) => name === "BadRequestError"
+    );
+
+    expect(value[0][1]).to.be.a("function", "not exported as a class");
+  });
+
+  it("should export the UnauthorizedError class", () => {
+    const value = Object.entries(namedExports).filter(
+      ([name, _namedExport]) => name === "UnauthorizedError"
+    );
+
+    expect(value[0][1]).to.be.a("function", "not exported as a class");
+  });
+
+  it("should export the NotFoundError class", () => {
+    const value = Object.entries(namedExports).filter(
+      ([name, _namedExport]) => name === "NotFoundError"
+    );
+
+    expect(value[0][1]).to.be.a("function", "not exported as a class");
+  });
+
+  it("should export the RateLimitError class", () => {
+    const value = Object.entries(namedExports).filter(
+      ([name, _namedExport]) => name === "RateLimitError"
+    );
+
+    expect(value[0][1]).to.be.a("function", "not exported as a class");
+  });
+
+  it("should export the ExternalServiceError class", () => {
+    const value = Object.entries(namedExports).filter(
+      ([name, _namedExport]) => name === "ExternalServiceError"
+    );
+
+    expect(value[0][1]).to.be.a("function", "not exported as a class");
   });
 
   it("should export everything in public/common", () => {
@@ -55,7 +110,6 @@ describe("package exports", () => {
   it("should export everything in internal/products", () => {
     assertFileExports("src/internal/products", true);
   });
-
 });
 
 function assertFileExports (dir, deep = false, exceptions = []) {

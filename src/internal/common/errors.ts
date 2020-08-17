@@ -1,5 +1,5 @@
 import { ono } from "@jsdevtools/ono";
-import { ErrorCode, ShipEngineError, UUID } from "../../public";
+import { ErrorCode, AppError, UUID } from "../../public";
 
 
 /**
@@ -15,10 +15,10 @@ export interface ErrorProps {
 /**
  * Creates a ShipEngine Connect SDK error
  */
-export function error(code: ErrorCode, message: string, { originalError, ...props }: ErrorProps = {}): ShipEngineError {
+export function error(code: ErrorCode, message: string, { originalError, ...props }: ErrorProps = {}): AppError {
   // Capture the original error code
-  let original = originalError as ShipEngineError | undefined;
-  let originalCode = original ? original.originalCode ? original.originalCode : original.code : undefined;
+  let original = originalError as AppError | undefined;
+  let originalCode = original ? original.code : undefined;
 
   // Create a new error with:
   //  - The new error message and the original error message

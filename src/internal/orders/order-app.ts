@@ -92,7 +92,12 @@ export class OrderApp extends ConnectionApp {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the getSalesOrdersByDate method.", { originalError, transactionID });
+
+      if (originalError.code && [ErrorCode.BadRequest, ErrorCode.Unauthorized, ErrorCode.NotFound, ErrorCode.RateLimit, ErrorCode.ExternalServiceError].includes(originalError.code)) {
+        throw originalError;
+      } else {
+        throw error(ErrorCode.AppError, "Error in the getSalesOrdersByDate method.", { originalError, transactionID });
+      }
     }
   }
 
@@ -113,7 +118,12 @@ export class OrderApp extends ConnectionApp {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the shipmentCreated method.", { originalError, transactionID });
+
+      if (originalError.code && [ErrorCode.BadRequest, ErrorCode.Unauthorized, ErrorCode.NotFound, ErrorCode.RateLimit, ErrorCode.ExternalServiceError].includes(originalError.code)) {
+        throw originalError;
+      } else {
+        throw error(ErrorCode.AppError, "Error in the shipmentCreated method.", { originalError, transactionID });
+      }
     }
   }
 
@@ -134,7 +144,12 @@ export class OrderApp extends ConnectionApp {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the shipmentCancelled method.", { originalError, transactionID });
+
+      if (originalError.code && [ErrorCode.BadRequest, ErrorCode.Unauthorized, ErrorCode.NotFound, ErrorCode.RateLimit, ErrorCode.ExternalServiceError].includes(originalError.code)) {
+        throw originalError;
+      } else {
+        throw error(ErrorCode.AppError, "Error in the shipmentCancelled method.", { originalError, transactionID });
+      }
     }
   }
 }

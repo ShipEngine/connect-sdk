@@ -17,14 +17,14 @@ export class SalesOrderPackageItem implements ISalesOrderPackageItem {
     label: "package item",
     schema: Joi.object({
       salesOrder: SalesOrderIdentifier[_internal].schema.unknown(true).required(),
-      salesOrderItem: SalesOrderItemIdentifier[_internal].schema.unknown(true).required(),
+      salesOrderItem: SalesOrderItemIdentifier[_internal].schema.unknown(true),
       product: ProductIdentifier[_internal].schema.unknown(true),
       quantity: Quantity[_internal].schema.required(),
     }),
   };
 
   public readonly salesOrder: SalesOrderIdentifier;
-  public readonly salesOrderItem: SalesOrderItemIdentifier;
+  public readonly salesOrderItem?: SalesOrderItemIdentifier;
   public readonly product?: ProductIdentifier;
   public readonly quantity: Quantity;
 

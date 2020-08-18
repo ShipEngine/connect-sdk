@@ -14,7 +14,7 @@ export interface SalesOrderPackageItem {
   /**
    * The sales order item associated with this item
    */
-  readonly salesOrderItem: SalesOrderItemIdentifier;
+  readonly salesOrderItem?: SalesOrderItemIdentifier;
 
   /**
    * The product associated with this item

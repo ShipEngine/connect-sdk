@@ -1,4 +1,4 @@
-import { Customs as CustomsPOJO, DimensionsPOJO, MonetaryValuePOJO, NewPackage as INewPackage, PackagingIdentifierPOJO, WeightPOJO } from "../../../public";
+import { CustomsPOJO, DimensionsPOJO, MonetaryValuePOJO, NewPackage as INewPackage, PackagingIdentifierPOJO, WeightPOJO } from "../../../public";
 import { App, DefinitionIdentifier, Dimensions, hideAndFreeze, Joi, MonetaryValue, Weight, _internal } from "../../common";
 import { Customs } from "../customs/customs";
 import { NewLabel, NewLabelPOJO } from "../documents/new-label";

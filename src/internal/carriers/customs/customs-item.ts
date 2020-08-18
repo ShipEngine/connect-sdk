@@ -1,5 +1,5 @@
 import * as currency from "currency.js";
-import { Country, CustomsItem as CustomsItemPOJO, CustomsItemType } from "../../../public";
+import { Country, CustomsItemPOJO, CustomsItemType } from "../../../public";
 import { hideAndFreeze, Joi, MonetaryValue, Quantity, _internal } from "../../common";
 
 export class CustomsItem {

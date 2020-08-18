@@ -1,4 +1,4 @@
-import { Customs as CustomsPOJO, NonDeliveryOption } from "../../../public";
+import { CustomsPOJO, NonDeliveryOption } from "../../../public";
 import { hideAndFreeze, Joi, _internal } from "../../common";
 import { CustomsItem } from "./customs-item";
 

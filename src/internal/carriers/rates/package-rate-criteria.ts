@@ -1,6 +1,7 @@
-import { DimensionsPOJO, MonetaryValuePOJO, PackageRateCriteria as IPackageRateCriteria, PackagingIdentifierPOJO, WeightPOJO } from "../../../public";
+import { DimensionsPOJO, MonetaryValuePOJO, PackageRateCriteria as IPackageRateCriteria, PackagingIdentifierPOJO, WeightPOJO, CustomsPOJO } from "../../../public";
 import { App, DefinitionIdentifier, Dimensions, hideAndFreeze, Joi, MonetaryValue, Weight, _internal } from "../../common";
 import { Packaging } from "../packaging";
+import { Customs } from "../customs/customs";
 
 
 export interface PackageRateCriteriaPOJO {
@@ -10,6 +11,7 @@ export interface PackageRateCriteriaPOJO {
   insuredValue?: MonetaryValuePOJO;
   containsAlcohol?: boolean;
   isNonMachinable?: boolean;
+  customs: CustomsPOJO;
 }
 
 
@@ -25,6 +27,7 @@ export class PackageRateCriteria implements IPackageRateCriteria {
       insuredValue: MonetaryValue[_internal].schema,
       containsAlcohol: Joi.boolean(),
       isNonMachinable: Joi.boolean(),
+      customs: Customs[_internal].schema
     }),
   };
 
@@ -34,6 +37,8 @@ export class PackageRateCriteria implements IPackageRateCriteria {
   public readonly insuredValue?: MonetaryValue;
   public readonly containsAlcohol: boolean;
   public readonly isNonMachinable: boolean;
+  public readonly customs: Customs;
+
 
   public constructor(pojo: PackageRateCriteriaPOJO, app: App) {
     this.packaging = app[_internal].references.lookup(pojo.packaging, Packaging);
@@ -42,6 +47,7 @@ export class PackageRateCriteria implements IPackageRateCriteria {
     this.insuredValue = pojo.insuredValue && new MonetaryValue(pojo.insuredValue);
     this.containsAlcohol = pojo.containsAlcohol || false;
     this.isNonMachinable = pojo.isNonMachinable || false;
+    this.customs = new Customs(pojo.customs || {});
 
     // Make this object immutable
     hideAndFreeze(this);

@@ -4,7 +4,7 @@ import type { CustomsItemType } from "../enums";
 /**
  * Customs declarations for an item in a package
  */
-export interface CustomsItem {
+export interface CustomsItemPOJO {
   /**
    * The customs type category
    */
@@ -32,7 +32,7 @@ export interface CustomsItem {
 
   /**
    * The country of origin. This is usually the same as `countryOfManufacture`,
-   * but some countries distinguish between the two for certain prodocuts.
+   * but some countries distinguish between the two for certain products.
    */
   countryOfOrigin?: Country;
 

@@ -1,10 +1,10 @@
 import { NonDeliveryOption } from "../enums";
-import { CustomsItem } from "./customs-item";
+import { CustomsItemPOJO } from "./customs-item";
 
 /**
  * Customs declarations for international shipments
  */
-export interface Customs {
+export interface CustomsPOJO {
   /**
    * Indicates what should be done if the package cannot be delivered.
    * If `undefined`, the default behavior of the receiving country's customs department applies,
@@ -21,5 +21,5 @@ export interface Customs {
    * product type (e.g. two t-shirts). In addition, some package contents don't need to be dclared
    * for customs purposes.
    */
-  contents?: readonly CustomsItem[];
+  contents?: readonly CustomsItemPOJO[];
 }

@@ -170,6 +170,7 @@ const pojo = module.exports = {
       shipFrom: pojo.addressWithContactInfo(),
       shipTo: pojo.addressWithContactInfo(),
       shipDateTime: new Date(),
+      salesOrder: pojo.salesOrderIdentifier(),
       contents: [pojo.salesOrderPackageItem()],
       ...props,
     };
@@ -217,7 +218,6 @@ const pojo = module.exports = {
 
   salesOrderPackageItem (props = {}) {
     return {
-      salesOrder: pojo.salesOrderIdentifier(),
       salesOrderItem: pojo.salesOrderItemIdentifier(),
       quantity: pojo.quantity(),
       ...props,

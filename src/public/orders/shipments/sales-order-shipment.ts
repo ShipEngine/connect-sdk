@@ -1,6 +1,7 @@
 import { ShipmentIdentifier } from "../../carriers";
 import type { AddressWithContactInfo, DateTimeZone } from "../../common";
 import { SalesOrderPackageItem } from "./sales-order-package-item";
+import type { SalesOrderIdentifier } from "../../orders";
 
 
 /**
@@ -11,6 +12,11 @@ export interface SalesOrderShipment extends ShipmentIdentifier {
    * The URL of a webpage where the customer can track the shipment
    */
   readonly trackingURL?: URL;
+
+  /**
+   * The sales order associated with this shipment
+   */
+  readonly salesOrder: SalesOrderIdentifier;
 
   /**
    * If the shipment is being fulfilled using a well-known third-party carrier, such as UPS, FedEx, DHL, etc.

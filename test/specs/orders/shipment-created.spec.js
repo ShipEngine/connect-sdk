@@ -75,6 +75,7 @@ describe("shipmentCreated", () => {
           "Invalid shipment: \n" +
           "  trackingNumber must be a string \n" +
           "  identifiers must be of type object \n" +
+          "  salesOrder is required \n" +
           "  shipTo is required \n" +
           "  shipDateTime is required \n" +
           "  contents must contain at least 1 items"

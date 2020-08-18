@@ -1,11 +1,12 @@
-import { AddressWithContactInfoPOJO, DateTimeZonePOJO, SalesOrderShipment as ISalesOrderShipment, ShipmentIdentifierPOJO, URLString } from "../../../public";
+import { AddressWithContactInfoPOJO, DateTimeZonePOJO, SalesOrderIdentifierPOJO, SalesOrderShipment as ISalesOrderShipment, ShipmentIdentifierPOJO, URLString } from "../../../public";
 import { ShipmentIdentifier, ShipmentIdentifierBase } from "../../carriers";
 import { AddressWithContactInfo, DateTimeZone, hideAndFreeze, Joi, _internal } from "../../common";
 import { SalesOrderPackageItem, SalesOrderPackageItemPOJO } from "./sales-order-package-item";
-
+import { SalesOrderIdentifier } from "../../orders/sales-order-identifier";
 
 export interface SalesOrderShipmentPOJO extends ShipmentIdentifierPOJO {
   trackingURL?: URLString | URL;
+  salesOrder: SalesOrderIdentifierPOJO;
   fulfillmentService?: string;
   shipFrom?: AddressWithContactInfoPOJO;
   shipTo: AddressWithContactInfoPOJO;
@@ -19,6 +20,7 @@ export class SalesOrderShipment extends ShipmentIdentifierBase implements ISales
     label: "shipment",
     schema: ShipmentIdentifier[_internal].schema.keys({
       trackingURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
+      salesOrder: SalesOrderIdentifier[_internal].schema.unknown(true).required(),
       fulfillmentService: Joi.string(),
       shipFrom: AddressWithContactInfo[_internal].schema,
       shipTo: AddressWithContactInfo[_internal].schema.required(),
@@ -28,6 +30,7 @@ export class SalesOrderShipment extends ShipmentIdentifierBase implements ISales
   };
 
   public readonly trackingURL?: URL;
+  public readonly salesOrder: SalesOrderIdentifier;
   public readonly fulfillmentService?: string;
   public readonly shipFrom?: AddressWithContactInfo;
   public readonly shipTo: AddressWithContactInfo;
@@ -39,6 +42,7 @@ export class SalesOrderShipment extends ShipmentIdentifierBase implements ISales
     super(pojo);
 
     this.trackingURL = pojo.trackingURL ? new URL(pojo.trackingURL as string) : undefined;
+    this.salesOrder = new SalesOrderIdentifier(pojo.salesOrder);
     this.fulfillmentService = pojo.fulfillmentService;
     this.shipFrom = pojo.shipFrom && new AddressWithContactInfo(pojo.shipFrom);
     this.shipTo = new AddressWithContactInfo(pojo.shipTo);

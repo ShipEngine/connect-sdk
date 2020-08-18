@@ -5,20 +5,24 @@ import { Joi } from "../validation";
 import { DateTimeZone } from "./date-time-zone";
 
 export abstract class TimeRangeBase implements ITimeRange {
-  public readonly startDateTime: DateTimeZone;
-  public readonly endDateTime: DateTimeZone;
+  public readonly startDateTime?: DateTimeZone;
+  public readonly endDateTime?: DateTimeZone;
 
   public constructor(pojo: TimeRangePOJO) {
-    this.startDateTime = new DateTimeZone(pojo.startDateTime);
-    this.endDateTime = new DateTimeZone(pojo.endDateTime);
+    this.startDateTime = pojo.startDateTime ? new DateTimeZone(pojo.startDateTime) : undefined;
+    this.endDateTime = pojo.endDateTime ? new DateTimeZone(pojo.endDateTime) : undefined;
 
-    if (this.endDateTime.getTime() < this.startDateTime.getTime()) {
-      throw error(ErrorCode.Validation,
-        `Invalid time range: ${this.toString()}. The start date occurs after the end date.`);
+    if (this.startDateTime && this.endDateTime) {
+      if (this.endDateTime.getTime() < this.startDateTime.getTime()) {
+        throw error(ErrorCode.Validation,
+          `Invalid time range: ${this.toString()}. The start date occurs after the end date.`);
+      }
     }
   }
 
   public toString() {
+    if (!this.startDateTime || !this.endDateTime) return "";
+
     return `${this.startDateTime.toISOString()} - ${this.endDateTime.toISOString()}`;
   }
 }
@@ -28,8 +32,8 @@ export class TimeRange extends TimeRangeBase {
   public static readonly [_internal] = {
     label: "time range",
     schema: Joi.object({
-      startDateTime: DateTimeZone[_internal].schema.required(),
-      endDateTime: DateTimeZone[_internal].schema.required(),
+      startDateTime: DateTimeZone[_internal].schema,
+      endDateTime: DateTimeZone[_internal].schema,
     }),
   };
 

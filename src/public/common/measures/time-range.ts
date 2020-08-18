@@ -7,12 +7,12 @@ export interface TimeRangePOJO {
   /**
    * The start date/time of the range
    */
-  startDateTime: DateTimeZonePOJO | Date | string;
+  startDateTime?: DateTimeZonePOJO | Date | string;
 
   /**
    * The end date/time of the range
    */
-  endDateTime: DateTimeZonePOJO | Date | string;
+  endDateTime?: DateTimeZonePOJO | Date | string;
 }
 
 
@@ -23,15 +23,15 @@ export interface TimeRange {
   /**
    * The start date/time of the range
    */
-  readonly startDateTime: DateTimeZone;
+  readonly startDateTime?: DateTimeZone;
 
   /**
    * The end date/time of the range
    */
-  readonly endDateTime: DateTimeZone;
+  readonly endDateTime?: DateTimeZone;
 
   /**
-   * Returns the time range as a string
+   * Returns the time range as a string, if available
    */
   toString(): string;
 }

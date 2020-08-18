@@ -113,6 +113,7 @@ describe("getSalesOrdersByDate", () => {
       let app = new OrderApp(pojo.orderApp());
       let iterable = app.getSalesOrdersByDate(pojo.transaction(), {
         startDateTime: "9999-99-99T99:99:99.999Z",
+        endDateTime: "9999-99-99T99:99:99.999Z",
       });
       let iterator = iterable[Symbol.asyncIterator]();
 
@@ -125,7 +126,7 @@ describe("getSalesOrdersByDate", () => {
           "Invalid input to the getSalesOrdersByDate method. \n" +
           "Invalid time range: \n" +
           "  startDateTime must be a valid date/time \n" +
-          "  endDateTime is required"
+          "  endDateTime must be a valid date/time"
         );
       }
     });

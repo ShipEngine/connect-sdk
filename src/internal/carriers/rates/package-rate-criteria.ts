@@ -11,8 +11,9 @@ export interface PackageRateCriteriaPOJO {
   insuredValue?: MonetaryValuePOJO;
   containsAlcohol?: boolean;
   isNonMachinable?: boolean;
-  customs: CustomsPOJO;
+  customs?: CustomsPOJO;
 }
+
 
 
 export class PackageRateCriteria implements IPackageRateCriteria {
@@ -37,7 +38,7 @@ export class PackageRateCriteria implements IPackageRateCriteria {
   public readonly insuredValue?: MonetaryValue;
   public readonly containsAlcohol: boolean;
   public readonly isNonMachinable: boolean;
-  public readonly customs: Customs;
+  public readonly customs?: Customs;
 
 
   public constructor(pojo: PackageRateCriteriaPOJO, app: App) {

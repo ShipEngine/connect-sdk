@@ -1,5 +1,5 @@
 import type { Dimensions, MonetaryValue, Weight } from "../../common";
-import { CustomsPOJO } from "../customs/customs";
+import { Customs } from "../customs/customs";
 import type { NewLabel } from "../documents/new-label";
 import type { Packaging } from "../packaging";
 import type { PackageItem } from "./package-item";
@@ -47,7 +47,7 @@ export interface NewPackage {
   /**
    * Customs declarations for this package
    */
-  readonly customs: CustomsPOJO;
+  readonly customs: Customs;
 
   /**
    * Describes the items inside the package

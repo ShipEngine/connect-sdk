@@ -1,6 +1,6 @@
 import type { Dimensions, MonetaryValue, Weight } from "../../common";
 import type { Packaging } from "../packaging";
-import { CustomsPOJO } from "../customs/customs";
+import { Customs } from "../customs/customs";
 
 
 /**
@@ -42,5 +42,5 @@ export interface PackageRateCriteria {
   /**
    * Customs declarations for this package
    */
-  readonly customs?: CustomsPOJO;
+  readonly customs?: Customs;
 }

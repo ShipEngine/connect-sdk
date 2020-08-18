@@ -57,7 +57,7 @@ describe("rateShipment", () => {
         packaging: {
           ...rates[0].packages[0].packaging,
           id: "44444444-4444-4444-4444-444444444444",
-        },
+        }
       }],
     }]);
   });
@@ -207,7 +207,7 @@ describe("rateShipment", () => {
     }]);
   });
 
-  it("should return a rate from all possible return values", async () => {
+  it.only("should return a rate from all possible return values", async () => {
     let app = new CarrierApp(pojo.carrierApp({
       deliveryServices: [
         pojo.deliveryService({
@@ -255,7 +255,23 @@ describe("rateShipment", () => {
       }]
     }));
 
-    let rates = await app.rateShipment(pojo.transaction(), pojo.rateCriteria());
+
+    const rateCritera = pojo.rateCriteria();
+
+    rateCritera.packages[0].customs = {
+      contents: [{
+        type: "gift",
+        quantity: {
+          value: 1
+        },
+        unitValue: {
+          value: 10,
+          currency: "usd"
+        }
+      }]
+    };
+
+    let rates = await app.rateShipment(pojo.transaction(), rateCritera);
 
     expect(rates).to.deep.equal([{
       deliveryService: {
@@ -321,7 +337,7 @@ describe("rateShipment", () => {
 
     it("should throw an error if called with no arguments", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        rateShipment () { }
+        rateShipment() { }
       }));
 
       try {
@@ -339,7 +355,7 @@ describe("rateShipment", () => {
 
     it("should throw an error if called without a shipment", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        rateShipment () { }
+        rateShipment() { }
       }));
 
       try {
@@ -357,7 +373,7 @@ describe("rateShipment", () => {
 
     it("should throw an error if called with an invalid shipment", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        rateShipment () { }
+        rateShipment() { }
       }));
 
       try {
@@ -385,7 +401,7 @@ describe("rateShipment", () => {
 
     it("should throw an error if nothing is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        rateShipment () { }
+        rateShipment() { }
       }));
 
       try {

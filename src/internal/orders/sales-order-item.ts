@@ -1,6 +1,6 @@
 import * as currency from "currency.js";
 import { SalesOrderItem as SalesOrderItemPOJO } from "../../public";
-import { hideAndFreeze, Joi, MonetaryValue, Note, Quantity, Weight, _internal } from "../common";
+import { hideAndFreeze, Joi, MonetaryValue, Quantity, Weight, _internal } from "../common";
 import { ProductIdentifier } from "../products";
 import { SalesOrderItemIdentifier, SalesOrderItemIdentifierBase } from "./sales-order-item-identifier";
 
@@ -16,8 +16,6 @@ export class SalesOrderItem extends SalesOrderItemIdentifierBase {
       unitWeight: Weight[_internal].schema,
       itemURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
       thumbnailURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
-      notes: Note[_internal].notesSchema,
-      metadata: Joi.object(),
     }),
   };
 
@@ -30,9 +28,6 @@ export class SalesOrderItem extends SalesOrderItemIdentifierBase {
   public readonly unitWeight?: Weight;
   public readonly itemURL?: URL;
   public readonly thumbnailURL?: URL;
-
-  public readonly notes: readonly Note[];
-  public readonly metadata: object;
 
   public constructor(pojo: SalesOrderItemPOJO) {
     super(pojo);
@@ -49,8 +44,6 @@ export class SalesOrderItem extends SalesOrderItemIdentifierBase {
     this.unitWeight = pojo.unitWeight && new Weight(pojo.unitWeight);
     this.itemURL = pojo.itemURL ? new URL(pojo.itemURL as string) : undefined;
     this.thumbnailURL = pojo.thumbnailURL ? new URL(pojo.thumbnailURL as string) : undefined;
-    this.notes = pojo.notes || [];
-    this.metadata = pojo.metadata || {};
 
     // Make this object immutable
     hideAndFreeze(this);

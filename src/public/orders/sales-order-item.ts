@@ -1,4 +1,4 @@
-import type { MonetaryValuePOJO, NotePOJO, QuantityPOJO, URLString, WeightPOJO } from "../common";
+import type { MonetaryValuePOJO, QuantityPOJO, URLString, WeightPOJO } from "../common";
 import type { ProductIdentifierPOJO } from "../products";
 import type { SalesOrderItemIdentifierPOJO } from "./sales-order-item-identifier";
 
@@ -47,14 +47,4 @@ export interface SalesOrderItem extends SalesOrderItemIdentifierPOJO {
    */
   thumbnailURL?: URLString | URL;
 
-  /**
-   * Human-readable information regarding this order item, such as gift notes, backorder notices, etc.
-   */
-  notes?: NotePOJO[];
-
-  /**
-   * Arbitrary data about this order item that will be persisted by the ShipEngine Connect.
-   * Must be JSON serializable.
-   */
-  metadata?: object;
 }

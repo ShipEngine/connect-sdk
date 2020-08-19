@@ -89,7 +89,7 @@ abstract class BaseError extends Error implements AppError {
 export class BadRequestError extends BaseError {
   public canBeRetried = false;
   public code = ErrorCode.BadRequest;
-  public fieldErrors: FieldError[];
+  // public fieldErrors: FieldError[];
   public source = ErrorSource.External;
   public statusCode = 400;
 
@@ -98,7 +98,7 @@ export class BadRequestError extends BaseError {
   public constructor(messageOrParams: string | AppError) {
     super(messageOrParams);
     this.name = "BadRequestError";
-    this.fieldErrors = messageOrParams.fieldErrors || [];
+    // this.fieldErrors = messageOrParams.fieldErrors || [];
   }
 }
 

@@ -219,6 +219,8 @@ export class CarrierApp extends ConnectionApp {
     let _transaction, _shipment;
     let { createShipment } = this[_private];
 
+    console.log(_transaction);
+
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
       _shipment = new NewShipment(validate(shipment, NewShipment), this);

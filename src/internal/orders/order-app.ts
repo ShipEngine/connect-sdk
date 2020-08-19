@@ -3,7 +3,6 @@ import { AppPOJO, ConnectionApp, error, FormPOJO, hideAndFreeze, Joi, Transactio
 import { SalesOrder } from "./sales-order";
 import { SalesOrderTimeRange, SalesOrderTimeRangePOJO } from "./sales-order-time-range";
 import { SalesOrderShipment, SalesOrderShipmentPOJO } from "./shipments/sales-order-shipment";
-import { getAsyncIterable } from "./utils";
 
 const _private = Symbol("private fields");
 
@@ -64,8 +63,8 @@ export class OrderApp extends ConnectionApp {
     this[_internal].references.finishedLoading();
   }
 
-  public async* getSalesOrdersByDate?(
-    transaction: TransactionPOJO, range: SalesOrderTimeRangePOJO): AsyncGenerator<SalesOrder> {
+  public async getSalesOrdersByDate?(
+    transaction: TransactionPOJO, range: SalesOrderTimeRangePOJO): Promise<SalesOrder[]> {
 
     let _transaction, _range;
     let { getSalesOrdersByDate } = this[_private];
@@ -80,15 +79,13 @@ export class OrderApp extends ConnectionApp {
 
     try {
       let salesOrders = await getSalesOrdersByDate!(_transaction, _range);
-      let iterable = getAsyncIterable(salesOrders);
 
-      if (!iterable) {
-        throw error(ErrorCode.AppError, "The return value is not iterable");
+      const validatedSalesOrders = [];
+      for (let salesOrder of salesOrders) {
+        validatedSalesOrders.push(new SalesOrder(validate(salesOrder, SalesOrder)));
       }
 
-      for await (let salesOrder of iterable) {
-        yield new SalesOrder(validate(salesOrder, SalesOrder));
-      }
+      return validatedSalesOrders;
     }
     catch (originalError) {
       let transactionID = _transaction.id;

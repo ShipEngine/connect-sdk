@@ -15,6 +15,31 @@ export interface ProductIdentifierPOJO {
   sku?: string;
 
   /**
+   * The Universal Product Code for this item.
+   */
+  upc?: string;
+
+  /**
+   * The International Standard Book Number for this item.
+   */
+  isbn?: string;
+
+  /**
+   * The Amazon Standard Identification Number for this item.
+   */
+  asin?: string;
+
+  /**
+   * The Stock Keeping Unit related to the fulfillment of this item.
+   */
+  fulfillmentSku?: string;
+
+  /**
+   * Inventory ID for this item.
+   */
+  inventoryID?: string;
+
+  /**
    * Your own identifiers for this product
    */
   identifiers?: Identifiers;
@@ -33,6 +58,31 @@ export interface ProductIdentifier {
    * The Stock Keeping Unit code for this item
    */
   readonly sku: string;
+
+  /**
+   * The Universal Product Code for this item.
+   */
+  readonly upc: string;
+
+  /**
+   * The International Standard Book Number for this item.
+   */
+  readonly isbn: string;
+
+  /**
+   * The Amazon Standard Identification Number for this item.
+   */
+  readonly asin: string;
+
+  /**
+   * The Stock Keeping Unit related to the fulfillment of this item.
+   */
+  readonly fulfillmentSku: string;
+
+  /**
+   * Inventory ID for this item.
+   */
+  readonly inventoryID: string;
 
   /**
    * Your own identifiers for this product

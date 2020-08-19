@@ -14,11 +14,22 @@ export class ProductIdentifier implements IProductIdentifier {
 
   public readonly id: string;
   public readonly sku: string;
+  public readonly upc: string;
+  public readonly isbn: string;
+  public readonly asin: string;
+  public readonly fulfillmentSku: string;
+  public readonly inventoryID: string;
   public readonly identifiers: Identifiers;
 
   public constructor(pojo: ProductIdentifierPOJO) {
     this.id = pojo.id;
     this.sku = pojo.sku || "";
+    this.upc = pojo.upc || "";
+    this.isbn = pojo.isbn || "";
+    this.asin = pojo.asin || "";
+    this.fulfillmentSku = pojo.fulfillmentSku || "";
+    this.inventoryID = pojo.inventoryID || "";
+
     this.identifiers = new Identifiers(pojo.identifiers);
 
     // Make this object immutable

@@ -18,7 +18,7 @@ export interface ErrorProps {
 export function error(code: ErrorCode, message: string, { originalError, ...props }: ErrorProps = {}): AppError {
   // Capture the original error code
   let original = originalError as AppError | undefined;
-  let originalCode = original ? original.code : undefined;
+  let originalCode = original ? original.originalCode ? original.originalCode : original.code : undefined;
 
   // Create a new error with:
   //  - The new error message and the original error message

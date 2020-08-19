@@ -5,7 +5,7 @@ export enum ErrorSource {
   Internal = "internal",
 }
 
-export interface AppError {
+export interface AppError extends Error {
   canBeRetried?: boolean;
   code: string;
   originalCode?: string;

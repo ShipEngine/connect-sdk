@@ -13,70 +13,22 @@ describe("package exports", () => {
     expect(namedExports).not.to.include.key("default");
   });
 
-  it("should only export enumerations", () => {
-    const excludeClasses = [
-      "BadRequestError",
-      "UnauthorizedError",
-      "NotFoundError",
-      "RateLimitError",
-      "ExternalServiceError",
-    ];
-
+  it("should only export enumerations and classes", () => {
     for (let [name, namedExport] of Object.entries(namedExports)) {
-      if (!excludeClasses.includes(namedExport)) continue;
+      expect(name).to.match(/^[A-Z][a-z]+/, "all exported classes/enumerations must start with a capital letter");
 
-      expect(name).to.match(
-        /^[A-Z][a-z]+/,
-        "all exported enumerations must start with a capital letter"
-      );
-      expect(namedExport).to.be.an("object");
-      for (let value of Object.values(namedExport)) {
-        expect(value).to.be.a(
-          "string",
-          "enumerations should only contain string values"
-        );
+      if (typeof namedExport === "object") {
+        // Verify that this is an enumeration
+        for (let value of Object.values(namedExport)) {
+          expect(value).to.be.a("string", `${name} is not an enumeration or class`);
+        }
+      }
+      else {
+        // Verify that this is a class
+        expect(namedExport).to.be.a("function", `${name} is not an enumeration or class`);
+        expect(namedExport.name).to.equal(name, `${name} is not an enumeration or class`);
       }
     }
-  });
-
-  it("should export the BadRequestError class", () => {
-    const value = Object.entries(namedExports).filter(
-      ([name, _namedExport]) => name === "BadRequestError"
-    );
-
-    expect(value[0][1]).to.be.a("function", "not exported as a class");
-  });
-
-  it("should export the UnauthorizedError class", () => {
-    const value = Object.entries(namedExports).filter(
-      ([name, _namedExport]) => name === "UnauthorizedError"
-    );
-
-    expect(value[0][1]).to.be.a("function", "not exported as a class");
-  });
-
-  it("should export the NotFoundError class", () => {
-    const value = Object.entries(namedExports).filter(
-      ([name, _namedExport]) => name === "NotFoundError"
-    );
-
-    expect(value[0][1]).to.be.a("function", "not exported as a class");
-  });
-
-  it("should export the RateLimitError class", () => {
-    const value = Object.entries(namedExports).filter(
-      ([name, _namedExport]) => name === "RateLimitError"
-    );
-
-    expect(value[0][1]).to.be.a("function", "not exported as a class");
-  });
-
-  it("should export the ExternalServiceError class", () => {
-    const value = Object.entries(namedExports).filter(
-      ([name, _namedExport]) => name === "ExternalServiceError"
-    );
-
-    expect(value[0][1]).to.be.a("function", "not exported as a class");
   });
 
   it("should export everything in public/common", () => {
@@ -112,7 +64,7 @@ describe("package exports", () => {
   });
 });
 
-function assertFileExports (dir, deep = false, exceptions = []) {
+function assertFileExports(dir, deep = false, exceptions = []) {
   // Always exclude these files.
   exceptions.push("index.ts", ".DS_STORE", "Thumbs.db");
 

@@ -18,6 +18,7 @@ import { ShipmentConfirmation } from "./shipments/shipment-confirmation";
 import { TrackingCriteria, TrackingCriteriaPOJO } from "./tracking/tracking-criteria";
 import { TrackingInfo } from "./tracking/tracking-info";
 import { getMaxServiceArea } from "./utils";
+import { isError } from "@hapi/joi";
 
 const _private = Symbol("private fields");
 
@@ -234,14 +235,7 @@ export class CarrierApp extends ConnectionApp {
     catch (originalError) {
       let transactionID = _transaction.id;
 
-      if (originalError.code && [ErrorCode.BadRequest, ErrorCode.Unauthorized, ErrorCode.NotFound, ErrorCode.RateLimit, ErrorCode.ExternalServiceError].includes(originalError.code)) {
-        throw originalError;
-      } else {
-        throw error(ErrorCode.AppError, "Error in the createShipment method.", {
-          originalError,
-          transactionID,
-        });
-      }
+      throw error((originalError.code, ErrorCode.AppError), "Error in the createShipment method.", { originalError, transactionID });
     }
   }
 
@@ -251,14 +245,6 @@ export class CarrierApp extends ConnectionApp {
     let _transaction, _shipments;
     let { cancelShipments } = this[_private];
 
-    try {
-      _transaction = new Transaction(validate(transaction, Transaction));
-      _shipments = validateArray(shipments, ShipmentCancellation)
-        .map((shipment) => new ShipmentCancellation(shipment));
-    }
-    catch (originalError) {
-      throw error(ErrorCode.InvalidInput, "Invalid input to the cancelShipments method.", { originalError });
-    }
 
     try {
       let confirmations = await cancelShipments!(_transaction, _shipments);
@@ -277,11 +263,7 @@ export class CarrierApp extends ConnectionApp {
     catch (originalError) {
       let transactionID = _transaction.id;
 
-      if (originalError.code && [ErrorCode.BadRequest, ErrorCode.Unauthorized, ErrorCode.NotFound, ErrorCode.RateLimit, ErrorCode.ExternalServiceError].includes(originalError.code)) {
-        throw originalError;
-      } else {
-        throw error(ErrorCode.AppError, "Error in the cancelShipments method.", { originalError, transactionID });
-      }
+      throw error((originalError.code, ErrorCode.AppError), "Error in the cancelShipments method.", { originalError, transactionID });
     }
   }
 
@@ -306,11 +288,7 @@ export class CarrierApp extends ConnectionApp {
     catch (originalError) {
       let transactionID = _transaction.id;
 
-      if (originalError.code && [ErrorCode.BadRequest, ErrorCode.Unauthorized, ErrorCode.NotFound, ErrorCode.RateLimit, ErrorCode.ExternalServiceError].includes(originalError.code)) {
-        throw originalError;
-      } else {
-        throw error(ErrorCode.AppError, "Error in the rateShipment method.", { originalError, transactionID });
-      }
+      throw error((originalError.code, ErrorCode.AppError), "Error in the rateShipment method.", { originalError, transactionID });
     }
   }
 
@@ -335,11 +313,7 @@ export class CarrierApp extends ConnectionApp {
     catch (originalError) {
       let transactionID = _transaction.id;
 
-      if (originalError.code && [ErrorCode.BadRequest, ErrorCode.Unauthorized, ErrorCode.NotFound, ErrorCode.RateLimit, ErrorCode.ExternalServiceError].includes(originalError.code)) {
-        throw originalError;
-      } else {
-        throw error(ErrorCode.AppError, "Error in the trackShipment method.", { originalError, transactionID });
-      }
+      throw error((originalError.code, ErrorCode.AppError), "Error in the trackShipment method.", { originalError, transactionID });
     }
   }
 
@@ -364,11 +338,7 @@ export class CarrierApp extends ConnectionApp {
     catch (originalError) {
       let transactionID = _transaction.id;
 
-      if (originalError.code && [ErrorCode.BadRequest, ErrorCode.Unauthorized, ErrorCode.NotFound, ErrorCode.RateLimit, ErrorCode.ExternalServiceError].includes(originalError.code)) {
-        throw originalError;
-      } else {
-        throw error(ErrorCode.AppError, "Error in the createManifest method.", { originalError, transactionID });
-      }
+      throw error((originalError.code, ErrorCode.AppError), "Error in the createManifest method.", { originalError, transactionID });
     }
   }
 
@@ -399,11 +369,7 @@ export class CarrierApp extends ConnectionApp {
     catch (originalError) {
       let transactionID = _transaction.id;
 
-      if (originalError.code && [ErrorCode.BadRequest, ErrorCode.Unauthorized, ErrorCode.NotFound, ErrorCode.RateLimit, ErrorCode.ExternalServiceError].includes(originalError.code)) {
-        throw originalError;
-      } else {
-        throw error(ErrorCode.AppError, "Error in the schedulePickup method.", { originalError, transactionID });
-      }
+      throw error((originalError.code, ErrorCode.AppError), "Error in the schedulePickup method.", { originalError, transactionID });
     }
   }
 
@@ -438,11 +404,7 @@ export class CarrierApp extends ConnectionApp {
     catch (originalError) {
       let transactionID = _transaction.id;
 
-      if (originalError.code && [ErrorCode.BadRequest, ErrorCode.Unauthorized, ErrorCode.NotFound, ErrorCode.RateLimit, ErrorCode.ExternalServiceError].includes(originalError.code)) {
-        throw originalError;
-      } else {
-        throw error(ErrorCode.AppError, "Error in the cancelPickups method.", { originalError, transactionID });
-      }
+      throw error((originalError.code, ErrorCode.AppError), "Error in the cancelPickups method.", { originalError, transactionID });
     }
   }
 

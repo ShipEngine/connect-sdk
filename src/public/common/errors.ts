@@ -1,13 +1,16 @@
+/* eslint-disable @typescript-eslint/default-param-last */
 export enum ErrorSource {
   External = "external",
   Internal = "internal",
 }
 
 export interface AppError {
+  canBeRetried?: boolean;
   code: string;
+  originalError?: Error;
   source?: ErrorSource;
   statusCode?: number;
-  canBeRetried?: boolean;
+  transactionID?: string;
 }
 
 /**
@@ -77,7 +80,7 @@ export class UnauthorizedError extends Error implements AppError {
   public canBeRetried = false;
 
   public constructor(
-    message = "The request has not been applied because it lacks valid authentication credentials for the target resource."
+    message = "The request has not been applied because it lacks valid authentication credentials for the target resource.",
   ) {
     super(message);
     this.name = "UnauthorizedError";
@@ -94,7 +97,7 @@ export class NotFoundError extends Error implements AppError {
   public canBeRetried = false;
 
   public constructor(
-    message = "The resource you are looking for was not found."
+    message = "The resource you are looking for was not found.",
   ) {
     super(message);
     this.name = "NotFoundError";
@@ -113,7 +116,7 @@ export class RateLimitError extends Error implements AppError {
 
   public constructor(
     message = "The user has sent too many requests in a given amount of time.",
-    retryInMilliseconds?: number
+    retryInMilliseconds?: number,
   ) {
     super(message);
     this.name = "RateLimitError";

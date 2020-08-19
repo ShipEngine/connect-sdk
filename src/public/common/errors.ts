@@ -1,20 +1,3 @@
-
-/* eslint-disable @typescript-eslint/default-param-last */
-export enum ErrorSource {
-  External = "external",
-  Internal = "internal",
-}
-
-export interface AppError extends Error {
-  canBeRetried?: boolean;
-  code: string;
-  originalCode?: string;
-  originalError?: Error;
-  source?: ErrorSource;
-  statusCode?: number;
-  transactionID?: string;
-}
-
 /**
  * Error codes for ShipEngine Connect SDK runtime errors
  */
@@ -47,29 +30,75 @@ export interface FieldError {
   fieldName?: string;
 }
 
+export enum ErrorSource {
+  External = "external",
+  Internal = "internal",
+}
+
+export interface AppError extends Error {
+  message: string;
+  canBeRetried?: boolean;
+  code: ErrorCode;
+  originalError?: Error;
+  source?: ErrorSource;
+  statusCode?: number;
+  transactionID?: string;
+}
+
+/**
+ * This method is used to create field errors which are used in various errors.
+ *
+ * @param {string} attemptedValue The value the user supplied.
+ * @param {string} errorCode An error code if one is applicable.
+ * @param {string} errorMessage The useful error message to return to the user.
+ * @param {string} fieldName The name of the field that is failing to validate.
+ */
+abstract class BaseError extends Error implements AppError {
+  public code: ErrorCode;
+  public source?: ErrorSource;
+  public statusCode?: number;
+  public canBeRetried?: boolean;
+  public originalError?: Error;
+  public transactionID?: string;
+
+  public constructor(message: string)
+  public constructor(params: AppError)
+  public constructor(messageOrParams: string | AppError) {
+    if (typeof messageOrParams === "string") {
+      super(messageOrParams);
+      this.code = ErrorCode.AppError;
+    }
+    else {
+      super(messageOrParams.message);
+      this.code = messageOrParams.code;
+      this.source = messageOrParams.source;
+      this.statusCode = messageOrParams.statusCode;
+      this.canBeRetried = messageOrParams.canBeRetried;
+      this.originalError = messageOrParams.originalError;
+      this.transactionID = messageOrParams.transactionID;
+    }
+  }
+}
+
 /**
  * A Bad Request Error.
  *
  * @param {string} message The message that needs to be communicated to the users.
  * @param {FieldError[]} fieldErrors An array of objects created by the CreateFieldError function.
  */
-export class BadRequestError extends Error implements AppError {
-  public errors: FieldError[];
+export class BadRequestError extends BaseError {
+  public canBeRetried = false;
   public code = ErrorCode.BadRequest;
+  public fieldErrors: FieldError[];
   public source = ErrorSource.External;
   public statusCode = 400;
-  public canBeRetried = false;
-  public originalCode?: string;
-  public originalError?: Error | undefined;
-  public transactionID?: string | undefined;
 
-  public constructor(
-    message = "The request is invalid.",
-    fieldErrors: FieldError[] = []
-  ) {
-    super(message);
+  public constructor(message: string)
+  public constructor(params: AppError)
+  public constructor(messageOrParams: string | AppError) {
+    super(messageOrParams);
     this.name = "BadRequestError";
-    this.errors = fieldErrors;
+    this.fieldErrors = messageOrParams.fieldErrors || [];
   }
 }
 

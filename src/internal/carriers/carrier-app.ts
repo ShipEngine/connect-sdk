@@ -244,6 +244,14 @@ export class CarrierApp extends ConnectionApp {
     let _transaction, _shipments;
     let { cancelShipments } = this[_private];
 
+    try {
+      _transaction = new Transaction(validate(transaction, Transaction));
+      _shipments = validateArray(shipments, ShipmentCancellation)
+        .map((shipment) => new ShipmentCancellation(shipment));
+    }
+    catch (originalError) {
+      throw error(ErrorCode.InvalidInput, "Invalid input to the cancelShipments method.", { originalError });
+    }
 
     try {
       let confirmations = await cancelShipments!(_transaction, _shipments);

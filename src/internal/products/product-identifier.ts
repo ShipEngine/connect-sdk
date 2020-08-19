@@ -8,6 +8,11 @@ export class ProductIdentifier implements IProductIdentifier {
     schema: Joi.object({
       id: Joi.string().trim().singleLine().min(1).max(100).required(),
       sku: Joi.string().trim().singleLine().allow("").max(100),
+      upc: Joi.string().trim().singleLine().allow("").max(100),
+      isbn: Joi.string().trim().singleLine().allow("").max(100),
+      asin: Joi.string().trim().singleLine().allow("").max(100),
+      fulfillmentSku: Joi.string().trim().singleLine().allow("").max(100),
+      inventoryID: Joi.string().trim().singleLine().allow("").max(100),
       identifiers: Identifiers[_internal].schema,
     }),
   };

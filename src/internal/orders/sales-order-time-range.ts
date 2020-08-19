@@ -13,7 +13,7 @@ export class SalesOrderTimeRange extends TimeRangeBase implements ISalesOrderTim
     schema: TimeRange[_internal].schema.keys({
       paging: Joi.object({
         pageSize: Joi.number().integer().min(1).required(),
-        pageNumber: Joi.number().integer().min(0).required(),
+        pageNumber: Joi.number().integer().min(0),
         pageCount: Joi.number().integer().min(1),
         cursor: Joi.string()
       })
@@ -22,7 +22,7 @@ export class SalesOrderTimeRange extends TimeRangeBase implements ISalesOrderTim
 
   public readonly paging: {
     readonly pageSize: number;
-    readonly pageNumber: number;
+    readonly pageNumber?: number;
     readonly pageCount: number;
     readonly cursor?: string;
   };

@@ -14,7 +14,7 @@ export interface SalesOrderPaging {
   pageSize: number;
 
   /** The desired page number to return */
-  pageNumber: number;
+  pageNumber?: number;
 
   /** The desired maximum number of pages to return */
   pageCount: number;

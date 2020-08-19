@@ -33,6 +33,7 @@ export enum NoteType {
  * Types of delivery confirmations
  */
 export enum DeliveryConfirmationType {
+  None = "none",
   Delivery = "delivery",
   Signature = "signature",
   AdultSignature = "adult_signature",

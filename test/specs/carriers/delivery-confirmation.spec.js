@@ -125,7 +125,7 @@ describe("DeliveryConfirmation", () => {
       })
       ).to.throw(
         "Invalid ShipEngine Connect carrier app: \n" +
-        "  deliveryServices[0].deliveryConfirmations[0].type must be one of delivery, signature, adult_signature, direct_signature"
+        "  deliveryServices[0].deliveryConfirmations[0].type must be one of none, delivery, signature, adult_signature, direct_signature"
       );
     });
 

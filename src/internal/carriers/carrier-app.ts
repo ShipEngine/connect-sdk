@@ -18,7 +18,6 @@ import { ShipmentConfirmation } from "./shipments/shipment-confirmation";
 import { TrackingCriteria, TrackingCriteriaPOJO } from "./tracking/tracking-criteria";
 import { TrackingInfo } from "./tracking/tracking-info";
 import { getMaxServiceArea } from "./utils";
-import { isError } from "@hapi/joi";
 
 const _private = Symbol("private fields");
 

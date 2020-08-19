@@ -76,7 +76,7 @@ export abstract class ConnectionApp extends App {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the connect method.", { originalError, transactionID });
+      throw error((originalError.code || ErrorCode.AppError), "Error in the connect method.", { originalError, transactionID });
     }
   }
 }

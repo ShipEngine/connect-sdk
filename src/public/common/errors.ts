@@ -8,6 +8,7 @@ export enum ErrorSource {
 export interface AppError {
   canBeRetried?: boolean;
   code: string;
+  originalCode?: string;
   originalError?: Error;
   source?: ErrorSource;
   statusCode?: number;
@@ -58,6 +59,9 @@ export class BadRequestError extends Error implements AppError {
   public source = ErrorSource.External;
   public statusCode = 400;
   public canBeRetried = false;
+  public originalCode?: string;
+  public originalError?: Error | undefined;
+  public transactionID?: string | undefined;
 
   public constructor(
     message = "The request is invalid.",
@@ -79,6 +83,9 @@ export class UnauthorizedError extends Error implements AppError {
   public source = ErrorSource.External;
   public statusCode = 401;
   public canBeRetried = false;
+  public originalCode?: string;
+  public originalError?: Error | undefined;
+  public transactionID?: string | undefined;
 
   public constructor(
     message = "The request has not been applied because it lacks valid authentication credentials for the target resource.",
@@ -96,6 +103,9 @@ export class NotFoundError extends Error implements AppError {
   public source = ErrorSource.External;
   public statusCode = 404;
   public canBeRetried = false;
+  public originalCode?: string;
+  public originalError?: Error | undefined;
+  public transactionID?: string | undefined;
 
   public constructor(
     message = "The resource you are looking for was not found.",
@@ -114,6 +124,9 @@ export class RateLimitError extends Error implements AppError {
   public statusCode = 429;
   public canBeRetried = true;
   public retryInMilliseconds?: number;
+  public originalCode?: string;
+  public originalError?: Error | undefined;
+  public transactionID?: string | undefined;
 
   public constructor(
     message = "The user has sent too many requests in a given amount of time.",
@@ -139,6 +152,9 @@ export class ExternalServiceError extends Error implements AppError {
   public canBeRetried = true;
   public externalWarnings: string[];
   public externalErrors: string[];
+  public originalCode?: string;
+  public originalError?: Error | undefined;
+  public transactionID?: string | undefined;
 
   public constructor(
     message = "The external service encountered an unexpected condition that prevented it from fulfilling the request.",

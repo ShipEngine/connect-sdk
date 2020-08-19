@@ -1,4 +1,4 @@
-import { ErrorCode, ServiceArea, ShipEngineError } from "../../public";
+import { ErrorCode, ServiceArea, AppError } from "../../public";
 import { error, MonetaryValue } from "../common";
 
 
@@ -49,7 +49,7 @@ export function calculateTotalInsuranceAmount(packages: ReadonlyArray<{ insuredV
   }
   catch (originalError) {
     // Check for a currency mismatch, and throw a more specific error message
-    if ((originalError as ShipEngineError).code === ErrorCode.CurrencyMismatch) {
+    if ((originalError as AppError).code === ErrorCode.CurrencyMismatch) {
       throw error(
         ErrorCode.CurrencyMismatch,
         "All packages in a shipment must be insured in the same currency.",

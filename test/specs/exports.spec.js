@@ -64,7 +64,7 @@ describe("package exports", () => {
   });
 });
 
-function assertFileExports(dir, deep = false, exceptions = []) {
+function assertFileExports (dir, deep = false, exceptions = []) {
   // Always exclude these files.
   exceptions.push("index.ts", ".DS_STORE", "Thumbs.db");
 

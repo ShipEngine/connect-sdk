@@ -61,23 +61,25 @@ abstract class BaseError extends Error implements AppError {
   public originalError?: Error;
   public transactionID?: string;
 
-  public constructor(message: string)
-  public constructor(params: AppError)
-  public constructor(messageOrParams: string | AppError) {
-    if (typeof messageOrParams === "string") {
-      super(messageOrParams);
+  public constructor(args: string | AppError) {
+    if (typeof args === "string") {
+      super(args);
       this.code = ErrorCode.AppError;
     }
     else {
-      super(messageOrParams.message);
-      this.code = messageOrParams.code;
-      this.source = messageOrParams.source;
-      this.statusCode = messageOrParams.statusCode;
-      this.canBeRetried = messageOrParams.canBeRetried;
-      this.originalError = messageOrParams.originalError;
-      this.transactionID = messageOrParams.transactionID;
+      super(args.message);
+      this.code = args.code;
+      this.source = args.source;
+      this.statusCode = args.statusCode;
+      this.canBeRetried = args.canBeRetried;
+      this.originalError = args.originalError;
+      this.transactionID = args.transactionID;
     }
   }
+}
+
+interface BadRequestErrorArgs extends AppError {
+  fieldErrors: FieldError[];
 }
 
 /**
@@ -87,18 +89,22 @@ abstract class BaseError extends Error implements AppError {
  * @param {FieldError[]} fieldErrors An array of objects created by the CreateFieldError function.
  */
 export class BadRequestError extends BaseError {
-  public canBeRetried = false;
-  public code = ErrorCode.BadRequest;
-  // public fieldErrors: FieldError[];
-  public source = ErrorSource.External;
-  public statusCode = 400;
+  public fieldErrors: FieldError[];
 
-  public constructor(message: string)
-  public constructor(params: AppError)
-  public constructor(messageOrParams: string | AppError) {
-    super(messageOrParams);
+  public constructor(args: string | BadRequestErrorArgs) {
+    super(args);
+    this.canBeRetried = false;
+    this.code = ErrorCode.BadRequest;
+    this.source = ErrorSource.External;
+    this.statusCode = 400;
     this.name = "BadRequestError";
-    // this.fieldErrors = messageOrParams.fieldErrors || [];
+
+    if (typeof args === "string") {
+      this.fieldErrors = [];
+    }
+    else {
+      this.fieldErrors = args.fieldErrors || [];
+    }
   }
 }
 
@@ -107,12 +113,11 @@ export class BadRequestError extends BaseError {
  *
  * @param {string} message The message that needs to be communicated to the users.
  */
-export class UnauthorizedError extends Error implements AppError {
+export class UnauthorizedError extends BaseError {
   public code = ErrorCode.Unauthorized;
   public source = ErrorSource.External;
   public statusCode = 401;
   public canBeRetried = false;
-  public originalCode?: string;
   public originalError?: Error | undefined;
   public transactionID?: string | undefined;
 
@@ -127,12 +132,11 @@ export class UnauthorizedError extends Error implements AppError {
 /**
  * A Resource Not Found Error.
  */
-export class NotFoundError extends Error implements AppError {
+export class NotFoundError extends BaseError {
   public code = ErrorCode.NotFound;
   public source = ErrorSource.External;
   public statusCode = 404;
   public canBeRetried = false;
-  public originalCode?: string;
   public originalError?: Error | undefined;
   public transactionID?: string | undefined;
 
@@ -147,13 +151,12 @@ export class NotFoundError extends Error implements AppError {
 /**
  * A Rate Limit Error.
  */
-export class RateLimitError extends Error implements AppError {
+export class RateLimitError extends BaseError {
   public code = ErrorCode.RateLimit;
   public source = ErrorSource.External;
   public statusCode = 429;
   public canBeRetried = true;
   public retryInMilliseconds?: number;
-  public originalCode?: string;
   public originalError?: Error | undefined;
   public transactionID?: string | undefined;
 
@@ -174,14 +177,13 @@ export class RateLimitError extends Error implements AppError {
  * @param {string[]} externalWarnings An array of warnings from the outside world.
  * @param {string[]} externalErrors An array of errors from the outside world.
  */
-export class ExternalServiceError extends Error implements AppError {
+export class ExternalServiceError extends BaseError {
   public code = ErrorCode.ExternalServiceError;
   public source = ErrorSource.External;
   public statusCode = 520;
   public canBeRetried = true;
   public externalWarnings: string[];
   public externalErrors: string[];
-  public originalCode?: string;
   public originalError?: Error | undefined;
   public transactionID?: string | undefined;
 

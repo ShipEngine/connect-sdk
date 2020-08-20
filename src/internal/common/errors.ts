@@ -15,13 +15,12 @@ export interface ErrorProps {
  */
 export function error(code: ErrorCode, message: string, { originalError, ...props }: ErrorProps = {}): AppError {
   // Capture the original error code
-  let original = originalError as AppError | undefined;
-  let originalCode = original ? original.code : undefined;
+  // let original = originalError as AppError | undefined;
 
   // Create a new error with:
   //  - The new error message and the original error message
   //  - The new stack trace and the original stack trace
   //  - The new properties and the original error's properties
-  let err = ono(originalError as Error, { ...props, code, originalCode }, message);
+  let err = ono(originalError as Error, { ...props, code }, message);
   return err;
 }

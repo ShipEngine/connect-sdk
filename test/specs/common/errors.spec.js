@@ -14,7 +14,6 @@ describe("Errors", () => {
     expect(error).to.be.an.instanceOf(Error);
     expect(error.message).to.be.a("string").with.length.above(0);
     expect(error.code).to.be.a("string").with.length.above(0);
-    error.originalCode && expect(error.originalCode).to.be.a("string").with.length.above(0);
     error.transactionID && expect(error.transactionID).to.be.a("string").with.length.above(0);
 
     // Validate that the error matches the expected values
@@ -81,7 +80,6 @@ describe("Errors", () => {
     catch (error) {
       validateShipEngineError(error, {
         code: "ERR_INVALID_INPUT",
-        originalCode: "ERR_INVALID",
         message:
           "Invalid input to the createShipment method. \n" +
           "Invalid transaction: \n" +
@@ -102,7 +100,6 @@ describe("Errors", () => {
     catch (error) {
       validateShipEngineError(error, {
         code: "ERR_INVALID_INPUT",
-        originalCode: "ERR_INVALID",
         message:
           "Invalid input to the createShipment method. \n" +
           "Invalid transaction: \n" +
@@ -133,8 +130,7 @@ describe("Errors", () => {
     }
     catch (error) {
       validateShipEngineError(error, {
-        code: "ERR_APP_ERROR",
-        originalCode: "ERR_INVALID",
+        code: "ERR_INVALID",
         transactionID: error.transactionID,
         message:
           "Error in the createShipment method. \n" +
@@ -157,8 +153,7 @@ describe("Errors", () => {
     }
     catch (error) {
       validateShipEngineError(error, {
-        code: "ERR_APP_ERROR",
-        originalCode: "ERR_INVALID",
+        code: "ERR_INVALID",
         transactionID: error.transactionID,
         message:
           "Error in the createShipment method. \n" +
@@ -217,7 +212,6 @@ describe("Errors", () => {
     catch (error) {
       validateShipEngineError(error, {
         code: "ERR_INVALID_INPUT",
-        originalCode: "ERR_CURRENCY_MISMATCH",
         message:
           "Invalid input to the createShipment method. \n" +
           "All packages in a shipment must be insured in the same currency. \n" +
@@ -228,10 +222,44 @@ describe("Errors", () => {
   });
 });
 
-describe("BadRequestError", () => {
+describe.only("BadRequestError", () => {
   it("can be initialized with a message string", () => {
     const message = "test";
     const subject = new ShipEngineErrors.BadRequestError(message);
+
     expect(subject.message).to.equal(message);
+  });
+
+  it("can be initialized with an object string", () => {
+    const message = "test";
+    const subject = new ShipEngineErrors.BadRequestError({ message });
+
+    expect(subject.message).to.equal(message);
+  });
+
+  it("sets default attributes", () => {
+    const message = "test";
+    const subject = new ShipEngineErrors.BadRequestError(message);
+
+    expect(subject.code).to.equal("ERR_BAD_REQUEST");
+    expect(subject.source).to.equal("external");
+    expect(subject.statusCode).to.equal(400);
+    expect(subject.canBeRetried).to.equal(false);
+    expect(subject.fieldErrors).to.eql([]);
+
+  });
+
+  it("can set the transactionID", () => {
+    const transactionID = "test";
+    const subject = new ShipEngineErrors.BadRequestError({ transactionID });
+
+    expect(subject.transactionID).to.equal(transactionID);
+  });
+
+  it("can set the originalError", () => {
+    const originalError = new Error("test");
+    const subject = new ShipEngineErrors.BadRequestError({ originalError });
+
+    expect(subject.originalError).to.eql(originalError);
   });
 });

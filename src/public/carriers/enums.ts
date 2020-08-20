@@ -71,15 +71,6 @@ export enum ManifestType {
 }
 
 /**
- * Indicates who to bill for delivery charges, duties, or fees
- */
-export enum BilledParty {
-  Sender = "sender",
-  Recipient = "recipient",
-  ThirdParty = "third_party",
-}
-
-/**
  * The status of a shipment
  */
 export enum ShipmentStatus {

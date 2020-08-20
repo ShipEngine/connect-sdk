@@ -36,13 +36,28 @@ export enum ErrorSource {
 }
 
 export interface AppError extends Error {
+  code: ErrorCode;
   message: string;
   canBeRetried?: boolean;
-  code: ErrorCode;
   originalError?: Error;
   source?: ErrorSource;
   statusCode?: number;
   transactionID?: string;
+}
+
+/**
+ * Normalize error args and apply defaults
+ */
+function normalizeArgs<T extends AppError>(args: string | T): AppError {
+  if (typeof args === "string") {
+    return {
+      message: args,
+      code: ErrorCode.AppError,
+    } as T;
+  }
+  else {
+    return args;
+  }
 }
 
 abstract class BaseError extends Error implements AppError {
@@ -53,20 +68,13 @@ abstract class BaseError extends Error implements AppError {
   public originalError?: Error;
   public transactionID?: string;
 
-  public constructor(args: string | AppError) {
-    if (typeof args === "string") {
-      super(args);
-      this.code = ErrorCode.AppError;
-    }
-    else {
-      super(args.message);
-      this.code = args.code;
-      this.source = args.source;
-      this.statusCode = args.statusCode;
-      this.canBeRetried = args.canBeRetried;
-      this.originalError = args.originalError;
-      this.transactionID = args.transactionID;
-    }
+  public constructor(args: AppError) {
+    super(args.message);
+
+    // Since this attribute is required tsc requires that it is set explicitly
+    this.code = args.code;
+
+    Object.assign(this, args);
   }
 }
 
@@ -86,16 +94,20 @@ export class BadRequestError extends BaseError {
   public fieldErrors?: FieldError[];
 
   public constructor(args: string | BadRequestErrorArgs) {
-    super(args);
-    this.canBeRetried = false;
-    this.code = ErrorCode.BadRequest;
-    this.source = ErrorSource.External;
-    this.statusCode = 400;
-    this.name = "BadRequestError";
+    super({
+      // Defaults
+      canBeRetried: false,
+      source: ErrorSource.External,
+      statusCode: 400,
 
-    if (typeof args === "object") {
-      this.fieldErrors = args.fieldErrors;
-    }
+      // User-specified values override defaults
+      ...normalizeArgs(args),
+
+      // The code can not be overridden for convience classes
+      code: ErrorCode.BadRequest,
+      // The error name can't be overridden
+      name: "BadRequestError",
+    });
   }
 }
 
@@ -108,13 +120,20 @@ export class BadRequestError extends BaseError {
  */
 export class UnauthorizedError extends BaseError {
   public constructor(args: string | AppError) {
-    super(args);
+    super({
+      // Defaults
+      canBeRetried: false,
+      source: ErrorSource.External,
+      statusCode: 401,
 
-    this.canBeRetried = false;
-    this.code = ErrorCode.Unauthorized;
-    this.source = ErrorSource.External;
-    this.statusCode = 401;
-    this.name = "UnauthorizedError";
+      // User-specified values override defaults
+      ...normalizeArgs(args),
+
+      // The code can not be overridden for convience classes
+      code: ErrorCode.Unauthorized,
+      // The error name can't be overridden
+      name: "UnauthorizedError",
+    });
   }
 }
 
@@ -128,13 +147,20 @@ export class UnauthorizedError extends BaseError {
 export class NotFoundError extends BaseError {
 
   public constructor(args: string | AppError) {
-    super(args);
+    super({
+      // Defaults
+      canBeRetried: false,
+      source: ErrorSource.External,
+      statusCode: 404,
 
-    this.canBeRetried = false;
-    this.code = ErrorCode.NotFound;
-    this.source = ErrorSource.External;
-    this.statusCode = 404;
-    this.name = "NotFoundError";
+      // User-specified values override defaults
+      ...normalizeArgs(args),
+
+      // The code can not be overridden for convience classes
+      code: ErrorCode.NotFound,
+      // The error name can't be overridden
+      name: "NotFoundError",
+    });
   }
 }
 
@@ -154,16 +180,20 @@ export class RateLimitError extends BaseError {
   public retryInMilliseconds?: number;
 
   public constructor(args: string | RateLimitErrorArgs) {
-    super(args);
-    this.canBeRetried = true;
-    this.code = ErrorCode.RateLimit;
-    this.source = ErrorSource.External;
-    this.statusCode = 429;
-    this.name = "RateLimitError";
+    super({
+      // Defaults
+      canBeRetried: true,
+      source: ErrorSource.External,
+      statusCode: 429,
 
-    if (typeof args === "object") {
-      this.retryInMilliseconds = args.retryInMilliseconds;
-    }
+      // User-specified values override defaults
+      ...normalizeArgs(args),
+
+      // The code can not be overridden for convience classes
+      code: ErrorCode.RateLimit,
+      // The error name can't be overridden
+      name: "RateLimitError",
+    });
   }
 }
 
@@ -186,16 +216,19 @@ export class ExternalServiceError extends BaseError {
   public externalWarnings?: string[];
 
   public constructor(args: string | ExternalServiceErrorArgs) {
-    super(args);
-    this.canBeRetried = true;
-    this.code = ErrorCode.ExternalServiceError;
-    this.source = ErrorSource.External;
-    this.statusCode = 520;
-    this.name = "ExternalServiceError";
+    super({
+      // Defaults
+      canBeRetried: true,
+      source: ErrorSource.External,
+      statusCode: 520,
 
-    if (typeof args === "object") {
-      this.externalErrors = args.externalErrors;
-      this.externalWarnings = args.externalWarnings;
-    }
+      // User-specified values override defaults
+      ...normalizeArgs(args),
+
+      // The code can not be overridden for convience classes
+      code: ErrorCode.ExternalServiceError,
+      // The error name can't be overridden
+      name: "RateLimitError",
+    });
   }
 }

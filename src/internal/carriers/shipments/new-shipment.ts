@@ -77,7 +77,7 @@ export class NewShipment implements INewShipment {
     this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmation, DeliveryConfirmation);
 
     // If there's no return info, then the shipment is not a return
-    let returns = pojo.returns || {};
+    const returns = pojo.returns || {};
     this.returns = {
       isReturn: returns.isReturn || false,
       rmaNumber: returns.rmaNumber || ""

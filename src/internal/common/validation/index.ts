@@ -26,8 +26,8 @@ export function validateArray<T>(value: T[], type: string, schema: ValidationSch
  * Validates an array of values against a Joi schema. If validation fails, an error is thrown.
  */
 export function validateArray<T>(value: T[], arg2: ShipEngineConstructor | string, arg3?: ValidationSchema): T[] {
-  let label = typeof arg2 === "string" ? arg2 : arg2[_internal].label;
-  let itemSchema = arg3 || (arg2 as ShipEngineConstructor)[_internal].schema;
+  const label = typeof arg2 === "string" ? arg2 : arg2[_internal].label;
+  const itemSchema = arg3 || (arg2 as ShipEngineConstructor)[_internal].schema;
   validateAgainstSchema(value, label, Joi.array().items(itemSchema));
   return value;
 }
@@ -40,8 +40,8 @@ export function validate<T>(value: T, type: string, schema: ValidationSchema): T
  * Validates a value against a Joi schema. If validation fails, an error is thrown.
  */
 export function validate<T>(value: T, arg2: ShipEngineConstructor | string, arg3?: ValidationSchema): T {
-  let label = typeof arg2 === "string" ? arg2 : arg2[_internal].label;
-  let schema = arg3 || (arg2 as ShipEngineConstructor)[_internal].schema;
+  const label = typeof arg2 === "string" ? arg2 : arg2[_internal].label;
+  const schema = arg3 || (arg2 as ShipEngineConstructor)[_internal].schema;
   validateAgainstSchema(value, label, schema);
   return value;
 }
@@ -55,7 +55,7 @@ function validateAgainstSchema(value: unknown, label: string, schema: Validation
     throw error(ErrorCode.Validation, `Invalid ${label}: \n  A value is required`);
   }
 
-  let result = schema.validate(value, joiOptions as joi.ValidationOptions);
+  const result = schema.validate(value, joiOptions as joi.ValidationOptions);
 
   if (result.error) {
     throw error(

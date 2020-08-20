@@ -10,7 +10,7 @@ import { Joi } from "./validation";
  */
 export function calculateTotalCharges(charges: readonly Charge[]): MonetaryValue {
   try {
-    let insuredValues = charges.map((charge) => charge.amount);
+    const insuredValues = charges.map((charge) => charge.amount);
     return MonetaryValue.sum(insuredValues);
   }
   catch (originalError) {

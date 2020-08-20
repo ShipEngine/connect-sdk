@@ -31,11 +31,11 @@ export class MonetaryValue implements IMonetaryValue {
    * Returns the sum total of all the given monetary values
    */
   public static sum(monetaryValues: MonetaryValue[]): MonetaryValue {
-    let uniqueCurrencies = new Set<string>();
+    const uniqueCurrencies = new Set<string>();
     let total = currency(0);
 
-    for (let monetaryValue of monetaryValues) {
-      let value = currency(monetaryValue.value);
+    for (const monetaryValue of monetaryValues) {
+      const value = currency(monetaryValue.value);
 
       if (value.intValue > 0) {
         total = total.add(monetaryValue.value);
@@ -44,7 +44,7 @@ export class MonetaryValue implements IMonetaryValue {
     }
 
     if (uniqueCurrencies.size > 1) {
-      let currencies = [...uniqueCurrencies];
+      const currencies = [...uniqueCurrencies];
       throw error(
         ErrorCode.CurrencyMismatch,
         `Currency mismatch: ${currencies.join(", ")}. All monetary values must be in the same currency.`,

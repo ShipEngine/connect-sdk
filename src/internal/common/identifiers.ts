@@ -21,7 +21,7 @@ export class Identifiers implements IIdentifiers {
 
   public constructor(pojo: IdentifiersPOJO = {}) {
     // NOTE: Don't use Object.assign() here because it also copies Symbol properties
-    for (let [key, value] of Object.entries(pojo)) {
+    for (const [key, value] of Object.entries(pojo)) {
       if (typeof value === "string") {
         // @ts-expect-error - writing to a read-only index
         this[key] = value;

@@ -3,8 +3,8 @@
  *
  */
 export function getAsyncIterable<T>(iterable: Iterable<T> | AsyncIterable<T>): AsyncIterable<T> | undefined {
-  let syncIterable = iterable as Iterable<T>;
-  let asyncIterable = iterable as AsyncIterable<T>;
+  const syncIterable = iterable as Iterable<T>;
+  const asyncIterable = iterable as AsyncIterable<T>;
 
   if (iterable) {
     if (typeof asyncIterable[Symbol.asyncIterator] === "function") {
@@ -15,7 +15,7 @@ export function getAsyncIterable<T>(iterable: Iterable<T> | AsyncIterable<T>): A
       // Wrap the synchronous iterable in an async wrapper
       return {
         [Symbol.asyncIterator]() {
-          let iterator = syncIterable[Symbol.iterator]();
+          const iterator = syncIterable[Symbol.iterator]();
 
           return {
             // eslint-disable-next-line @typescript-eslint/require-await

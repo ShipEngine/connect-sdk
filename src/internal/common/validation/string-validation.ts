@@ -100,8 +100,8 @@ export const stringValidation: joi.Extension = {
         return this.$_addRule({ name: "isoDateTime", args });
       },
       validate(value: string, helpers: joi.CustomHelpers, args: { timeZone: boolean }) {
-        let match = regex.isoDateTime.exec(value);
-        let hasTimeZone = match && match[2];
+        const match = regex.isoDateTime.exec(value);
+        const hasTimeZone = match && match[2];
 
         if (!match) {
           if (args.timeZone) {
@@ -157,7 +157,7 @@ export const stringValidation: joi.Extension = {
     },
     enum: {
       method(enumeration: Record<string, string>) {
-        let valids = Object.values(enumeration);
+        const valids = Object.values(enumeration);
         return this.$_addRule({ name: "enum", args: { valids }});
       },
       validate(value: string, helpers: joi.CustomHelpers, { valids }: { valids: string[] }) {
@@ -198,7 +198,7 @@ export const stringValidation: joi.Extension = {
           return helpers.error("string.filePathRelative", args);
         }
 
-        let { ext } = path.parse(value);
+        const { ext } = path.parse(value);
         if (args.ext && (ext !== args.ext)) {
           return helpers.error("string.filePathExtension", args);
         }
@@ -214,7 +214,7 @@ const ianaTimeZones: Record<string, boolean> = {};
 
 function isValidTimeZone(timeZone: string): boolean {
   // If we've already checked this time zone, then return the cached value
-  let isKnown = ianaTimeZones[timeZone];
+  const isKnown = ianaTimeZones[timeZone];
   if (isKnown !== undefined) {
     return isKnown;
   }

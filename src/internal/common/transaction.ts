@@ -40,10 +40,10 @@ export class Transaction<T extends object = object> implements ITransaction {
 
     validate(value, "session data", Joi.object());
 
-    let session = this[_private].session as Record<string, unknown>;
-    let keys = Object.getOwnPropertyNames(session).concat(Object.getOwnPropertyNames(value));
+    const session = this[_private].session as Record<string, unknown>;
+    const keys = Object.getOwnPropertyNames(session).concat(Object.getOwnPropertyNames(value));
 
-    for (let key of keys) {
+    for (const key of keys) {
       if (key in value) {
         session[key] = (value as Record<string, unknown>)[key];
       }

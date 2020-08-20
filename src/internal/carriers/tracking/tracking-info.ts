@@ -23,7 +23,7 @@ export class TrackingInfo extends ShipmentIdentifierBase {
   }
 
   public get latestEvent(): TrackingEvent {
-    let events = this.events;
+    const events = this.events;
     let latestEvent = events[0];
     for (let i = 1; i < events.length; i++) {
       if (events[i].dateTime.getTime() > latestEvent.dateTime.getTime()) {
@@ -42,7 +42,7 @@ export class TrackingInfo extends ShipmentIdentifierBase {
   }
 
   public get shipDateTime(): DateTimeZone | undefined {
-    for (let event of this.events) {
+    for (const event of this.events) {
       if (event.status === ShipmentStatus.Accepted) {
         return event.dateTime;
       }

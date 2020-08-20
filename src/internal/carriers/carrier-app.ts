@@ -102,16 +102,16 @@ export class CarrierApp extends ConnectionApp {
   }
 
   public get hasSandbox(): boolean {
-    let hasSandbox = (svc: { hasSandbox: boolean }) => svc.hasSandbox;
+    const hasSandbox = (svc: { hasSandbox: boolean }) => svc.hasSandbox;
     let found = this.deliveryServices.some(hasSandbox);
     found || (found = this.pickupServices.some(hasSandbox));
     return found;
   }
 
   public get labelFormats(): readonly DocumentFormat[] {
-    let labelFormats = new Set<DocumentFormat>();
-    for (let service of this.deliveryServices) {
-      for (let labelFormat of service.labelFormats) {
+    const labelFormats = new Set<DocumentFormat>();
+    for (const service of this.deliveryServices) {
+      for (const labelFormat of service.labelFormats) {
         labelFormats.add(labelFormat);
       }
     }
@@ -119,9 +119,9 @@ export class CarrierApp extends ConnectionApp {
   }
 
   public get labelSizes(): readonly DocumentSize[] {
-    let labelSizes = new Set<DocumentSize>();
-    for (let service of this.deliveryServices) {
-      for (let labelSize of service.labelSizes) {
+    const labelSizes = new Set<DocumentSize>();
+    for (const service of this.deliveryServices) {
+      for (const labelSize of service.labelSizes) {
         labelSizes.add(labelSize);
       }
     }
@@ -129,14 +129,14 @@ export class CarrierApp extends ConnectionApp {
   }
 
   public get countries(): readonly Country[] {
-    let countries = new Set(this.originCountries.concat(this.destinationCountries));
+    const countries = new Set(this.originCountries.concat(this.destinationCountries));
     return Object.freeze([...countries]);
   }
 
   public get originCountries(): readonly Country[] {
-    let countries = new Set<Country>();
-    for (let service of this.deliveryServices) {
-      for (let country of service.originCountries) {
+    const countries = new Set<Country>();
+    for (const service of this.deliveryServices) {
+      for (const country of service.originCountries) {
         countries.add(country);
       }
     }
@@ -144,9 +144,9 @@ export class CarrierApp extends ConnectionApp {
   }
 
   public get destinationCountries(): readonly Country[] {
-    let countries = new Set<Country>();
-    for (let service of this.deliveryServices) {
-      for (let country of service.destinationCountries) {
+    const countries = new Set<Country>();
+    for (const service of this.deliveryServices) {
+      for (const country of service.destinationCountries) {
         countries.add(country);
       }
     }
@@ -154,9 +154,9 @@ export class CarrierApp extends ConnectionApp {
   }
 
   public get packaging(): readonly Packaging[] {
-    let packaging = new Map<string, Packaging>();
-    for (let service of this.deliveryServices) {
-      for (let parcel of service.packaging) {
+    const packaging = new Map<string, Packaging>();
+    for (const service of this.deliveryServices) {
+      for (const parcel of service.packaging) {
         packaging.set(parcel.id, parcel);
       }
     }
@@ -164,9 +164,9 @@ export class CarrierApp extends ConnectionApp {
   }
 
   public get deliveryConfirmations(): readonly DeliveryConfirmation[] {
-    let deliveryConfirmations = new Map<string, DeliveryConfirmation>();
-    for (let service of this.deliveryServices) {
-      for (let deliveryConfirmation of service.deliveryConfirmations) {
+    const deliveryConfirmations = new Map<string, DeliveryConfirmation>();
+    for (const service of this.deliveryServices) {
+      for (const deliveryConfirmation of service.deliveryConfirmations) {
         deliveryConfirmations.set(deliveryConfirmation.id, deliveryConfirmation);
       }
     }
@@ -217,7 +217,7 @@ export class CarrierApp extends ConnectionApp {
     transaction: TransactionPOJO, shipment: NewShipmentPOJO): Promise<ShipmentConfirmation> {
 
     let _transaction, _shipment;
-    let { createShipment } = this[_private];
+    const { createShipment } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
@@ -228,11 +228,11 @@ export class CarrierApp extends ConnectionApp {
     }
 
     try {
-      let confirmation = await createShipment!(_transaction, _shipment);
+      const confirmation = await createShipment!(_transaction, _shipment);
       return new ShipmentConfirmation(validate(confirmation, ShipmentConfirmation));
     }
     catch (originalError) {
-      let transactionID = _transaction.id;
+      const transactionID = _transaction.id;
 
       throw error((originalError.code || ErrorCode.AppError), "Error in the createShipment method.", { originalError, transactionID });
     }
@@ -242,7 +242,7 @@ export class CarrierApp extends ConnectionApp {
     transaction: TransactionPOJO, shipments: ShipmentCancellationPOJO[]): Promise<ShipmentCancellationOutcome[]> {
 
     let _transaction, _shipments;
-    let { cancelShipments } = this[_private];
+    const { cancelShipments } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
@@ -268,7 +268,7 @@ export class CarrierApp extends ConnectionApp {
         .map((confirmation) => new ShipmentCancellationOutcome(confirmation));
     }
     catch (originalError) {
-      let transactionID = _transaction.id;
+      const transactionID = _transaction.id;
 
       throw error((originalError.code || ErrorCode.AppError), "Error in the cancelShipments method.", { originalError, transactionID });
     }
@@ -278,7 +278,7 @@ export class CarrierApp extends ConnectionApp {
     transaction: TransactionPOJO, shipment: RateCriteriaPOJO): Promise<Rate[]> {
 
     let _transaction, _shipment;
-    let { rateShipment } = this[_private];
+    const { rateShipment } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
@@ -289,11 +289,11 @@ export class CarrierApp extends ConnectionApp {
     }
 
     try {
-      let rates = await rateShipment!(_transaction, _shipment);
+      const rates = await rateShipment!(_transaction, _shipment);
       return validateArray(rates, Rate).map((rate) => new Rate(rate, this));
     }
     catch (originalError) {
-      let transactionID = _transaction.id;
+      const transactionID = _transaction.id;
 
       throw error((originalError.code || ErrorCode.AppError), "Error in the rateShipment method.", { originalError, transactionID });
     }
@@ -303,7 +303,7 @@ export class CarrierApp extends ConnectionApp {
     transaction: TransactionPOJO, shipment: TrackingCriteriaPOJO): Promise<TrackingInfo> {
 
     let _transaction, _shipment;
-    let { trackShipment } = this[_private];
+    const { trackShipment } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
@@ -314,11 +314,11 @@ export class CarrierApp extends ConnectionApp {
     }
 
     try {
-      let trackingInfo = await trackShipment!(_transaction, _shipment);
+      const trackingInfo = await trackShipment!(_transaction, _shipment);
       return new TrackingInfo(validate(trackingInfo, TrackingInfo), this);
     }
     catch (originalError) {
-      let transactionID = _transaction.id;
+      const transactionID = _transaction.id;
 
       throw error((originalError.code || ErrorCode.AppError), "Error in the trackShipment method.", { originalError, transactionID });
     }
@@ -328,7 +328,7 @@ export class CarrierApp extends ConnectionApp {
     transaction: TransactionPOJO, manifest: NewManifestPOJO): Promise<ManifestConfirmation> {
 
     let _transaction, _manifest;
-    let { createManifest } = this[_private];
+    const { createManifest } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
@@ -339,11 +339,11 @@ export class CarrierApp extends ConnectionApp {
     }
 
     try {
-      let confirmation = await createManifest!(_transaction, _manifest);
+      const confirmation = await createManifest!(_transaction, _manifest);
       return new ManifestConfirmation(validate(confirmation, ManifestConfirmation));
     }
     catch (originalError) {
-      let transactionID = _transaction.id;
+      const transactionID = _transaction.id;
 
       throw error((originalError.code || ErrorCode.AppError), "Error in the createManifest method.", { originalError, transactionID });
     }
@@ -353,7 +353,7 @@ export class CarrierApp extends ConnectionApp {
     transaction: TransactionPOJO, pickup: PickupRequestPOJO): Promise<PickupConfirmation> {
 
     let _transaction, _pickup;
-    let { schedulePickup } = this[_private];
+    const { schedulePickup } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
@@ -364,7 +364,7 @@ export class CarrierApp extends ConnectionApp {
     }
 
     try {
-      let confirmation = await schedulePickup!(_transaction, _pickup);
+      const confirmation = await schedulePickup!(_transaction, _pickup);
 
       if (confirmation && confirmation.shipments === undefined) {
         // By default, all shipments will be picked up
@@ -374,7 +374,7 @@ export class CarrierApp extends ConnectionApp {
       return new PickupConfirmation(validate(confirmation, PickupConfirmation));
     }
     catch (originalError) {
-      let transactionID = _transaction.id;
+      const transactionID = _transaction.id;
 
       throw error((originalError.code || ErrorCode.AppError), "Error in the schedulePickup method.", { originalError, transactionID });
     }
@@ -384,7 +384,7 @@ export class CarrierApp extends ConnectionApp {
     transaction: TransactionPOJO, pickups: PickupCancellationPOJO[]): Promise<PickupCancellationOutcome[]> {
 
     let _transaction, _pickups;
-    let { cancelPickups } = this[_private];
+    const { cancelPickups } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
@@ -409,7 +409,7 @@ export class CarrierApp extends ConnectionApp {
         .map((confirmation) => new PickupCancellationOutcome(confirmation));
     }
     catch (originalError) {
-      let transactionID = _transaction.id;
+      const transactionID = _transaction.id;
 
       throw error((originalError.code || ErrorCode.AppError), "Error in the cancelPickups method.", { originalError, transactionID });
     }

@@ -7,7 +7,7 @@ export abstract class AddressBase extends PartialAddressBase implements IAddress
   public readonly country!: Country;
 
   public toString(): string {
-    let address = [];
+    const address = [];
     this.company && address.push(this.company);
     address.push(...this.addressLines);
     address.push(`${this.cityLocality}, ${this.stateProvince} ${this.postalCode}`);

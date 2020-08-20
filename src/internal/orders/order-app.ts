@@ -67,7 +67,7 @@ export class OrderApp extends ConnectionApp {
     transaction: TransactionPOJO, range: SalesOrderTimeRangePOJO): Promise<SalesOrder[]> {
 
     let _transaction, _range;
-    let { getSalesOrdersByDate } = this[_private];
+    const { getSalesOrdersByDate } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
@@ -78,24 +78,24 @@ export class OrderApp extends ConnectionApp {
     }
 
     try {
-      let salesOrders = await getSalesOrdersByDate!(_transaction, _range);
+      const salesOrders = await getSalesOrdersByDate!(_transaction, _range);
 
       const validatedSalesOrders = [];
-      for (let salesOrder of salesOrders) {
+      for (const salesOrder of salesOrders) {
         validatedSalesOrders.push(new SalesOrder(validate(salesOrder, SalesOrder)));
       }
 
       return validatedSalesOrders;
     }
     catch (originalError) {
-      let transactionID = _transaction.id;
+      const transactionID = _transaction.id;
       throw error((originalError.code || ErrorCode.AppError), "Error in the getSalesOrdersByDate method.", { originalError, transactionID });
     }
   }
 
   public async shipmentCreated?(transaction: TransactionPOJO, shipment: SalesOrderShipmentPOJO): Promise<void> {
     let _transaction, _shipment;
-    let { shipmentCreated } = this[_private];
+    const { shipmentCreated } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
@@ -109,14 +109,14 @@ export class OrderApp extends ConnectionApp {
       await shipmentCreated!(_transaction, _shipment);
     }
     catch (originalError) {
-      let transactionID = _transaction.id;
+      const transactionID = _transaction.id;
       throw error((originalError.code || ErrorCode.AppError), "Error in the shipmentCreated method.", { originalError, transactionID });
     }
   }
 
   public async shipmentCancelled?(transaction: TransactionPOJO, shipment: SalesOrderShipmentPOJO): Promise<void> {
     let _transaction, _shipment;
-    let { shipmentCancelled } = this[_private];
+    const { shipmentCancelled } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
@@ -130,7 +130,7 @@ export class OrderApp extends ConnectionApp {
       await shipmentCancelled!(_transaction, _shipment);
     }
     catch (originalError) {
-      let transactionID = _transaction.id;
+      const transactionID = _transaction.id;
       throw error((originalError.code || ErrorCode.AppError), "Error in the shipmentCancelled method.", { originalError, transactionID });
     }
   }

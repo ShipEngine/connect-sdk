@@ -1,13 +1,40 @@
 # ESLint config
 # http://eslint.org/docs/user-guide/configuring
-# https://jstools.dev/eslint-config/
+# https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/README.md
+# https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/TYPED_LINTING.md
 
 root: true
-extends: "@jsdevtools"
+
 env:
   node: true
 
-rules:
-  # Disable this rule until we upgrade to TypeScript 4.0,
-  # since TypeScript 3.x treats catch bindings as `any` instead of `unknown`
-  "@typescript-eslint/no-unsafe-assignment": "off"
+overrides:
+  # Linter settings for JavaScript
+  - files: ["**/*.js"]
+    parserOptions:
+      ecmaVersion: 2020
+    env:
+      es6: true
+    extends:
+      - eslint:recommended
+
+  # Linter settings for TypeScript
+  - files: ["**/*.ts"]
+    parser: "@typescript-eslint/parser"
+    parserOptions:
+      ecmaVersion: 2020
+      sourceType: module
+      project: tsconfig.json
+    plugins:
+      - "@typescript-eslint"
+    extends:
+      - eslint:recommended
+      - plugin:@typescript-eslint/recommended
+      - plugin:@typescript-eslint/recommended-requiring-type-checking
+    rules:
+      no-case-declarations: warn
+      "@typescript-eslint/ban-types": off
+      "@typescript-eslint/ban-ts-comment": warn
+      "@typescript-eslint/no-non-null-assertion": warn
+      "@typescript-eslint/no-unsafe-member-access": warn
+      "@typescript-eslint/no-unsafe-assignment": warn

@@ -68,7 +68,7 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
   public readonly deliveryConfirmations: readonly DeliveryConfirmation[];
 
   public get countries(): readonly Country[] {
-    let countries = new Set(this.originCountries.concat(this.destinationCountries));
+    const countries = new Set(this.originCountries.concat(this.destinationCountries));
     return Object.freeze([...countries]);
   }
 

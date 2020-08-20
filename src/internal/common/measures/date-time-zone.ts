@@ -35,7 +35,7 @@ export class DateTimeZone implements IDateTimeZone {
       };
     }
 
-    let { value, timeZone } = pojo;
+    const { value, timeZone } = pojo;
 
     this.value = value;
     this.timeZone = timeZone;
@@ -54,22 +54,22 @@ export class DateTimeZone implements IDateTimeZone {
   }
 
   public toDate(): Date {
-    let { value, offset } = this;
+    const { value, offset } = this;
     return new Date(value + offset);
   }
 
   public toString(): string {
-    let { value, timeZone, offset } = this;
+    const { value, timeZone, offset } = this;
     return timeZone === offset ? value + offset : `${value} ${timeZone}`;
   }
 
   public toISOString(): string {
-    let { value, offset } = this;
+    const { value, offset } = this;
     return value + offset;
   }
 
   public toJSON(): DateTimeZonePOJO {
-    let { value, timeZone } = this;
+    const { value, timeZone } = this;
     return { value, timeZone };
   }
 
@@ -87,6 +87,7 @@ export class DateTimeZone implements IDateTimeZone {
  * Parses an ISO 8601 date/time string with a time zone
  */
 function parse(isoDateTime: string): DateTimeZonePOJO {
+  // eslint-disable-next-line prefer-const
   let [, value, timeZone] = regex.isoDateTime.exec(isoDateTime)!;
   if (timeZone === "Z") {
     timeZone = "UTC";

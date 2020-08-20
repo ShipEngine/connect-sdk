@@ -27,11 +27,11 @@ export class ReferenceMap {
    * Adds the given object to the map
    */
   public add(instance: ClassInstance): void {
-    let type = instance.constructor as ShipEngineConstructor;
+    const type = instance.constructor as ShipEngineConstructor;
     validate(instance, type[_internal].label, classInstanceSchema);
 
-    let { map, isFinishedLoading } = this[_private];
-    let existing = map.get(instance.id);
+    const { map, isFinishedLoading } = this[_private];
+    const existing = map.get(instance.id);
 
     if (existing) {
       // We already have a reference to this instance. Just make sure the types match.
@@ -69,7 +69,7 @@ export class ReferenceMap {
     // This is for optional references
     if (!instance) return undefined;
 
-    let { map } = this[_private];
+    const { map } = this[_private];
     let reference;
     if (typeof instance === "string") {
       reference = map.get(instance);
@@ -104,7 +104,7 @@ export class ReferenceMap {
     // This is for optional references
     if (!instance) return undefined;
 
-    let value = this.get<T>(instance, type);
+    const value = this.get<T>(instance, type);
 
     if (!value) {
       if (typeof instance === "string") {

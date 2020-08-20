@@ -8,7 +8,7 @@ import { error, MonetaryValue } from "../common";
  */
 export function getMaxServiceArea(things: ReadonlyArray<{ serviceArea?: ServiceArea }>): ServiceArea {
   let maxArea = 0;
-  let serviceAreas = [
+  const serviceAreas = [
     ServiceArea.Regional,
     ServiceArea.Domestic,
     ServiceArea.International,
@@ -16,13 +16,13 @@ export function getMaxServiceArea(things: ReadonlyArray<{ serviceArea?: ServiceA
   ];
 
   // Find the broadest service area supported by this carrier
-  for (let thing of things) {
+  for (const thing of things) {
     if (thing.serviceArea === ServiceArea.Global) {
       // This is the widest possible service area, so no need to continue crawling.
       return ServiceArea.Global;
     }
     else if (thing.serviceArea) {
-      let area = serviceAreas.indexOf(thing.serviceArea);
+      const area = serviceAreas.indexOf(thing.serviceArea);
       if (area > maxArea) {
         maxArea = area;
       }
@@ -42,7 +42,7 @@ export function calculateTotalInsuranceAmount(packages: ReadonlyArray<{ insuredV
  */
 export function calculateTotalInsuranceAmount(packages: ReadonlyArray<{ insuredValue?: MonetaryValue }>): MonetaryValue | undefined {
   try {
-    let insuredValues = packages.map((parcel) => parcel.insuredValue).filter(Boolean) as MonetaryValue[];
+    const insuredValues = packages.map((parcel) => parcel.insuredValue).filter(Boolean) as MonetaryValue[];
     if (insuredValues.length > 0) {
       return MonetaryValue.sum(insuredValues);
     }

@@ -61,7 +61,7 @@ export abstract class ConnectionApp extends App {
 
   public async connect?(transaction: TransactionPOJO, connectionFormData: object): Promise<void> {
     let _transaction, _connectionFormData;
-    let { connect } = this[_private];
+    const { connect } = this[_private];
 
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
@@ -75,7 +75,7 @@ export abstract class ConnectionApp extends App {
       await connect!(_transaction, _connectionFormData);
     }
     catch (originalError) {
-      let transactionID = _transaction.id;
+      const transactionID = _transaction.id;
       throw error((originalError.code || ErrorCode.AppError), "Error in the connect method.", { originalError, transactionID });
     }
   }

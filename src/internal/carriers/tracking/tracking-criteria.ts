@@ -31,7 +31,7 @@ export class TrackingCriteria extends ShipmentIdentifierBase implements ITrackin
     this.metadata = pojo.metadata || {};
 
     // If there's no return info, then the shipment is not a return
-    let returns = pojo.returns || {};
+    const returns = pojo.returns || {};
     this.returns = {
       isReturn: returns.isReturn || false,
     };

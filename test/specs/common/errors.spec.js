@@ -9,7 +9,7 @@ describe("Errors", () => {
   /**
    * All errors thrown by the SDK should be ShipEngineErrors
    */
-  function validateShipEngineError(error, expected) {
+  function validateShipEngineError (error, expected) {
     // Validate the structure of the ShipEngineError
     expect(error).to.be.an.instanceOf(Error);
     expect(error.message).to.be.a("string").with.length.above(0);
@@ -70,7 +70,7 @@ describe("Errors", () => {
 
   it("should throw an invalid input error", async () => {
     let app = new CarrierApp(pojo.carrierApp({
-      createShipment() { }
+      createShipment () { }
     }));
 
     try {
@@ -90,7 +90,7 @@ describe("Errors", () => {
 
   it("should throw an invalid input error with details", async () => {
     let app = new CarrierApp(pojo.carrierApp({
-      createShipment() { }
+      createShipment () { }
     }));
 
     try {
@@ -121,7 +121,7 @@ describe("Errors", () => {
 
   it("should throw an app error", async () => {
     let app = new CarrierApp(pojo.carrierApp({
-      createShipment() { }
+      createShipment () { }
     }));
 
     try {
@@ -142,7 +142,7 @@ describe("Errors", () => {
 
   it("should throw an app error with details", async () => {
     let app = new CarrierApp(pojo.carrierApp({
-      createShipment() {
+      createShipment () {
         return {};
       }
     }));
@@ -196,15 +196,15 @@ describe("Errors", () => {
 
   it("should throw a currency mismatch error", async () => {
     let app = new CarrierApp(pojo.carrierApp({
-      createShipment() { }
+      createShipment () { }
     }));
 
     try {
       await app.createShipment(pojo.transaction(), pojo.newShipment({
         packages: [
-          pojo.newPackage({ insuredValue: { value: 1.23, currency: "USD" } }),
-          pojo.newPackage({ insuredValue: { value: 1.23, currency: "EUR" } }),
-          pojo.newPackage({ insuredValue: { value: 1.23, currency: "GBP" } }),
+          pojo.newPackage({ insuredValue: { value: 1.23, currency: "USD" }}),
+          pojo.newPackage({ insuredValue: { value: 1.23, currency: "EUR" }}),
+          pojo.newPackage({ insuredValue: { value: 1.23, currency: "GBP" }}),
         ]
       }));
       assert.fail("An error should have been thrown");

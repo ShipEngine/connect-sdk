@@ -1,4 +1,4 @@
-import { Charge as ICharge, ChargePOJO, ChargeType, ErrorCode, ShipEngineError } from "../../public";
+import { Charge as ICharge, ChargePOJO, ChargeType, ErrorCode, AppError } from "../../public";
 import { error } from "./errors";
 import { MonetaryValue } from "./measures/monetary-value";
 import { hideAndFreeze, _internal } from "./utils";
@@ -15,7 +15,7 @@ export function calculateTotalCharges(charges: readonly Charge[]): MonetaryValue
   }
   catch (originalError) {
     // Check for a currency mismatch, and throw a more specific error message
-    if ((originalError as ShipEngineError).code === ErrorCode.CurrencyMismatch) {
+    if ((originalError as AppError).code === ErrorCode.CurrencyMismatch) {
       throw error(
         ErrorCode.CurrencyMismatch,
         "All charges must be in the same currency.",

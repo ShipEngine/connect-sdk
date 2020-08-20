@@ -1,4 +1,4 @@
-import { PaymentMethod, SalesOrder as SalesOrderPOJO, SalesOrderStatus, SalesOrderCharges as SalesOrderChargesPOJO, MonetaryValuePOJO, ShipEngineError, ErrorCode } from "../../public";
+import { PaymentMethod, SalesOrder as SalesOrderPOJO, SalesOrderStatus, SalesOrderCharges as SalesOrderChargesPOJO, MonetaryValuePOJO, AppError, ErrorCode } from "../../public";
 import { AddressWithContactInfo, calculateTotalCharges, Charge, DateTimeZone, hideAndFreeze, Joi, MonetaryValue, Note, _internal, error } from "../common";
 import { Buyer } from "./buyer";
 import { SalesOrderIdentifier, SalesOrderIdentifierBase } from "./sales-order-identifier";
@@ -103,7 +103,7 @@ function calculateTotalSalesOrderCharges(charges?: SalesOrderChargesPOJO): Monet
   }
   catch (originalError) {
     // Check for a currency mismatch, and throw a more specific error message
-    if ((originalError as ShipEngineError).code === ErrorCode.CurrencyMismatch) {
+    if ((originalError as AppError).code === ErrorCode.CurrencyMismatch) {
       throw error(
         ErrorCode.CurrencyMismatch,
         "All charges must be in the same currency.",

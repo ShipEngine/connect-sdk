@@ -233,7 +233,8 @@ export class CarrierApp extends ConnectionApp {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the createShipment method.", { originalError, transactionID });
+
+      throw error((originalError.code || ErrorCode.AppError), "Error in the createShipment method.", { originalError, transactionID });
     }
   }
 
@@ -268,7 +269,8 @@ export class CarrierApp extends ConnectionApp {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the cancelShipments method.", { originalError, transactionID });
+
+      throw error((originalError.code || ErrorCode.AppError), "Error in the cancelShipments method.", { originalError, transactionID });
     }
   }
 
@@ -292,7 +294,8 @@ export class CarrierApp extends ConnectionApp {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the rateShipment method.", { originalError, transactionID });
+
+      throw error((originalError.code || ErrorCode.AppError), "Error in the rateShipment method.", { originalError, transactionID });
     }
   }
 
@@ -316,7 +319,8 @@ export class CarrierApp extends ConnectionApp {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the trackShipment method.", { originalError, transactionID });
+
+      throw error((originalError.code || ErrorCode.AppError), "Error in the trackShipment method.", { originalError, transactionID });
     }
   }
 
@@ -340,7 +344,8 @@ export class CarrierApp extends ConnectionApp {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the createManifest method.", { originalError, transactionID });
+
+      throw error((originalError.code || ErrorCode.AppError), "Error in the createManifest method.", { originalError, transactionID });
     }
   }
 
@@ -370,7 +375,8 @@ export class CarrierApp extends ConnectionApp {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the schedulePickup method.", { originalError, transactionID });
+
+      throw error((originalError.code || ErrorCode.AppError), "Error in the schedulePickup method.", { originalError, transactionID });
     }
   }
 
@@ -404,7 +410,8 @@ export class CarrierApp extends ConnectionApp {
     }
     catch (originalError) {
       let transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the cancelPickups method.", { originalError, transactionID });
+
+      throw error((originalError.code || ErrorCode.AppError), "Error in the cancelPickups method.", { originalError, transactionID });
     }
   }
 

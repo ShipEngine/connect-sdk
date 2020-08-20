@@ -14,9 +14,6 @@ export interface ErrorProps {
  * Creates a ShipEngine Connect SDK error
  */
 export function error(code: ErrorCode, message: string, { originalError, ...props }: ErrorProps = {}): AppError {
-  // Capture the original error code
-  // let original = originalError as AppError | undefined;
-
   // Create a new error with:
   //  - The new error message and the original error message
   //  - The new stack trace and the original stack trace

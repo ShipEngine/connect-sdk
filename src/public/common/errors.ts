@@ -95,7 +95,7 @@ export class BadRequestError extends BaseError {
 
   public constructor(args: string | BadRequestErrorArgs) {
     super({
-      // Defaults
+      // Overridable Defaults
       canBeRetried: false,
       source: ErrorSource.External,
       statusCode: 400,
@@ -103,9 +103,8 @@ export class BadRequestError extends BaseError {
       // User-specified values override defaults
       ...normalizeArgs(args),
 
-      // The code can not be overridden for convience classes
+      // Static Defaults
       code: ErrorCode.BadRequest,
-      // The error name can't be overridden
       name: "BadRequestError",
     });
   }
@@ -121,7 +120,7 @@ export class BadRequestError extends BaseError {
 export class UnauthorizedError extends BaseError {
   public constructor(args: string | AppError) {
     super({
-      // Defaults
+      // Overridable Defaults
       canBeRetried: false,
       source: ErrorSource.External,
       statusCode: 401,
@@ -129,9 +128,8 @@ export class UnauthorizedError extends BaseError {
       // User-specified values override defaults
       ...normalizeArgs(args),
 
-      // The code can not be overridden for convience classes
+      // Static Defaults
       code: ErrorCode.Unauthorized,
-      // The error name can't be overridden
       name: "UnauthorizedError",
     });
   }
@@ -148,7 +146,7 @@ export class NotFoundError extends BaseError {
 
   public constructor(args: string | AppError) {
     super({
-      // Defaults
+      // Overridable Defaults
       canBeRetried: false,
       source: ErrorSource.External,
       statusCode: 404,
@@ -156,9 +154,8 @@ export class NotFoundError extends BaseError {
       // User-specified values override defaults
       ...normalizeArgs(args),
 
-      // The code can not be overridden for convience classes
+      // Static Defaults
       code: ErrorCode.NotFound,
-      // The error name can't be overridden
       name: "NotFoundError",
     });
   }
@@ -181,7 +178,7 @@ export class RateLimitError extends BaseError {
 
   public constructor(args: string | RateLimitErrorArgs) {
     super({
-      // Defaults
+      // Overridable Defaults
       canBeRetried: true,
       source: ErrorSource.External,
       statusCode: 429,
@@ -189,9 +186,8 @@ export class RateLimitError extends BaseError {
       // User-specified values override defaults
       ...normalizeArgs(args),
 
-      // The code can not be overridden for convience classes
+      // Static Defaults
       code: ErrorCode.RateLimit,
-      // The error name can't be overridden
       name: "RateLimitError",
     });
   }
@@ -217,7 +213,7 @@ export class ExternalServiceError extends BaseError {
 
   public constructor(args: string | ExternalServiceErrorArgs) {
     super({
-      // Defaults
+      // Overridable Defaults
       canBeRetried: true,
       source: ErrorSource.External,
       statusCode: 520,
@@ -225,9 +221,8 @@ export class ExternalServiceError extends BaseError {
       // User-specified values override defaults
       ...normalizeArgs(args),
 
-      // The code can not be overridden for convience classes
+      // Static Defaults
       code: ErrorCode.ExternalServiceError,
-      // The error name can't be overridden
       name: "RateLimitError",
     });
   }

@@ -1,12 +1,12 @@
 import { AddressPOJO, ContactInfoPOJO, NotePOJO, PickupCancellation as IPickupCancellation, PickupCancellationReason, TimeRangePOJO, UUID } from "../../../public";
-import { Address, App, ContactInfo, DefinitionIdentifier, hideAndFreeze, Identifiers, Joi, Note, TimeRange, _internal } from "../../common";
+import { Address, App, ContactInfo, DefinitionIdentifier, hideAndFreeze, Identifiers, Joi, Note, TimeRange, _internal, IdentifiersPOJO } from "../../common";
 import { PickupService, PickupServiceIdentifierPOJO } from "./pickup-service";
 import { PickupShipment, PickupShipmentPOJO } from "./pickup-shipment";
 
 export interface PickupCancellationPOJO {
   cancellationID: UUID;
   id: string;
-  identifiers?: Identifiers;
+  identifiers?: IdentifiersPOJO;
   pickupService: PickupServiceIdentifierPOJO | string;
   reason: PickupCancellationReason;
   notes?: readonly NotePOJO[];

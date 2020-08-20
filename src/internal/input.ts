@@ -35,3 +35,12 @@ export { NewShipmentPOJO as NewShipment } from "./carriers/shipments/new-shipmen
 export { ShipmentCancellationPOJO as ShipmentCancellation } from "./carriers/shipments/shipment-cancellation";
 export { TrackingCriteriaPOJO as TrackingCriteria } from "./carriers/tracking/tracking-criteria";
 export { TransactionPOJO as Transaction } from "./common/transaction";
+export { ShipmentIdentifierPOJO as ShipmentIdentifier } from "../public/carriers/shipments/shipment-identifier";
+export { FulfillmentService } from "../public/carriers/fulfillment-service";
+export { PackageRateCriteriaPOJO as PackageRateCriteria } from "./carriers/rates/package-rate-criteria";
+export { PickupServiceIdentifierPOJO as PickupServiceIdentifier} from "./carriers/pickups/pickup-service";
+export { TimeRangePOJO as TimeRange } from "../public/common/measures/time-range";
+export { NotePOJO as Note } from "../public/common/note";
+export { PickupShipmentPOJO as PickupShipment } from "./carriers/pickups/pickup-shipment";
+export { PickupPackagePOJO as PickupPackage } from "./carriers/pickups/pickup-package";
+export { PickupCancellationReason } from "../public/carriers/enums";

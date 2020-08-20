@@ -45,14 +45,6 @@ export interface AppError extends Error {
   transactionID?: string;
 }
 
-/**
- * This method is used to create field errors which are used in various errors.
- *
- * @param {string} attemptedValue The value the user supplied.
- * @param {string} errorCode An error code if one is applicable.
- * @param {string} errorMessage The useful error message to return to the user.
- * @param {string} fieldName The name of the field that is failing to validate.
- */
 abstract class BaseError extends Error implements AppError {
   public code: ErrorCode;
   public source?: ErrorSource;
@@ -79,17 +71,19 @@ abstract class BaseError extends Error implements AppError {
 }
 
 interface BadRequestErrorArgs extends AppError {
-  fieldErrors: FieldError[];
+  fieldErrors?: FieldError[];
 }
 
 /**
  * A Bad Request Error.
  *
- * @param {string} message The message that needs to be communicated to the users.
- * @param {FieldError[]} fieldErrors An array of objects created by the CreateFieldError function.
+ * @param {Error} args.originalError The original error if one exist.
+ * @param {FieldError[]} args.fieldErrors An array of objects created by the CreateFieldError function.
+ * @param {string} args.message The message that needs to be communicated to the users.
+ * @param {string} args.transactionID The transaction ID associated with the function call.
  */
 export class BadRequestError extends BaseError {
-  public fieldErrors: FieldError[];
+  public fieldErrors?: FieldError[];
 
   public constructor(args: string | BadRequestErrorArgs) {
     super(args);
@@ -99,11 +93,8 @@ export class BadRequestError extends BaseError {
     this.statusCode = 400;
     this.name = "BadRequestError";
 
-    if (typeof args === "string") {
-      this.fieldErrors = [];
-    }
-    else {
-      this.fieldErrors = args.fieldErrors || [];
+    if (typeof args === "object") {
+      this.fieldErrors = args.fieldErrors;
     }
   }
 }
@@ -111,90 +102,100 @@ export class BadRequestError extends BaseError {
 /**
  * An Unauthorized Error.
  *
- * @param {string} message The message that needs to be communicated to the users.
+ * @param {Error} args.originalError The original error if one exist.
+ * @param {string} args.message The message that needs to be communicated to the users.
+ * @param {string} args.transactionID The transaction ID associated with the function call.
  */
 export class UnauthorizedError extends BaseError {
-  public code = ErrorCode.Unauthorized;
-  public source = ErrorSource.External;
-  public statusCode = 401;
-  public canBeRetried = false;
-  public originalError?: Error | undefined;
-  public transactionID?: string | undefined;
+  public constructor(args: string | AppError) {
+    super(args);
 
-  public constructor(
-    message = "The request has not been applied because it lacks valid authentication credentials for the target resource.",
-  ) {
-    super(message);
+    this.canBeRetried = false;
+    this.code = ErrorCode.Unauthorized;
+    this.source = ErrorSource.External;
+    this.statusCode = 401;
     this.name = "UnauthorizedError";
   }
 }
 
 /**
  * A Resource Not Found Error.
+ *
+ * @param {Error} args.originalError The original error if one exist.
+ * @param {string} args.message The message that needs to be communicated to the users.
+ * @param {string} args.transactionID The transaction ID associated with the function call.
  */
 export class NotFoundError extends BaseError {
-  public code = ErrorCode.NotFound;
-  public source = ErrorSource.External;
-  public statusCode = 404;
-  public canBeRetried = false;
-  public originalError?: Error | undefined;
-  public transactionID?: string | undefined;
 
-  public constructor(
-    message = "The resource you are looking for was not found.",
-  ) {
-    super(message);
+  public constructor(args: string | AppError) {
+    super(args);
+
+    this.canBeRetried = false;
+    this.code = ErrorCode.NotFound;
+    this.source = ErrorSource.External;
+    this.statusCode = 404;
     this.name = "NotFoundError";
   }
 }
 
+interface RateLimitErrorArgs extends AppError {
+  retryInMilliseconds?: number;
+}
+
 /**
  * A Rate Limit Error.
+ *
+ * @param {Error} args.originalError The original error if one exist.
+ * @param {number} args.retryInMilliseconds The number of milliseconds until the request can be retried.
+ * @param {string} args.message The message that needs to be communicated to the users.
+ * @param {string} args.transactionID The transaction ID associated with the function call.
  */
 export class RateLimitError extends BaseError {
-  public code = ErrorCode.RateLimit;
-  public source = ErrorSource.External;
-  public statusCode = 429;
-  public canBeRetried = true;
   public retryInMilliseconds?: number;
-  public originalError?: Error | undefined;
-  public transactionID?: string | undefined;
 
-  public constructor(
-    message = "The user has sent too many requests in a given amount of time.",
-    retryInMilliseconds?: number,
-  ) {
-    super(message);
+  public constructor(args: string | RateLimitErrorArgs) {
+    super(args);
+    this.canBeRetried = true;
+    this.code = ErrorCode.RateLimit;
+    this.source = ErrorSource.External;
+    this.statusCode = 429;
     this.name = "RateLimitError";
-    this.retryInMilliseconds = retryInMilliseconds;
+
+    if (typeof args === "object") {
+      this.retryInMilliseconds = args.retryInMilliseconds;
+    }
   }
+}
+
+interface ExternalServiceErrorArgs extends AppError {
+  externalErrors?: string[];
+  externalWarnings?: string[];
 }
 
 /**
  * An External Service Error Error.
  *
- * @param {string} message The message that needs to be communicated to the users.
- * @param {string[]} externalWarnings An array of warnings from the outside world.
+ * @param {Error} args.originalError The original error if one exist.
  * @param {string[]} externalErrors An array of errors from the outside world.
+ * @param {string[]} externalWarnings An array of warnings from the outside world.
+ * @param {string} args.message The message that needs to be communicated to the users.
+ * @param {string} args.transactionID The transaction ID associated with the function call.
  */
 export class ExternalServiceError extends BaseError {
-  public code = ErrorCode.ExternalServiceError;
-  public source = ErrorSource.External;
-  public statusCode = 520;
-  public canBeRetried = true;
-  public externalWarnings: string[];
-  public externalErrors: string[];
-  public originalError?: Error | undefined;
-  public transactionID?: string | undefined;
+  public externalErrors?: string[];
+  public externalWarnings?: string[];
 
-  public constructor(
-    message = "The external service encountered an unexpected condition that prevented it from fulfilling the request.",
-    externalWarnings?: string[],
-    externalErrors?: string[]
-  ) {
-    super(message);
+  public constructor(args: string | ExternalServiceErrorArgs) {
+    super(args);
+    this.canBeRetried = true;
+    this.code = ErrorCode.ExternalServiceError;
+    this.source = ErrorSource.External;
+    this.statusCode = 520;
     this.name = "ExternalServiceError";
-    this.externalWarnings = externalWarnings || [];
-    this.externalErrors = externalErrors || [];
+
+    if (typeof args === "object") {
+      this.externalErrors = args.externalErrors;
+      this.externalWarnings = args.externalWarnings;
+    }
   }
 }

@@ -222,7 +222,7 @@ describe("Errors", () => {
   });
 });
 
-describe.only("BadRequestError", () => {
+describe("BadRequestError", () => {
   it("can be initialized with a message string", () => {
     const message = "test";
     const subject = new ShipEngineErrors.BadRequestError(message);
@@ -230,7 +230,7 @@ describe.only("BadRequestError", () => {
     expect(subject.message).to.equal(message);
   });
 
-  it("can be initialized with an object string", () => {
+  it("can be initialized with an object", () => {
     const message = "test";
     const subject = new ShipEngineErrors.BadRequestError({ message });
 
@@ -245,7 +245,7 @@ describe.only("BadRequestError", () => {
     expect(subject.source).to.equal("external");
     expect(subject.statusCode).to.equal(400);
     expect(subject.canBeRetried).to.equal(false);
-    expect(subject.fieldErrors).to.eql([]);
+    expect(subject.fieldErrors).to.be.equal(undefined);
 
   });
 
@@ -261,5 +261,189 @@ describe.only("BadRequestError", () => {
     const subject = new ShipEngineErrors.BadRequestError({ originalError });
 
     expect(subject.originalError).to.eql(originalError);
+  });
+});
+
+describe("UnauthorizedError", () => {
+  it("can be initialized with a message string", () => {
+    const message = "test";
+    const subject = new ShipEngineErrors.UnauthorizedError(message);
+
+    expect(subject.message).to.equal(message);
+  });
+
+  it("can be initialized with an object", () => {
+    const message = "test";
+    const subject = new ShipEngineErrors.UnauthorizedError({ message });
+
+    expect(subject.message).to.equal(message);
+  });
+
+  it("sets default attributes", () => {
+    const message = "test";
+    const subject = new ShipEngineErrors.UnauthorizedError(message);
+
+    expect(subject.code).to.equal("ERR_UNAUTHORIZED");
+    expect(subject.source).to.equal("external");
+    expect(subject.statusCode).to.equal(401);
+    expect(subject.canBeRetried).to.equal(false);
+  });
+
+  it("can set the transactionID", () => {
+    const transactionID = "test";
+    const subject = new ShipEngineErrors.UnauthorizedError({ transactionID });
+
+    expect(subject.transactionID).to.equal(transactionID);
+  });
+
+  it("can set the originalError", () => {
+    const originalError = new Error("test");
+    const subject = new ShipEngineErrors.UnauthorizedError({ originalError });
+
+    expect(subject.originalError).to.eql(originalError);
+  });
+});
+
+describe("NotFoundError", () => {
+  it("can be initialized with a message string", () => {
+    const message = "test";
+    const subject = new ShipEngineErrors.NotFoundError(message);
+
+    expect(subject.message).to.equal(message);
+  });
+
+  it("can be initialized with an object", () => {
+    const message = "test";
+    const subject = new ShipEngineErrors.NotFoundError({ message });
+
+    expect(subject.message).to.equal(message);
+  });
+
+  it("sets default attributes", () => {
+    const message = "test";
+    const subject = new ShipEngineErrors.NotFoundError(message);
+
+    expect(subject.code).to.equal("ERR_NOT_FOUND");
+    expect(subject.source).to.equal("external");
+    expect(subject.statusCode).to.equal(404);
+    expect(subject.canBeRetried).to.equal(false);
+  });
+
+  it("can set the transactionID", () => {
+    const transactionID = "test";
+    const subject = new ShipEngineErrors.NotFoundError({ transactionID });
+
+    expect(subject.transactionID).to.equal(transactionID);
+  });
+
+  it("can set the originalError", () => {
+    const originalError = new Error("test");
+    const subject = new ShipEngineErrors.NotFoundError({ originalError });
+
+    expect(subject.originalError).to.eql(originalError);
+  });
+});
+
+describe("RateLimitError", () => {
+  it("can be initialized with a message string", () => {
+    const message = "test";
+    const subject = new ShipEngineErrors.NotFoundError(message);
+
+    expect(subject.message).to.equal(message);
+  });
+
+  it("can be initialized with an object", () => {
+    const message = "test";
+    const subject = new ShipEngineErrors.RateLimitError({ message });
+
+    expect(subject.message).to.equal(message);
+  });
+
+  it("sets default attributes", () => {
+    const message = "test";
+    const subject = new ShipEngineErrors.RateLimitError(message);
+
+    expect(subject.code).to.equal("ERR_RATE_LIMIT");
+    expect(subject.source).to.equal("external");
+    expect(subject.statusCode).to.equal(429);
+    expect(subject.canBeRetried).to.equal(true);
+    expect(subject.retryInMilliseconds).to.equal(undefined);
+  });
+
+  it("can set the transactionID", () => {
+    const transactionID = "test";
+    const subject = new ShipEngineErrors.RateLimitError({ transactionID });
+
+    expect(subject.transactionID).to.equal(transactionID);
+  });
+
+  it("can set the originalError", () => {
+    const originalError = new Error("test");
+    const subject = new ShipEngineErrors.RateLimitError({ originalError });
+
+    expect(subject.originalError).to.eql(originalError);
+  });
+
+  it("can set the retryInMilliseconds", () => {
+    const retryInMilliseconds = 2000;
+    const subject = new ShipEngineErrors.RateLimitError({ retryInMilliseconds });
+
+    expect(subject.retryInMilliseconds).to.equal(retryInMilliseconds);
+  });
+});
+
+describe("ExternalServiceError", () => {
+  it("can be initialized with a message string", () => {
+    const message = "test";
+    const subject = new ShipEngineErrors.ExternalServiceError(message);
+
+    expect(subject.message).to.equal(message);
+  });
+
+  it("can be initialized with an object", () => {
+    const message = "test";
+    const subject = new ShipEngineErrors.ExternalServiceError({ message });
+
+    expect(subject.message).to.equal(message);
+  });
+
+  it("sets default attributes", () => {
+    const message = "test";
+    const subject = new ShipEngineErrors.ExternalServiceError(message);
+
+    expect(subject.code).to.equal("ERR_EXTERNAL_SERVICE_ERROR");
+    expect(subject.source).to.equal("external");
+    expect(subject.statusCode).to.equal(520);
+    expect(subject.canBeRetried).to.equal(true);
+    expect(subject.externalErrors).to.equal(undefined);
+    expect(subject.externalWarnings).to.equal(undefined);
+  });
+
+  it("can set the transactionID", () => {
+    const transactionID = "test";
+    const subject = new ShipEngineErrors.ExternalServiceError({ transactionID });
+
+    expect(subject.transactionID).to.equal(transactionID);
+  });
+
+  it("can set the originalError", () => {
+    const originalError = new Error("test");
+    const subject = new ShipEngineErrors.ExternalServiceError({ originalError });
+
+    expect(subject.originalError).to.eql(originalError);
+  });
+
+  it("can set the externalErrors", () => {
+    const externalErrors = ["test"];
+    const subject = new ShipEngineErrors.ExternalServiceError({ externalErrors });
+
+    expect(subject.externalErrors).to.eql(externalErrors);
+  });
+
+  it("can set the externalWarnings", () => {
+    const externalWarnings = ["test"];
+    const subject = new ShipEngineErrors.ExternalServiceError({ externalWarnings });
+
+    expect(subject.externalWarnings).to.eql(externalWarnings);
   });
 });

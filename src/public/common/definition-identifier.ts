@@ -1,4 +1,4 @@
-import type { Identifiers } from "./identifiers";
+import type { Identifiers, IdentifiersPOJO } from "./identifiers";
 import type { UUID } from "./types";
 
 /**
@@ -13,7 +13,7 @@ export interface Definition {
   /**
    * Your own identifiers for the object
    */
-  identifiers?: Identifiers;
+  identifiers?: IdentifiersPOJO;
 
   /**
    * Optional code used to map to what the carrier or marketplace uses to identify the resource

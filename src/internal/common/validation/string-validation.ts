@@ -1,4 +1,4 @@
-import * as joi from "@hapi/joi";
+import * as joi from "joi";
 import * as path from "path";
 import { ParsedPath } from "path";
 import { regex } from "../utils";
@@ -158,7 +158,7 @@ export const stringValidation: joi.Extension = {
     enum: {
       method(enumeration: Record<string, string>) {
         const valids = Object.values(enumeration);
-        return this.$_addRule({ name: "enum", args: { valids }});
+        return this.$_addRule({ name: "enum", args: { valids } });
       },
       validate(value: string, helpers: joi.CustomHelpers, { valids }: { valids: string[] }) {
         if (!valids.includes(value)) {

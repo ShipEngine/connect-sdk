@@ -1,4 +1,4 @@
-import * as joi from "@hapi/joi";
+import * as joi from "joi";
 import { ErrorCode } from "../../../public";
 import { error } from "../errors";
 import { ShipEngineConstructor } from "../types";

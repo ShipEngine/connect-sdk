@@ -44,3 +44,8 @@ export { NotePOJO as Note } from "../public/common/note";
 export { PickupShipmentPOJO as PickupShipment } from "./carriers/pickups/pickup-shipment";
 export { PickupPackagePOJO as PickupPackage } from "./carriers/pickups/pickup-package";
 export { PickupCancellationReason } from "../public/carriers/enums";
+export { SalesOrderTimeRangePOJO as SalesOrderTimeRange } from "./orders/sales-order-time-range";
+export { SalesOrderPagingPOJO as SalesOrderPaging } from "../public/orders/sales-order-time-range";
+export { URLString } from "../public/common/types";
+export { SalesOrderPackageItemPOJO as SalesOrderPackageItem } from "./orders/shipments/sales-order-package-item";
+export { SalesOrderShipmentPOJO as SalesOrderShipment } from "./orders/shipments/sales-order-shipment";

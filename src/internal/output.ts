@@ -10,9 +10,9 @@ export { ShipmentConfirmation } from "./carriers/shipments/shipment-confirmation
 export { TrackingInfo } from "./carriers/tracking/tracking-info";
 export { Label } from "./carriers/documents/label";
 export { Document } from "./carriers/documents/document";
-export { 
-  DateTimeZone, 
-  Charge 
+export {
+  DateTimeZone,
+  Charge
 } from "./common";
 export { MonetaryValue } from "./common";
 export { PackageConfirmation } from "./carriers/packages/package-confirmation";
@@ -29,3 +29,9 @@ export { NonManifestedShipment } from "./carriers/manifests/non-manifested-shipm
 export { Identifiers } from "./common/identifiers";
 export { TimeRange } from "./common/measures/time-range";
 export { ShipmentIdentifier } from "./carriers/shipments/shipment-identifier";
+export { SalesOrderStatus, PaymentMethod } from "../public/orders/enums";
+export { AddressWithContactInfo } from "./common/addresses/address-with-contact-info";
+export { Buyer } from "./orders/buyer";
+export { SalesOrderCharges } from "./orders/sales-order-charges";
+export { SalesOrderItem } from "./orders/sales-order-item";
+export { ShippingPreferences } from "./orders/shipping-preferences";

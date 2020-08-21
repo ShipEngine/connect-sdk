@@ -75,14 +75,14 @@ describe("CarrierApp", () => {
       settingsForm: pojo.form(),
       deliveryServices: [pojo.deliveryService()],
       pickupServices: [pojo.pickupService()],
-      connect () { },
-      createShipment () { },
-      cancelShipments () { },
-      rateShipment () { },
-      trackShipment () { },
-      createManifest () { },
-      schedulePickup () { },
-      cancelPickups () { },
+      connect() { },
+      createShipment() { },
+      cancelShipments() { },
+      rateShipment() { },
+      trackShipment() { },
+      createManifest() { },
+      schedulePickup() { },
+      cancelPickups() { },
       manifest: {
         name: "@my-company/my-carrier",
         version: "123.45.678",
@@ -196,9 +196,9 @@ describe("CarrierApp", () => {
         manifestType: "digital",
         connectionForm: pojo.form(),
         deliveryServices: [
-          pojo.deliveryService({ deliveryConfirmations: [pojo.deliveryConfirmation()]}),
-          pojo.deliveryService({ deliveryConfirmations: [pojo.deliveryConfirmation()]}),
-          pojo.deliveryService({ deliveryConfirmations: [pojo.deliveryConfirmation({ id: dcID })]})
+          pojo.deliveryService({ deliveryConfirmations: [pojo.deliveryConfirmation()] }),
+          pojo.deliveryService({ deliveryConfirmations: [pojo.deliveryConfirmation()] }),
+          pojo.deliveryService({ deliveryConfirmations: [pojo.deliveryConfirmation({ id: dcID })] })
         ],
 
         manifest: {
@@ -230,7 +230,7 @@ describe("CarrierApp", () => {
         deliveryServices: [
           pojo.deliveryService(),
           pojo.deliveryService(),
-          pojo.deliveryService({ packaging: [pojo.packaging({ id: pkgID })]})
+          pojo.deliveryService({ packaging: [pojo.packaging({ id: pkgID })] })
         ],
 
         manifest: {
@@ -260,9 +260,9 @@ describe("CarrierApp", () => {
         manifestType: "digital",
 
         deliveryServices: [
-          pojo.deliveryService({ labelFormats: ["pdf"]}),
-          pojo.deliveryService({ labelFormats: ["pdf", "zpl"]}),
-          pojo.deliveryService({ labelFormats: ["zpl"]}),
+          pojo.deliveryService({ labelFormats: ["pdf"] }),
+          pojo.deliveryService({ labelFormats: ["pdf", "zpl"] }),
+          pojo.deliveryService({ labelFormats: ["zpl"] }),
         ],
 
         manifest: {
@@ -287,9 +287,9 @@ describe("CarrierApp", () => {
         manifestType: "digital",
 
         deliveryServices: [
-          pojo.deliveryService({ labelSizes: ["A4", "letter", "A6"]}),
-          pojo.deliveryService({ labelSizes: ["A4", "4x6"]}),
-          pojo.deliveryService({ labelSizes: ["4x6", "letter"]}),
+          pojo.deliveryService({ labelSizes: ["A4", "letter", "A6"] }),
+          pojo.deliveryService({ labelSizes: ["A4", "4x6"] }),
+          pojo.deliveryService({ labelSizes: ["4x6", "letter"] }),
         ],
 
         manifest: {
@@ -314,9 +314,9 @@ describe("CarrierApp", () => {
         manifestType: "digital",
 
         deliveryServices: [
-          pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"]}),
-          pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"]}),
-          pojo.deliveryService({ originCountries: ["FR"]}),
+          pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"] }),
+          pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"] }),
+          pojo.deliveryService({ originCountries: ["FR"] }),
         ],
 
         manifest: {
@@ -340,9 +340,9 @@ describe("CarrierApp", () => {
         manifestType: "digital",
 
         deliveryServices: [
-          pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"]}),
-          pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"]}),
-          pojo.deliveryService({ originCountries: ["FR"]}),
+          pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"] }),
+          pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"] }),
+          pojo.deliveryService({ originCountries: ["FR"] }),
         ],
 
         manifest: {
@@ -367,9 +367,9 @@ describe("CarrierApp", () => {
         connectionForm: pojo.form(),
         manifestType: "digital",
         deliveryServices: [
-          pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"]}),
-          pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"]}),
-          pojo.deliveryService({ originCountries: ["FR"]}),
+          pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"] }),
+          pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"] }),
+          pojo.deliveryService({ originCountries: ["FR"] }),
         ],
 
         manifest: {
@@ -393,9 +393,9 @@ describe("CarrierApp", () => {
         connectionForm: pojo.form(),
         manifestType: "digital",
         deliveryServices: [
-          pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"]}),
-          pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"]}),
-          pojo.deliveryService({ originCountries: ["FR"]}),
+          pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"] }),
+          pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"] }),
+          pojo.deliveryService({ originCountries: ["FR"] }),
         ],
 
         manifest: {
@@ -417,8 +417,8 @@ describe("CarrierApp", () => {
         connectionForm: pojo.form(),
         manifestType: "digital",
         deliveryServices: [
-          pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"]}),
-          pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"]}),
+          pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"] }),
+          pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"] }),
           pojo.deliveryService({ originCountries: ["FR"], supportsReturns: true }),
         ],
 
@@ -444,7 +444,7 @@ describe("CarrierApp", () => {
         manifestType: "digital",
         connectionForm: pojo.form(),
         deliveryServices: [
-          pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"]}),
+          pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"] }),
         ],
 
         manifest: {
@@ -564,7 +564,7 @@ describe("CarrierApp", () => {
       })
       ).to.throw(
         "Invalid ShipEngine Connect carrier app: \n" +
-        "  trackingURLTemplate with value \"https://tracking.com\" fails to match the required pattern: /{}/"
+        "  trackingURLTemplate with value https://tracking.com fails to match the required pattern: /{}/"
       );
     });
 

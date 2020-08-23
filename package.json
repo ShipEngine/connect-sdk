@@ -15,10 +15,10 @@
   "author": {
     "name": "ShipEngine",
     "email": "support@shipengine.com",
-    "url": "https://www.shipengine.com"
+    "url": "https://connect.shipengine.com"
   },
   "license": "Apache-2.0",
-  "homepage": "https://www.shipengine.com/docs/connect/",
+  "homepage": "https://connect.shipengine.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/ShipEngine/connect-sdk.git"

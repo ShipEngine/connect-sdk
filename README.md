@@ -1,3 +1,5 @@
+![ShipEngine Connect](https://connect.shipengine.com/img/logos/shipengine-connect-logo.png)
+
 ShipEngine Connect SDK
 ==============================================
 
@@ -12,7 +14,7 @@ ShipEngine Connect SDK
 
 
 
-This is the official SDK for building [**ShipEngine Connect apps**](https://connect.shipengine.com/docs/).
+This is the official SDK for building [**ShipEngine Connect apps**](https://connect.shipengine.com/).
 
 
 About ShipEngine Connect Apps

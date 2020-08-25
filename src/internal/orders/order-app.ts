@@ -1,4 +1,4 @@
-import { AppType, Connect, ErrorCode, GetSalesOrdersByDate, OrderAppDefinition, ShipmentCancelled, ShipmentCreated } from "../../public";
+import { AppType, Connect, ErrorCode, GetSalesOrdersByDate, OrderAppDefinition, ShipmentCreated } from "../../public";
 import { AppPOJO, ConnectionApp, error, FormPOJO, hideAndFreeze, Joi, Transaction, TransactionPOJO, validate, _internal } from "../common";
 import { SalesOrder } from "./sales-order";
 import { SalesOrderTimeRange, SalesOrderTimeRangePOJO } from "./sales-order-time-range";
@@ -13,7 +13,6 @@ export interface OrderAppPOJO extends OrderAppDefinition, AppPOJO {
   connect?: Connect;
   getSalesOrdersByDate?: GetSalesOrdersByDate;
   shipmentCreated?: ShipmentCreated;
-  shipmentCancelled?: ShipmentCancelled;
 }
 
 
@@ -23,7 +22,6 @@ export class OrderApp extends ConnectionApp {
     schema: ConnectionApp[_internal].schema.keys({
       getSalesOrdersByDate: Joi.function(),
       shipmentCreated: Joi.function(),
-      shipmentCancelled: Joi.function(),
       sendMail: Joi.boolean(),
       canConfigureTimeZone: Joi.boolean()
     }),
@@ -32,7 +30,6 @@ export class OrderApp extends ConnectionApp {
   private readonly [_private]: {
     readonly getSalesOrdersByDate?: GetSalesOrdersByDate;
     readonly shipmentCreated?: ShipmentCreated;
-    readonly shipmentCancelled?: ShipmentCancelled;
   };
 
   public readonly type: AppType;
@@ -53,7 +50,6 @@ export class OrderApp extends ConnectionApp {
       getSalesOrdersByDate:
         pojo.getSalesOrdersByDate ? pojo.getSalesOrdersByDate : (this.getSalesOrdersByDate = undefined),
       shipmentCreated: pojo.shipmentCreated ? pojo.shipmentCreated : (this.shipmentCreated = undefined),
-      shipmentCancelled: pojo.shipmentCancelled ? pojo.shipmentCancelled : (this.shipmentCancelled = undefined),
     };
 
     // Make this object immutable
@@ -111,27 +107,6 @@ export class OrderApp extends ConnectionApp {
     catch (originalError) {
       const transactionID = _transaction.id;
       throw error((originalError.code || ErrorCode.AppError), "Error in the shipmentCreated method.", { originalError, transactionID });
-    }
-  }
-
-  public async shipmentCancelled?(transaction: TransactionPOJO, shipment: SalesOrderShipmentPOJO): Promise<void> {
-    let _transaction, _shipment;
-    const { shipmentCancelled } = this[_private];
-
-    try {
-      _transaction = new Transaction(validate(transaction, Transaction));
-      _shipment = new SalesOrderShipment(validate(shipment, SalesOrderShipment));
-    }
-    catch (originalError) {
-      throw error(ErrorCode.InvalidInput, "Invalid input to the shipmentCancelled method.", { originalError });
-    }
-
-    try {
-      await shipmentCancelled!(_transaction, _shipment);
-    }
-    catch (originalError) {
-      const transactionID = _transaction.id;
-      throw error((originalError.code || ErrorCode.AppError), "Error in the shipmentCancelled method.", { originalError, transactionID });
     }
   }
 }

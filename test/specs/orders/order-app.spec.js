@@ -36,7 +36,6 @@ describe("OrderApp", () => {
       connect: undefined,
       getSalesOrdersByDate: undefined,
       shipmentCreated: undefined,
-      shipmentCancelled: undefined,
       sdkVersion: parseFloat(sdkManifest.version),
       manifest: {
         name: "@company/order",
@@ -63,7 +62,6 @@ describe("OrderApp", () => {
       connect () {},
       getSalesOrdersByDate () {},
       shipmentCreated () {},
-      shipmentCancelled () {},
       manifest: {
         name: "@my-company/my-order",
         version: "123.45.678",
@@ -135,7 +133,6 @@ describe("OrderApp", () => {
       connectionForm: app.connectionForm,
       settingsForm: undefined,
       shipmentCreated: undefined,
-      shipmentCancelled: undefined,
       sdkVersion: parseFloat(sdkManifest.version),
       sendMail: false,
       canConfigureTimeZone: false,

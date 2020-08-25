@@ -17,7 +17,7 @@ describe("getSalesOrdersByDate", () => {
 
     let salesOrders = await app.getSalesOrdersByDate(pojo.transaction(), pojo.timeRange());
 
-    // It should NOT return the array
+    // It should return the array
     expect(salesOrders).to.be.an("array");
 
     // NOT a synchronous iterable
@@ -31,14 +31,22 @@ describe("getSalesOrdersByDate", () => {
     }
   });
 
-  it("should work with a populated array", async () => {
+  it("should work with an array with paging data", async () => {
     let app = new OrderApp(pojo.orderApp({
       getSalesOrdersByDate () {
-        return [
+        
+        return Object.assign([
           pojo.salesOrder({ id: "Order1" }),
           pojo.salesOrder({ id: "Order2" }),
           pojo.salesOrder({ id: "Order3" })
-        ];
+        ], {
+          paging: {
+            pageSize: 5,
+            pageNumber: 2,
+            pageCount: 10,
+            cursor: "cursor"
+          }
+        });
       }
     }));
 
@@ -50,7 +58,14 @@ describe("getSalesOrdersByDate", () => {
       expect(salesOrder).to.be.an.instanceOf(SalesOrder);
       expect(salesOrder.id).to.equal(`Order${++index}`);
     }
+    expect(salesOrders.paging).to.deep.equal({
+      pageSize: 5,
+      pageNumber: 2,
+      pageCount: 10,
+      cursor: "cursor"
+    });
   });
+
 
   describe("Failure tests", () => {
 

@@ -1,5 +1,7 @@
-import { SalesOrderArray as SalesOrderArrayPOJO, SalesOrderPaging } from "../../public";
-import { hideAndFreeze, Joi, _internal } from "../common";
+import { SalesOrderArray as SalesOrderArrayPOJO } from "../../public";
+import { hideAndFreeze, Joi, _internal, validate } from "../common";
+import { SalesOrderPaging } from "./sales-order-paging";
+import { SalesOrder } from "./sales-order";
 
 export class SalesOrderArray extends Array {
   // TODO: Add better validation and unit tests
@@ -8,17 +10,18 @@ export class SalesOrderArray extends Array {
     schema: Joi.array()
   };
 
-  public readonly paging: SalesOrderPaging;
+  public readonly paging?: SalesOrderPaging;
 
-  public constructor(pojo: SalesOrderArrayPOJO) {
+  public constructor(salesOrders: SalesOrderArrayPOJO) {
     super();
 
-    this.paging = {
-      ...pojo.paging,
-      pageNumber: 1,
-      pageCount: 1,
-      pageSize: this.length,
-    };
+    if(salesOrders) {
+      this.paging = salesOrders.paging ? new SalesOrderPaging(salesOrders.paging) : undefined;
+    }
+
+    for (const salesOrder of salesOrders) {
+      this.push(new SalesOrder(validate(salesOrder, SalesOrder)));
+    }
 
     // Make this object immutable
     hideAndFreeze(this);

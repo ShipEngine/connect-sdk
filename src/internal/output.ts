@@ -35,3 +35,6 @@ export { Buyer } from "./orders/buyer";
 export { SalesOrderCharges } from "./orders/sales-order-charges";
 export { SalesOrderItem } from "./orders/sales-order-item";
 export { ShippingPreferences } from "./orders/shipping-preferences";
+export { SalesOrder } from "./orders/sales-order";
+export { SalesOrderArray } from "./orders/sales-order-array";
+export { SalesOrderPaging } from "./orders/sales-order-paging";

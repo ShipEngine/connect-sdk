@@ -15,13 +15,14 @@ export class SalesOrderArray extends Array {
   public constructor(salesOrders: SalesOrderArrayPOJO) {
     super();
 
-    if(salesOrders) {
+    if (salesOrders) {
       this.paging = salesOrders.paging ? new SalesOrderPaging(salesOrders.paging) : undefined;
-    }
 
+    }
     for (const salesOrder of salesOrders) {
       this.push(new SalesOrder(validate(salesOrder, SalesOrder)));
     }
+
 
     // Make this object immutable
     hideAndFreeze(this);

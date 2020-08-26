@@ -5,7 +5,7 @@ import type { TimeRange } from "../common";
  * Specifies a date/time range to retrieve sales orders for
  */
 export interface SalesOrderTimeRange extends TimeRange {
-  readonly paging: Readonly<SalesOrderPaging>;
+  readonly paging?: Readonly<SalesOrderPaging>;
 }
 
 

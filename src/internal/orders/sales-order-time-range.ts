@@ -1,9 +1,10 @@
-import { SalesOrderPaging, SalesOrderTimeRange as ISalesOrderTimeRange, TimeRangePOJO } from "../../public";
+import { SalesOrderPaging as SalesOrderPagingPOJO, SalesOrderTimeRange as ISalesOrderTimeRange, TimeRangePOJO } from "../../public";
 import { hideAndFreeze, Joi, TimeRange, TimeRangeBase, _internal } from "../common";
+import { SalesOrderPaging } from "./sales-order-paging";
 
 
 export interface SalesOrderTimeRangePOJO extends TimeRangePOJO {
-  paging?: SalesOrderPaging;
+  paging?: SalesOrderPagingPOJO;
 }
 
 
@@ -11,16 +12,13 @@ export class SalesOrderTimeRange extends TimeRangeBase implements ISalesOrderTim
   public static readonly [_internal] = {
     label: "time range",
     schema: TimeRange[_internal].schema.keys({
-      paging: Joi.object({
-        pageSize: Joi.number().integer().min(1).required(),
-        pageNumber: Joi.number().integer().min(0),
-        pageCount: Joi.number().integer().min(1),
-        cursor: Joi.string()
-      })
+      paging: SalesOrderPaging[_internal].schema
     })
   };
 
-  public readonly paging: {
+  // TODO: make this optional because the first request won't always be populated since it needs to 
+  // be populated by the app user.
+  public readonly paging?: {
     readonly pageSize: number;
     readonly pageNumber?: number;
     readonly pageCount: number;
@@ -30,11 +28,9 @@ export class SalesOrderTimeRange extends TimeRangeBase implements ISalesOrderTim
   public constructor(pojo: SalesOrderTimeRangePOJO) {
     super(pojo);
 
-    // TODO How do we want to build the initial paging data?
-    this.paging = pojo.paging || {
-      pageCount: 0,
-      pageSize: 0,
-    };
+    if(pojo.paging) {
+      this.paging = new SalesOrderPaging(pojo.paging);
+    }
 
     // Make this object immutable
     hideAndFreeze(this);

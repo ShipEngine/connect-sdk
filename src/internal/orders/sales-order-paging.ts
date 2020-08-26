@@ -23,6 +23,7 @@ export class SalesOrderPaging {
     this.pageNumber = pojo.pageNumber || 0;
     this.pageCount = pojo.pageCount || 0;
     this.cursor = pojo.cursor || "";
+    
     // Make this object immutable
     hideAndFreeze(this);
   }

@@ -61,7 +61,7 @@ export class OrderApp extends ConnectionApp {
   }
 
   public async getSalesOrdersByDate?(
-    transaction: TransactionPOJO, range: SalesOrderTimeRangePOJO): Promise<SalesOrderArray[]> {
+    transaction: TransactionPOJO, range: SalesOrderTimeRangePOJO): Promise<SalesOrderArray> {
 
     let _transaction, _range;
     const { getSalesOrdersByDate } = this[_private];

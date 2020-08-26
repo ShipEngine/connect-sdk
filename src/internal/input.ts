@@ -48,3 +48,4 @@ export { SalesOrderPagingPOJO as SalesOrderPaging } from "../public/orders/sales
 export { URLString } from "../public/common/types";
 export { SalesOrderPackageItemPOJO as SalesOrderPackageItem } from "./orders/shipments/sales-order-package-item";
 export { SalesOrderShipmentPOJO as SalesOrderShipment } from "./orders/shipments/sales-order-shipment";
+export { Country } from "../public/common/country";

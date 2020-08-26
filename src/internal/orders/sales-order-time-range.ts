@@ -3,7 +3,7 @@ import { hideAndFreeze, Joi, TimeRange, TimeRangeBase, _internal } from "../comm
 
 
 export interface SalesOrderTimeRangePOJO extends TimeRangePOJO {
-  paging: SalesOrderPaging;
+  paging?: SalesOrderPaging;
 }
 
 
@@ -30,7 +30,11 @@ export class SalesOrderTimeRange extends TimeRangeBase implements ISalesOrderTim
   public constructor(pojo: SalesOrderTimeRangePOJO) {
     super(pojo);
 
-    this.paging = pojo.paging;
+    // TODO How do we want to build the initial paging data?
+    this.paging = pojo.paging || {
+      pageCount: 0,
+      pageSize: 0,
+    };
 
     // Make this object immutable
     hideAndFreeze(this);

@@ -1,4 +1,4 @@
-import { Country, DeliveryService as IDeliveryService, DeliveryServiceClass, DeliveryServiceDefinition, DeliveryServiceGrade, DocumentFormat, DocumentSize, FulfillmentService, ManifestType, ServiceArea } from "../../public";
+import { Country, DeliveryService as IDeliveryService, DeliveryServiceDefinition, DocumentFormat, DocumentSize, FulfillmentService, ManifestType, ServiceArea } from "../../public";
 import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../common";
 import { DeliveryConfirmation, DeliveryConfirmationPOJO } from "./delivery-confirmation";
 import { Packaging, PackagingPOJO } from "./packaging";
@@ -21,8 +21,6 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
       name: Joi.string().trim().singleLine().min(1).max(100).required(),
       description: Joi.string().trim().singleLine().allow("").max(1000),
       code: Joi.string().trim().singleLine().allow("").max(1000).required(),
-      class: Joi.string().enum(DeliveryServiceClass).required(),
-      grade: Joi.string().enum(DeliveryServiceGrade).required(),
       fulfillmentService: Joi.string().enum(FulfillmentService),
       serviceArea: Joi.string().enum(ServiceArea),
       isConsolidationService: Joi.boolean(),
@@ -48,8 +46,6 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
 
   public readonly name: string;
   public readonly description: string;
-  public readonly class: DeliveryServiceClass;
-  public readonly grade: DeliveryServiceGrade;
   public readonly code: string;
   public readonly fulfillmentService?: FulfillmentService;
   public readonly serviceArea?: ServiceArea;
@@ -85,8 +81,6 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
 
     this.name = pojo.name;
     this.description = pojo.description || "";
-    this.class = pojo.class;
-    this.grade = pojo.grade;
     this.code = pojo.code;
     this.fulfillmentService = pojo.fulfillmentService;
     this.serviceArea = pojo.serviceArea;

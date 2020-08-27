@@ -1,6 +1,6 @@
 import type { Country, Definition, DefinitionIdentifier, InlineOrReference, InlineOrReferenceArray } from "../common";
 import type { DeliveryConfirmation, DeliveryConfirmationDefinition } from "./delivery-confirmation";
-import type { DeliveryServiceClass, DeliveryServiceGrade, DocumentFormat, DocumentSize, ManifestType, ServiceArea } from "./enums";
+import type { DocumentFormat, DocumentSize, ManifestType, ServiceArea } from "./enums";
 import type { FulfillmentService } from "./fulfillment-service";
 import type { Packaging, PackagingDefinition } from "./packaging";
 
@@ -22,16 +22,6 @@ export interface DeliveryServiceDefinition extends Definition {
    * Code used to map to what the carrier uses to identify the resource
    */
   code: string;
-
-  /**
-   * The class of implements Iof service
-   */
-  class: DeliveryServiceClass;
-
-  /**
-   * The grade of service
-   */
-  grade: DeliveryServiceGrade;
 
   /**
    * If this service is fulfilled using a well-known third-party carrier, such as UPS, FedEx, DHL, etc.
@@ -137,16 +127,6 @@ export interface DeliveryService extends DeliveryServiceIdentifier {
    * A short, user-friendly description of the service
    */
   readonly description: string;
-
-  /**
-   * The class of implements Iof service
-   */
-  readonly class: DeliveryServiceClass;
-
-  /**
-   * The grade of service
-   */
-  readonly grade: DeliveryServiceGrade;
 
   /**
    * A well-known service that's used to fulfill this delivery service

@@ -54,8 +54,6 @@ const pojo = module.exports = {
       id: "22222222-2222-2222-2222-222222222222",
       code: "dummy-ds-code",
       name: "Dummy Delivery Service",
-      class: "ground",
-      grade: "standard",
       originCountries: ["US"],
       destinationCountries: ["US"],
       manifestType: "digital",

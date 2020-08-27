@@ -1,27 +1,4 @@
 /**
- * A class of implements Iof delivery service
- */
-export enum DeliveryServiceClass {
-  Ground = "ground",
-  OneDay = "one_day",
-  OneDayEarly = "one_day_early",
-  OneDayEarlyAm = "one_day_early_am",
-  TwoDay = "two_day",
-  TwoDayEarly = "two_day_early",
-  ThreeDay = "three_day"
-}
-
-/**
- * A grade of delivery service
- */
-export enum DeliveryServiceGrade {
-  Economy = "economy",
-  Expedited = "expedited",
-  Overnight = "overnight",
-  Standard = "standard"
-}
-
-/**
  * The service area that is covered by a delivery service
  */
 export enum ServiceArea {

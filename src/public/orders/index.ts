@@ -3,7 +3,7 @@ export * from "./enums";
 export * from "./methods";
 export * from "./order-app";
 export * from "./sales-order";
-export * from "./sales-order-array";
+export * from "./sales-orders";
 export * from "./sales-order-charges";
 export * from "./sales-order-identifier";
 export * from "./sales-order-item";

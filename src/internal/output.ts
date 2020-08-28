@@ -36,6 +36,6 @@ export { SalesOrderCharges } from "./orders/sales-order-charges";
 export { SalesOrderItem } from "./orders/sales-order-item";
 export { ShippingPreferences } from "./orders/shipping-preferences";
 export { SalesOrder } from "./orders/sales-order";
-export { SalesOrderArray } from "./orders/sales-order-array";
+export { SalesOrders } from "./orders/sales-orders";
 export { SalesOrderPaging } from "./orders/sales-order-paging";
 export { PersonName } from "./common/addresses/person-name"

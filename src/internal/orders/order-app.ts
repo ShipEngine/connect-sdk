@@ -2,8 +2,8 @@ import { AppType, Connect, ErrorCode, GetSalesOrdersByDate, OrderAppDefinition, 
 import { AppPOJO, ConnectionApp, error, FormPOJO, hideAndFreeze, Joi, Transaction, TransactionPOJO, validate, _internal } from "../common";
 import { SalesOrderTimeRange, SalesOrderTimeRangePOJO } from "./sales-order-time-range";
 import { SalesOrderShipment, SalesOrderShipmentPOJO } from "./shipments/sales-order-shipment";
-import { SalesOrderArray } from "./sales-order-array";
-import { SalesOrderArray as SalesOrderArrayPOJO } from "../../public";
+import { SalesOrders } from "./sales-orders";
+import { SalesOrders as SalesOrdersPOJO } from "../../public";
 
 const _private = Symbol("private fields");
 
@@ -61,7 +61,7 @@ export class OrderApp extends ConnectionApp {
   }
 
   public async getSalesOrdersByDate?(
-    transaction: TransactionPOJO, range: SalesOrderTimeRangePOJO): Promise<SalesOrderArray> {
+    transaction: TransactionPOJO, range: SalesOrderTimeRangePOJO): Promise<SalesOrders> {
 
     let _transaction, _range;
     const { getSalesOrdersByDate } = this[_private];
@@ -78,12 +78,12 @@ export class OrderApp extends ConnectionApp {
       const salesOrders = await getSalesOrdersByDate!(_transaction, _range);
 
       // Make sure to preserve the paging data returned from the app
-      let salesOrderArrayPOJO: SalesOrderArrayPOJO = salesOrders;
+      let salesOrderArrayPOJO: SalesOrdersPOJO = salesOrders;
       if (salesOrders && salesOrders.paging) {
         salesOrderArrayPOJO = Object.assign(salesOrders, { paging: salesOrders.paging });
       }
 
-      return new SalesOrderArray(salesOrderArrayPOJO);
+      return new SalesOrders(salesOrderArrayPOJO);
     }
     catch (originalError) {
       const transactionID = _transaction.id;

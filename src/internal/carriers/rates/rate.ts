@@ -18,7 +18,7 @@ export class Rate {
       isTrackable: Joi.boolean(),
       charges: Joi.array().min(1).items(Charge[_internal].schema).required(),
       notes: Note[_internal].notesSchema,
-      packages: Joi.array().min(1).items(RatePackage[_internal].schema).required(),
+      packages: Joi.array().min(1).items(RatePackage[_internal].schema).optional(),
       deliveryConfirmation: Joi.alternatives(
         DefinitionIdentifier[_internal].schema.unknown(true),
         Joi.string()
@@ -37,9 +37,10 @@ export class Rate {
   public readonly packages: readonly RatePackage[];
   public readonly deliveryConfirmation?: DeliveryConfirmation;
 
-  public get package(): RatePackage {
-    return this.packages[0];
-  }
+  public get package(): RatePackage | undefined {
+    if(this.packages && this.packages.length > 0) {
+      return this.packages[0];
+    }
 
   public constructor(pojo: RatePOJO, app: App) {
     this.deliveryService = app[_internal].references.lookup(pojo.deliveryService, DeliveryService);
@@ -50,7 +51,8 @@ export class Rate {
     this.charges = pojo.charges.map((charge) => new Charge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);
     this.notes = pojo.notes || [];
-    this.packages = pojo.packages.map((parcel) => new RatePackage(parcel, app));
+    this.packages =
+      pojo.packages ? pojo.packages.map((parcel) => new RatePackage(parcel, app)) : undefined;
     this.deliveryConfirmation =
       app[_internal].references.lookup(pojo.deliveryConfirmation, DeliveryConfirmation);
 

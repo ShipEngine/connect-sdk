@@ -2,6 +2,8 @@ import type { Transaction } from "../common";
 import { SalesOrders } from "./sales-orders";
 import type { SalesOrderTimeRange } from "./sales-order-time-range";
 import { SalesOrderShipment } from "./shipments/sales-order-shipment";
+import { SalesOrderNotification } from "./sales-order-notification";
+import { AcknowledgedSalesOrder } from "./acknowledged-sales-order";
 
 /**
  * Returns all orders that were created and/or modified within a given timeframe
@@ -17,3 +19,10 @@ export type GetSalesOrdersByDate = (transaction: Transaction, range: SalesOrderT
  */
 export type ShipmentCreated = (transaction: Transaction, shipment: SalesOrderShipment)
 => void | Promise<void>;
+
+
+/**
+ * Called when an order has been imported into a marketplace.
+ */
+export type AcknowledgeOrders = (transaction: Transaction, notifications: SalesOrderNotification[])
+=> AcknowledgedSalesOrder[] | Promise<AcknowledgedSalesOrder[]>;

@@ -162,6 +162,14 @@ const pojo = module.exports = {
     };
   },
 
+  acknowledgedSalesOrder (props = {}) {
+    return {
+      ...pojo.salesOrderIdentifier(),
+      succeeded: true,
+      ...props
+    }
+  },
+
   salesOrderShipment (props = {}) {
     return {
       ...pojo.shipmentIdentifier(),
@@ -172,6 +180,15 @@ const pojo = module.exports = {
       contents: [pojo.salesOrderPackageItem()],
       ...props,
     };
+  },
+
+  salesOrderNotification (props = {}) {
+    return {
+      ...pojo.salesOrderIdentifier(),
+      orderNumber: "55555555-5555-5555-5555-555555555555",
+      importedDate: new Date(),
+      ...props
+    }
   },
 
   package (props = {}) {

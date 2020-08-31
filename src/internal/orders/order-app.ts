@@ -1,9 +1,11 @@
-import { AppType, Connect, ErrorCode, GetSalesOrdersByDate, OrderAppDefinition, ShipmentCreated } from "../../public";
+import { AppType, Connect, ErrorCode, GetSalesOrdersByDate, OrderAppDefinition, ShipmentCreated, AcknowledgeOrders } from "../../public";
 import { AppPOJO, ConnectionApp, error, FormPOJO, hideAndFreeze, Joi, Transaction, TransactionPOJO, validate, _internal } from "../common";
 import { SalesOrderTimeRange, SalesOrderTimeRangePOJO } from "./sales-order-time-range";
 import { SalesOrderShipment, SalesOrderShipmentPOJO } from "./shipments/sales-order-shipment";
 import { SalesOrders } from "./sales-orders";
 import { SalesOrders as SalesOrdersPOJO } from "../../public";
+import { AcknowledgedSalesOrder } from "./acknowledged-sales-order";
+import { SalesOrderNotification, SalesOrderNotificationPOJO } from "./sales-order-notification";
 
 const _private = Symbol("private fields");
 
@@ -14,6 +16,7 @@ export interface OrderAppPOJO extends OrderAppDefinition, AppPOJO {
   connect?: Connect;
   getSalesOrdersByDate?: GetSalesOrdersByDate;
   shipmentCreated?: ShipmentCreated;
+  acknowledgeOrders?: AcknowledgeOrders;
 }
 
 
@@ -23,6 +26,7 @@ export class OrderApp extends ConnectionApp {
     schema: ConnectionApp[_internal].schema.keys({
       getSalesOrdersByDate: Joi.function(),
       shipmentCreated: Joi.function(),
+      acknowledgeOrders: Joi.function(),
       sendMail: Joi.boolean(),
       canConfigureTimeZone: Joi.boolean()
     }),
@@ -31,6 +35,7 @@ export class OrderApp extends ConnectionApp {
   private readonly [_private]: {
     readonly getSalesOrdersByDate?: GetSalesOrdersByDate;
     readonly shipmentCreated?: ShipmentCreated;
+    readonly acknowledgeOrders?: AcknowledgeOrders;
   };
 
   public readonly type: AppType;
@@ -51,6 +56,7 @@ export class OrderApp extends ConnectionApp {
       getSalesOrdersByDate:
         pojo.getSalesOrdersByDate ? pojo.getSalesOrdersByDate : (this.getSalesOrdersByDate = undefined),
       shipmentCreated: pojo.shipmentCreated ? pojo.shipmentCreated : (this.shipmentCreated = undefined),
+      acknowledgeOrders: pojo.acknowledgeOrders ? pojo.acknowledgeOrders : (this.acknowledgeOrders = undefined),
     };
 
     // Make this object immutable
@@ -109,6 +115,42 @@ export class OrderApp extends ConnectionApp {
     catch (originalError) {
       const transactionID = _transaction.id;
       throw error((originalError.code || ErrorCode.AppError), "Error in the shipmentCreated method.", { originalError, transactionID });
+    }
+  }
+
+  public async acknowledgeOrders?(transaction: TransactionPOJO, notifications: SalesOrderNotificationPOJO[]): Promise<AcknowledgedSalesOrder[]> {
+    let _transaction;
+    const _notifications: SalesOrderNotification[] = [];
+    const { acknowledgeOrders } = this[_private];
+
+    try {
+      _transaction = new Transaction(validate(transaction, Transaction));
+
+      if(notifications.length === 0) {
+        throw error (ErrorCode.InvalidInput, "Sales Order Notifications are required");
+      }
+
+      for(const notification of notifications) {
+        _notifications.push(new SalesOrderNotification(validate(notification, SalesOrderNotification)));
+      }
+    }
+    catch (originalError) {
+      throw error(ErrorCode.InvalidInput, "Invalid input to the acknowledgeOrders method.", { originalError });
+    }
+
+    try {
+      const acknowledgedOrdersPOJO = await acknowledgeOrders!(_transaction, _notifications);
+      const acknowledgedOrders: AcknowledgedSalesOrder[] = [];
+
+      for (const acknowledgedOrderPOJO of acknowledgedOrdersPOJO) {
+        acknowledgedOrders.push(new AcknowledgedSalesOrder(acknowledgedOrderPOJO));
+      }
+
+      return acknowledgedOrders;
+    }
+    catch (originalError) {
+      const transactionID = _transaction.id;
+      throw error((originalError.code || ErrorCode.AppError), "Error in the acknowledgeOrders method.", { originalError, transactionID });
     }
   }
 }

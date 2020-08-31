@@ -54,7 +54,7 @@ export class TrackingInfo extends ShipmentIdentifierBase {
 
     this.deliveryDateTime =
       pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;
-    this.packages =  pojo.packages ? pojo.packages.map((parcel) => new PackageTrackingInfo(parcel, app)) : undefined;
+    this.packages = pojo.packages ? pojo.packages.map((parcel) => new PackageTrackingInfo(parcel, app)) : undefined;
     this.events = pojo.events.map((event) => new TrackingEvent(event));
 
     // Make this object immutable

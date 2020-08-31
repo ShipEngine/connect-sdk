@@ -2,8 +2,6 @@ import { ShipmentStatus, TrackingInfo as TrackingInfoPOJO } from "../../../publi
 import { App, DateTimeZone, hideAndFreeze, Joi, _internal } from "../../common";
 import { ShipmentIdentifierBase } from "../shipments/shipment-identifier";
 import { PackageTrackingInfo } from "./package-tracking-info";
-import { TrackingEvent } from "./tracking-event";
-import {PackageConfirmation} from "..";
 
 export class TrackingInfo extends ShipmentIdentifierBase {
   public static readonly [_internal] = {

@@ -11,7 +11,6 @@ describe("The sales order object", () => {
     const salesOrderPOJO = pojo.salesOrder();
     let salesOrder = new SalesOrder(salesOrderPOJO);
 
-    expect(salesOrder.totalAdjustments.value).to.equal(0);
     expect(salesOrder.totalCharges.value).to.equal(0);
 
   });
@@ -19,8 +18,10 @@ describe("The sales order object", () => {
   it("should correctly calculate total adjustments and charges", () => {
 
     const salesOrderPOJO = pojo.salesOrder();
-    salesOrderPOJO.adjustments = [
+
+    salesOrderPOJO.charges = [
       {
+        name: "a charge",
         type: "shipping",
         amount: {
           value: 10,
@@ -28,28 +29,17 @@ describe("The sales order object", () => {
         }
       },
       {
+        name: "a charge",
         type: "delivery",
         amount: {
-          value: 15,
+          value: 5,
           currency: "usd"
         }
-      },
-    ];
-
-    salesOrderPOJO.charges = {
-      subTotal: {
-        value: 10,
-        currency: "usd"
-      },
-      taxAmount: {
-        value: 5,
-        currency: "usd"
       }
-    };
+    ];
 
     let salesOrder = new SalesOrder(salesOrderPOJO);
 
-    expect(salesOrder.totalAdjustments.value).to.equal(25);
     expect(salesOrder.totalCharges.value).to.equal(15);
 
   });

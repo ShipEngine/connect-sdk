@@ -1,10 +1,9 @@
-import type { AddressWithContactInfoPOJO, ChargePOJO, DateTimeZonePOJO, NotePOJO, URLString } from "../common";
+import type { AddressWithContactInfoPOJO, DateTimeZonePOJO, NotePOJO, URLString, Charge } from "../common";
 import type { Buyer } from "./buyer";
 import type { PaymentMethod, SalesOrderStatus } from "./enums";
 import type { SalesOrderIdentifierPOJO } from "./sales-order-identifier";
 import type { SalesOrderItem } from "./sales-order-item";
 import type { ShippingPreferences } from "./shipping-preferences";
-import { SalesOrderCharges } from "./sales-order-charges";
 
 /**
  * A sales order
@@ -41,14 +40,9 @@ export interface SalesOrder extends SalesOrderIdentifierPOJO {
   buyer: Buyer;
 
   /**
-   * The breakdown of adjustments for this sales order
-   */
-  adjustments?: readonly ChargePOJO[];
-
-  /**
    * The breakdown of charges for this sales order
    */
-  charges?: SalesOrderCharges;
+  charges?: Charge[];
 
 
   requestedFulfillments: Array<{

@@ -32,7 +32,6 @@ export { ShipmentIdentifier } from "./carriers/shipments/shipment-identifier";
 export { SalesOrderStatus, PaymentMethod } from "../public/orders/enums";
 export { AddressWithContactInfo } from "./common/addresses/address-with-contact-info";
 export { Buyer } from "./orders/buyer";
-export { SalesOrderCharges } from "./orders/sales-order-charges";
 export { SalesOrderItem } from "./orders/sales-order-item";
 export { ShippingPreferences } from "./orders/shipping-preferences";
 export { SalesOrder } from "./orders/sales-order";

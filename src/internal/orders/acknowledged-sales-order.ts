@@ -1,12 +1,12 @@
 import { AcknowledgedSalesOrder as AcknowledgedSalesOrderPOJO } from "../../public";
 import { hideAndFreeze, Joi, _internal } from "../common";
-import { SalesOrderIdentifierBase } from "./sales-order-identifier";
+import { SalesOrderIdentifierBase, SalesOrderIdentifier } from "./sales-order-identifier";
 
 export class AcknowledgedSalesOrder extends SalesOrderIdentifierBase{
 
   public static readonly [_internal] = {
     label: "acknowledged sales order",
-    schema: Joi.object({
+    schema: SalesOrderIdentifier[_internal].schema.keys({
       succeeded: Joi.boolean().required(),
       failureReason: Joi.string()
     })

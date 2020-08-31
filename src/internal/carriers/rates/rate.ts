@@ -38,9 +38,8 @@ export class Rate {
   public readonly deliveryConfirmation?: DeliveryConfirmation;
 
   public get package(): RatePackage | undefined {
-    if(this.packages && this.packages.length > 0) {
-      return this.packages[0];
-    }
+    return this.packages[0];
+  }
 
   public constructor(pojo: RatePOJO, app: App) {
     this.deliveryService = app[_internal].references.lookup(pojo.deliveryService, DeliveryService);

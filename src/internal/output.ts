@@ -32,10 +32,10 @@ export { ShipmentIdentifier } from "./carriers/shipments/shipment-identifier";
 export { SalesOrderStatus, PaymentMethod } from "../public/orders/enums";
 export { AddressWithContactInfo } from "./common/addresses/address-with-contact-info";
 export { Buyer } from "./orders/buyer";
-export { SalesOrderCharges } from "./orders/sales-order-charges";
 export { SalesOrderItem } from "./orders/sales-order-item";
 export { ShippingPreferences } from "./orders/shipping-preferences";
 export { SalesOrder } from "./orders/sales-order";
 export { SalesOrders } from "./orders/sales-orders";
 export { SalesOrderPaging } from "./orders/sales-order-paging";
 export { PersonName } from "./common/addresses/person-name"
+export { AcknowledgedSalesOrder } from "./orders/acknowledged-sales-order";

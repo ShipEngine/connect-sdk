@@ -23,6 +23,7 @@ export { UUID } from "../public/common/types";
 export * from "../public/orders/enums";
 export { SalesOrderIdentifierPOJO as SalesOrderIdentifier } from "../public/orders/sales-order-identifier";
 export { SalesOrderItemIdentifierPOJO as SalesOrderItemIdentifier } from "../public/orders/sales-order-item-identifier";
+export { SalesOrderNotificationPOJO } from "./orders/sales-order-notification";
 export { ProductIdentifierPOJO as ProductIdentifier } from "../public/products/product-identifier";
 export { NewLabelPOJO as NewLabel } from "./carriers/documents/new-label";
 export { NewManifestPOJO as NewManifest } from "./carriers/manifests/new-manifest";

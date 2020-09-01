@@ -15,11 +15,14 @@ export class TrackingInfo extends ShipmentIdentifierBase {
   };
 
   public readonly deliveryDateTime?: DateTimeZone;
-  public readonly packages: readonly PackageTrackingInfo[] | undefined;
+  public readonly packages?: readonly PackageTrackingInfo[] | undefined;
   public readonly events: readonly TrackingEvent[];
 
   public get package(): PackageTrackingInfo | undefined {
-    return this.packages[0];
+    if(this.packages && this.packages.length > 0) {
+      return this.packages[0];
+    }
+
   }
 
   public get latestEvent(): TrackingEvent {

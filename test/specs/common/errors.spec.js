@@ -159,8 +159,7 @@ describe("Errors", () => {
           "Error in the createShipment method. \n" +
           "Invalid shipment: \n" +
           "  label is required \n" +
-          "  charges is required \n" +
-          "  packages is required",
+          "  charges is required",
         details: [
           {
             type: "any.required",
@@ -178,15 +177,6 @@ describe("Errors", () => {
             context: {
               label: "charges",
               key: "charges",
-            },
-          },
-          {
-            type: "any.required",
-            message: "packages is required",
-            path: ["packages"],
-            context: {
-              label: "packages",
-              key: "packages",
             },
           }
         ]

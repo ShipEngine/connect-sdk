@@ -19,10 +19,7 @@ export class TrackingInfo extends ShipmentIdentifierBase {
   public readonly events: readonly TrackingEvent[];
 
   public get package(): PackageTrackingInfo | undefined {
-    if(this.packages && this.packages.length > 0) {
-      return this.packages[0];
-    }
-
+    return this.packages[0];
   }
 
   public get latestEvent(): TrackingEvent {

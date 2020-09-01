@@ -29,9 +29,7 @@ export class ShipmentConfirmation extends ShipmentIdentifierBase {
   }
 
   public get package(): PackageConfirmation | undefined {
-    if(this.packages && this.packages.length > 0) {
-      return this.packages[0];
-    }
+    return this.packages[0];
   }
 
   public constructor(pojo: ShipmentConfirmationPOJO) {
@@ -48,3 +46,5 @@ export class ShipmentConfirmation extends ShipmentIdentifierBase {
     hideAndFreeze(this);
   }
 }
+
+

@@ -34,13 +34,11 @@ export class Rate {
   public readonly charges: readonly Charge[];
   public readonly totalAmount: MonetaryValue;
   public readonly notes: readonly Note[];
-  public readonly packages: RatePackage[];
+  public readonly packages: readonly RatePackage[];
   public readonly deliveryConfirmation?: DeliveryConfirmation;
 
   public get package(): RatePackage | undefined {
-    if(this.packages && this.packages.length > 0) {
-      return this.packages[0];
-    }
+    return this.packages[0];
   }
 
   public constructor(pojo: RatePOJO, app: App) {

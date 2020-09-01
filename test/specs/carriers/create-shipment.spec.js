@@ -21,9 +21,7 @@ describe("createShipment", () => {
           size: "letter",
           format: "pdf",
           data: Buffer.from("data"),
-        },
-        packages: [{
-        }]
+        }
       })
     }));
 
@@ -54,11 +52,7 @@ describe("createShipment", () => {
         value: 123.46,
         currency: "CAD",
       },
-      packages: [{
-        trackingNumber: "",
-        identifiers: {},
-        metadata: {}
-      }],
+      packages: []
     });
   });
 
@@ -473,8 +467,7 @@ describe("createShipment", () => {
           "Invalid shipment: \n" +
           "  label is required \n" +
           "  deliveryDateTime must be one of date, string, object \n" +
-          "  charges is required \n" +
-          "  packages must contain at least 1 items"
+          "  charges is required"
         );
       }
     });

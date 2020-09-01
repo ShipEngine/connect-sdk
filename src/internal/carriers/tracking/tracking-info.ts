@@ -9,13 +9,13 @@ export class TrackingInfo extends ShipmentIdentifierBase {
     label: "shipment",
     schema: Joi.object({
       deliveryDateTime: DateTimeZone[_internal].schema,
-      packages: Joi.array().min(1).items(PackageTrackingInfo[_internal].schema).optional(),
+      packages: Joi.array().items(PackageTrackingInfo[_internal].schema).optional(),
       events: Joi.array().min(1).items(TrackingEvent[_internal].schema),
     }),
   };
 
   public readonly deliveryDateTime?: DateTimeZone;
-  public readonly packages?: readonly PackageTrackingInfo[] | undefined;
+  public readonly packages: readonly PackageTrackingInfo[];
   public readonly events: readonly TrackingEvent[];
 
   public get package(): PackageTrackingInfo | undefined {
@@ -57,7 +57,7 @@ export class TrackingInfo extends ShipmentIdentifierBase {
 
     this.deliveryDateTime =
       pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;
-    this.packages = pojo.packages ? pojo.packages.map((parcel) => new PackageTrackingInfo(parcel, app)) : undefined;
+    this.packages = pojo.packages ? pojo.packages.map((parcel) => new PackageTrackingInfo(parcel, app)) : [];
     this.events = pojo.events.map((event) => new TrackingEvent(event));
 
     // Make this object immutable

@@ -13,7 +13,7 @@ export class ShipmentConfirmation extends ShipmentIdentifierBase {
       form: Document[_internal].schema,
       deliveryDateTime: DateTimeZone[_internal].schema,
       charges: Joi.array().min(1).items(Charge[_internal].schema).required(),
-      packages: Joi.array().min(1).items(PackageConfirmation[_internal].schema).optional(),
+      packages: Joi.array().items(PackageConfirmation[_internal].schema).optional(),
     }),
   };
 
@@ -22,7 +22,7 @@ export class ShipmentConfirmation extends ShipmentIdentifierBase {
   public readonly deliveryDateTime?: DateTimeZone;
   public readonly charges: readonly Charge[];
   public readonly totalAmount: MonetaryValue;
-  public readonly packages?: readonly PackageConfirmation[];
+  public readonly packages: readonly PackageConfirmation[];
 
   public get isTrackable(): boolean {
     return Boolean(this.trackingNumber);
@@ -40,7 +40,7 @@ export class ShipmentConfirmation extends ShipmentIdentifierBase {
     this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;
     this.charges = pojo.charges.map((charge) => new Charge(charge));
     this.totalAmount = calculateTotalCharges(this.charges);
-    this.packages = pojo.packages ? pojo.packages.map((parcel) => new PackageConfirmation(parcel)) : undefined;
+    this.packages = pojo.packages ? pojo.packages.map((parcel) => new PackageConfirmation(parcel)) : [];
     this.label = new Label(pojo.label);
     this.form = pojo.form && new Document(pojo.form);
 

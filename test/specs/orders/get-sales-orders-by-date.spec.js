@@ -172,9 +172,9 @@ describe("getSalesOrdersByDate", () => {
           "  identifiers must be of type object \n" +
           "  createdDateTime must be a valid date/time \n" +
           "  status must be a string \n" +
-          "  shipTo is required \n" +
           "  buyer is required \n" +
-          "  requestedFulfillments[0].items must contain at least 1 items"
+          "  requestedFulfillments[0].items must contain at least 1 items \n" +
+          "  requestedFulfillments[0].shipTo is required"
         );
       }
     });

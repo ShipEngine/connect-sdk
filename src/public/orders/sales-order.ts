@@ -29,33 +29,33 @@ export interface SalesOrder extends SalesOrderIdentifierPOJO {
    */
   orderURL?: URLString | URL;
 
-  /**
-   * The address where the order should be shipped
-   */
-  shipTo: AddressWithContactInfoPOJO;
-
+  
   /**
    * The buyer who bought the order. This is not necessarily the same person as the `shipTo`
    */
   buyer: Buyer;
-
+  
   /**
    * The breakdown of charges for this sales order
    */
   charges?: Charge[];
-
-
+  
+  
   requestedFulfillments: Array<{
     /**
      * The items in this fulfillment request
      */
     items: readonly SalesOrderItem[];
-
+    
     /**
      * Shipping preferences for this order fulfillment
      */
     shippingPreferences?: ShippingPreferences;
-
+    
+    /**
+     * The address where the sales order item should be shipped
+     */
+    shipTo: AddressWithContactInfoPOJO;
   }>;
 
   /**

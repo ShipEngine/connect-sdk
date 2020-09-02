@@ -13,14 +13,14 @@ export class SalesOrder extends SalesOrderIdentifierBase {
       status: Joi.string().enum(SalesOrderStatus).required(),
       paymentMethod: Joi.string().enum(PaymentMethod),
       orderURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
-      shipTo: AddressWithContactInfo[_internal].schema.required(),
       buyer: Buyer[_internal].schema.required(),
       shippingPreferences: ShippingPreferences[_internal].schema,
       charges: Joi.array().min(1).items(Charge[_internal].schema),
       requestedFulfillments: Joi.array().min(1).items(
         Joi.object({
           items: Joi.array().min(1).items(SalesOrderItem[_internal].schema).required(),
-          shippingPreferences: ShippingPreferences[_internal].schema
+          shippingPreferences: ShippingPreferences[_internal].schema,
+          shipTo: AddressWithContactInfo[_internal].schema.required()
         })
       ),
       notes: Note[_internal].notesSchema,
@@ -32,14 +32,15 @@ export class SalesOrder extends SalesOrderIdentifierBase {
   public readonly status: SalesOrderStatus;
   public readonly paymentMethod?: PaymentMethod;
   public readonly orderURL?: URL;
-  public readonly shipTo: AddressWithContactInfo;
   public readonly buyer: Buyer;
 
   public readonly charges: readonly Charge[];
 
   public readonly requestedFulfillments: Array<{
     items: readonly SalesOrderItem[];
-    shippingPreferences: ShippingPreferences;
+    readonly shippingPreferences: ShippingPreferences;
+    readonly shipTo: AddressWithContactInfo;
+
   }>;
 
   public readonly totalCharges: MonetaryValue;
@@ -53,16 +54,16 @@ export class SalesOrder extends SalesOrderIdentifierBase {
     this.status = pojo.status;
     this.paymentMethod = pojo.paymentMethod;
     this.orderURL = pojo.orderURL ? new URL(pojo.orderURL as string) : undefined;
-    this.shipTo = new AddressWithContactInfo(pojo.shipTo);
     this.buyer = new Buyer(pojo.buyer);
-
+    
     this.charges = pojo.charges ? pojo.charges.map((charge) => new Charge(charge)) : [];
     this.totalCharges = calculateTotalCharges(this.charges);
-
+    
     this.requestedFulfillments = pojo.requestedFulfillments.map((requestedFulfillment) => {
       return {
         items: requestedFulfillment.items.map((item) => new SalesOrderItem(item)),
-        shippingPreferences: new ShippingPreferences(requestedFulfillment.shippingPreferences || {})
+        shippingPreferences: new ShippingPreferences(requestedFulfillment.shippingPreferences || {}),
+        shipTo: new AddressWithContactInfo(requestedFulfillment.shipTo)
       };
     });
 

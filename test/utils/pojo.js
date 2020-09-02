@@ -400,14 +400,14 @@ const pojo = module.exports = {
       ...pojo.salesOrderIdentifier(),
       createdDateTime: "2005-05-05T05:05:05Z",
       status: "awaiting_shipment",
-      shipTo: pojo.addressWithContactInfo(),
       buyer: pojo.buyer(),
       requestedFulfillments: [
         {
           items: [pojo.salesOrderItem()],
           shippingPreferences: {
             saturdayDelivery: true
-          }
+          },
+          shipTo: pojo.addressWithContactInfo(),
         }
       ],
       ...props,

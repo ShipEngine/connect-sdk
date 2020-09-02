@@ -1,5 +1,5 @@
 import type { ConnectionAppDefinition, InlineOrReference } from "../common";
-import type { GetSalesOrdersByDate, ShipmentCreated } from "./methods";
+import type { GetSalesOrdersByDate, ShipmentCreated, AcknowledgeOrders } from "./methods";
 
 
 /**
@@ -18,6 +18,11 @@ export interface OrderAppDefinition extends ConnectionAppDefinition {
    * may be fulfilled by multiple shipments.
    */
   shipmentCreated?: InlineOrReference<ShipmentCreated>;
+
+  /**
+   * Called when an order has been imported into a marketplace.
+   */
+  acknowledgeOrders?: InlineOrReference<AcknowledgeOrders>;
 
   /**
    * Indicates whether to allow emails to be sent to customers with shipping or order updates

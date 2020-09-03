@@ -4,10 +4,8 @@
 export enum ErrorCode {
   AppError = "ERR_APP_ERROR",
   BadRequest = "ERR_BAD_REQUEST",
-  CurrencyMismatch = "ERR_CURRENCY_MISMATCH",
   ExternalServiceError = "ERR_EXTERNAL_SERVICE_ERROR",
   Filesystem = "ERR_FILESYSTEM",
-  InvalidInput = "ERR_INVALID_INPUT",
   NotFound = "ERR_NOT_FOUND",
   RateLimit = "ERR_RATE_LIMIT",
   Syntax = "ERR_SYNTAX",

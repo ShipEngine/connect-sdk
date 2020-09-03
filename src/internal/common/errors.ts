@@ -2,6 +2,15 @@ import { ono } from "@jsdevtools/ono";
 import { ErrorCode, AppError, UUID } from "../../public";
 
 /**
+ * Error codes for ShipEngine Connect SDK runtime errors
+ */
+export enum SystemErrorCode {
+  InvalidInput = "ERR_INVALID_INPUT",
+  CurrencyMismatch = "ERR_CURRENCY_MISMATCH",
+}
+
+
+/**
  * Additional properties to add to a an error
  */
 export interface ErrorProps {
@@ -9,6 +18,7 @@ export interface ErrorProps {
   transactionID?: UUID;
   [key: string]: unknown;
 }
+
 
 /**
  * Creates a ShipEngine Connect SDK error

@@ -1,13 +1,13 @@
 import { ShipmentStatus, TrackingInfo as TrackingInfoPOJO } from "../../../public";
 import { App, DateTimeZone, hideAndFreeze, Joi, _internal } from "../../common";
-import { ShipmentIdentifierBase } from "../shipments/shipment-identifier";
+import { ShipmentIdentifierBase, ShipmentIdentifier } from "../shipments/shipment-identifier";
 import { PackageTrackingInfo } from "./package-tracking-info";
 import { TrackingEvent } from "./tracking-event";
 
 export class TrackingInfo extends ShipmentIdentifierBase {
   public static readonly [_internal] = {
-    label: "shipment",
-    schema: Joi.object({
+    label: "tracking info",
+    schema: ShipmentIdentifier[_internal].schema.keys({
       deliveryDateTime: DateTimeZone[_internal].schema,
       packages: Joi.array().min(1).items(PackageTrackingInfo[_internal].schema),
       events: Joi.array().min(1).items(TrackingEvent[_internal].schema),

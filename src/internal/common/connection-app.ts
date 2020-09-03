@@ -1,6 +1,6 @@
 import { Connect, ConnectionAppDefinition, ErrorCode, FilePath } from "../../public";
 import { App, AppPOJO } from "./app";
-import { error } from "./errors";
+import { error, SystemErrorCode } from "./errors";
 import { Form, FormPOJO } from "./form";
 import { Transaction, TransactionPOJO } from "./transaction";
 import { _internal } from "./utils";
@@ -67,16 +67,16 @@ export abstract class ConnectionApp extends App {
       _transaction = new Transaction(validate(transaction, Transaction));
       _connectionFormData = Object.assign({}, connectionFormData);
     }
-    catch (originalError) {
-      throw error(ErrorCode.InvalidInput, "Invalid input to the connect method.", { originalError });
+    catch (originalError: unknown) {
+      throw error(SystemErrorCode.InvalidInput, "Invalid input to the connect method.", { originalError });
     }
 
     try {
       await connect!(_transaction, _connectionFormData);
     }
-    catch (originalError) {
+    catch (originalError: unknown) {
       const transactionID = _transaction.id;
-      throw error((originalError.code || ErrorCode.AppError), "Error in the connect method.", { originalError, transactionID });
+      throw error(ErrorCode.AppError, "Error in the connect method.", { originalError, transactionID });
     }
   }
 }

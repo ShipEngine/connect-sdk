@@ -1,5 +1,5 @@
-import { Charge as ICharge, ChargePOJO, ChargeType, ErrorCode, AppError } from "../../public";
-import { error } from "./errors";
+import { AppError, Charge as ICharge, ChargePOJO, ChargeType } from "../../public";
+import { error, SystemErrorCode } from "./errors";
 import { MonetaryValue } from "./measures/monetary-value";
 import { hideAndFreeze, _internal } from "./utils";
 import { Joi } from "./validation";
@@ -13,11 +13,11 @@ export function calculateTotalCharges(charges: readonly Charge[]): MonetaryValue
     const insuredValues = charges.map((charge) => charge.amount);
     return MonetaryValue.sum(insuredValues);
   }
-  catch (originalError) {
+  catch (originalError: unknown) {
     // Check for a currency mismatch, and throw a more specific error message
-    if ((originalError as AppError).code === ErrorCode.CurrencyMismatch) {
+    if ((originalError as AppError).code === SystemErrorCode.CurrencyMismatch) {
       throw error(
-        ErrorCode.CurrencyMismatch,
+        SystemErrorCode.CurrencyMismatch,
         "All charges must be in the same currency.",
         { originalError }
       );

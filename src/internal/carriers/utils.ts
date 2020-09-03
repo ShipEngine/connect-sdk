@@ -1,5 +1,5 @@
-import { ErrorCode, ServiceArea, AppError } from "../../public";
-import { error, MonetaryValue } from "../common";
+import { AppError, ServiceArea } from "../../public";
+import { error, MonetaryValue, SystemErrorCode } from "../common";
 
 
 /**
@@ -47,11 +47,11 @@ export function calculateTotalInsuranceAmount(packages: ReadonlyArray<{ insuredV
       return MonetaryValue.sum(insuredValues);
     }
   }
-  catch (originalError) {
+  catch (originalError: unknown) {
     // Check for a currency mismatch, and throw a more specific error message
-    if ((originalError as AppError).code === ErrorCode.CurrencyMismatch) {
+    if ((originalError as AppError).code === SystemErrorCode.CurrencyMismatch) {
       throw error(
-        ErrorCode.CurrencyMismatch,
+        SystemErrorCode.CurrencyMismatch,
         "All packages in a shipment must be insured in the same currency.",
         { originalError }
       );

@@ -14,7 +14,7 @@ export abstract class TimeRangeBase implements ITimeRange {
 
     if (this.startDateTime && this.endDateTime) {
       if (this.endDateTime.getTime() < this.startDateTime.getTime()) {
-        throw error(ErrorCode.Validation,
+        throw error(ErrorCode.Invalid,
           `Invalid time range: ${this.toString()}. The start date occurs after the end date.`);
       }
     }

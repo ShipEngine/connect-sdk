@@ -16,7 +16,7 @@ export abstract class DocumentBase {
     this.data = pojo.data;
 
     if (this.data.length === 0) {
-      throw error(ErrorCode.Validation, `${this.name} data cannot be empty`);
+      throw error(ErrorCode.Invalid, `${this.name} data cannot be empty`);
     }
   }
 }

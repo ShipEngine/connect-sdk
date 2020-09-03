@@ -1,5 +1,4 @@
-import { ono } from "@jsdevtools/ono";
-import { ErrorCode, AppError, UUID } from "../../public";
+import { AppError, ErrorCode, UUID } from "../../public";
 
 /**
  * Error codes for ShipEngine Connect SDK runtime errors
@@ -23,11 +22,26 @@ export interface ErrorProps {
 /**
  * Creates a ShipEngine Connect SDK error
  */
-export function error(code: ErrorCode, message: string, { originalError, ...props }: ErrorProps = {}): AppError {
-  // Create a new error with:
-  //  - The new error message and the original error message
-  //  - The new stack trace and the original stack trace
-  //  - The new properties and the original error's properties
-  const err = ono(originalError as Error, { ...props, code }, message);
-  return err;
+export function error(code: ErrorCode | SystemErrorCode, message: string, props: ErrorProps = {}): AppError {
+  let originalError = props.originalError as AppError | undefined;
+
+  if (originalError) {
+    message += ` \n${originalError.message}`;
+  }
+
+  const error = new Error(message) as AppError;
+
+  // Copy all props from the original error and the user-specified props
+  Object.assign(error, originalError, props);
+
+  // Set the error code last,
+  // so it overrides any code on the original error or props
+  error.code = code;
+
+  // Set the original error to the TRUE original error
+  while (originalError && originalError.originalError) {
+    error.originalError = originalError = originalError.originalError as AppError;
+  }
+
+  return error;
 }

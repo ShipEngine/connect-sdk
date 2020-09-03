@@ -16,10 +16,10 @@ export interface TrackingInfo extends ShipmentIdentifierPOJO {
   /**
    * The list of packages in the shipment
    */
-  packages: readonly PackageTrackingInfo[];
+  packages?: readonly PackageTrackingInfo[];
 
   /**
-   * The events and status changes that have occured for this shipment
+   * The events and status changes that have occurred for this shipment
    */
   events: readonly TrackingEvent[];
 }

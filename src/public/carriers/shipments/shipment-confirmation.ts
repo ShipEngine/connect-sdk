@@ -33,6 +33,6 @@ export interface ShipmentConfirmation extends ShipmentIdentifierPOJO {
   /**
    * Confirmation details about each package in the shipment
    */
-  packages: readonly PackageConfirmation[];
+  packages?: readonly PackageConfirmation[];
 
 }

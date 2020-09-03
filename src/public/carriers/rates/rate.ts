@@ -48,7 +48,7 @@ export interface Rate {
   /**
    * The list of packages in the shipment
    */
-  packages: readonly RatePackage[];
+  packages?: readonly RatePackage[];
 
   /**
  * The delivery confirmation included in this rate

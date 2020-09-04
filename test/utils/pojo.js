@@ -121,7 +121,33 @@ const pojo = module.exports = {
       ...props,
     };
   },
+  
+  trackingCriteria (props = {}) {
+    return {
+      trackingNumber: "1234-5678",
+      returns: {
+        isReturn: false
+      },
+      ...props
+    }
+  },
 
+  trackingInfo (props = {}) {
+    return {
+      events: [...pojo.trackingEvent()],
+      
+      ...props
+    }
+  },
+
+  trackingEvent (props = {}) {
+    return {
+      name: "Dummy Event",
+      dateTime: new Date(),
+      status: "accepted",
+      ...props
+    }
+  },
   shipmentIdentifier (props = {}) {
     return {
       ...props,

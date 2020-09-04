@@ -1,42 +1,61 @@
-![ShipEngine Connect](https://connect.shipengine.com/img/logos/shipengine-connect-logo.png)
+[![ShipEngine Connect](https://connect.shipengine.com/img/logos/shipengine-connect-logo.png)](https://connect.shipengine.com)
 
 ShipEngine Connect SDK
 ==============================================
 
+[![npm](https://img.shields.io/npm/v/@shipengine/connect-sdk.svg)](https://www.npmjs.com/package/@shipengine/connect-sdk)
+[![License](https://img.shields.io/npm/l/@shipengine/connect-sdk.svg)](LICENSE)
+[![Coverage Status](https://coveralls.io/repos/github/ShipEngine/connect-sdk/badge.svg?branch=master)](https://coveralls.io/github/ShipEngine/connect-sdk)
+[![Dependencies](https://david-dm.org/ShipEngine/connect-sdk.svg)](https://david-dm.org/ShipEngine/connect-sdk)
 [![Cross-Platform Compatibility](https://shipengine.github.io/img/badges/os-badges.svg)](https://github.com/ShipEngine/connect-sdk/actions)
 [![Build Status](https://github.com/ShipEngine/connect-sdk/workflows/CI-CD/badge.svg)](https://github.com/ShipEngine/connect-sdk/actions)
 
-[![Coverage Status](https://coveralls.io/repos/github/ShipEngine/connect-sdk/badge.svg?branch=master)](https://coveralls.io/github/ShipEngine/connect-sdk)
-[![Dependencies](https://david-dm.org/ShipEngine/connect-sdk.svg)](https://david-dm.org/ShipEngine/connect-sdk)
 
-[![npm](https://img.shields.io/npm/v/@shipengine/connect-sdk.svg)](https://www.npmjs.com/package/@shipengine/connect-sdk)
-[![License](https://img.shields.io/npm/l/@shipengine/connect-sdk.svg)](LICENSE)
+<p><br></p>
+
+> ### ⚠ WARNING: This is an internal package
+> Using this package directly is discouraged and unsupported. Instead, you should install
+> [**@shipengine/connect**](https://www.npmjs.com/package/@shipengine/connect) which uses this package under the hood.
+> See [our documentation](https://connect.shipengine.com/docs/cli) for more information.
+
+<p><br></p>
 
 
-
-This is the official SDK for building [**ShipEngine Connect apps**](https://connect.shipengine.com/).
-
-
-About ShipEngine Connect Apps
---------------------------------------------
-Apps are just [NPM packages](https://docs.npmjs.com/about-packages-and-modules) that export an object with properties and methods that define the app's functionality.
-
-An app must have a [`package.json` file](https://docs.npmjs.com/files/package.json) in its root directory, which specifies its name, version number, and dependencies. This SDK (`@shipengine/connect-sdk`) must be listed as a dependency or devDependency.
-
-Other than that, the folder structure and file names are entirely up to you.  As long as your app exports an object with the right structure, it doesn't matter whether that object is defined in a single file or spread across many files.
+This library contains TypeScript type definitions for ShipEngine Connect app developers, as well as internal classes, functions, etc. that's used by the ShipEngine Connect platform for testing, validation, and runtime.
 
 
 
-Installation
+Local Development
 --------------------------
-You can install the ShipEngine Connect SDK via [npm](https://docs.npmjs.com/about-npm/).
+To build/test the library locally on your computer:
+
+1. __Install dependencies__<br>
+`npm install`
+
+2. __Run the build script__<br>
+`npm run build` or `npm run watch`
+
+3. __Run the tests__<br>
+`npm test`
+
+
+
+Releasing
+--------------------------
+To release a new version of the SDK, use the command below.
 
 ```bash
-npm install @shipengine/connect-sdk
+npm run release
 ```
 
+This will do the following:
 
+- Display any outdated dependencies and prompt you to update them
+- Run a security vulnerability audit
+- Do a clean re-build
+- Run all tests
+- Run linter checks
+- Prompt you for the version number to bump to
+- Tag, commit, and push to GitHub
 
-Example Usage
------------------------
-In addition to [our documentation](https://connect.shipengine.com/docs/), you can also look at [these sample apps](https://github.com/ShipEngine/connect-sample-apps) to learn how to use the ShipEngine Connect SDK.  The sample apps demonstrate various features of the platform, as well as different possible ways to build and structure apps.
+Once the commit is merged to the `master` branch, the [CI/CD script](.github/workflows/CI-CD.yaml) will publish it to NPM.

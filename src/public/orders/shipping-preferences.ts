@@ -16,7 +16,7 @@ export interface ShippingPreferences {
   containsAlcohol?: boolean;
 
   /**
-   * Indicates whether Saturday delivery is reqeusted
+   * Indicates whether Saturday delivery is requested
    */
   saturdayDelivery?: boolean;
 

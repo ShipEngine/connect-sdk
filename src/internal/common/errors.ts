@@ -1,4 +1,4 @@
-import { AppError, ErrorCode, UUID } from "../../public";
+import { ErrorCode, UUID } from "../../public";
 
 /**
  * Error codes for ShipEngine Connect SDK runtime errors
@@ -6,6 +6,17 @@ import { AppError, ErrorCode, UUID } from "../../public";
 export enum SystemErrorCode {
   InvalidInput = "ERR_INVALID_INPUT",
   CurrencyMismatch = "ERR_CURRENCY_MISMATCH",
+}
+
+
+/**
+ * An error thrown by the ShipEngine Connect SDK
+ */
+export interface SystemError extends Error {
+  code: ErrorCode | SystemErrorCode;
+  transactionID?: UUID;
+  originalError?: Error;
+  [key: string]: unknown;
 }
 
 
@@ -22,14 +33,14 @@ export interface ErrorProps {
 /**
  * Creates a ShipEngine Connect SDK error
  */
-export function error(code: ErrorCode | SystemErrorCode, message: string, props: ErrorProps = {}): AppError {
-  let originalError = props.originalError as AppError | undefined;
+export function error(code: ErrorCode | SystemErrorCode, message: string, props: ErrorProps = {}): SystemError {
+  let originalError = props.originalError as SystemError | undefined;
 
   if (originalError) {
     message += ` \n${originalError.message}`;
   }
 
-  const error = new Error(message) as AppError;
+  const error = new Error(message) as SystemError;
 
   // Copy all props from the original error and the user-specified props
   Object.assign(error, originalError, props);
@@ -40,7 +51,7 @@ export function error(code: ErrorCode | SystemErrorCode, message: string, props:
 
   // Set the original error to the TRUE original error
   while (originalError && originalError.originalError) {
-    error.originalError = originalError = originalError.originalError as AppError;
+    error.originalError = originalError = originalError.originalError as SystemError;
   }
 
   return error;

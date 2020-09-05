@@ -221,8 +221,7 @@ describe("Errors", () => {
           message:
             "Invalid shipment: \n" +
             "  label is required \n" +
-            "  charges is required \n" +
-            "  packages is required",
+            "  charges is required",
         }
       });
     }

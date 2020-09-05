@@ -37,7 +37,7 @@ export class NewManifest implements INewManifest {
     switch (carrier.manifestLocations) {
       case ManifestLocation.AllLocations:
         if (pojo.shipFrom) {
-          throw error(ErrorCode.Validation,
+          throw error(ErrorCode.Invalid,
             `manifest.shipFrom is not allowed because carrier.manifestLocations is ${ManifestLocation.AllLocations}`);
         }
         break;
@@ -45,7 +45,7 @@ export class NewManifest implements INewManifest {
       case ManifestLocation.SingleLocation:
       default:
         if (!pojo.shipFrom) {
-          throw error(ErrorCode.Validation,
+          throw error(ErrorCode.Invalid,
             `manifest.shipFrom is required because carrier.manifestLocations is ${ManifestLocation.SingleLocation}`);
         }
     }

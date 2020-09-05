@@ -1,229 +1,153 @@
+import { UUID } from "./types";
+
 /**
  * Error codes for ShipEngine Connect SDK runtime errors
  */
 export enum ErrorCode {
   AppError = "ERR_APP_ERROR",
-  BadRequest = "ERR_BAD_REQUEST",
-  CurrencyMismatch = "ERR_CURRENCY_MISMATCH",
-  ExternalServiceError = "ERR_EXTERNAL_SERVICE_ERROR",
-  Filesystem = "ERR_FILESYSTEM",
-  InvalidInput = "ERR_INVALID_INPUT",
-  NotFound = "ERR_NOT_FOUND",
-  RateLimit = "ERR_RATE_LIMIT",
-  Syntax = "ERR_SYNTAX",
+  Invalid = "ERR_INVALID",
   Unauthorized = "ERR_UNAUTHORIZED",
-  Validation = "ERR_INVALID",
+  External = "ERR_EXTERNAL",
 }
+
 
 /**
- * This method is used to create field errors which are used in various errors.
- *
- * @param {string} attemptedValue The value the user supplied.
- * @param {string} errorCode An error code if one is applicable.
- * @param {string} errorMessage The useful error message to return to the user.
- * @param {string} fieldName The name of the field that is failing to validate.
+ * An error that is thrown by a ShipEngine Connect app
  */
-export interface FieldError {
-  attemptedValue?: string;
-  errorCode?: string;
-  errorMessage?: string;
-  fieldName?: string;
-}
-
-export enum ErrorSource {
-  External = "external",
-  Internal = "internal",
-}
-
 export interface AppError extends Error {
-  code: ErrorCode;
-  message: string;
-  canBeRetried?: boolean;
-  originalError?: Error;
-  source?: ErrorSource;
+  code: ErrorCode | string;
   statusCode?: number;
-  transactionID?: string;
+  transactionID?: UUID;
+  originalError?: Error;
+  [key: string]: unknown;
 }
+
 
 /**
- * Normalize error args and apply defaults
+ * The arguments that can be passsed to a ShipEngine Connect error constructor.
  */
-function normalizeArgs<T extends AppError>(args: string | T): AppError {
-  if (typeof args === "string") {
-    return {
-      message: args,
-      code: ErrorCode.AppError,
-    } as T;
-  }
-  else {
-    return args;
-  }
+export interface AppErrorArgs {
+  /**
+   * The error message.
+   */
+  message: string
+
+  /**
+   * The numeric status code associated with the error, if any.
+   * For errors that originate from an HTTP request, this should be the HTTP status code
+   * (e.g. 400, 404, 500, etc.)
+   */
+  statusCode?: number;
+
+  /**
+   * The original error that occurred, if this is a re-thrown error.
+   */
+  originalError?: Error;
+
+  /**
+   * Additional arbitrary properties that provide more information or context about the error.
+   */
+  [key: string]: unknown;
 }
 
-abstract class BaseError extends Error implements AppError {
-  public code: ErrorCode;
-  public source?: ErrorSource;
-  public statusCode?: number;
-  public canBeRetried?: boolean;
-  public originalError?: Error;
-  public transactionID?: string;
 
-  public constructor(args: AppError) {
+/**
+ * An error that is thrown by a ShipEngine Connect app
+ */
+export class AppError extends Error implements AppError {
+  public code: string;
+  public statusCode?: number;
+  public transactionID?: UUID;
+  public originalError?: Error;
+
+  /**
+   * @param args
+   * The error message, or an object with a message and other properties to assign to the error
+   */
+  public constructor(args: string | AppErrorArgs) {
+    args = normalizeArgs(args);
     super(args.message);
 
-    // Since this attribute is required tsc requires that it is set explicitly
-    this.code = args.code;
+    // Copy all props to the error
+    Object.assign(this, args.originalError, args);
 
-    Object.assign(this, args);
+    // Don't allow these properties to be overridden
+    this.code = ErrorCode.AppError;
+    this.name = new.target.name;
   }
 }
 
-interface BadRequestErrorArgs extends AppError {
-  fieldErrors?: FieldError[];
-}
 
 /**
- * A Bad Request Error.
- *
- * @param {Error} args.originalError The original error if one exist.
- * @param {FieldError[]} args.fieldErrors An array of objects created by the CreateFieldError function.
- * @param {string} args.message The message that needs to be communicated to the users.
- * @param {string} args.transactionID The transaction ID associated with the function call.
+ * An error indicating that input data is invalid or does not comply with business rules.
  */
-export class BadRequestError extends BaseError {
-  public fieldErrors?: FieldError[];
-
-  public constructor(args: string | BadRequestErrorArgs) {
-    super({
-      // Overridable Defaults
-      canBeRetried: false,
-      source: ErrorSource.External,
-      statusCode: 400,
-
-      // User-specified values override defaults
-      ...normalizeArgs(args),
-
-      // Static Defaults
-      code: ErrorCode.BadRequest,
-      name: "BadRequestError",
-    });
+export class ValidationError extends AppError {
+  /**
+   * @param args
+   * The error message, or an object with a message and other properties to assign to the error
+   */
+  public constructor(args: string | AppErrorArgs) {
+    super(args);
+    this.code = ErrorCode.Invalid;
   }
 }
+
 
 /**
- * An Unauthorized Error.
- *
- * @param {Error} args.originalError The original error if one exist.
- * @param {string} args.message The message that needs to be communicated to the users.
- * @param {string} args.transactionID The transaction ID associated with the function call.
+ * An error indicating that the user is unauthorized or not permitted to perform the requested action.
  */
-export class UnauthorizedError extends BaseError {
-  public constructor(args: string | AppError) {
-    super({
-      // Overridable Defaults
-      canBeRetried: false,
-      source: ErrorSource.External,
-      statusCode: 401,
-
-      // User-specified values override defaults
-      ...normalizeArgs(args),
-
-      // Static Defaults
-      code: ErrorCode.Unauthorized,
-      name: "UnauthorizedError",
-    });
+export class UnauthorizedError extends AppError {
+  /**
+   * @param args
+   * The error message, or an object with a message and other properties to assign to the error
+   */
+  public constructor(args: string | AppErrorArgs) {
+    super(args);
+    this.code = ErrorCode.Unauthorized;
   }
 }
+
 
 /**
- * A Resource Not Found Error.
- *
- * @param {Error} args.originalError The original error if one exist.
- * @param {string} args.message The message that needs to be communicated to the users.
- * @param {string} args.transactionID The transaction ID associated with the function call.
+ * The arguments that can be passsed to the `ExternalError` constructor.
  */
-export class NotFoundError extends BaseError {
-
-  public constructor(args: string | AppError) {
-    super({
-      // Overridable Defaults
-      canBeRetried: false,
-      source: ErrorSource.External,
-      statusCode: 404,
-
-      // User-specified values override defaults
-      ...normalizeArgs(args),
-
-      // Static Defaults
-      code: ErrorCode.NotFound,
-      name: "NotFoundError",
-    });
-  }
-}
-
-interface RateLimitErrorArgs extends AppError {
-  retryInMilliseconds?: number;
-}
-
-/**
- * A Rate Limit Error.
- *
- * @param {Error} args.originalError The original error if one exist.
- * @param {number} args.retryInMilliseconds The number of milliseconds until the request can be retried.
- * @param {string} args.message The message that needs to be communicated to the users.
- * @param {string} args.transactionID The transaction ID associated with the function call.
- */
-export class RateLimitError extends BaseError {
-  public retryInMilliseconds?: number;
-
-  public constructor(args: string | RateLimitErrorArgs) {
-    super({
-      // Overridable Defaults
-      canBeRetried: true,
-      source: ErrorSource.External,
-      statusCode: 429,
-
-      // User-specified values override defaults
-      ...normalizeArgs(args),
-
-      // Static Defaults
-      code: ErrorCode.RateLimit,
-      name: "RateLimitError",
-    });
-  }
-}
-
-interface ExternalServiceErrorArgs extends AppError {
+export interface ExternalErrorArgs extends AppErrorArgs {
+  /**
+   * If the external service returned one or more error messages, put them here.
+   */
   externalErrors?: string[];
+
+  /**
+   * If the external service returned one or more warning messages, put them here.
+   */
   externalWarnings?: string[];
 }
 
+
 /**
- * An External Service Error Error.
- *
- * @param {Error} args.originalError The original error if one exist.
- * @param {string[]} externalErrors An array of errors from the outside world.
- * @param {string[]} externalWarnings An array of warnings from the outside world.
- * @param {string} args.message The message that needs to be communicated to the users.
- * @param {string} args.transactionID The transaction ID associated with the function call.
+ * An error that originated from an external service, such as an API call.
  */
-export class ExternalServiceError extends BaseError {
-  public externalErrors?: string[];
-  public externalWarnings?: string[];
+export class ExternalError extends AppError {
+  public externalErrors!: string[];
+  public externalWarnings!: string[];
 
-  public constructor(args: string | ExternalServiceErrorArgs) {
-    super({
-      // Overridable Defaults
-      canBeRetried: true,
-      source: ErrorSource.External,
-      statusCode: 520,
+  public constructor(args: string | ExternalErrorArgs) {
+    super(args);
+    this.externalErrors = this.externalErrors || [];
+    this.externalWarnings = this.externalWarnings || [];
+    this.code = ErrorCode.External;
+  }
+}
 
-      // User-specified values override defaults
-      ...normalizeArgs(args),
 
-      // Static Defaults
-      code: ErrorCode.ExternalServiceError,
-      name: "RateLimitError",
-    });
+/**
+ * Normalizes the arguments that are passed to an error's constructor
+ */
+function normalizeArgs<T extends AppErrorArgs>(args: string | T): T {
+  if (typeof args === "string") {
+    return { message: args } as T;
+  }
+  else {
+    return args;
   }
 }

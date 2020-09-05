@@ -1,11 +1,10 @@
-import { AppType, Connect, ErrorCode, GetSalesOrdersByDate, OrderAppDefinition, ShipmentCreated, AcknowledgeOrders } from "../../public";
-import { AppPOJO, ConnectionApp, error, FormPOJO, hideAndFreeze, Joi, Transaction, TransactionPOJO, validate, _internal } from "../common";
-import { SalesOrderTimeRange, SalesOrderTimeRangePOJO } from "./sales-order-time-range";
-import { SalesOrderShipment, SalesOrderShipmentPOJO } from "./shipments/sales-order-shipment";
-import { SalesOrders } from "./sales-orders";
-import { SalesOrders as SalesOrdersPOJO } from "../../public";
+import { AcknowledgeOrders, AppType, Connect, ErrorCode, GetSalesOrdersByDate, OrderAppDefinition, SalesOrders as SalesOrdersPOJO, ShipmentCreated } from "../../public";
+import { AppPOJO, ConnectionApp, error, FormPOJO, hideAndFreeze, Joi, SystemErrorCode, Transaction, TransactionPOJO, validate, _internal } from "../common";
 import { AcknowledgedSalesOrder } from "./acknowledged-sales-order";
 import { SalesOrderNotification, SalesOrderNotificationPOJO } from "./sales-order-notification";
+import { SalesOrderTimeRange, SalesOrderTimeRangePOJO } from "./sales-order-time-range";
+import { SalesOrders } from "./sales-orders";
+import { SalesOrderShipment, SalesOrderShipmentPOJO } from "./shipments/sales-order-shipment";
 
 const _private = Symbol("private fields");
 
@@ -76,8 +75,8 @@ export class OrderApp extends ConnectionApp {
       _transaction = new Transaction(validate(transaction, Transaction));
       _range = new SalesOrderTimeRange(validate(range, SalesOrderTimeRange));
     }
-    catch (originalError) {
-      throw error(ErrorCode.InvalidInput, "Invalid input to the getSalesOrdersByDate method.", { originalError });
+    catch (originalError: unknown) {
+      throw error(SystemErrorCode.InvalidInput, "Invalid input to the getSalesOrdersByDate method.", { originalError });
     }
 
     try {
@@ -91,9 +90,9 @@ export class OrderApp extends ConnectionApp {
 
       return new SalesOrders(salesOrderArrayPOJO);
     }
-    catch (originalError) {
+    catch (originalError: unknown) {
       const transactionID = _transaction.id;
-      throw error((originalError.code || ErrorCode.AppError), "Error in the getSalesOrdersByDate method.", { originalError, transactionID });
+      throw error(ErrorCode.AppError, "Error in the getSalesOrdersByDate method.", { originalError, transactionID });
     }
   }
 
@@ -105,16 +104,16 @@ export class OrderApp extends ConnectionApp {
       _transaction = new Transaction(validate(transaction, Transaction));
       _shipment = new SalesOrderShipment(validate(shipment, SalesOrderShipment));
     }
-    catch (originalError) {
-      throw error(ErrorCode.InvalidInput, "Invalid input to the shipmentCreated method.", { originalError });
+    catch (originalError: unknown) {
+      throw error(SystemErrorCode.InvalidInput, "Invalid input to the shipmentCreated method.", { originalError });
     }
 
     try {
       await shipmentCreated!(_transaction, _shipment);
     }
-    catch (originalError) {
+    catch (originalError: unknown) {
       const transactionID = _transaction.id;
-      throw error((originalError.code || ErrorCode.AppError), "Error in the shipmentCreated method.", { originalError, transactionID });
+      throw error(ErrorCode.AppError, "Error in the shipmentCreated method.", { originalError, transactionID });
     }
   }
 
@@ -127,15 +126,15 @@ export class OrderApp extends ConnectionApp {
       _transaction = new Transaction(validate(transaction, Transaction));
 
       if(notifications.length === 0) {
-        throw error (ErrorCode.InvalidInput, "Sales Order Notifications are required");
+        throw error (SystemErrorCode.InvalidInput, "Sales Order Notifications are required");
       }
 
       for(const notification of notifications) {
         _notifications.push(new SalesOrderNotification(validate(notification, SalesOrderNotification)));
       }
     }
-    catch (originalError) {
-      throw error(ErrorCode.InvalidInput, "Invalid input to the acknowledgeOrders method.", { originalError });
+    catch (originalError: unknown) {
+      throw error(SystemErrorCode.InvalidInput, "Invalid input to the acknowledgeOrders method.", { originalError });
     }
 
     try {
@@ -148,9 +147,9 @@ export class OrderApp extends ConnectionApp {
 
       return acknowledgedOrders;
     }
-    catch (originalError) {
+    catch (originalError: unknown) {
       const transactionID = _transaction.id;
-      throw error((originalError.code || ErrorCode.AppError), "Error in the acknowledgeOrders method.", { originalError, transactionID });
+      throw error(ErrorCode.AppError, "Error in the acknowledgeOrders method.", { originalError, transactionID });
     }
   }
 }

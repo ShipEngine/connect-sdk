@@ -37,13 +37,13 @@ export class ReferenceMap {
       // We already have a reference to this instance. Just make sure the types match.
       if (existing.type !== type) {
         // There are two different objects with the same UUID
-        throw error(ErrorCode.Validation, `Duplicate UUID: ${instance.id}`);
+        throw error(ErrorCode.Invalid, `Duplicate UUID: ${instance.id}`);
       }
     }
     else {
       if (isFinishedLoading) {
         // The app has already finished loading, so no new objects can be added.
-        throw error(ErrorCode.Validation, `Cannot add new ${type[_internal].label} after the app has loaded`);
+        throw error(ErrorCode.Invalid, `Cannot add new ${type[_internal].label} after the app has loaded`);
       }
 
       // Certain definitions need to be referenced by their code identifier rather than their GUID ID.
@@ -74,7 +74,7 @@ export class ReferenceMap {
     if (typeof instance === "string") {
       reference = map.get(instance);
       if (reference && reference.type !== type) {
-        throw error(ErrorCode.Validation,
+        throw error(ErrorCode.Invalid,
           `${instance} is a ${reference.type[_internal].label} not a ${type[_internal].label}`);
       }
     }
@@ -82,7 +82,7 @@ export class ReferenceMap {
       validate(instance, type[_internal].label, classInstanceSchema);
       reference = map.get(instance.id);
       if (reference && reference.type !== type) {
-        throw error(ErrorCode.Validation,
+        throw error(ErrorCode.Invalid,
           `${instance.id} is a ${reference.type[_internal].label} ID not a ${type[_internal].label} ID`);
       }
     }
@@ -108,10 +108,10 @@ export class ReferenceMap {
 
     if (!value) {
       if (typeof instance === "string") {
-        throw error(ErrorCode.Validation, `Unable to find ${type[_internal].label}: ${instance}`);
+        throw error(ErrorCode.Invalid, `Unable to find ${type[_internal].label}: ${instance}`);
       }
       else {
-        throw error(ErrorCode.Validation, `Unable to find ${type[_internal].label} ID: ${instance.id}`);
+        throw error(ErrorCode.Invalid, `Unable to find ${type[_internal].label} ID: ${instance.id}`);
       }
     }
 

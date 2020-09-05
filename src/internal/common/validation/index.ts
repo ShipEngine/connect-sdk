@@ -52,14 +52,14 @@ export function validate<T>(value: T, arg2: ShipEngineConstructor | string, arg3
  */
 function validateAgainstSchema(value: unknown, label: string, schema: ValidationSchema): void {
   if (value === undefined || value === null) {
-    throw error(ErrorCode.Validation, `Invalid ${label}: \n  A value is required`);
+    throw error(ErrorCode.Invalid, `Invalid ${label}: \n  A value is required`);
   }
 
   const result = schema.validate(value, joiOptions as joi.ValidationOptions);
 
   if (result.error) {
     throw error(
-      ErrorCode.Validation,
+      ErrorCode.Invalid,
       `Invalid ${label}: \n  ` + result.error.details.map((detail) => detail.message).join(" \n  "),
       {
         details: result.error.details

@@ -1,6 +1,6 @@
 import * as currency from "currency.js";
-import { ErrorCode, MonetaryValue as IMonetaryValue, MonetaryValuePOJO } from "../../../public";
-import { error } from "../errors";
+import { MonetaryValue as IMonetaryValue, MonetaryValuePOJO } from "../../../public";
+import { error, SystemErrorCode } from "../errors";
 import { hideAndFreeze, _internal } from "../utils";
 import { Joi } from "../validation";
 
@@ -46,7 +46,7 @@ export class MonetaryValue implements IMonetaryValue {
     if (uniqueCurrencies.size > 1) {
       const currencies = [...uniqueCurrencies];
       throw error(
-        ErrorCode.CurrencyMismatch,
+        SystemErrorCode.CurrencyMismatch,
         `Currency mismatch: ${currencies.join(", ")}. All monetary values must be in the same currency.`,
         { currencies }
       );

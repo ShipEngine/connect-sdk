@@ -1,9 +1,9 @@
 "use strict";
 
+const { AppError, ValidationError, UnauthorizedError, ExternalError } = require("../../../");
 const { CarrierApp } = require("../../../lib/internal");
 const pojo = require("../../utils/pojo");
 const { assert, expect } = require("chai");
-const ShipEngineErrors = require("../../../lib/public/common/index");
 
 describe("Errors", () => {
   /**
@@ -17,11 +17,19 @@ describe("Errors", () => {
     error.transactionID && expect(error.transactionID).to.be.a("string").with.length.above(0);
 
     // Validate that the error matches the expected values
-    expect(error.toJSON()).to.deep.equal({
-      ...expected,
-      name: error.name,
-      stack: error.stack,
-    });
+    for (const [key, value] of Object.entries(expected)) {
+      if (key === "originalError") continue;
+      expect(error[key]).to.deep.equal(value, `error.${key}`);
+    }
+
+    // Validate the original error, if any
+    if (error.originalError || expected.originalError) {
+      expect(error.originalError).to.be.an.instanceOf(Error, "error.origianlError");
+      expect(expected.originalError).to.be.an("object", "error.origianlError");
+      for (const [key, value] of Object.entries(expected.originalError)) {
+        expect(error.originalError[key]).to.deep.equal(value, `error.originalError.${key}`);
+      }
+    }
   }
 
   it("should throw a validation error", () => {
@@ -32,6 +40,7 @@ describe("Errors", () => {
     }
     catch (error) {
       validateShipEngineError(error, {
+        name: "Error",
         code: "ERR_INVALID",
         message:
           "Invalid ShipEngine Connect carrier app: \n" +
@@ -48,6 +57,7 @@ describe("Errors", () => {
     }
     catch (error) {
       validateShipEngineError(error, {
+        name: "Error",
         code: "ERR_INVALID",
         message:
           "Invalid ShipEngine Connect carrier app: \n" +
@@ -79,11 +89,19 @@ describe("Errors", () => {
     }
     catch (error) {
       validateShipEngineError(error, {
+        name: "Error",
         code: "ERR_INVALID_INPUT",
         message:
           "Invalid input to the createShipment method. \n" +
           "Invalid transaction: \n" +
           "  A value is required",
+        originalError: {
+          name: "Error",
+          code: "ERR_INVALID",
+          message:
+            "Invalid transaction: \n" +
+            "  A value is required",
+        }
       });
     }
   });
@@ -99,6 +117,7 @@ describe("Errors", () => {
     }
     catch (error) {
       validateShipEngineError(error, {
+        name: "Error",
         code: "ERR_INVALID_INPUT",
         message:
           "Invalid input to the createShipment method. \n" +
@@ -114,7 +133,14 @@ describe("Errors", () => {
               key: "id",
             },
           }
-        ]
+        ],
+        originalError: {
+          name: "Error",
+          code: "ERR_INVALID",
+          message:
+            "Invalid transaction: \n" +
+            "  id is required",
+        }
       });
     }
   });
@@ -130,12 +156,20 @@ describe("Errors", () => {
     }
     catch (error) {
       validateShipEngineError(error, {
-        code: "ERR_INVALID",
+        name: "Error",
+        code: "ERR_APP_ERROR",
         transactionID: error.transactionID,
         message:
           "Error in the createShipment method. \n" +
           "Invalid shipment: \n" +
           "  A value is required",
+        originalError: {
+          name: "Error",
+          code: "ERR_INVALID",
+          message:
+            "Invalid shipment: \n" +
+            "  A value is required",
+        }
       });
     }
   });
@@ -153,7 +187,8 @@ describe("Errors", () => {
     }
     catch (error) {
       validateShipEngineError(error, {
-        code: "ERR_INVALID",
+        name: "Error",
+        code: "ERR_APP_ERROR",
         transactionID: error.transactionID,
         message:
           "Error in the createShipment method. \n" +
@@ -179,7 +214,16 @@ describe("Errors", () => {
               key: "charges",
             },
           }
-        ]
+        ],
+        originalError: {
+          name: "Error",
+          code: "ERR_INVALID",
+          message:
+            "Invalid shipment: \n" +
+            "  label is required \n" +
+            "  charges is required \n" +
+            "  packages is required",
+        }
       });
     }
   });
@@ -201,239 +245,148 @@ describe("Errors", () => {
     }
     catch (error) {
       validateShipEngineError(error, {
+        name: "Error",
         code: "ERR_INVALID_INPUT",
         message:
           "Invalid input to the createShipment method. \n" +
           "All packages in a shipment must be insured in the same currency. \n" +
           "Currency mismatch: USD, EUR, GBP. All monetary values must be in the same currency.",
         currencies: ["USD", "EUR", "GBP"],
+        originalError: {
+          name: "Error",
+          code: "ERR_CURRENCY_MISMATCH",
+          message:
+            "Currency mismatch: USD, EUR, GBP. All monetary values must be in the same currency.",
+        }
       });
     }
   });
-});
 
-describe("BadRequestError", () => {
-  it("can be initialized with a message string", () => {
-    const message = "test";
-    const subject = new ShipEngineErrors.BadRequestError(message);
+  const errorClasses = [
+    { ErrorClass: AppError, code: "ERR_APP_ERROR" },
+    { ErrorClass: ValidationError, code: "ERR_INVALID" },
+    { ErrorClass: UnauthorizedError, code: "ERR_UNAUTHORIZED" },
+    { ErrorClass: ExternalError, code: "ERR_EXTERNAL" },
+  ];
 
-    expect(subject.message).to.equal(message);
-  });
+  for (const { ErrorClass, code } of errorClasses) {
+    describe(ErrorClass.name, () => {
+      it("can be initialized with a message string", () => {
+        const error = new ErrorClass("test");
+        validateShipEngineError(error, {
+          name: ErrorClass.name,
+          message: "test",
+          code,
+        });
+      });
 
-  it("can be initialized with an object", () => {
-    const message = "test";
-    const subject = new ShipEngineErrors.BadRequestError({ message });
+      it("can be initialized with an object", () => {
+        const error = new ErrorClass({ message: "test" });
+        validateShipEngineError(error, {
+          name: ErrorClass.name,
+          message: "test",
+          code,
+        });
+      });
 
-    expect(subject.message).to.equal(message);
-  });
+      it("can be initialized with props", () => {
+        const error = new ErrorClass({
+          message: "test",
+          statusCode: 509,
+          originalError: new SyntaxError("bad syntax"),
+          customProperty: "foo",
+        });
 
-  it("sets default attributes", () => {
-    const message = "test";
-    const subject = new ShipEngineErrors.BadRequestError(message);
+        validateShipEngineError(error, {
+          name: ErrorClass.name,
+          message: "test",
+          code,
+          statusCode: 509,
+          customProperty: "foo",
+          originalError: {
+            name: "SyntaxError",
+            message: "bad syntax"
+          }
+        });
+      });
 
-    expect(subject.code).to.equal("ERR_BAD_REQUEST");
-    expect(subject.source).to.equal("external");
-    expect(subject.statusCode).to.equal(400);
-    expect(subject.canBeRetried).to.equal(false);
-    expect(subject.fieldErrors).to.be.equal(undefined);
+      it("should copy props from the original error", () => {
+        const error = new ErrorClass({
+          message: "test",
+          originalError: Object.assign(new SyntaxError("bad syntax"), {
+            customProperty: "foo"
+          }),
+        });
 
-  });
+        validateShipEngineError(error, {
+          name: ErrorClass.name,
+          message: "test",
+          code,
+          customProperty: "foo",
+          originalError: {
+            name: "SyntaxError",
+            message: "bad syntax",
+            customProperty: "foo",
+          }
+        });
+      });
 
-  it("can set the transactionID", () => {
-    const transactionID = "test";
-    const subject = new ShipEngineErrors.BadRequestError({ transactionID });
+      it("should NOT override the code from props or original error", () => {
+        const error = new ErrorClass({
+          message: "test",
+          code: "SOME_CODE",
+          originalError: Object.assign(new SyntaxError("bad syntax"), {
+            code: "SOME OTHER CODE"
+          }),
+        });
 
-    expect(subject.transactionID).to.equal(transactionID);
-  });
+        validateShipEngineError(error, {
+          name: ErrorClass.name,
+          message: "test",
+          code,
+          originalError: {
+            name: "SyntaxError",
+            message: "bad syntax",
+            code: "SOME OTHER CODE",
+          }
+        });
+      });
+    });
+  }
 
-  it("can set the originalError", () => {
-    const originalError = new Error("test");
-    const subject = new ShipEngineErrors.BadRequestError({ originalError });
+  describe("ExternalError-specific functionality", () => {
+    it("should have externalErrors and externalWarnings, even if none were specified", () => {
+      const error = new ExternalError({
+        message: "test",
+        statusCode: 509,
+      });
 
-    expect(subject.originalError).to.eql(originalError);
-  });
-});
+      validateShipEngineError(error, {
+        name: "ExternalError",
+        message: "test",
+        code: "ERR_EXTERNAL",
+        statusCode: 509,
+        externalErrors: [],
+        externalWarnings: [],
+      });
+    });
 
-describe("UnauthorizedError", () => {
-  it("can be initialized with a message string", () => {
-    const message = "test";
-    const subject = new ShipEngineErrors.UnauthorizedError(message);
+    it("can be initialized with external errors/warnings", () => {
+      const error = new ExternalError({
+        message: "test",
+        statusCode: 509,
+        externalErrors: ["one", "two", "three"],
+        externalWarnings: ["four", "five", "six"],
+      });
 
-    expect(subject.message).to.equal(message);
-  });
-
-  it("can be initialized with an object", () => {
-    const message = "test";
-    const subject = new ShipEngineErrors.UnauthorizedError({ message });
-
-    expect(subject.message).to.equal(message);
-  });
-
-  it("sets default attributes", () => {
-    const message = "test";
-    const subject = new ShipEngineErrors.UnauthorizedError(message);
-
-    expect(subject.code).to.equal("ERR_UNAUTHORIZED");
-    expect(subject.source).to.equal("external");
-    expect(subject.statusCode).to.equal(401);
-    expect(subject.canBeRetried).to.equal(false);
-  });
-
-  it("can set the transactionID", () => {
-    const transactionID = "test";
-    const subject = new ShipEngineErrors.UnauthorizedError({ transactionID });
-
-    expect(subject.transactionID).to.equal(transactionID);
-  });
-
-  it("can set the originalError", () => {
-    const originalError = new Error("test");
-    const subject = new ShipEngineErrors.UnauthorizedError({ originalError });
-
-    expect(subject.originalError).to.eql(originalError);
-  });
-});
-
-describe("NotFoundError", () => {
-  it("can be initialized with a message string", () => {
-    const message = "test";
-    const subject = new ShipEngineErrors.NotFoundError(message);
-
-    expect(subject.message).to.equal(message);
-  });
-
-  it("can be initialized with an object", () => {
-    const message = "test";
-    const subject = new ShipEngineErrors.NotFoundError({ message });
-
-    expect(subject.message).to.equal(message);
-  });
-
-  it("sets default attributes", () => {
-    const message = "test";
-    const subject = new ShipEngineErrors.NotFoundError(message);
-
-    expect(subject.code).to.equal("ERR_NOT_FOUND");
-    expect(subject.source).to.equal("external");
-    expect(subject.statusCode).to.equal(404);
-    expect(subject.canBeRetried).to.equal(false);
-  });
-
-  it("can set the transactionID", () => {
-    const transactionID = "test";
-    const subject = new ShipEngineErrors.NotFoundError({ transactionID });
-
-    expect(subject.transactionID).to.equal(transactionID);
-  });
-
-  it("can set the originalError", () => {
-    const originalError = new Error("test");
-    const subject = new ShipEngineErrors.NotFoundError({ originalError });
-
-    expect(subject.originalError).to.eql(originalError);
-  });
-});
-
-describe("RateLimitError", () => {
-  it("can be initialized with a message string", () => {
-    const message = "test";
-    const subject = new ShipEngineErrors.NotFoundError(message);
-
-    expect(subject.message).to.equal(message);
-  });
-
-  it("can be initialized with an object", () => {
-    const message = "test";
-    const subject = new ShipEngineErrors.RateLimitError({ message });
-
-    expect(subject.message).to.equal(message);
-  });
-
-  it("sets default attributes", () => {
-    const message = "test";
-    const subject = new ShipEngineErrors.RateLimitError(message);
-
-    expect(subject.code).to.equal("ERR_RATE_LIMIT");
-    expect(subject.source).to.equal("external");
-    expect(subject.statusCode).to.equal(429);
-    expect(subject.canBeRetried).to.equal(true);
-    expect(subject.retryInMilliseconds).to.equal(undefined);
-  });
-
-  it("can set the transactionID", () => {
-    const transactionID = "test";
-    const subject = new ShipEngineErrors.RateLimitError({ transactionID });
-
-    expect(subject.transactionID).to.equal(transactionID);
-  });
-
-  it("can set the originalError", () => {
-    const originalError = new Error("test");
-    const subject = new ShipEngineErrors.RateLimitError({ originalError });
-
-    expect(subject.originalError).to.eql(originalError);
-  });
-
-  it("can set the retryInMilliseconds", () => {
-    const retryInMilliseconds = 2000;
-    const subject = new ShipEngineErrors.RateLimitError({ retryInMilliseconds });
-
-    expect(subject.retryInMilliseconds).to.equal(retryInMilliseconds);
-  });
-});
-
-describe("ExternalServiceError", () => {
-  it("can be initialized with a message string", () => {
-    const message = "test";
-    const subject = new ShipEngineErrors.ExternalServiceError(message);
-
-    expect(subject.message).to.equal(message);
-  });
-
-  it("can be initialized with an object", () => {
-    const message = "test";
-    const subject = new ShipEngineErrors.ExternalServiceError({ message });
-
-    expect(subject.message).to.equal(message);
-  });
-
-  it("sets default attributes", () => {
-    const message = "test";
-    const subject = new ShipEngineErrors.ExternalServiceError(message);
-
-    expect(subject.code).to.equal("ERR_EXTERNAL_SERVICE_ERROR");
-    expect(subject.source).to.equal("external");
-    expect(subject.statusCode).to.equal(520);
-    expect(subject.canBeRetried).to.equal(true);
-    expect(subject.externalErrors).to.equal(undefined);
-    expect(subject.externalWarnings).to.equal(undefined);
-  });
-
-  it("can set the transactionID", () => {
-    const transactionID = "test";
-    const subject = new ShipEngineErrors.ExternalServiceError({ transactionID });
-
-    expect(subject.transactionID).to.equal(transactionID);
-  });
-
-  it("can set the originalError", () => {
-    const originalError = new Error("test");
-    const subject = new ShipEngineErrors.ExternalServiceError({ originalError });
-
-    expect(subject.originalError).to.eql(originalError);
-  });
-
-  it("can set the externalErrors", () => {
-    const externalErrors = ["test"];
-    const subject = new ShipEngineErrors.ExternalServiceError({ externalErrors });
-
-    expect(subject.externalErrors).to.eql(externalErrors);
-  });
-
-  it("can set the externalWarnings", () => {
-    const externalWarnings = ["test"];
-    const subject = new ShipEngineErrors.ExternalServiceError({ externalWarnings });
-
-    expect(subject.externalWarnings).to.eql(externalWarnings);
+      validateShipEngineError(error, {
+        name: "ExternalError",
+        message: "test",
+        code: "ERR_EXTERNAL",
+        statusCode: 509,
+        externalErrors: ["one", "two", "three"],
+        externalWarnings: ["four", "five", "six"],
+      });
+    });
   });
 });

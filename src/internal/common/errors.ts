@@ -6,6 +6,8 @@ import { ErrorCode, UUID } from "../../public";
 export enum SystemErrorCode {
   InvalidInput = "ERR_INVALID_INPUT",
   CurrencyMismatch = "ERR_CURRENCY_MISMATCH",
+  Syntax = "ERR_SYNTAX",          // Used by the loader
+  Filesystem = "ERR_FILESYSTEM",  // Used by the loader
 }
 
 

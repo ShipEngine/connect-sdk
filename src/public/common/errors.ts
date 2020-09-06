@@ -18,6 +18,8 @@ export interface AppError extends Error {
   code: ErrorCode | string;
   statusCode?: number;
   transactionID?: UUID;
+  externalErrors?: string[];
+  externalWarnings?: string[];
   originalError?: Error;
   [key: string]: unknown;
 }

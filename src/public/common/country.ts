@@ -158,7 +158,6 @@ export enum Country {
   Nauru = "NR",
   Nepal = "NP",
   Netherlands = "NL",
-  NetherlandsAntilles = "AN",
   NewCaledonia = "NC",
   NewZealand = "NZ",
   Nicaragua = "NI",

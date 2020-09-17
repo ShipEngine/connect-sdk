@@ -2,7 +2,7 @@ import type { AppDefinition } from "./app";
 import type { FormDefinition } from "./form";
 import type { Connect } from "./methods";
 import type { FilePath, InlineOrReference, URLString } from "./types";
-
+import type { OAuthConfigDefinition } from './oauth-config'
 
 /**
  * A ShipEngine Connect app that connects to a service, such as a carrier or marketplace
@@ -49,4 +49,9 @@ export interface ConnectionAppDefinition extends AppDefinition {
    * NOTE: This function does not return a value. It updates the `transaction.session` property.
    */
   connect?: InlineOrReference<Connect>;
+
+  /**
+   * Configuration that defines a data driven OAuth flow.
+   */
+  oauthConfig?: InlineOrReference<OAuthConfigDefinition>;
 }

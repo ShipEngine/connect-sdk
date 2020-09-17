@@ -3,7 +3,7 @@
 const path = require("path");
 
 const pojo = module.exports = {
-  app (props = {}) {
+  app(props = {}) {
     return {
       id: "11111111-1111-1111-1111-111111111111",
       manifest: pojo.appManifest(),
@@ -11,7 +11,7 @@ const pojo = module.exports = {
     };
   },
 
-  appManifest (props = {}) {
+  appManifest(props = {}) {
     return {
       name: "@company-name/app-name",
       version: "1.23.456",
@@ -19,7 +19,7 @@ const pojo = module.exports = {
     };
   },
 
-  connectionApp (props = {}) {
+  connectionApp(props = {}) {
     return {
       ...pojo.app(),
       name: "Dummy App",
@@ -27,12 +27,12 @@ const pojo = module.exports = {
       logo: path.resolve("logo.svg"),
       icon: path.resolve("logo.svg"),
       connectionForm: pojo.form(),
-      connect () {},
+      connect() { },
       ...props,
     };
   },
 
-  carrierApp (props = {}) {
+  carrierApp(props = {}) {
     return {
       ...pojo.connectionApp(),
       deliveryServices: [pojo.deliveryService()],
@@ -41,15 +41,15 @@ const pojo = module.exports = {
     };
   },
 
-  orderApp (props = {}) {
+  orderApp(props = {}) {
     return {
       ...pojo.connectionApp(),
-      getSalesOrdersByDate () {},
+      getSalesOrdersByDate() { },
       ...props,
     };
   },
 
-  deliveryService (props = {}) {
+  deliveryService(props = {}) {
     return {
       id: "22222222-2222-2222-2222-222222222222",
       code: "dummy-ds-code",
@@ -62,7 +62,7 @@ const pojo = module.exports = {
     };
   },
 
-  pickupService (props = {}) {
+  pickupService(props = {}) {
     return {
       id: "33333333-3333-3333-3333-333333333333",
       name: "Dummy Pickup Service",
@@ -70,7 +70,7 @@ const pojo = module.exports = {
     };
   },
 
-  packaging (props = {}) {
+  packaging(props = {}) {
     return {
       id: "44444444-4444-4444-4444-444444444444",
       code: "dummy-packaging-code",
@@ -79,7 +79,7 @@ const pojo = module.exports = {
     };
   },
 
-  deliveryConfirmation (props = {}) {
+  deliveryConfirmation(props = {}) {
     return {
       id: "55555555-5555-5555-5555-555555555555",
       code: "dummy-confirmation-code",
@@ -89,7 +89,7 @@ const pojo = module.exports = {
     };
   },
 
-  form (props = {}) {
+  form(props = {}) {
     return {
       dataSchema: {},
       uiSchema: {},
@@ -97,14 +97,14 @@ const pojo = module.exports = {
     };
   },
 
-  transaction (props = {}) {
+  transaction(props = {}) {
     return {
       id: "12345678-1234-1234-1234-123456789012",
       ...props,
     };
   },
 
-  document (props = {}) {
+  document(props = {}) {
     return {
       type: "label",
       size: "letter",
@@ -114,15 +114,15 @@ const pojo = module.exports = {
     };
   },
 
-  shipment (props = {}) {
+  shipment(props = {}) {
     return {
       ...pojo.shipmentIdentifier(),
       ...pojo.newShipment(),
       ...props,
     };
   },
-  
-  trackingCriteria (props = {}) {
+
+  trackingCriteria(props = {}) {
     return {
       trackingNumber: "1234-5678",
       returns: {
@@ -132,15 +132,15 @@ const pojo = module.exports = {
     }
   },
 
-  trackingInfo (props = {}) {
+  trackingInfo(props = {}) {
     return {
       events: [...pojo.trackingEvent()],
-      
+
       ...props
     }
   },
 
-  trackingEvent (props = {}) {
+  trackingEvent(props = {}) {
     return {
       name: "Dummy Event",
       dateTime: new Date(),
@@ -148,13 +148,13 @@ const pojo = module.exports = {
       ...props
     }
   },
-  shipmentIdentifier (props = {}) {
+  shipmentIdentifier(props = {}) {
     return {
       ...props,
     };
   },
 
-  newShipment (props = {}) {
+  newShipment(props = {}) {
     return {
       deliveryService: {
         id: "22222222-2222-2222-2222-222222222222",
@@ -167,7 +167,7 @@ const pojo = module.exports = {
     };
   },
 
-  shipmentConfirmation (props = {}) {
+  shipmentConfirmation(props = {}) {
     return {
       ...pojo.shipmentIdentifier(),
       charges: [pojo.charge()],
@@ -177,7 +177,7 @@ const pojo = module.exports = {
     };
   },
 
-  pickupShipment (props = {}) {
+  pickupShipment(props = {}) {
     return {
       ...pojo.shipmentIdentifier(),
       deliveryService: {
@@ -188,7 +188,7 @@ const pojo = module.exports = {
     };
   },
 
-  acknowledgedSalesOrder (props = {}) {
+  acknowledgedSalesOrder(props = {}) {
     return {
       ...pojo.salesOrderIdentifier(),
       succeeded: true,
@@ -196,7 +196,7 @@ const pojo = module.exports = {
     }
   },
 
-  salesOrderShipment (props = {}) {
+  salesOrderShipment(props = {}) {
     return {
       ...pojo.shipmentIdentifier(),
       shipFrom: pojo.addressWithContactInfo(),
@@ -208,7 +208,7 @@ const pojo = module.exports = {
     };
   },
 
-  salesOrderNotification (props = {}) {
+  salesOrderNotification(props = {}) {
     return {
       ...pojo.salesOrderIdentifier(),
       orderNumber: "55555555-5555-5555-5555-555555555555",
@@ -217,7 +217,7 @@ const pojo = module.exports = {
     }
   },
 
-  package (props = {}) {
+  package(props = {}) {
     return {
       ...pojo.packageIdentifier(),
       ...pojo.newPackage(),
@@ -225,20 +225,20 @@ const pojo = module.exports = {
     };
   },
 
-  packageIdentifier (props = {}) {
+  packageIdentifier(props = {}) {
     return {
       ...props,
     };
   },
 
-  packageConfirmation (props = {}) {
+  packageConfirmation(props = {}) {
     return {
       ...pojo.packageIdentifier(),
       ...props,
     };
   },
 
-  newPackage (props = {}) {
+  newPackage(props = {}) {
     return {
       packaging: {
         id: "44444444-4444-4444-4444-444444444444",
@@ -248,7 +248,7 @@ const pojo = module.exports = {
     };
   },
 
-  pickupPackage (props = {}) {
+  pickupPackage(props = {}) {
     return {
       packaging: {
         id: "44444444-4444-4444-4444-444444444444",
@@ -257,7 +257,7 @@ const pojo = module.exports = {
     };
   },
 
-  salesOrderPackageItem (props = {}) {
+  salesOrderPackageItem(props = {}) {
     return {
       salesOrderItem: pojo.salesOrderItemIdentifier(),
       quantity: pojo.quantity(),
@@ -265,7 +265,7 @@ const pojo = module.exports = {
     };
   },
 
-  newLabel (props = {}) {
+  newLabel(props = {}) {
     return {
       format: "pdf",
       size: "letter",
@@ -273,7 +273,7 @@ const pojo = module.exports = {
     };
   },
 
-  addressWithContactInfo (props = {}) {
+  addressWithContactInfo(props = {}) {
     return {
       ...pojo.address(),
       ...pojo.contactInfo(),
@@ -281,7 +281,7 @@ const pojo = module.exports = {
     };
   },
 
-  address (props = {}) {
+  address(props = {}) {
     return {
       addressLines: ["123 Main St."],
       cityLocality: "Austin",
@@ -292,14 +292,14 @@ const pojo = module.exports = {
     };
   },
 
-  contactInfo (props = {}) {
+  contactInfo(props = {}) {
     return {
       name: "John Doe",
       ...props,
     };
   },
 
-  charge (props = {}) {
+  charge(props = {}) {
     return {
       type: "shipping",
       amount: pojo.monetaryValue(),
@@ -307,14 +307,14 @@ const pojo = module.exports = {
     };
   },
 
-  quantity (props = {}) {
+  quantity(props = {}) {
     return {
       value: 1,
       ...props,
     };
   },
 
-  monetaryValue (props = {}) {
+  monetaryValue(props = {}) {
     return {
       value: 12.34,
       currency: "USD",
@@ -322,7 +322,7 @@ const pojo = module.exports = {
     };
   },
 
-  rateCriteria (props = {}) {
+  rateCriteria(props = {}) {
     return {
       shipDateTime: new Date(),
       shipFrom: pojo.addressWithContactInfo(),
@@ -332,13 +332,13 @@ const pojo = module.exports = {
     };
   },
 
-  rateCriteriaPackage (props = {}) {
+  rateCriteriaPackage(props = {}) {
     return {
       ...props,
     };
   },
 
-  rate (props = {}) {
+  rate(props = {}) {
     return {
       deliveryService: {
         id: "22222222-2222-2222-2222-222222222222",
@@ -349,7 +349,7 @@ const pojo = module.exports = {
     };
   },
 
-  ratePackage (props = {}) {
+  ratePackage(props = {}) {
     return {
       packaging: {
         id: "44444444-4444-4444-4444-444444444444",
@@ -358,7 +358,7 @@ const pojo = module.exports = {
     };
   },
 
-  pickupRequest (props = {}) {
+  pickupRequest(props = {}) {
     return {
       pickupService: {
         id: "33333333-3333-3333-3333-333333333333",
@@ -371,7 +371,7 @@ const pojo = module.exports = {
     };
   },
 
-  timeRange (props = {}) {
+  timeRange(props = {}) {
     return {
       startDateTime: new Date(),
       endDateTime: new Date(),
@@ -379,49 +379,49 @@ const pojo = module.exports = {
     };
   },
 
-  buyerIdentifier (props = {}) {
+  buyerIdentifier(props = {}) {
     return {
       id: "DUMMY_BUYER_ID",
       ...props,
     };
   },
 
-  storeIdentifier (props = {}) {
+  storeIdentifier(props = {}) {
     return {
       id: "DUMMY_STORE_ID",
       ...props,
     };
   },
 
-  warehouseIdentifier (props = {}) {
+  warehouseIdentifier(props = {}) {
     return {
       id: "DUMMY_WAREHOUSE_ID",
       ...props,
     };
   },
 
-  salesOrderIdentifier (props = {}) {
+  salesOrderIdentifier(props = {}) {
     return {
       id: "DUMMY_SALES_ORDER_ID",
       ...props,
     };
   },
 
-  salesOrderItemIdentifier (props = {}) {
+  salesOrderItemIdentifier(props = {}) {
     return {
       id: "DUMMY_SALES_ORDER_ITEM_ID",
       ...props,
     };
   },
 
-  productIdentifier (props = {}) {
+  productIdentifier(props = {}) {
     return {
       id: "DUMMY_PRODUCT_ID",
       ...props,
     };
   },
 
-  salesOrder (props = {}) {
+  salesOrder(props = {}) {
     return {
       ...pojo.salesOrderIdentifier(),
       createdDateTime: "2005-05-05T05:05:05Z",
@@ -440,7 +440,7 @@ const pojo = module.exports = {
     };
   },
 
-  salesOrderItem (props = {}) {
+  salesOrderItem(props = {}) {
     return {
       ...pojo.salesOrderItemIdentifier(),
       name: "My Item",
@@ -451,7 +451,7 @@ const pojo = module.exports = {
     };
   },
 
-  store (props = {}) {
+  store(props = {}) {
     return {
       ...pojo.storeIdentifier(),
       name: "My Store",
@@ -459,11 +459,119 @@ const pojo = module.exports = {
     };
   },
 
-  buyer (props = {}) {
+  buyer(props = {}) {
     return {
       address: pojo.address(),
       ...pojo.buyerIdentifier(),
       ...pojo.contactInfo(),
+      ...props,
+    };
+  },
+
+  oauthConfig(props = {}) {
+    return {
+      tokenProperties: {
+        accessTokenExpirationLength: 100,
+        refreshTokenExpirationLength: 100
+      },
+      authorizationProcess: {
+        loginRequest: {
+          method: 'GET',
+          url: 'https://sandbox.merchant.wish.com/v3/oauth/authorize',
+          bodyParameters: [],
+          queryParameters: [
+            {
+              name: 'client_id',
+              value: '{CLIENT_ID}',
+            }
+          ],
+        },
+        redirectRequest: {
+          bodyParameters: [],
+          queryParameters: [
+            {
+              name: 'code',
+              value: '{AUTHORIZATION_CODE}',
+            }
+          ],
+        },
+        authorizeRequest: {
+          method: 'GET',
+          url: 'https://sandbox.merchant.wish.com/api/v3/oauth/access_token',
+          bodyParameters: [],
+          queryParameters: [
+            {
+              name: 'client_id',
+              value: '{CLIENT_ID}',
+            },
+            {
+              name: 'client_secret',
+              value: '{CLIENT_SECRET}',
+            },
+            {
+              name: 'code',
+              value: '{AUTHORIZATION_CODE}',
+            },
+            {
+              name: 'grant_type',
+              value: 'authorization_code',
+            },
+            {
+              name: 'redirect_uri',
+              value: 'https://ss-devss103.sslocal.com/api/oauth/redirect/WishV2',
+            }
+          ],
+        },
+        authorizeResponse: {
+          bodyParameters: [
+            {
+              name: '$.data.access_token',
+              value: '{ACCESS_TOKEN}',
+            },
+            {
+              name: '$.data.refresh_token',
+              value: '{REFRESH_TOKEN}',
+            }
+          ]
+        }
+      },
+      refreshTokenProcess: {
+        refreshTokenRequest: {
+          method: 'GET',
+          url: 'https://sandbox.merchant.wish.com/api/v3/oauth/refresh_token',
+          bodyParameters: [],
+          queryParameters: [
+            {
+              name: 'client_id',
+              value: '{CLIENT_ID}',
+            },
+            {
+              name: 'client_secret',
+              value: '{CLIENT_SECRET}',
+            },
+            {
+              name: 'grant_type',
+              value: 'refresh_token',
+            },
+            {
+              name: 'refresh_token',
+              value: '{REFRESH_TOKEN}',
+            }
+          ],
+        },
+        refreshTokenResponse: {
+          bodyParameters: [
+            {
+              name: '$.data.access_token',
+              value: '{ACCESS_TOKEN}',
+            },
+            {
+              name: '$.data.refresh_token',
+              value: '{REFRESH_TOKEN}',
+            }
+          ]
+        }
+      },
       ...props,
     };
   },

@@ -1,5 +1,5 @@
 import { AppType, CancellationStatus, CancelPickups, CancelShipments, CarrierAppDefinition, Connect, Country, CreateManifest, CreateShipment, DocumentFormat, DocumentSize, ErrorCode, ManifestLocation, ManifestShipment, ManifestType, Packaging, RateShipment, SchedulePickup, ServiceArea, TrackShipment } from "../../public";
-import { AppPOJO, ConnectionApp, error, FormPOJO, hideAndFreeze, Joi, SystemErrorCode, Transaction, TransactionPOJO, validate, validateArray, _internal } from "../common";
+import { AppPOJO, ConnectionApp, error, FormPOJO, hideAndFreeze, Joi, SystemErrorCode, Transaction, TransactionPOJO, validate, validateArray, _internal, OAuthConfigPOJO } from "../common";
 import { DeliveryConfirmation } from "./delivery-confirmation";
 import { DeliveryService, DeliveryServicePOJO } from "./delivery-service";
 import { ManifestConfirmation } from "./manifests/manifest-confirmation";
@@ -27,6 +27,7 @@ export interface CarrierAppPOJO extends CarrierAppDefinition, AppPOJO {
   settingsForm?: FormPOJO;
   deliveryServices: readonly DeliveryServicePOJO[];
   pickupServices?: readonly PickupServicePOJO[];
+  oauthConfig?: OAuthConfigPOJO;
   connect?: Connect;
   createShipment?: CreateShipment;
   cancelShipments?: CancelShipments;
@@ -48,7 +49,6 @@ export class CarrierApp extends ConnectionApp {
         .when("createManifest", { is: Joi.function().required(), then: Joi.required() }),
       manifestShipments: Joi.string().enum(ManifestShipment)
         .when("createManifest", { is: Joi.function().required(), then: Joi.required() }),
-
       manifestType: Joi.string().enum(ManifestType),
       deliveryServices: Joi.array().min(1).items(DeliveryService[_internal].schema).required(),
       pickupServices: Joi.array().items(PickupService[_internal].schema),

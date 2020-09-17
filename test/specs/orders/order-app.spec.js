@@ -29,6 +29,7 @@ describe("OrderApp", () => {
       websiteURL: new URL("https://my-order.com/"),
       logo: path.resolve("logo.svg"),
       icon: path.resolve("logo.svg"),
+      oauthConfig: undefined,
       connectionForm: app.connectionForm,
       sendMail: false,
       canConfigureTimeZone: false,
@@ -56,14 +57,15 @@ describe("OrderApp", () => {
       websiteURL: "https://my-order.com/",
       logo: path.resolve("logo.svg"),
       icon: path.resolve("logo.svg"),
+      oauthConfig: pojo.oauthConfig(),
       connectionForm: pojo.form(),
       settingsForm: pojo.form(),
       sendMail: true,
       canConfigureTimeZone: true,
-      connect () {},
-      getSalesOrdersByDate () {},
-      shipmentCreated () {},
-      acknowledgeOrders () {},
+      connect() { },
+      getSalesOrdersByDate() { },
+      shipmentCreated() { },
+      acknowledgeOrders() { },
       manifest: {
         name: "@my-company/my-order",
         version: "123.45.678",
@@ -86,6 +88,7 @@ describe("OrderApp", () => {
       websiteURL: new URL("https://my-order.com/"),
       logo: path.resolve("logo.svg"),
       icon: path.resolve("logo.svg"),
+      oauthConfig: pojo.oauthConfig(),
       connectionForm: app.connectionForm,
       settingsForm: app.settingsForm,
       sdkVersion: parseFloat(sdkManifest.version),
@@ -115,8 +118,8 @@ describe("OrderApp", () => {
       logo: path.resolve("logo.svg"),
       icon: path.resolve("logo.svg"),
       connectionForm: pojo.form(),
-      connect () {},
-      getSalesOrdersByDate () {},
+      connect() { },
+      getSalesOrdersByDate() { },
       manifest: {
         name: "@company/order",
         version: "1.0.0",
@@ -133,6 +136,7 @@ describe("OrderApp", () => {
       logo: path.resolve("logo.svg"),
       icon: path.resolve("logo.svg"),
       connectionForm: app.connectionForm,
+      oauthConfig: undefined,
       settingsForm: undefined,
       shipmentCreated: undefined,
       acknowledgeOrders: undefined,
@@ -165,7 +169,7 @@ describe("OrderApp", () => {
         websiteURL: "https://my-order.com/",
         logo: path.resolve("logo.svg"),
         icon: path.resolve("logo.svg"),
-        getSalesOrdersByDate () {},
+        getSalesOrdersByDate() { },
         manifest: {
           name: "@company/order",
           version: "1.0.0"
@@ -184,7 +188,7 @@ describe("OrderApp", () => {
         websiteURL: "https://my-order.com/",
         logo: path.resolve("logo.svg"),
         icon: path.resolve("logo.svg"),
-        getSalesOrdersByDate () {},
+        getSalesOrdersByDate() { },
         manifest: {
           name: "@company/order",
           version: "1.0.0"
@@ -204,7 +208,7 @@ describe("OrderApp", () => {
         websiteURL: "https://my-order.com/",
         logo: path.resolve("logo.svg"),
         icon: path.resolve("logo.svg"),
-        getSalesOrdersByDate () {},
+        getSalesOrdersByDate() { },
         description: 12345,
         manifest: {
           name: "@company/order",
@@ -224,7 +228,7 @@ describe("OrderApp", () => {
         websiteURL: "https://my-order.com/",
         icon: path.resolve("logo.svg"),
         logo: "logo.svg",
-        getSalesOrdersByDate () {},
+        getSalesOrdersByDate() { },
         manifest: {
           name: "@company/order",
           version: "1.0.0"
@@ -243,7 +247,7 @@ describe("OrderApp", () => {
         websiteURL: "https://my-order.com/",
         logo: path.resolve("logo.jpg"),
         icon: path.resolve("logo.svg"),
-        getSalesOrdersByDate () {},
+        getSalesOrdersByDate() { },
         manifest: {
           name: "@company/order",
           version: "1.0.0"
@@ -262,7 +266,7 @@ describe("OrderApp", () => {
         websiteURL: "https://my-order.com/",
         logo: path.resolve("logo.svg"),
         icon: path.resolve("logo.jpg"),
-        getSalesOrdersByDate () {},
+        getSalesOrdersByDate() { },
         manifest: {
           name: "@company/order",
           version: "1.0.0"

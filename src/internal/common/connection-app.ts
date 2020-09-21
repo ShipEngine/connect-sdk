@@ -1,20 +1,20 @@
-import { Connect, ConnectionAppDefinition, ErrorCode, FilePath } from "../../public";
 import { App, AppPOJO } from "./app";
-import { error, SystemErrorCode } from "./errors";
+import { Connect, ConnectionAppDefinition, ErrorCode, FilePath } from "../../public";
 import { Form, FormPOJO } from "./form";
+import { Joi, validate } from "./validation";
+import { OAuthConfig, OAuthConfigPOJO } from "./oauth-config";
 import { Transaction, TransactionPOJO } from "./transaction";
 import { _internal } from "./utils";
-import { Joi, validate } from "./validation";
+import { error, SystemErrorCode } from "./errors";
 
 const _private = Symbol("private fields");
 
-
 export interface ConnectionAppPOJO extends ConnectionAppDefinition, AppPOJO {
-  connectionForm: FormPOJO;
-  settingsForm?: FormPOJO;
   connect?: Connect;
+  connectionForm: FormPOJO;
+  oauthConfig?: OAuthConfigPOJO;
+  settingsForm?: FormPOJO;
 }
-
 
 export abstract class ConnectionApp extends App {
   public static readonly [_internal] = {
@@ -28,6 +28,7 @@ export abstract class ConnectionApp extends App {
       connectionForm: Form[_internal].schema.required(),
       settingsForm: Form[_internal].schema,
       connect: Joi.function(),
+      oauthConfig: OAuthConfig[_internal].schema.optional(),
     }),
   };
 
@@ -35,24 +36,26 @@ export abstract class ConnectionApp extends App {
     readonly connect?: Connect;
   };
 
-  public readonly name: string;
-  public readonly description: string;
-  public readonly websiteURL: URL;
-  public readonly logo: FilePath;
-  public readonly icon: FilePath;
   public readonly connectionForm: Form;
+  public readonly description: string;
+  public readonly icon: FilePath;
+  public readonly logo: FilePath;
+  public readonly name: string;
+  public readonly oauthConfig?: OAuthConfig;
   public readonly settingsForm?: Form;
+  public readonly websiteURL: URL;
 
   public constructor(pojo: ConnectionAppPOJO) {
     super(pojo);
 
-    this.name = pojo.name;
-    this.description = pojo.description || "";
-    this.websiteURL = new URL(pojo.websiteURL);
-    this.logo = pojo.logo;
-    this.icon = pojo.icon;
     this.connectionForm = new Form(pojo.connectionForm);
+    this.description = pojo.description || "";
+    this.icon = pojo.icon;
+    this.logo = pojo.logo;
+    this.name = pojo.name;
+    this.oauthConfig = pojo.oauthConfig && new OAuthConfig(pojo.oauthConfig);
     this.settingsForm = pojo.settingsForm && new Form(pojo.settingsForm);
+    this.websiteURL = new URL(pojo.websiteURL);
 
     this[_private] = {
       connect: pojo.connect ? pojo.connect : (this.connect = undefined),

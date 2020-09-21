@@ -1,5 +1,5 @@
 import { AcknowledgeOrders, AppType, Connect, ErrorCode, GetSalesOrdersByDate, OrderAppDefinition, SalesOrders as SalesOrdersPOJO, ShipmentCreated } from "../../public";
-import { AppPOJO, ConnectionApp, error, FormPOJO, hideAndFreeze, Joi, SystemErrorCode, Transaction, TransactionPOJO, validate, _internal } from "../common";
+import { AppPOJO, ConnectionApp, error, FormPOJO, hideAndFreeze, Joi, SystemErrorCode, Transaction, TransactionPOJO, validate, _internal, OAuthConfigPOJO } from "../common";
 import { AcknowledgedSalesOrder } from "./acknowledged-sales-order";
 import { SalesOrderNotification, SalesOrderNotificationPOJO } from "./sales-order-notification";
 import { SalesOrderTimeRange, SalesOrderTimeRangePOJO } from "./sales-order-time-range";
@@ -13,6 +13,7 @@ export interface OrderAppPOJO extends OrderAppDefinition, AppPOJO {
   connectionForm: FormPOJO;
   settingsForm?: FormPOJO;
   connect?: Connect;
+  oauthConfig?: OAuthConfigPOJO;
   getSalesOrdersByDate?: GetSalesOrdersByDate;
   shipmentCreated?: ShipmentCreated;
   acknowledgeOrders?: AcknowledgeOrders;
@@ -125,11 +126,11 @@ export class OrderApp extends ConnectionApp {
     try {
       _transaction = new Transaction(validate(transaction, Transaction));
 
-      if(notifications.length === 0) {
-        throw error (SystemErrorCode.InvalidInput, "Sales Order Notifications are required");
+      if (notifications.length === 0) {
+        throw error(SystemErrorCode.InvalidInput, "Sales Order Notifications are required");
       }
 
-      for(const notification of notifications) {
+      for (const notification of notifications) {
         _notifications.push(new SalesOrderNotification(validate(notification, SalesOrderNotification)));
       }
     }

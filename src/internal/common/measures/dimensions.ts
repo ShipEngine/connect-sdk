@@ -6,9 +6,9 @@ export class Dimensions implements IDimensions {
   public static readonly [_internal] = {
     label: "dimensions",
     schema: Joi.object({
-      length: Joi.number().min(0.1).required(),
-      width: Joi.number().min(0.1).required(),
-      height: Joi.number().min(0.1).required(),
+      length: Joi.number().min(0).optional(),
+      width: Joi.number().min(0).optional(),
+      height: Joi.number().min(0).optional(),
       unit: Joi.string().enum(LengthUnit).required(),
     }),
   };

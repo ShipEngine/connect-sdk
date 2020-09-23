@@ -156,10 +156,7 @@ describe("OrderApp", () => {
   describe("Failure tests", () => {
 
     it("should throw an error if the pojo is the wrong type", () => {
-      expect(() => new OrderApp(12345)).to.throw(
-        "Invalid ShipEngine Connect order app: \n" +
-        "  value must be of type object"
-      );
+      expect(() => new OrderApp(12345)).to.throw("Invalid ShipEngine Connect order app: value must be of type object");
     });
 
     it("should throw an error if the ID is not a UUID", () => {
@@ -175,10 +172,7 @@ describe("OrderApp", () => {
           version: "1.0.0"
         }
       })
-      ).to.throw(
-        "Invalid ShipEngine Connect order app: \n" +
-        "  id must be a valid GUID"
-      );
+      ).to.throw("Invalid ShipEngine Connect order app: id must be a valid GUID, connectionForm is required");
     });
 
     it("should throw an error if the name contains illegal characters", () => {
@@ -194,11 +188,7 @@ describe("OrderApp", () => {
           version: "1.0.0"
         }
       })
-      ).to.throw(
-        "Invalid ShipEngine Connect order app: \n" +
-        "  name must not have leading or trailing whitespace \n" +
-        "  name cannot contain newlines or tabs"
-      );
+      ).to.throw("Invalid ShipEngine Connect order app: name must not have leading or trailing whitespace, name cannot contain newlines or tabs, connectionForm is required");
     });
 
     it("should throw an error if the description is the wrong type", () => {
@@ -215,10 +205,7 @@ describe("OrderApp", () => {
           version: "1.0.0"
         }
       })
-      ).to.throw(
-        "Invalid ShipEngine Connect order app: \n" +
-        "  description must be a string"
-      );
+      ).to.throw("Invalid ShipEngine Connect order app: description must be a string, connectionForm is required");
     });
 
     it("should throw an error if the logo is not an absolute path", () => {
@@ -234,10 +221,7 @@ describe("OrderApp", () => {
           version: "1.0.0"
         }
       })
-      ).to.throw(
-        "Invalid ShipEngine Connect order app: \n" +
-        "  logo must be an absolute file path"
-      );
+      ).to.throw("Invalid ShipEngine Connect order app: logo must be an absolute file path, connectionForm is required");
     });
 
     it("should throw an error if the logo is not an SVG", () => {
@@ -253,10 +237,7 @@ describe("OrderApp", () => {
           version: "1.0.0"
         }
       })
-      ).to.throw(
-        "Invalid ShipEngine Connect order app: \n" +
-        "  logo must be a .svg file"
-      );
+      ).to.throw("Invalid ShipEngine Connect order app: logo must be a .svg file, connectionForm is required");
     });
 
     it("should throw an error if the icon is not an SVG", () => {
@@ -272,10 +253,7 @@ describe("OrderApp", () => {
           version: "1.0.0"
         }
       })
-      ).to.throw(
-        "Invalid ShipEngine Connect order app: \n" +
-        "  icon must be a .svg file"
-      );
+      ).to.throw("Invalid ShipEngine Connect order app: icon must be a .svg file, connectionForm is required");
     });
 
   });

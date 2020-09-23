@@ -36,11 +36,7 @@ describe("acknowledgeOrders", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the acknowledgeOrders method. \n" +
-          "Invalid transaction: \n" +
-          "  A value is required"
-        );
+        expect(error.message).to.equal("Invalid input to the acknowledgeOrders method. Invalid transaction: A value is required");
       }
     });
 
@@ -54,10 +50,7 @@ describe("acknowledgeOrders", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the acknowledgeOrders method. \n" +
-          "Sales Order Notifications are required"
-        );
+        expect(error.message).to.equal("Invalid input to the acknowledgeOrders method. Sales Order Notifications are required");
       }
     });
 
@@ -73,15 +66,8 @@ describe("acknowledgeOrders", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the acknowledgeOrders method. \n" +
-          "Invalid sales order notification: \n" +
-          "  id is required \n" +
-          "  orderNumber must be a string \n" +
-          "  importedDate is required"
-        );
+        expect(error.message).to.equal("Invalid input to the acknowledgeOrders method. Invalid sales order notification: id is required, orderNumber must be a string, importedDate is required");
       }
     });
-
   });
 });

@@ -6,11 +6,11 @@ const pojo = require("../../utils/pojo");
 
 describe("PersonName", () => {
 
-  async function createPersonName (personNamePOJO) {
+  async function createPersonName(personNamePOJO) {
     let personName;
 
     let app = new CarrierApp(pojo.carrierApp({
-      createShipment (_, shipment) {
+      createShipment(_, shipment) {
         personName = shipment.shipFrom.name;
         return pojo.shipmentConfirmation();
       }
@@ -77,11 +77,7 @@ describe("PersonName", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the createShipment method. \n" +
-          "Invalid shipment: \n" +
-          "  shipFrom.name must be one of string, object"
-        );
+        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: shipFrom.name must be one of string, object");
       }
     });
 
@@ -91,11 +87,7 @@ describe("PersonName", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the createShipment method. \n" +
-          "Invalid shipment: \n" +
-          "  shipFrom.name is not allowed to be empty"
-        );
+        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: shipFrom.name is not allowed to be empty");
       }
     });
 
@@ -105,11 +97,7 @@ describe("PersonName", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the createShipment method. \n" +
-          "Invalid shipment: \n" +
-          "  shipFrom.name does not match any of the allowed types"
-        );
+        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: shipFrom.name does not match any of the allowed types");
       }
     });
 
@@ -119,11 +107,7 @@ describe("PersonName", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the createShipment method. \n" +
-          "Invalid shipment: \n" +
-          "  shipFrom.name.given is required"
-        );
+        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: shipFrom.name.given is required");
       }
     });
 
@@ -133,11 +117,7 @@ describe("PersonName", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the createShipment method. \n" +
-          "Invalid shipment: \n" +
-          "  shipFrom.name.given is required"
-        );
+        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: shipFrom.name.given is required");
       }
     });
 
@@ -152,11 +132,7 @@ describe("PersonName", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the createShipment method. \n" +
-          "Invalid shipment: \n" +
-          "  shipFrom.name.given is required"
-        );
+        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: shipFrom.name.given is required");
       }
     });
 
@@ -168,11 +144,7 @@ describe("PersonName", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the createShipment method. \n" +
-          "Invalid shipment: \n" +
-          "  shipFrom.name.given must be a string"
-        );
+        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: shipFrom.name.given must be a string");
       }
     });
 
@@ -184,11 +156,7 @@ describe("PersonName", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the createShipment method. \n" +
-          "Invalid shipment: \n" +
-          "  shipFrom.name.given is not allowed to be empty"
-        );
+        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: shipFrom.name.given is not allowed to be empty");
       }
     });
 
@@ -200,11 +168,7 @@ describe("PersonName", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the createShipment method. \n" +
-          "Invalid shipment: \n" +
-          "  shipFrom.name does not match any of the allowed types"
-        );
+        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: shipFrom.name does not match any of the allowed types");
       }
     });
 
@@ -220,11 +184,7 @@ describe("PersonName", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the createShipment method. \n" +
-          "Invalid shipment: \n" +
-          "  shipFrom.name does not match any of the allowed types"
-        );
+        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: shipFrom.name does not match any of the allowed types");
       }
     });
 

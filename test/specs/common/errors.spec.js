@@ -59,8 +59,7 @@ describe("Errors", () => {
         name: "Error",
         code: "ERR_INVALID",
         message:
-          "Invalid ShipEngine Connect carrier app: \n" +
-          "  value must be of type object",
+          "Invalid ShipEngine Connect carrier app: value must be of type object",
         details: [
           {
             type: "object.base",
@@ -90,16 +89,11 @@ describe("Errors", () => {
       validateShipEngineError(error, {
         name: "Error",
         code: "ERR_INVALID_INPUT",
-        message:
-          "Invalid input to the createShipment method. \n" +
-          "Invalid transaction: \n" +
-          "  A value is required",
+        message: "Invalid input to the createShipment method. Invalid transaction: A value is required",
         originalError: {
           name: "Error",
           code: "ERR_INVALID",
-          message:
-            "Invalid transaction: \n" +
-            "  A value is required",
+          message: "Invalid transaction: A value is required"
         }
       });
     }
@@ -118,10 +112,7 @@ describe("Errors", () => {
       validateShipEngineError(error, {
         name: "Error",
         code: "ERR_INVALID_INPUT",
-        message:
-          "Invalid input to the createShipment method. \n" +
-          "Invalid transaction: \n" +
-          "  id is required",
+        message: "Invalid input to the createShipment method. Invalid transaction: id is required",
         details: [
           {
             type: "any.required",
@@ -136,9 +127,7 @@ describe("Errors", () => {
         originalError: {
           name: "Error",
           code: "ERR_INVALID",
-          message:
-            "Invalid transaction: \n" +
-            "  id is required",
+          message: "Invalid transaction: id is required"
         }
       });
     }
@@ -158,16 +147,12 @@ describe("Errors", () => {
         name: "Error",
         code: "ERR_APP_ERROR",
         transactionID: error.transactionID,
-        message:
-          "Error in the createShipment method. \n" +
-          "Invalid shipment: \n" +
-          "  A value is required",
+        message: "Invalid shipment: A value is required Invalid shipment: A value is required",
         originalError: {
           name: "Error",
           code: "ERR_INVALID",
           message:
-            "Invalid shipment: \n" +
-            "  A value is required",
+            "Invalid shipment: A value is required",
         }
       });
     }
@@ -189,11 +174,7 @@ describe("Errors", () => {
         name: "Error",
         code: "ERR_APP_ERROR",
         transactionID: error.transactionID,
-        message:
-          "Error in the createShipment method. \n" +
-          "Invalid shipment: \n" +
-          "  label is required \n" +
-          "  charges is required",
+        message: "Invalid shipment: label is required, charges is required Invalid shipment: label is required, charges is required",
         details: [
           {
             type: "any.required",
@@ -217,10 +198,7 @@ describe("Errors", () => {
         originalError: {
           name: "Error",
           code: "ERR_INVALID",
-          message:
-            "Invalid shipment: \n" +
-            "  label is required \n" +
-            "  charges is required",
+          message: "Invalid shipment: label is required, charges is required",
         }
       });
     }
@@ -245,10 +223,7 @@ describe("Errors", () => {
       validateShipEngineError(error, {
         name: "Error",
         code: "ERR_INVALID_INPUT",
-        message:
-          "Invalid input to the createShipment method. \n" +
-          "All packages in a shipment must be insured in the same currency. \n" +
-          "Currency mismatch: USD, EUR, GBP. All monetary values must be in the same currency.",
+        message: "Invalid input to the createShipment method. All packages in a shipment must be insured in the same currency. Currency mismatch: USD, EUR, GBP. All monetary values must be in the same currency.",
         currencies: ["USD", "EUR", "GBP"],
         originalError: {
           name: "Error",

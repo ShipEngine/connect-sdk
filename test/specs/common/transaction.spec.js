@@ -115,11 +115,11 @@ describe("Transaction", () => {
 
   describe("Failure tests", () => {
 
-    async function createTransaction (transactionPOJO) {
+    async function createTransaction(transactionPOJO) {
       let transaction;
 
       let app = new CarrierApp(pojo.carrierApp({
-        connect (tx) {
+        connect(tx) {
           transaction = tx;
         }
       }));
@@ -134,11 +134,7 @@ describe("Transaction", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the connect method. \n" +
-          "Invalid transaction: \n" +
-          "  A value is required"
-        );
+        expect(error.message).to.equal("Invalid transaction: A value is required Invalid transaction: A value is required");
       }
     });
 
@@ -148,11 +144,7 @@ describe("Transaction", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the connect method. \n" +
-          "Invalid transaction: \n" +
-          "  value must be of type object"
-        );
+        expect(error.message).to.equal("Invalid transaction: value must be of type object Invalid transaction: value must be of type object");
       }
     });
 
@@ -164,11 +156,7 @@ describe("Transaction", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the connect method. \n" +
-          "Invalid transaction: \n" +
-          "  id must be a valid GUID"
-        );
+        expect(error.message).to.equal("Invalid transaction: id must be a valid GUID Invalid transaction: id must be a valid GUID");
       }
     });
 
@@ -181,11 +169,7 @@ describe("Transaction", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the connect method. \n" +
-          "Invalid transaction: \n" +
-          "  useSandbox must be a boolean"
-        );
+        expect(error.message).to.equal("Invalid transaction: useSandbox must be a boolean Invalid transaction: useSandbox must be a boolean");
       }
     });
 
@@ -198,11 +182,7 @@ describe("Transaction", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the connect method. \n" +
-          "Invalid transaction: \n" +
-          "  session must be of type object"
-        );
+        expect(error.message).to.equal("Invalid transaction: session must be of type object Invalid transaction: session must be of type object");
       }
     });
 

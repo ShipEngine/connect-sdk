@@ -224,6 +224,7 @@ export class CarrierApp extends ConnectionApp {
       _shipment = new NewShipment(validate(shipment, NewShipment), this);
     }
     catch (originalError: unknown) {
+      const err = originalError as Error;
       throw error(SystemErrorCode.InvalidInput, "Invalid input to the createShipment method.", { originalError });
     }
 
@@ -232,8 +233,9 @@ export class CarrierApp extends ConnectionApp {
       return new ShipmentConfirmation(validate(confirmation, ShipmentConfirmation));
     }
     catch (originalError: unknown) {
+      const err = originalError as Error;
       const transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the createShipment method.", { originalError, transactionID });
+      throw error(ErrorCode.AppError, err.message, { originalError, transactionID });
     }
   }
 
@@ -267,8 +269,9 @@ export class CarrierApp extends ConnectionApp {
         .map((confirmation) => new ShipmentCancellationOutcome(confirmation));
     }
     catch (originalError: unknown) {
+      const err = originalError as Error;
       const transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the cancelShipments method.", { originalError, transactionID });
+      throw error(ErrorCode.AppError, err.message, { originalError, transactionID });
     }
   }
 
@@ -291,8 +294,9 @@ export class CarrierApp extends ConnectionApp {
       return validateArray(rates, Rate).map((rate) => new Rate(rate, this));
     }
     catch (originalError: unknown) {
+      const err = originalError as Error;
       const transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the rateShipment method.", { originalError, transactionID });
+      throw error(ErrorCode.AppError, err.message, { originalError, transactionID });
     }
   }
 
@@ -315,8 +319,9 @@ export class CarrierApp extends ConnectionApp {
       return new TrackingInfo(validate(trackingInfo, TrackingInfo), this);
     }
     catch (originalError: unknown) {
+      const err = originalError as Error;
       const transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the trackShipment method.", { originalError, transactionID });
+      throw error(ErrorCode.AppError, err.message, { originalError, transactionID });
     }
   }
 
@@ -339,8 +344,9 @@ export class CarrierApp extends ConnectionApp {
       return new ManifestConfirmation(validate(confirmation, ManifestConfirmation));
     }
     catch (originalError: unknown) {
+      const err = originalError as Error;
       const transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the createManifest method.", { originalError, transactionID });
+      throw error(ErrorCode.AppError, err.message, { originalError, transactionID });
     }
   }
 
@@ -369,8 +375,9 @@ export class CarrierApp extends ConnectionApp {
       return new PickupConfirmation(validate(confirmation, PickupConfirmation));
     }
     catch (originalError: unknown) {
+      const err = originalError as Error;
       const transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the schedulePickup method.", { originalError, transactionID });
+      throw error(ErrorCode.AppError, err.message, { originalError, transactionID });
     }
   }
 
@@ -403,8 +410,9 @@ export class CarrierApp extends ConnectionApp {
         .map((confirmation) => new PickupCancellationOutcome(confirmation));
     }
     catch (originalError: unknown) {
+      const err = originalError as Error;
       const transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the cancelPickups method.", { originalError, transactionID });
+      throw error(ErrorCode.AppError, err.message, { originalError, transactionID });
     }
   }
 

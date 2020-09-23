@@ -103,10 +103,7 @@ describe("App", () => {
   describe("Failure tests", () => {
 
     it("should throw an error if the pojo is the wrong type", () => {
-      expect(() => new CarrierApp(12345)).to.throw(
-        "Invalid ShipEngine Connect carrier app: \n" +
-        "  value must be of type object"
-      );
+      expect(() => new CarrierApp(12345)).to.throw("Invalid ShipEngine Connect carrier app: value must be of type object");
     });
 
     it("should throw an error if the name contains illegal characters", () => {
@@ -116,10 +113,7 @@ describe("App", () => {
           version: "1.23.456",
         }
       }))
-      ).to.throw(
-        "Invalid ShipEngine Connect carrier app: \n" +
-        '  manifest.name must be a scoped NPM package name, like "@company-name/app-name"'
-      );
+      ).to.throw('Invalid ShipEngine Connect carrier app: manifest.name must be a scoped NPM package name, like "@company-name/app-name"');
     });
 
     it("should throw an error if the name is non-scoped", () => {
@@ -129,10 +123,7 @@ describe("App", () => {
           version: "1.23.456",
         },
       }))
-      ).to.throw(
-        "Invalid ShipEngine Connect carrier app: \n" +
-        '  manifest.name must be a scoped NPM package name, like "@company-name/app-name"'
-      );
+      ).to.throw('Invalid ShipEngine Connect carrier app: manifest.name must be a scoped NPM package name, like "@company-name/app-name"');
     });
 
     it("should throw an error if the name contains capital letters", () => {
@@ -142,10 +133,7 @@ describe("App", () => {
           version: "1.23.456",
         },
       }))
-      ).to.throw(
-        "Invalid ShipEngine Connect carrier app: \n" +
-        '  manifest.name must be a scoped NPM package name, like "@company-name/app-name"'
-      );
+      ).to.throw('Invalid ShipEngine Connect carrier app: manifest.name must be a scoped NPM package name, like "@company-name/app-name"');
     });
 
     it("should throw an error if the description is the wrong type", () => {
@@ -156,10 +144,7 @@ describe("App", () => {
           description: 12345,
         },
       }))
-      ).to.throw(
-        "Invalid ShipEngine Connect carrier app: \n" +
-        "  manifest.description must be a string"
-      );
+      ).to.throw('Invalid ShipEngine Connect carrier app: manifest.description must be a string');
     });
 
   });

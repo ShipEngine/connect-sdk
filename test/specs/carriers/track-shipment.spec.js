@@ -165,11 +165,7 @@ describe("trackShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the trackShipment method. \n" +
-          "Invalid transaction: \n" +
-          "  A value is required"
-        );
+        expect(error.message).to.equal("Invalid input to the trackShipment method. Invalid transaction: A value is required");
       }
     });
 
@@ -183,11 +179,7 @@ describe("trackShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the trackShipment method. \n" +
-          "Invalid shipment: \n" +
-          "  A value is required"
-        );
+        expect(error.message).to.equal("Invalid input to the trackShipment method. Invalid shipment: A value is required");
       }
     });
 
@@ -204,12 +196,7 @@ describe("trackShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the trackShipment method. \n" +
-          "Invalid shipment: \n" +
-          "  trackingNumber must be a string \n" +
-          "  return is not allowed"
-        );
+        expect(error.message).to.equal("Invalid input to the trackShipment method. Invalid shipment: trackingNumber must be a string, return is not allowed");
       }
     });
 
@@ -223,11 +210,7 @@ describe("trackShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the trackShipment method. \n" +
-          "Invalid tracking info: \n" +
-          "  A value is required"
-        );
+        expect(error.message).to.equal("Invalid tracking info: A value is required Invalid tracking info: A value is required");
       }
     });
 
@@ -277,12 +260,7 @@ describe("trackShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the trackShipment method. \n" +
-          "Invalid tracking info: \n" +
-          "  packages[0].package is not allowed \n" +
-          "  packages[0].dimension is not allowed"
-        );
+        expect(error.message).to.equal("Invalid tracking info: packages[0].package is not allowed, packages[0].dimension is not allowed Invalid tracking info: packages[0].package is not allowed, packages[0].dimension is not allowed");
       }
     });
 
@@ -332,11 +310,7 @@ describe("trackShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the trackShipment method. \n" +
-          "Invalid tracking info: \n" +
-          "  events[0].note is not allowed"
-        );
+        expect(error.message).to.equal("Invalid tracking info: events[0].note is not allowed Invalid tracking info: events[0].note is not allowed");
       }
     });
   });

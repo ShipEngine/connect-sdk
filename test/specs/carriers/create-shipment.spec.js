@@ -377,9 +377,7 @@ describe("createShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the createShipment method. \n" +
-          "Invalid transaction: A value is required"
+        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid transaction: A value is required"
         );
       }
     });
@@ -395,8 +393,7 @@ describe("createShipment", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Invalid input to the createShipment method. \n" +
-          "Invalid shipment: A value is required"
+          "Invalid input to the createShipment method. Invalid shipment: A value is required"
         );
       }
     });
@@ -416,7 +413,7 @@ describe("createShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal("Invalid shipment: deliveryService is required, shipFrom must be of type object, shipTo must be of type object, shipDateTime must be one of date, string, object, packages must contain at least 1 items");
+        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: deliveryService is required, shipFrom must be of type object, shipTo must be of type object, shipDateTime must be one of date, string, object, packages must contain at least 1 items");
       }
     });
 
@@ -430,10 +427,7 @@ describe("createShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid shipment: \n" +
-          "  A value is required"
-        );
+        expect(error.message).to.equal("Invalid shipment: A value is required Invalid shipment: A value is required");
       }
     });
 
@@ -450,12 +444,7 @@ describe("createShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid shipment: \n" +
-          "  label is required \n" +
-          "  deliveryDateTime must be one of date, string, object \n" +
-          "  charges is required"
-        );
+        expect(error.message).to.equal("Invalid shipment: label is required, deliveryDateTime must be one of date, string, object, charges is required Invalid shipment: label is required, deliveryDateTime must be one of date, string, object, charges is required");
       }
     });
 
@@ -478,15 +467,7 @@ describe("createShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid shipment: \n" +
-          "  label.name must not have leading or trailing whitespace \n" +
-          "  label.name cannot contain newlines or tabs \n" +
-          "  label.type must be one of label, customs_form, scan_form \n" +
-          "  label.size is required \n" +
-          "  label.format is required \n" +
-          "  label.data is required"
-        );
+        expect(error.message).to.equal("Invalid shipment: label.name must not have leading or trailing whitespace, label.name cannot contain newlines or tabs, label.type must be one of label, customs_form, scan_form, label.size is required, label.format is required, label.data is required Invalid shipment: label.name must not have leading or trailing whitespace, label.name cannot contain newlines or tabs, label.type must be one of label, customs_form, scan_form, label.size is required, label.format is required, label.data is required");
       }
     });
 
@@ -507,11 +488,8 @@ describe("createShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Label data cannot be empty"
-        );
+        expect(error.message).to.equal("Label data cannot be empty Label data cannot be empty");
       }
     });
-
   });
 });

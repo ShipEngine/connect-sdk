@@ -6,7 +6,7 @@ const { expect } = require("chai");
 
 describe("DeliveryConfirmation", () => {
 
-  function createDeliveryConfirmation (deliveryConfirmation) {
+  function createDeliveryConfirmation(deliveryConfirmation) {
     let app = new CarrierApp(pojo.carrierApp({
       deliveryServices: [
         pojo.deliveryService({
@@ -73,10 +73,7 @@ describe("DeliveryConfirmation", () => {
   describe("Failure tests", () => {
 
     it("should throw an error if the pojo is the wrong type", () => {
-      expect(() => createDeliveryConfirmation(12345)).to.throw(
-        "Invalid ShipEngine Connect carrier app: \n" +
-        "  deliveryServices[0].deliveryConfirmations[0] must be of type object"
-      );
+      expect(() => createDeliveryConfirmation(12345)).to.throw("Invalid ShipEngine Connect carrier app: deliveryServices[0].deliveryConfirmations[0] must be of type object");
     });
 
     it("should throw an error if the ID is not a UUID", () => {
@@ -85,10 +82,7 @@ describe("DeliveryConfirmation", () => {
         name: "test",
         type: "signature",
       })
-      ).to.throw(
-        "Invalid ShipEngine Connect carrier app: \n" +
-        "  deliveryServices[0].deliveryConfirmations[0].id must be a valid GUID"
-      );
+      ).to.throw("Invalid ShipEngine Connect carrier app: deliveryServices[0].deliveryConfirmations[0].id must be a valid GUID");
     });
 
     it("should throw an error if the name contains illegal characters", () => {
@@ -97,11 +91,7 @@ describe("DeliveryConfirmation", () => {
         name: "  My \nConfirmation  ",
         type: "signature"
       })
-      ).to.throw(
-        "Invalid ShipEngine Connect carrier app: \n" +
-        "  deliveryServices[0].deliveryConfirmations[0].name must not have leading or trailing whitespace \n" +
-        "  deliveryServices[0].deliveryConfirmations[0].name cannot contain newlines or tabs"
-      );
+      ).to.throw("Invalid ShipEngine Connect carrier app: deliveryServices[0].deliveryConfirmations[0].name must not have leading or trailing whitespace, deliveryServices[0].deliveryConfirmations[0].name cannot contain newlines or tabs");
     });
 
     it("should throw an error if the description is the wrong type", () => {
@@ -111,10 +101,7 @@ describe("DeliveryConfirmation", () => {
         type: "signature",
         description: 12345,
       })
-      ).to.throw(
-        "Invalid ShipEngine Connect carrier app: \n" +
-        "  deliveryServices[0].deliveryConfirmations[0].description must be a string"
-      );
+      ).to.throw("Invalid ShipEngine Connect carrier app: deliveryServices[0].deliveryConfirmations[0].description must be a string");
     });
 
     it("should throw an error if the type is invalid", () => {
@@ -123,10 +110,7 @@ describe("DeliveryConfirmation", () => {
         name: "My Confirmation",
         type: "handshake"
       })
-      ).to.throw(
-        "Invalid ShipEngine Connect carrier app: \n" +
-        "  deliveryServices[0].deliveryConfirmations[0].type must be one of none, delivery, signature, adult_signature, direct_signature"
-      );
+      ).to.throw("Invalid ShipEngine Connect carrier app: deliveryServices[0].deliveryConfirmations[0].type must be one of none, delivery, signature, adult_signature, direct_signature");
     });
 
   });

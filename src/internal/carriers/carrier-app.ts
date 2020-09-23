@@ -224,7 +224,6 @@ export class CarrierApp extends ConnectionApp {
       _shipment = new NewShipment(validate(shipment, NewShipment), this);
     }
     catch (originalError: unknown) {
-      const err = originalError as Error;
       throw error(SystemErrorCode.InvalidInput, "Invalid input to the createShipment method.", { originalError });
     }
 

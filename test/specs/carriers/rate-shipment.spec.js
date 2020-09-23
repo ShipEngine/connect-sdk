@@ -337,7 +337,7 @@ describe("rateShipment", () => {
 
     it("should throw an error if called with no arguments", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        rateShipment () { }
+        rateShipment() { }
       }));
 
       try {
@@ -345,17 +345,13 @@ describe("rateShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the rateShipment method. \n" +
-          "Invalid transaction: \n" +
-          "  A value is required"
-        );
+        expect(error.message).to.equal("Invalid input to the rateShipment method. Invalid transaction: A value is required");
       }
     });
 
     it("should throw an error if called without a shipment", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        rateShipment () { }
+        rateShipment() { }
       }));
 
       try {
@@ -363,17 +359,13 @@ describe("rateShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the rateShipment method. \n" +
-          "Invalid shipment: \n" +
-          "  A value is required"
-        );
+        expect(error.message).to.equal("Invalid input to the rateShipment method. Invalid shipment: A value is required");
       }
     });
 
     it("should throw an error if called with an invalid shipment", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        rateShipment () { }
+        rateShipment() { }
       }));
 
       try {
@@ -386,22 +378,13 @@ describe("rateShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Invalid input to the rateShipment method. \n" +
-          "Invalid shipment: \n" +
-          "  deliveryService must be one of object, string \n" +
-          "  shipDateTime is required \n" +
-          "  deliveryDateTime must be a valid date/time \n" +
-          "  shipFrom is required \n" +
-          "  shipTo is required \n" +
-          "  packages must contain at least 1 items"
-        );
+        expect(error.message).to.equal("Invalid input to the rateShipment method. Invalid shipment: deliveryService must be one of object, string, shipDateTime is required, deliveryDateTime must be a valid date/time, shipFrom is required, shipTo is required, packages must contain at least 1 items");
       }
     });
 
     it("should throw an error if nothing is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({
-        rateShipment () { }
+        rateShipment() { }
       }));
 
       try {
@@ -410,9 +393,7 @@ describe("rateShipment", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Error in the rateShipment method. \n" +
-          "Invalid rate: \n" +
-          "  A value is required"
+          "Invalid rate: A value is required Invalid rate: A value is required"
         );
       }
     });
@@ -439,17 +420,7 @@ describe("rateShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the rateShipment method. \n" +
-          "Invalid rate: \n" +
-          "  [0].deliveryService is required \n" +
-          "  [0].deliveryDateTime must be a valid date/time \n" +
-          "  [0].isNegotiatedRate must be a boolean \n" +
-          "  [0].charges must contain at least 1 items \n" +
-          "  [0].notes must be an array \n" +
-          "  [0].packages[0].packaging is required \n" +
-          "  [0].deliveryConfirmation.id must be a valid GUID"
-        );
+        expect(error.message).to.equal("Invalid rate: [0].deliveryService is required, [0].deliveryDateTime must be a valid date/time, [0].isNegotiatedRate must be a boolean, [0].charges must contain at least 1 items, [0].notes must be an array, [0].packages[0].packaging is required, [0].deliveryConfirmation.id must be a valid GUID Invalid rate: [0].deliveryService is required, [0].deliveryDateTime must be a valid date/time, [0].isNegotiatedRate must be a boolean, [0].charges must contain at least 1 items, [0].notes must be an array, [0].packages[0].packaging is required, [0].deliveryConfirmation.id must be a valid GUID");
       }
     });
 
@@ -469,10 +440,7 @@ describe("rateShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the rateShipment method. \n" +
-          "Unable to find delivery service ID: 12345678-1234-1234-1234-123456789012"
-        );
+        expect(error.message).to.equal("Unable to find delivery service ID: 12345678-1234-1234-1234-123456789012 Unable to find delivery service ID: 12345678-1234-1234-1234-123456789012");
       }
     });
 
@@ -494,10 +462,7 @@ describe("rateShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the rateShipment method. \n" +
-          "Unable to find packaging ID: 12345678-1234-1234-1234-123456789012"
-        );
+        expect(error.message).to.equal("Unable to find packaging ID: 12345678-1234-1234-1234-123456789012 Unable to find packaging ID: 12345678-1234-1234-1234-123456789012");
       }
     });
 
@@ -521,10 +486,7 @@ describe("rateShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the rateShipment method. \n" +
-          "22222222-2222-2222-2222-222222222222 is a delivery service ID not a delivery confirmation ID"
-        );
+        expect(error.message).to.equal("22222222-2222-2222-2222-222222222222 is a delivery service ID not a delivery confirmation ID 22222222-2222-2222-2222-222222222222 is a delivery service ID not a delivery confirmation ID");
       }
     });
   });

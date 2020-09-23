@@ -10,7 +10,6 @@ export enum SystemErrorCode {
   Filesystem = "ERR_FILESYSTEM",  // Used by the loader
 }
 
-
 /**
  * An error thrown by the ShipEngine Connect SDK
  */
@@ -21,7 +20,6 @@ export interface SystemError extends Error {
   [key: string]: unknown;
 }
 
-
 /**
  * Additional properties to add to a an error
  */
@@ -31,7 +29,6 @@ export interface ErrorProps {
   [key: string]: unknown;
 }
 
-
 /**
  * Creates a ShipEngine Connect SDK error
  */
@@ -39,7 +36,7 @@ export function error(code: ErrorCode | SystemErrorCode, message: string, props:
   let originalError = props.originalError as SystemError | undefined;
 
   if (originalError) {
-    message += ` \n${originalError.message}`;
+    message += ` ${originalError.message}`;
   }
 
   const error = new Error(message) as SystemError;

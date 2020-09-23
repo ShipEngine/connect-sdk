@@ -71,7 +71,8 @@ export abstract class ConnectionApp extends App {
       _connectionFormData = Object.assign({}, connectionFormData);
     }
     catch (originalError: unknown) {
-      throw error(SystemErrorCode.InvalidInput, "Invalid input to the connect method.", { originalError });
+      const err = originalError as Error;
+      throw error(SystemErrorCode.InvalidInput, err.message, { originalError });
     }
 
     try {

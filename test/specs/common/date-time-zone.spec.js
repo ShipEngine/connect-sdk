@@ -7,7 +7,7 @@ const pojo = require("../../utils/pojo");
 
 describe("DateTimeZone", () => {
 
-  async function createDateTimeZone (value) {
+  async function createDateTimeZone(value) {
     let app = new CarrierApp(pojo.carrierApp({
       rateShipment: () => [pojo.rate({ shipDateTime: value })]
     }));
@@ -265,11 +265,7 @@ describe("DateTimeZone", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the rateShipment method. \n" +
-          "Invalid rate: \n" +
-          "  [0].shipDateTime must be one of date, string, object"
-        );
+        expect(error.message).to.equal("Invalid rate: [0].shipDateTime must be one of date, string, object Invalid rate: [0].shipDateTime must be one of date, string, object");
       }
     });
 

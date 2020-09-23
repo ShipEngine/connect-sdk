@@ -56,6 +56,7 @@ export enum ShipmentStatus {
   DeliveryAttempted = "delivery_attempted",
   Delivered = "delivered",
   Exception = "exception",
+  NotYetInSystem = "not_yet_in_system"
 }
 
 /**

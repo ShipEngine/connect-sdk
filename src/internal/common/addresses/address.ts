@@ -21,10 +21,10 @@ export class Address extends AddressBase {
   public static readonly [_internal] = {
     label: "address",
     schema: PartialAddress[_internal].schema.keys({
-      addressLines: Joi.array().items(Joi.string().trim().singleLine().min(1).max(100).allow("").optional()).optional(),
-      cityLocality: Joi.string().trim().singleLine().min(1).max(100).allow("").optional(),
-      stateProvince: Joi.string().trim().singleLine().min(1).max(100).allow("").optional(),
-      postalCode: Joi.string().trim().singleLine().min(1).max(100).required(),
+      addressLines: Joi.array().items(Joi.string().max(100).allow("").optional()).optional(),
+      cityLocality: Joi.string().max(100).allow("").optional(),
+      stateProvince: Joi.string().max(100).allow("").optional(),
+      postalCode: Joi.string().max(100).required(),
       country: Joi.string().enum(Country).required()
     }),
   };

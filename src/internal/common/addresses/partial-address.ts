@@ -41,8 +41,8 @@ export class PartialAddress extends PartialAddressBase {
     schema: Joi.object({
       company: Joi.string().allow("").max(100).optional(),
       addressLines: Joi.array().items(Joi.string().max(100).allow("").optional()).optional(),
-      cityLocality: Joi.string().max(100).optional(),
-      stateProvince: Joi.string().max(100).optional(),
+      cityLocality: Joi.string().max(100).allow("").optional(),
+      stateProvince: Joi.string().max(100).allow("").optional(),
       postalCode: Joi.string().max(100),
       country: Joi.string().enum(Country),
       isResidential: Joi.boolean()

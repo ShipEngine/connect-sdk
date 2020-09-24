@@ -24,8 +24,8 @@ export class NewPackage implements INewPackage {
     schema: Joi.object({
       packaging: Joi.alternatives(
         DefinitionIdentifier[_internal].schema.unknown(true),
-        Joi.string()
-      ).required(),
+        Joi.string().allow("")
+      ).optional(),
       dimensions: Dimensions[_internal].schema,
       weight: Weight[_internal].schema,
       insuredValue: MonetaryValue[_internal].schema,

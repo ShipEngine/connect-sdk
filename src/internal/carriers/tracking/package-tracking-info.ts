@@ -8,8 +8,8 @@ export class PackageTrackingInfo {
     schema: Joi.object({
       packaging: Joi.alternatives(
         DefinitionIdentifier[_internal].schema.unknown(true),
-        Joi.string()
-      ),
+        Joi.string().allow("")
+      ).optional(),
       dimensions: Dimensions[_internal].schema,
       weight: Weight[_internal].schema,
     }),

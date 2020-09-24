@@ -8,8 +8,8 @@ export class RatePackage {
     schema: Joi.object({
       packaging: Joi.alternatives(
         DefinitionIdentifier[_internal].schema.unknown(true),
-        Joi.string()
-      ).required()
+        Joi.string().allow("")
+      ).optional()
     }),
   };
 

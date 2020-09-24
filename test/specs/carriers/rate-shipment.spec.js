@@ -420,7 +420,7 @@ describe("rateShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal("Error in the rateShipment method. Invalid rate: [0].deliveryService is required, [0].deliveryDateTime must be a valid date/time, [0].isNegotiatedRate must be a boolean, [0].charges must contain at least 1 items, [0].notes must be an array, [0].packages[0].packaging is required, [0].deliveryConfirmation.id must be a valid GUID");
+        expect(error.message).to.equal("Error in the rateShipment method. Invalid rate: [0].deliveryService is required, [0].deliveryDateTime must be a valid date/time, [0].isNegotiatedRate must be a boolean, [0].charges must contain at least 1 items, [0].notes must be an array, [0].deliveryConfirmation.id must be a valid GUID");
       }
     });
 

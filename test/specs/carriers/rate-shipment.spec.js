@@ -393,7 +393,7 @@ describe("rateShipment", () => {
       }
       catch (error) {
         expect(error.message).to.equal(
-          "Invalid rate: A value is required Invalid rate: A value is required"
+          "Error in the rateShipment method. Invalid rate: A value is required"
         );
       }
     });
@@ -420,7 +420,7 @@ describe("rateShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal("Invalid rate: [0].deliveryService is required, [0].deliveryDateTime must be a valid date/time, [0].isNegotiatedRate must be a boolean, [0].charges must contain at least 1 items, [0].notes must be an array, [0].packages[0].packaging is required, [0].deliveryConfirmation.id must be a valid GUID Invalid rate: [0].deliveryService is required, [0].deliveryDateTime must be a valid date/time, [0].isNegotiatedRate must be a boolean, [0].charges must contain at least 1 items, [0].notes must be an array, [0].packages[0].packaging is required, [0].deliveryConfirmation.id must be a valid GUID");
+        expect(error.message).to.equal("Error in the rateShipment method. Invalid rate: [0].deliveryService is required, [0].deliveryDateTime must be a valid date/time, [0].isNegotiatedRate must be a boolean, [0].charges must contain at least 1 items, [0].notes must be an array, [0].packages[0].packaging is required, [0].deliveryConfirmation.id must be a valid GUID");
       }
     });
 
@@ -440,7 +440,7 @@ describe("rateShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal("Unable to find delivery service ID: 12345678-1234-1234-1234-123456789012 Unable to find delivery service ID: 12345678-1234-1234-1234-123456789012");
+        expect(error.message).to.equal("Error in the rateShipment method. Unable to find delivery service ID: 12345678-1234-1234-1234-123456789012");
       }
     });
 
@@ -541,7 +541,7 @@ describe("rateShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal("22222222-2222-2222-2222-222222222222 is a delivery service ID not a delivery confirmation ID 22222222-2222-2222-2222-222222222222 is a delivery service ID not a delivery confirmation ID");
+        expect(error.message).to.equal("Error in the rateShipment method. 22222222-2222-2222-2222-222222222222 is a delivery service ID not a delivery confirmation ID");
       }
     });
   });

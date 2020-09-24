@@ -427,7 +427,7 @@ describe("createShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal("Invalid shipment: A value is required Invalid shipment: A value is required");
+        expect(error.message).to.equal("Error in the createShipment method. Invalid shipment: A value is required");
       }
     });
 
@@ -444,7 +444,7 @@ describe("createShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal("Invalid shipment: label is required, deliveryDateTime must be one of date, string, object, charges is required Invalid shipment: label is required, deliveryDateTime must be one of date, string, object, charges is required");
+        expect(error.message).to.equal("Error in the createShipment method. Invalid shipment: label is required, deliveryDateTime must be one of date, string, object, charges is required");
       }
     });
 
@@ -467,7 +467,7 @@ describe("createShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal("Invalid shipment: label.name must not have leading or trailing whitespace, label.name cannot contain newlines or tabs, label.type must be one of label, customs_form, scan_form, label.size is required, label.format is required, label.data is required Invalid shipment: label.name must not have leading or trailing whitespace, label.name cannot contain newlines or tabs, label.type must be one of label, customs_form, scan_form, label.size is required, label.format is required, label.data is required");
+        expect(error.message).to.equal("Error in the createShipment method. Invalid shipment: label.name must not have leading or trailing whitespace, label.name cannot contain newlines or tabs, label.type must be one of label, customs_form, scan_form, label.size is required, label.format is required, label.data is required");
       }
     });
 
@@ -488,7 +488,7 @@ describe("createShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal("Label data cannot be empty Label data cannot be empty");
+        expect(error.message).to.equal("Error in the createShipment method. Label data cannot be empty");
       }
     });
   });

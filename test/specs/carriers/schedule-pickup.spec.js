@@ -250,7 +250,7 @@ describe("schedulePickup", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal("Invalid pickup: A value is required Invalid pickup: A value is required");
+        expect(error.message).to.equal("Error in the schedulePickup method. Invalid pickup: A value is required");
       }
     });
 
@@ -270,7 +270,7 @@ describe("schedulePickup", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal("Invalid pickup: id must be a string, timeWindows must contain at least 1 items, charges is required, notes[0] must be of type object, metadata must be of type object Invalid pickup: id must be a string, timeWindows must contain at least 1 items, charges is required, notes[0] must be of type object, metadata must be of type object");
+        expect(error.message).to.equal("Error in the schedulePickup method. Invalid pickup: id must be a string, timeWindows must contain at least 1 items, charges is required, notes[0] must be of type object, metadata must be of type object");
       }
     });
   });

@@ -147,7 +147,7 @@ describe("Errors", () => {
         name: "Error",
         code: "ERR_APP_ERROR",
         transactionID: error.transactionID,
-        message: "Invalid shipment: A value is required Invalid shipment: A value is required",
+        message: "Error in the createShipment method. Invalid shipment: A value is required",
         originalError: {
           name: "Error",
           code: "ERR_INVALID",
@@ -174,7 +174,7 @@ describe("Errors", () => {
         name: "Error",
         code: "ERR_APP_ERROR",
         transactionID: error.transactionID,
-        message: "Invalid shipment: label is required, charges is required Invalid shipment: label is required, charges is required",
+        message: "Error in the createShipment method. Invalid shipment: label is required, charges is required",
         details: [
           {
             type: "any.required",

@@ -153,7 +153,7 @@ describe("getSalesOrdersByDate", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal("Invalid sales order: id is required, identifiers must be of type object, createdDateTime must be a valid date/time, status must be a string, buyer is required, requestedFulfillments[0].items must contain at least 1 items, requestedFulfillments[0].shipTo is required Invalid sales order: id is required, identifiers must be of type object, createdDateTime must be a valid date/time, status must be a string, buyer is required, requestedFulfillments[0].items must contain at least 1 items, requestedFulfillments[0].shipTo is required");
+        expect(error.message).to.equal("Error in the getSalesOrdersByDate method. Invalid sales order: id is required, identifiers must be of type object, createdDateTime must be a valid date/time, status must be a string, buyer is required, requestedFulfillments[0].items must contain at least 1 items, requestedFulfillments[0].shipTo is required");
       }
     });
   });

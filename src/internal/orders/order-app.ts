@@ -92,9 +92,8 @@ export class OrderApp extends ConnectionApp {
       return new SalesOrders(salesOrderArrayPOJO);
     }
     catch (originalError: unknown) {
-      const err = originalError as Error;
       const transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, err.message, { originalError, transactionID });
+      throw error(ErrorCode.AppError, "Error in the getSalesOrdersByDate method.", { originalError, transactionID });
     }
   }
 
@@ -114,9 +113,8 @@ export class OrderApp extends ConnectionApp {
       await shipmentCreated!(_transaction, _shipment);
     }
     catch (originalError: unknown) {
-      const err = originalError as Error;
       const transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, err.message, { originalError, transactionID });
+      throw error(ErrorCode.AppError, "Error in the shipmentCreated method.", { originalError, transactionID });
     }
   }
 
@@ -151,9 +149,8 @@ export class OrderApp extends ConnectionApp {
       return acknowledgedOrders;
     }
     catch (originalError: unknown) {
-      const err = originalError as Error;
       const transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, err.message, { originalError, transactionID });
+      throw error(ErrorCode.AppError, "Error in the acknowledgeOrders method.", { originalError, transactionID });
     }
   }
 }

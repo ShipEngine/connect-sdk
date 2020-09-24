@@ -13,10 +13,20 @@ export class RatePackage {
     }),
   };
 
-  public readonly packaging: Packaging;
+  public readonly packaging?: Packaging | string;
 
   public constructor(pojo: RatePackagePOJO, app: App) {
-    this.packaging = app[_internal].references.lookup(pojo.packaging, Packaging);
+    let pkg;
+
+    try {
+      pkg = app[_internal].references.lookup(pojo.packaging, Packaging);
+    } catch {
+      if (typeof pojo.packaging === 'string') {
+        pkg = pojo.packaging;
+      }
+    }
+
+    this.packaging = pkg;
 
     // Make this object immutable
     hideAndFreeze(this);

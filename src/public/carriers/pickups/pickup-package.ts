@@ -10,7 +10,7 @@ export interface PickupPackage extends PackageIdentifier {
   /**
    * The packaging used for this package
    */
-  readonly packaging: PackagingIdentifier;
+  readonly packaging?: PackagingIdentifier | string;
 
   /**
    * The package dimensions

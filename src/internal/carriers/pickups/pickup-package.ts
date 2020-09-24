@@ -25,7 +25,7 @@ export class PickupPackage extends PackageIdentifierBase implements IPickupPacka
     }),
   };
 
-  public readonly packaging: Packaging;
+  public readonly packaging?: Packaging | string;
   public readonly dimensions?: Dimensions;
   public readonly weight?: Weight;
   public readonly metadata: object;
@@ -33,7 +33,17 @@ export class PickupPackage extends PackageIdentifierBase implements IPickupPacka
   public constructor(pojo: PickupPackagePOJO, app: App) {
     super(pojo);
 
-    this.packaging = app[_internal].references.lookup(pojo.packaging, Packaging);
+    let pkg;
+
+    try {
+      pkg = app[_internal].references.lookup(pojo.packaging, Packaging);
+    } catch {
+      if (typeof pojo.packaging === 'string') {
+        pkg = pojo.packaging;
+      }
+    }
+
+    this.packaging = pkg;
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
     this.metadata = pojo.metadata || {};

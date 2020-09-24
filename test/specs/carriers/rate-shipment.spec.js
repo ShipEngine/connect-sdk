@@ -444,26 +444,81 @@ describe("rateShipment", () => {
       }
     });
 
-    it("should throw an error if an invalid packaging is returned", async () => {
+    it("does not throw an error if given a packaging that doesnt exsit", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         rateShipment: () => [
           pojo.rate({
             packages: [{
-              packaging: {
-                id: "12345678-1234-1234-1234-123456789012",
-              }
+              packaging: "test"
             }]
           })
         ]
       }));
 
-      try {
-        await app.rateShipment(pojo.transaction(), pojo.rateCriteria());
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal("Unable to find packaging ID: 12345678-1234-1234-1234-123456789012 Unable to find packaging ID: 12345678-1234-1234-1234-123456789012");
-      }
+      const rates = await app.rateShipment(pojo.transaction(), pojo.rateCriteria());
+      expect(rates).to.deep.equal([{
+        "charges": [
+          {
+            "amount": {
+              "currency": "USD",
+              "value": 12.34
+            },
+            "name": "",
+            "type": "shipping"
+          }
+        ],
+        "deliveryConfirmation": undefined,
+        "deliveryDateTime": undefined,
+        "deliveryService": {
+          "allowsMultiplePackages": false,
+          "code": "dummy-ds-code",
+          "deliveryConfirmations": [],
+          "description": "",
+          "destinationCountries": [
+            "US"
+          ],
+          "fulfillmentService": undefined,
+          "hasSandbox": false,
+          "id": "22222222-2222-2222-2222-222222222222",
+          "identifiers": {},
+          "isConsolidationService": false,
+          "isInsurable": false,
+          "isTrackable": false,
+          "labelFormats": [],
+          "labelSizes": [],
+          "manifestType": "digital",
+          "name": "Dummy Delivery Service",
+          "originCountries": [
+            "US"
+          ],
+          "packaging": [
+            {
+              "code": "dummy-packaging-code",
+              "description": "",
+              "id": "44444444-4444-4444-4444-444444444444",
+              "identifiers": {},
+              "name": "Dummy Packaging",
+              "requiresDimensions": false,
+              "requiresWeight": false,
+            }
+          ],
+          "serviceArea": undefined,
+          "supportsReturns": false,
+        },
+        "isNegotiatedRate": false,
+        "isTrackable": false,
+        "notes": [],
+        "packages": [
+          {
+            "packaging": "test"
+          }
+        ],
+        "shipDateTime": undefined,
+        "totalAmount": {
+          "currency": "USD",
+          "value": 12.34
+        }
+      }]);
     });
 
     it("should throw an error if an invalid deliveryConfirmation is returned", async () => {

@@ -11,7 +11,7 @@ export interface NewPackage {
   /**
    * The packaging used
    */
-  readonly packaging: Packaging;
+  readonly packaging?: Packaging | string;
 
   /**
    * The package dimensions

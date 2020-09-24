@@ -37,7 +37,7 @@ export class NewPackage implements INewPackage {
     }),
   };
 
-  public readonly packaging: Packaging;
+  public readonly packaging?: Packaging | string;
   public readonly dimensions?: Dimensions;
   public readonly weight?: Weight;
   public readonly insuredValue: MonetaryValue;
@@ -48,7 +48,17 @@ export class NewPackage implements INewPackage {
   public readonly customs: Customs;
 
   public constructor(pojo: NewPackagePOJO, app: App) {
-    this.packaging = app[_internal].references.lookup(pojo.packaging, Packaging);
+    let pkg;
+
+    try {
+      pkg = app[_internal].references.lookup(pojo.packaging, Packaging);
+    } catch {
+      if (typeof pojo.packaging === 'string') {
+        pkg = pojo.packaging;
+      }
+    }
+
+    this.packaging = pkg;
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
     this.insuredValue = new MonetaryValue(pojo.insuredValue || { value: 0, currency: "usd" });

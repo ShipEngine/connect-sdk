@@ -9,8 +9,8 @@ export abstract class AddressBase extends PartialAddressBase implements IAddress
   public toString(): string {
     const address = [];
     this.company && address.push(this.company);
-    address.push(...this.addressLines);
-    address.push(`${this.cityLocality}, ${this.stateProvince} ${this.postalCode}`);
+    this.addressLines && address.push(...this.addressLines);
+    this.cityLocality && this.stateProvince && address.push(`${this.cityLocality}, ${this.stateProvince} ${this.postalCode}`);
     address.push(this.country);
     return address.join("\n");
   }

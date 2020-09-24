@@ -7,7 +7,7 @@ const pojo = require("../../utils/pojo");
 
 describe("DateTimeZone", () => {
 
-  async function createDateTimeZone (value) {
+  async function createDateTimeZone(value) {
     let app = new CarrierApp(pojo.carrierApp({
       rateShipment: () => [pojo.rate({ shipDateTime: value })]
     }));
@@ -265,11 +265,7 @@ describe("DateTimeZone", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the rateShipment method. \n" +
-          "Invalid rate: \n" +
-          "  [0].shipDateTime must be one of date, string, object"
-        );
+        expect(error.message).to.equal("Invalid rate: [0].shipDateTime must be one of date, string, object Invalid rate: [0].shipDateTime must be one of date, string, object");
       }
     });
 
@@ -279,11 +275,7 @@ describe("DateTimeZone", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the rateShipment method. \n" +
-          "Invalid rate: \n" +
-          "  [0].shipDateTime does not match any of the allowed types"
-        );
+        expect(error.message).to.equal("Invalid rate: [0].shipDateTime does not match any of the allowed types Invalid rate: [0].shipDateTime does not match any of the allowed types");
       }
     });
 
@@ -293,11 +285,7 @@ describe("DateTimeZone", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the rateShipment method. \n" +
-          "Invalid rate: \n" +
-          "  [0].shipDateTime must be a complete ISO 8601 date/time with a time zone, like 2005-09-23T17:30:00+05:30"
-        );
+        expect(error.message).to.equal("Invalid rate: [0].shipDateTime must be a complete ISO 8601 date/time with a time zone, like 2005-09-23T17:30:00+05:30 Invalid rate: [0].shipDateTime must be a complete ISO 8601 date/time with a time zone, like 2005-09-23T17:30:00+05:30");
       }
     });
 
@@ -307,11 +295,7 @@ describe("DateTimeZone", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the rateShipment method. \n" +
-          "Invalid rate: \n" +
-          "  [0].shipDateTime must be a valid date/time"
-        );
+        expect(error.message).to.equal("Invalid rate: [0].shipDateTime must be a valid date/time Invalid rate: [0].shipDateTime must be a valid date/time");
       }
     });
 
@@ -321,11 +305,7 @@ describe("DateTimeZone", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the rateShipment method. \n" +
-          "Invalid rate: \n" +
-          "  [0].shipDateTime must be a complete ISO 8601 date/time with a time zone, like 2005-09-23T17:30:00+05:30"
-        );
+        expect(error.message).to.equal("Invalid rate: [0].shipDateTime must be a complete ISO 8601 date/time with a time zone, like 2005-09-23T17:30:00+05:30 Invalid rate: [0].shipDateTime must be a complete ISO 8601 date/time with a time zone, like 2005-09-23T17:30:00+05:30");
       }
     });
 
@@ -335,11 +315,7 @@ describe("DateTimeZone", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the rateShipment method. \n" +
-          "Invalid rate: \n" +
-          "  [0].shipDateTime does not match any of the allowed types"
-        );
+        expect(error.message).to.equal("Invalid rate: [0].shipDateTime does not match any of the allowed types Invalid rate: [0].shipDateTime does not match any of the allowed types");
       }
     });
 
@@ -349,11 +325,7 @@ describe("DateTimeZone", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the rateShipment method. \n" +
-          "Invalid rate: \n" +
-          "  [0].shipDateTime does not match any of the allowed types"
-        );
+        expect(error.message).to.equal("Invalid rate: [0].shipDateTime does not match any of the allowed types Invalid rate: [0].shipDateTime does not match any of the allowed types");
       }
     });
 
@@ -363,11 +335,7 @@ describe("DateTimeZone", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the rateShipment method. \n" +
-          "Invalid rate: \n" +
-          "  [0].shipDateTime.value is not allowed to be empty"
-        );
+        expect(error.message).to.equal("Invalid rate: [0].shipDateTime.value is not allowed to be empty Invalid rate: [0].shipDateTime.value is not allowed to be empty");
       }
     });
 
@@ -377,11 +345,7 @@ describe("DateTimeZone", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the rateShipment method. \n" +
-          "Invalid rate: \n" +
-          "  [0].shipDateTime.timeZone is not allowed to be empty"
-        );
+        expect(error.message).to.equal("Invalid rate: [0].shipDateTime.timeZone is not allowed to be empty Invalid rate: [0].shipDateTime.timeZone is not allowed to be empty");
       }
     });
 
@@ -391,11 +355,7 @@ describe("DateTimeZone", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the rateShipment method. \n" +
-          "Invalid rate: \n" +
-          "  [0].shipDateTime.value must be an ISO 8601 date and time, like 2005-09-23T17:30:00"
-        );
+        expect(error.message).to.equal("Invalid rate: [0].shipDateTime.value must be an ISO 8601 date and time, like 2005-09-23T17:30:00 Invalid rate: [0].shipDateTime.value must be an ISO 8601 date and time, like 2005-09-23T17:30:00");
       }
     });
 
@@ -405,11 +365,7 @@ describe("DateTimeZone", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the rateShipment method. \n" +
-          "Invalid rate: \n" +
-          "  [0].shipDateTime.value must be a valid date/time"
-        );
+        expect(error.message).to.equal("Invalid rate: [0].shipDateTime.value must be a valid date/time Invalid rate: [0].shipDateTime.value must be a valid date/time");
       }
     });
 
@@ -419,11 +375,7 @@ describe("DateTimeZone", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the rateShipment method. \n" +
-          "Invalid rate: \n" +
-          "  [0].shipDateTime.value should not include a time zone"
-        );
+        expect(error.message).to.equal("Invalid rate: [0].shipDateTime.value should not include a time zone Invalid rate: [0].shipDateTime.value should not include a time zone");
       }
     });
 
@@ -433,13 +385,8 @@ describe("DateTimeZone", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal(
-          "Error in the rateShipment method. \n" +
-          "Invalid rate: \n" +
-          '  [0].shipDateTime.timeZone must be a UTC offset, like "+05:30", or a valid IANA time zone, like "America/Los_Angeles"'
-        );
+        expect(error.message).to.equal('Invalid rate: [0].shipDateTime.timeZone must be a UTC offset, like "+05:30", or a valid IANA time zone, like "America/Los_Angeles" Invalid rate: [0].shipDateTime.timeZone must be a UTC offset, like "+05:30", or a valid IANA time zone, like "America/Los_Angeles"');
       }
     });
-
   });
 });

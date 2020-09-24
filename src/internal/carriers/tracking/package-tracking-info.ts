@@ -15,12 +15,22 @@ export class PackageTrackingInfo {
     }),
   };
 
-  public readonly packaging?: Packaging;
+  public readonly packaging?: Packaging | string;
   public readonly dimensions?: Dimensions;
   public readonly weight?: Weight;
 
   public constructor(pojo: PackageTrackingInfoPOJO, app: App) {
-    this.packaging = app[_internal].references.lookup(pojo.packaging, Packaging);
+    let pkg;
+
+    try {
+      pkg = app[_internal].references.lookup(pojo.packaging, Packaging);
+    } catch {
+      if (typeof pojo.packaging === 'string') {
+        pkg = pojo.packaging;
+      }
+    }
+
+    this.packaging = pkg;
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
 

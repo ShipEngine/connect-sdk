@@ -7,6 +7,6 @@ export interface RatePackage {
   /**
    * The packaging this rate is for
    */
-  packaging: PackagingIdentifierPOJO | string;
+  packaging?: PackagingIdentifierPOJO | string;
 
 }

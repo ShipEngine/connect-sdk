@@ -467,8 +467,7 @@ describe("CarrierApp", () => {
 
     it("should throw an error if the pojo is the wrong type", () => {
       expect(() => new CarrierApp(12345)).to.throw(
-        "Invalid ShipEngine Connect carrier app: \n" +
-        "  value must be of type object"
+        "Invalid ShipEngine Connect carrier app: value must be of type object"
       );
     });
 
@@ -486,8 +485,7 @@ describe("CarrierApp", () => {
         }
       })
       ).to.throw(
-        "Invalid ShipEngine Connect carrier app: \n" +
-        "  id must be a valid GUID"
+        "Invalid ShipEngine Connect carrier app: id must be a valid GUID, connectionForm is required"
       );
     });
 
@@ -504,11 +502,7 @@ describe("CarrierApp", () => {
           version: "1.0.0"
         }
       })
-      ).to.throw(
-        "Invalid ShipEngine Connect carrier app: \n" +
-        "  name must not have leading or trailing whitespace \n" +
-        "  name cannot contain newlines or tabs"
-      );
+      ).to.throw("name must not have leading or trailing whitespace, name cannot contain newlines or tabs, connectionForm is required");
     });
 
     it("should throw an error if the description is the wrong type", () => {
@@ -525,10 +519,7 @@ describe("CarrierApp", () => {
           version: "1.0.0"
         }
       })
-      ).to.throw(
-        "Invalid ShipEngine Connect carrier app: \n" +
-        "  description must be a string"
-      );
+      ).to.throw("Invalid ShipEngine Connect carrier app: description must be a string, connectionForm is required");
     });
 
     it("should throw an error if the logo is not an absolute path", () => {
@@ -544,10 +535,7 @@ describe("CarrierApp", () => {
           version: "1.0.0"
         }
       })
-      ).to.throw(
-        "Invalid ShipEngine Connect carrier app: \n" +
-        "  logo must be an absolute file path"
-      );
+      ).to.throw("Invalid ShipEngine Connect carrier app: logo must be an absolute file path, connectionForm is required");
     });
 
     it("should throw an error if the trackingURLTemplate is not formatted correctly", () => {
@@ -566,10 +554,7 @@ describe("CarrierApp", () => {
           version: "1.0.0"
         }
       })
-      ).to.throw(
-        "Invalid ShipEngine Connect carrier app: \n" +
-        "  trackingURLTemplate with value https://tracking.com fails to match the required pattern: /{}/"
-      );
+      ).to.throw("Invalid ShipEngine Connect carrier app: trackingURLTemplate with value https://tracking.com fails to match the required pattern: /{}/");
     });
 
     it("should throw an error if the logo is not an SVG", () => {
@@ -585,10 +570,7 @@ describe("CarrierApp", () => {
           version: "1.0.0"
         }
       })
-      ).to.throw(
-        "Invalid ShipEngine Connect carrier app: \n" +
-        "  logo must be a .svg file"
-      );
+      ).to.throw("Invalid ShipEngine Connect carrier app: logo must be a .svg file, connectionForm is required");
     });
 
     it("should throw an error if the icon is not an SVG", () => {
@@ -604,10 +586,7 @@ describe("CarrierApp", () => {
           version: "1.0.0"
         }
       })
-      ).to.throw(
-        "Invalid ShipEngine Connect carrier app: \n" +
-        "  icon must be a .svg file"
-      );
+      ).to.throw("Invalid ShipEngine Connect carrier app: icon must be a .svg file, connectionForm is required");
     });
 
     it("should throw an error if the icon is not an absolute path", () => {
@@ -624,8 +603,7 @@ describe("CarrierApp", () => {
         }
       })
       ).to.throw(
-        "Invalid ShipEngine Connect carrier app: \n" +
-        "  icon must be an absolute file path"
+        "Invalid ShipEngine Connect carrier app: icon must be an absolute file path, connectionForm is required"
       );
     });
 
@@ -649,8 +627,7 @@ describe("CarrierApp", () => {
 
       expect(() => new CarrierApp(carrierAppObj)
       ).to.throw(
-        "Invalid ShipEngine Connect carrier app: \n" +
-        "  deliveryServices[0].code is required"
+        "Invalid ShipEngine Connect carrier app: deliveryServices[0].code is required"
       );
     });
 

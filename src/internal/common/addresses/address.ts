@@ -21,9 +21,9 @@ export class Address extends AddressBase {
   public static readonly [_internal] = {
     label: "address",
     schema: PartialAddress[_internal].schema.keys({
-      addressLines: Joi.array().min(1).items(Joi.string().trim().singleLine().min(1).max(100)).required(),
-      cityLocality: Joi.string().trim().singleLine().min(1).max(100).required(),
-      stateProvince: Joi.string().trim().singleLine().min(1).max(100).required(),
+      addressLines: Joi.array().min(1).items(Joi.string().trim().singleLine().min(1).max(100)).optional(),
+      cityLocality: Joi.string().trim().singleLine().min(1).max(100).optional(),
+      stateProvince: Joi.string().trim().singleLine().min(1).max(100).optional(),
       postalCode: Joi.string().trim().singleLine().min(1).max(100).required(),
       country: Joi.string().enum(Country).required()
     }),

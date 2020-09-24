@@ -71,15 +71,18 @@ export abstract class ConnectionApp extends App {
       _connectionFormData = Object.assign({}, connectionFormData);
     }
     catch (originalError: unknown) {
-      throw error(SystemErrorCode.InvalidInput, "Invalid input to the connect method.", { originalError });
+      const err = originalError as Error;
+      throw error(SystemErrorCode.InvalidInput, err.message, { originalError });
     }
 
     try {
       await connect!(_transaction, _connectionFormData);
     }
     catch (originalError: unknown) {
+      const err = originalError as Error;
+
       const transactionID = _transaction.id;
-      throw error(ErrorCode.AppError, "Error in the connect method.", { originalError, transactionID });
+      throw error(ErrorCode.AppError, err.message, { originalError, transactionID });
     }
   }
 }

@@ -81,23 +81,21 @@ describe("PersonName", () => {
       }
     });
 
-    it("should throw an error if the value is an empty string", async () => {
+    it("should not throw an error if the value is an empty string", async () => {
       try {
         await createPersonName("");
-        assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: shipFrom.name is not allowed to be empty");
+        assert.fail("An error should not have been thrown");
       }
     });
 
-    it("should throw an error if the value is an invalid string", async () => {
+    it("should not throw an error if the value is an invalid string", async () => {
       try {
         await createPersonName(" \n\t  ");
-        assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: shipFrom.name does not match any of the allowed types");
+        assert.fail("An error should have not been thrown");
       }
     });
 

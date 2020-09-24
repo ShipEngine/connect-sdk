@@ -62,6 +62,34 @@ describe("rateShipment", () => {
     }]);
   });
 
+  it("allows the delivery service to be an empty string", async () => {
+    let app = new CarrierApp(pojo.carrierApp({
+      rateShipment: () => [{
+        deliveryService: "",
+        charges: [{
+          type: "shipping",
+          amount: {
+            value: 123.456,
+            currency: "CAD",
+          },
+        }],
+        deliveryConfirmation: undefined,
+        packages: [{
+          packaging: {
+            id: "44444444-4444-4444-4444-444444444444",
+          }
+        }]
+      }]
+    }));
+
+    try {
+      await app.rateShipment(pojo.transaction(), pojo.rateCriteria({ deliveryService: "" }));
+    } catch (error) {
+      console.log(error);
+      assert.fail("It should not throw an error.")
+    }
+  });
+
   it("should return a rate when a delivery confirmation type is used", async () => {
 
     const appDef = pojo.carrierApp({
@@ -420,7 +448,7 @@ describe("rateShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal("Error in the rateShipment method. Invalid rate: [0].deliveryService is required, [0].deliveryDateTime must be a valid date/time, [0].isNegotiatedRate must be a boolean, [0].charges must contain at least 1 items, [0].notes must be an array, [0].deliveryConfirmation.id must be a valid GUID");
+        expect(error.message).to.equal("Error in the rateShipment method. Invalid rate: [0].deliveryDateTime must be a valid date/time, [0].isNegotiatedRate must be a boolean, [0].charges must contain at least 1 items, [0].notes must be an array, [0].deliveryConfirmation.id must be a valid GUID");
       }
     });
 

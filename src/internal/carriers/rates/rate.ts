@@ -10,8 +10,8 @@ export class Rate {
     schema: Joi.object({
       deliveryService: Joi.alternatives(
         DefinitionIdentifier[_internal].schema.unknown(true),
-        Joi.string()
-      ).required(),
+        Joi.string().allow("").optional()
+      ).optional(),
       shipDateTime: DateTimeZone[_internal].schema,
       deliveryDateTime: DateTimeZone[_internal].schema,
       isNegotiatedRate: Joi.boolean(),
@@ -26,7 +26,7 @@ export class Rate {
     }),
   };
 
-  public readonly deliveryService: DeliveryService;
+  public readonly deliveryService?: DeliveryService;
   public readonly shipDateTime?: DateTimeZone;
   public readonly deliveryDateTime?: DateTimeZone;
   public readonly isNegotiatedRate: boolean;
@@ -42,7 +42,10 @@ export class Rate {
   }
 
   public constructor(pojo: RatePOJO, app: App) {
-    this.deliveryService = app[_internal].references.lookup(pojo.deliveryService, DeliveryService);
+    if (pojo.deliveryService) {
+      this.deliveryService = app[_internal].references.lookup(pojo.deliveryService, DeliveryService);
+    }
+
     this.shipDateTime = pojo.shipDateTime ? new DateTimeZone(pojo.shipDateTime) : undefined;
     this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;
     this.isNegotiatedRate = pojo.isNegotiatedRate || false;

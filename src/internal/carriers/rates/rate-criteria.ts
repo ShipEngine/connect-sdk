@@ -25,7 +25,7 @@ export class RateCriteria implements IRateCriteria {
     schema: Joi.object({
       deliveryService: Joi.alternatives(
         DefinitionIdentifier[_internal].schema.unknown(true),
-        Joi.string().allow("")
+        Joi.string().allow("").optional()
       ).optional(),
       fulfillmentService: Joi.string().enum(FulfillmentService),
       shipDateTime: DateTimeZone[_internal].schema.required(),
@@ -65,6 +65,7 @@ export class RateCriteria implements IRateCriteria {
     if (pojo.deliveryService) {
       this.deliveryService = app[_internal].references.lookup(pojo.deliveryService, DeliveryService);
     }
+
     this.fulfillmentService = pojo.fulfillmentService;
     this.shipDateTime = new DateTimeZone(pojo.shipDateTime);
     this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;

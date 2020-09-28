@@ -1,4 +1,4 @@
-import { PaymentMethod, SalesOrder as SalesOrderPOJO, SalesOrderStatus } from "../../public";
+import { PaymentMethod, PaymentStatus, SalesOrder as SalesOrderPOJO, SalesOrderStatus } from "../../public";
 import { AddressWithContactInfo, calculateTotalCharges, Charge, DateTimeZone, hideAndFreeze, Joi, MonetaryValue, Note, _internal } from "../common";
 import { Buyer } from "./buyer";
 import { SalesOrderIdentifier, SalesOrderIdentifierBase } from "./sales-order-identifier";
@@ -12,6 +12,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
       createdDateTime: DateTimeZone[_internal].schema.required(),
       status: Joi.string().enum(SalesOrderStatus).required(),
       paymentMethod: Joi.string().enum(PaymentMethod),
+      paymentStatus: Joi.string().enum(PaymentStatus),
       orderURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
       buyer: Buyer[_internal].schema.required(),
       shippingPreferences: ShippingPreferences[_internal].schema,
@@ -31,6 +32,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
   public readonly createdDateTime: DateTimeZone;
   public readonly status: SalesOrderStatus;
   public readonly paymentMethod?: PaymentMethod;
+  public readonly paymentStatus?: PaymentStatus;
   public readonly orderURL?: URL;
   public readonly buyer: Buyer;
 
@@ -53,6 +55,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
     this.createdDateTime = new DateTimeZone(pojo.createdDateTime);
     this.status = pojo.status;
     this.paymentMethod = pojo.paymentMethod;
+    this.paymentStatus = pojo.paymentStatus;
     this.orderURL = pojo.orderURL ? new URL(pojo.orderURL as string) : undefined;
     this.buyer = new Buyer(pojo.buyer);
     

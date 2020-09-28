@@ -14,10 +14,11 @@ export enum SalesOrderStatus {
  */
 export enum PaymentStatus {
   AwaitingPayment = "awaiting_payment",
-  InProcess = "in_process",
+  PaymentCancelled = "payment_cancelled",
+  PaymentFailed = "payment_failed",
+  PaymentInProcess = "payment_in_process",
   Paid = "paid",
-  Failed = "failed",
-  Cancelled = "cancelled",
+  Other = "other"
 }
 
 /**

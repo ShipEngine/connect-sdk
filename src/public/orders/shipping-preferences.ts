@@ -1,4 +1,4 @@
-import type { DeliveryConfirmationType, MonetaryValuePOJO } from "../common";
+import type { DateTimeZonePOJO, DeliveryConfirmationType, MonetaryValuePOJO } from "../common";
 
 
 /**
@@ -24,4 +24,14 @@ export interface ShippingPreferences {
    * Requests that the shipment be insured for the specified value
    */
   insuredValue?: MonetaryValuePOJO;
+
+  /**
+   * The requested shipping service to be used.
+   */
+  requestedShippingService?: string;
+
+  /**
+   * The requested date for the sales order to be delivered by.
+   */
+  deliveryByDate?: DateTimeZonePOJO | Date | string;
 }

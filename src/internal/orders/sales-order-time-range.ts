@@ -1,5 +1,5 @@
 import { SalesOrderPaging as SalesOrderPagingPOJO, SalesOrderTimeRange as ISalesOrderTimeRange, TimeRangePOJO } from "../../public";
-import { hideAndFreeze, Joi, TimeRange, TimeRangeBase, _internal } from "../common";
+import { hideAndFreeze, TimeRange, TimeRangeBase, _internal } from "../common";
 import { SalesOrderPaging } from "./sales-order-paging";
 
 

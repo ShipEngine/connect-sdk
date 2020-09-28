@@ -33,5 +33,5 @@ export interface ShippingPreferences {
   /**
    * The requested date for the sales order to be delivered by.
    */
-  deliveryByDate?: DateTimeZonePOJO | Date | string;
+  deliverByDate?: DateTimeZonePOJO | Date | string;
 }

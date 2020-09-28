@@ -17,7 +17,7 @@ export class ShippingPreferences {
   public readonly saturdayDelivery: boolean;
   public readonly requestedShippingService: string;
   public readonly insuredValue?: MonetaryValue;
-  public readonly deliveryByDate?: DateTimeZone;
+  public readonly deliverByDate?: DateTimeZone;
 
   public constructor(pojo: ShippingPreferencesPOJO) {
     this.deliveryConfirmationType = pojo.deliveryConfirmationType;
@@ -25,7 +25,7 @@ export class ShippingPreferences {
     this.saturdayDelivery = pojo.saturdayDelivery || false;
     this.insuredValue = pojo.insuredValue && new MonetaryValue(pojo.insuredValue);
     this.requestedShippingService = pojo.requestedShippingService || "";
-    this.deliveryByDate = pojo.deliveryByDate ? new DateTimeZone(pojo.deliveryByDate) : undefined;
+    this.deliverByDate = pojo.deliverByDate ? new DateTimeZone(pojo.deliverByDate) : undefined;
   
     // Make this object immutable
     hideAndFreeze(this);

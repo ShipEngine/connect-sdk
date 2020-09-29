@@ -65,13 +65,6 @@ export interface DeliveryServiceDefinition extends Definition {
   supportsReturns?: boolean;
 
   /**
-   * Indicates whether the carrier provides a sandbox/development API for this delivery service.
-   * A sandbox should mimic real functionality as much as possible but MUST NOT incur any actual
-   * costs or affect production data.
-   */
-  hasSandbox?: boolean;
-
-  /**
    * The label formats that are offered for this service
    */
   labelFormats?: DocumentFormat[];
@@ -167,13 +160,6 @@ export interface DeliveryService extends DeliveryServiceIdentifier {
    * Indicates what type of manifests the carrier supports
    */
   manifestType?: ManifestType;
-
-  /**
-   * Indicates whether the carrier provides a sandbox/development API for this delivery service.
-   * A sandbox should mimic real functionality as much as possible but MUST NOT incur any actual
-   * costs or affect production data.
-   */
-  readonly hasSandbox: boolean;
 
   /**
    * The label formats that are offered for this service

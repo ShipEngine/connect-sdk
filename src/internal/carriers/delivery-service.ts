@@ -29,7 +29,6 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
       isTrackable: Joi.boolean(),
       manifestType: Joi.string().enum(ManifestType),
       supportsReturns: Joi.boolean(),
-      hasSandbox: Joi.boolean(),
       labelFormats: Joi.array().items(Joi.string().enum(DocumentFormat)),
       labelSizes: Joi.array().items(Joi.string().enum(DocumentSize)),
       originCountries: Joi.array().min(1).items(Joi.string().enum(Country)).required(),
@@ -55,7 +54,6 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
   public readonly isTrackable: boolean;
   public readonly manifestType?: ManifestType;
   public readonly supportsReturns: boolean;
-  public readonly hasSandbox: boolean;
   public readonly labelFormats: readonly DocumentFormat[];
   public readonly labelSizes: readonly DocumentSize[];
   public readonly originCountries: readonly Country[];
@@ -91,7 +89,6 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
     this.manifestType = pojo.manifestType;
 
     this.supportsReturns = pojo.supportsReturns || false;
-    this.hasSandbox = pojo.hasSandbox || false;
     this.labelFormats = pojo.labelFormats || [];
     this.labelSizes = pojo.labelSizes || [];
     this.originCountries = pojo.originCountries;

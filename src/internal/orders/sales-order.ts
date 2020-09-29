@@ -32,7 +32,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
   public readonly createdDateTime: DateTimeZone;
   public readonly status: SalesOrderStatus;
   public readonly paymentMethod?: PaymentMethod;
-  public readonly paymentStatus?: PaymentStatus;
+  public readonly paymentStatus: PaymentStatus;
   public readonly orderURL?: URL;
   public readonly buyer: Buyer;
 
@@ -55,7 +55,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
     this.createdDateTime = new DateTimeZone(pojo.createdDateTime);
     this.status = pojo.status;
     this.paymentMethod = pojo.paymentMethod;
-    this.paymentStatus = pojo.paymentStatus;
+    this.paymentStatus = pojo.paymentStatus || PaymentStatus.AwaitingPayment;
     this.orderURL = pojo.orderURL ? new URL(pojo.orderURL as string) : undefined;
     this.buyer = new Buyer(pojo.buyer);
     

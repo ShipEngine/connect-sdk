@@ -13,7 +13,6 @@ describe("Transaction", () => {
 
     expect(transaction).to.deep.equal({
       id: "12345678-1234-1234-1234-123456789012",
-      useSandbox: false,
       session: {},
     });
   });
@@ -21,7 +20,6 @@ describe("Transaction", () => {
   it("should create a Transaction with all possible fields", () => {
     let transaction = new Transaction({
       id: "12345678-1234-1234-1234-123456789012",
-      useSandbox: false,
       session: {
         foo: "bar",
         biz: {
@@ -32,7 +30,6 @@ describe("Transaction", () => {
 
     expect(transaction).to.deep.equal({
       id: "12345678-1234-1234-1234-123456789012",
-      useSandbox: false,
       session: {
         foo: "bar",
         biz: {
@@ -58,7 +55,6 @@ describe("Transaction", () => {
 
     expect(transactionPOJO).to.deep.equal({
       id: "12345678-1234-1234-1234-123456789012",
-      useSandbox: false,
       session: {
         foo: "bar",
         biz: {
@@ -160,19 +156,6 @@ describe("Transaction", () => {
       }
     });
 
-    it("should throw an error if called with an invalid useSandbox flag", async () => {
-      try {
-        await createTransaction({
-          id: "12345678-1234-1234-1234-123456789012",
-          useSandbox: "no"
-        });
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal("Invalid transaction: useSandbox must be a boolean Invalid transaction: useSandbox must be a boolean");
-      }
-    });
-
     it("should throw an error if called with an invalid session object", async () => {
       try {
         await createTransaction({
@@ -192,7 +175,6 @@ describe("Transaction", () => {
       });
 
       expect(() => transaction.id = "abc").to.throw(TypeError, "Cannot assign to read only property");
-      expect(() => transaction.useSandbox = true).to.throw(TypeError, "Cannot assign to read only property");
       expect(() => transaction.newProperty = "hello").to.throw(TypeError, "Cannot add property newProperty, object is not extensible");
     });
 

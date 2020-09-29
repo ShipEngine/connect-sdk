@@ -12,7 +12,6 @@ export class PickupService extends DefinitionIdentifier implements IPickupServic
     schema: DefinitionIdentifier[_internal].schema.keys({
       name: Joi.string().trim().singleLine().min(1).max(100).required(),
       description: Joi.string().trim().singleLine().allow("").max(1000),
-      hasSandbox: Joi.boolean()
     }),
   };
 
@@ -22,14 +21,12 @@ export class PickupService extends DefinitionIdentifier implements IPickupServic
 
   public readonly name: string;
   public readonly description: string;
-  public readonly hasSandbox: boolean;
 
   public constructor(pojo: PickupServicePOJO, app: App) {
     super(pojo);
 
     this.name = pojo.name;
     this.description = pojo.description || "";
-    this.hasSandbox = pojo.hasSandbox || false;
 
     this[_private] = {
       app

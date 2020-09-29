@@ -7,7 +7,6 @@ const _private = Symbol("private fields");
 
 export interface TransactionPOJO<T extends object = object> {
   id: UUID;
-  useSandbox?: boolean;
   session?: T;
 }
 
@@ -17,7 +16,6 @@ export class Transaction<T extends object = object> implements ITransaction {
     label: "transaction",
     schema: Joi.object({
       id: Joi.string().uuid().required(),
-      useSandbox: Joi.boolean(),
       session: Joi.object(),
     }),
   };
@@ -27,7 +25,6 @@ export class Transaction<T extends object = object> implements ITransaction {
   };
 
   public readonly id: UUID;
-  public readonly useSandbox: boolean;
 
   public get session(): T {
     return this[_private].session;
@@ -56,7 +53,6 @@ export class Transaction<T extends object = object> implements ITransaction {
 
   public constructor(pojo: TransactionPOJO<T>) {
     this.id = pojo.id;
-    this.useSandbox = pojo.useSandbox || false;
 
     this[_private] = {
       session: pojo.session || {} as unknown as T,

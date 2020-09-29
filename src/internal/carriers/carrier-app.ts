@@ -101,13 +101,6 @@ export class CarrierApp extends ConnectionApp {
     return this.deliveryServices.some((svc) => svc.isTrackable);
   }
 
-  public get hasSandbox(): boolean {
-    const hasSandbox = (svc: { hasSandbox: boolean }) => svc.hasSandbox;
-    let found = this.deliveryServices.some(hasSandbox);
-    found || (found = this.pickupServices.some(hasSandbox));
-    return found;
-  }
-
   public get labelFormats(): readonly DocumentFormat[] {
     const labelFormats = new Set<DocumentFormat>();
     for (const service of this.deliveryServices) {

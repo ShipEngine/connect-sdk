@@ -608,6 +608,42 @@ describe("CarrierApp", () => {
     });
 
 
+    it("should throw an error if the icon is path is not given", () => {
+      expect(() => new CarrierApp({
+        id: "12345678-1234-1234-1234-123456789012",
+        name: "My carrier",
+        websiteURL: "https://my-carrier.com/",
+        logo: path.resolve("logo.svg"),
+        icon: undefined,
+        deliveryServices: [pojo.deliveryService()],
+        manifest: {
+          name: "@company/carrier",
+          version: "1.0.0"
+        }
+      })
+      ).to.throw(
+        "Invalid ShipEngine Connect carrier app: icon is required, connectionForm is required"
+      );
+    });
+
+    it("should throw an error if the logo is path is not given", () => {
+      expect(() => new CarrierApp({
+        id: "12345678-1234-1234-1234-123456789012",
+        name: "My carrier",
+        websiteURL: "https://my-carrier.com/",
+        icon: path.resolve("logo.svg"),
+        logo: undefined,
+        deliveryServices: [pojo.deliveryService()],
+        manifest: {
+          name: "@company/carrier",
+          version: "1.0.0"
+        }
+      })
+      ).to.throw(
+        "Invalid ShipEngine Connect carrier app: logo is required, connectionForm is required"
+      );
+    });
+
     it("should throw an error if a delivery service code is not specified", () => {
       const carrierAppObj = {
         id: "12345678-1234-1234-1234-123456789012",

@@ -614,6 +614,7 @@ describe("CarrierApp", () => {
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
         logo: path.resolve("logo.svg"),
+        icon: undefined,
         deliveryServices: [pojo.deliveryService()],
         manifest: {
           name: "@company/carrier",
@@ -625,12 +626,13 @@ describe("CarrierApp", () => {
       );
     });
 
-    it("should throw an error if the icon is path is not given", () => {
+    it("should throw an error if the logo is path is not given", () => {
       expect(() => new CarrierApp({
         id: "12345678-1234-1234-1234-123456789012",
         name: "My carrier",
         websiteURL: "https://my-carrier.com/",
         icon: path.resolve("logo.svg"),
+        logo: undefined,
         deliveryServices: [pojo.deliveryService()],
         manifest: {
           name: "@company/carrier",

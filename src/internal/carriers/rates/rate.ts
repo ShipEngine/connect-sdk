@@ -26,7 +26,7 @@ export class Rate {
     }),
   };
 
-  public readonly deliveryService?: DeliveryService;
+  public readonly deliveryService: DeliveryService;
   public readonly shipDateTime?: DateTimeZone;
   public readonly deliveryDateTime?: DateTimeZone;
   public readonly isNegotiatedRate: boolean;
@@ -42,9 +42,7 @@ export class Rate {
   }
 
   public constructor(pojo: RatePOJO, app: App) {
-    if (pojo.deliveryService) {
-      this.deliveryService = app[_internal].references.lookup(pojo.deliveryService, DeliveryService);
-    }
+    this.deliveryService = app[_internal].references.lookup(pojo.deliveryService, DeliveryService);
 
     this.shipDateTime = pojo.shipDateTime ? new DateTimeZone(pojo.shipDateTime) : undefined;
     this.deliveryDateTime = pojo.deliveryDateTime ? new DateTimeZone(pojo.deliveryDateTime) : undefined;

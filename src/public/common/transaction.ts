@@ -1,5 +1,16 @@
 import type { UUID } from "./types";
 
+export interface Session<T> {
+  [key: string]: unknown;
+
+  auth: {
+    username: string;
+    password: string;
+    accessToken: string;
+    apiKey: string;
+  };
+}
+
 /**
  * The ShpEngine Connect passes this object to every method call. It provides information about the
  * transaction being performed, including authentication, metadata, etc.
@@ -15,5 +26,5 @@ export interface Transaction<T extends object = object> {
    * Arbitrary session data. Must be JSON serializable. Any method may update the session data,
    * such as renewing a session token or updating a timestamp.
    */
-  session: T;
+  session: Session<T>;
 }

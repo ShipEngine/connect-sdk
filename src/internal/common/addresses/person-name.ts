@@ -6,7 +6,7 @@ export class PersonName implements IPersonName {
   public static readonly [_internal] = {
     label: "name",
     schema: Joi.alternatives(
-      Joi.string().allow("").max(100).optional(),
+      Joi.string().allow("").max(100),
       Joi.object({
         title: Joi.string().trim().singleLine().allow("").max(100),
         given: Joi.string().trim().singleLine().min(1).max(100).required(),

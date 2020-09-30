@@ -10,16 +10,14 @@ export class AddressWithContactInfo extends AddressBase implements IAddressWithC
     schema: Address[_internal].schema.concat(ContactInfo[_internal].schema),
   };
 
-  public readonly name?: PersonName;
-  public readonly email?: string;
-  public readonly phoneNumber?: string;
+  public readonly name: PersonName;
+  public readonly email: string;
+  public readonly phoneNumber: string;
 
   public constructor(pojo: AddressWithContactInfoPOJO) {
     super(pojo);
 
-    if (pojo.name) {
-      this.name = new PersonName(pojo.name);
-    }
+    this.name = new PersonName(pojo.name);
     this.email = pojo.email || "";
     this.phoneNumber = pojo.phoneNumber || "";
 

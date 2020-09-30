@@ -4,7 +4,7 @@ import type { PersonName, PersonNamePOJO } from "./person-name";
  * A person's contact information
  */
 export interface ContactInfoPOJO {
-  name?: string | PersonNamePOJO;
+  name: string | PersonNamePOJO;
   email?: string;
   phoneNumber?: string;
 }
@@ -13,7 +13,7 @@ export interface ContactInfoPOJO {
  * A person's contact information
  */
 export interface ContactInfo {
-  readonly name?: PersonName;
-  readonly email?: string;
-  readonly phoneNumber?: string;
+  readonly name: PersonName;
+  readonly email: string;
+  readonly phoneNumber: string;
 }

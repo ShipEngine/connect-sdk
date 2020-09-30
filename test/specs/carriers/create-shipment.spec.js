@@ -491,5 +491,36 @@ describe("createShipment", () => {
         expect(error.message).to.equal("Error in the createShipment method. Label data cannot be empty");
       }
     });
+
+    it("should throw an error if the package weight is set to 0", async () => {
+      let app = new CarrierApp(pojo.carrierApp({
+        createShipment: () => ({
+          charges: [{
+            type: "shipping",
+            amount: {
+              value: 123.456,
+              currency: "CAD",
+            },
+          }],
+          label: {
+            type: "label",
+            size: "letter",
+            format: "pdf",
+            data: Buffer.from("data"),
+          }
+        })
+      }));
+
+      const newShipment = pojo.newShipment();
+      newShipment.packages[0].weight = { value: 0, unit: "lb"};
+      
+      try {
+        await app.createShipment(pojo.transaction(), newShipment);
+        assert.fail("An error should have been thrown");
+      }
+      catch (error) {
+        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: packages[0].weight.value must be greater than 0");
+      }
+    });
   });
 });

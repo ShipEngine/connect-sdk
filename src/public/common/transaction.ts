@@ -5,33 +5,28 @@ import type { UUID } from "./types";
  * Must be JSON serializable. Any method may update the session data,
  * such as renewing a session token or updating a timestamp.
  */
-export interface Session<T> {
-  [key: string]: unknown;
-
-  /**
-   * Auth data set by a data driven auth processes.
-   */
-  readonly auth?: {
+export type OAuthSession<T extends object = object> = T & {
+  readonly auth: {
     /**
      * Populated by the data driven auth processes for basic auth integrations.
      */
-    readonly username?: string;
+    readonly username: string;
 
     /**
      * Populated by the data driven auth processes for basic auth integrations.
      */
-    readonly password?: string;
+    readonly password: string;
 
     /**
      * Populated by the data driven auth processes for OAuth integrations.
      */
-    readonly accessToken?: string;
+    readonly accessToken: string;
 
     /**
      * Populated by the data driven auth processes for API Key integrations.
      */
-    readonly apiKey?: string;
-  };
+    readonly apiKey: string;
+  }
 }
 
 /**
@@ -50,5 +45,5 @@ export interface Transaction<T extends object = object> {
    * Must be JSON serializable. Any method may update the session data,
    * such as renewing a session token or updating a timestamp.
    */
-  session: Session<T>;
+  session: T | OAuthSession;
 }

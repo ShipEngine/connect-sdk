@@ -1,7 +1,8 @@
 import type { UUID } from "./types";
 
 /**
- * Arbitrary session data that may include Auth data when set by a data driven auth processes.
+ * Session data that includes auth data set by a data driven auth processes.
+ * May include arbitrary data set by the developer.
  * Must be JSON serializable. Any method may update the session data,
  * such as renewing a session token or updating a timestamp.
  */

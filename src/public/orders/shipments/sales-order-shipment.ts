@@ -19,11 +19,15 @@ export interface SalesOrderShipment extends ShipmentIdentifier {
   readonly salesOrder: SalesOrderIdentifier;
 
   /**
-   * If the shipment is being fulfilled using a well-known third-party carrier, such as UPS, FedEx, DHL, etc.
-   * then this field specifies the carrier service.
+   * The code for the carrier that is being used to fulfill the sales order
    */
-  readonly fulfillmentService?: string;
+  readonly carrierCode?: string;
 
+  /**
+   * The code for the carrier service that is being used to fulfill the sales order.
+   */
+  readonly carrierServiceCode?: string;
+  
   /**
    * The sender's contact info and address
    */

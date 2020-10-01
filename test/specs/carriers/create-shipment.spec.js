@@ -4,7 +4,7 @@ const { CarrierApp } = require("../../../lib/internal");
 const pojo = require("../../utils/pojo");
 const { expect, assert } = require("chai");
 
-describe.only("createShipment", () => {
+describe("createShipment", () => {
 
   it("should return a shipment from minimal return values", async () => {
     let app = new CarrierApp(pojo.carrierApp({

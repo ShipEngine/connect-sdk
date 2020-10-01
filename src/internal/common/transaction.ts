@@ -4,12 +4,19 @@ import { Joi, validate } from "./validation";
 
 const _private = Symbol("private fields");
 
+export type SessionPOJO<T extends object = object> = T & {
+  readonly auth?: {
+    readonly username?: string;
+    readonly password?: string;
+    readonly accessToken?: string;
+    readonly apiKey?: string;
+  }
+}
 
 export interface TransactionPOJO<T extends object = object> {
   id: UUID;
-  session?: T;
+  session?: SessionPOJO<T>;
 }
-
 
 export class Transaction<T extends object = object> implements ITransaction {
   public static readonly [_internal] = {
@@ -21,18 +28,18 @@ export class Transaction<T extends object = object> implements ITransaction {
   };
 
   private readonly [_private]: {
-    session: T;
+    session: SessionPOJO<T>;
   };
 
   public readonly id: UUID;
 
-  public get session(): T {
+  public get session(): SessionPOJO<T> {
     return this[_private].session;
   }
 
-  public set session(value: T) {
+  public set session(value: SessionPOJO<T>) {
     if (value === undefined) {
-      value = {} as unknown as T;
+      value = {} as unknown as SessionPOJO<T>;
     }
 
     validate(value, "session data", Joi.object());

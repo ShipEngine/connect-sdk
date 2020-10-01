@@ -9,8 +9,8 @@ export abstract class AddressBase extends PartialAddressBase implements IAddress
   public toString(): string {
     const address = [];
     this.company && address.push(this.company);
-    this.addressLines && address.push(...this.addressLines);
-    this.cityLocality && this.stateProvince && address.push(`${this.cityLocality}, ${this.stateProvince} ${this.postalCode}`);
+    address.push(...this.addressLines);
+    address.push(`${this.cityLocality}, ${this.stateProvince} ${this.postalCode}`);
     address.push(this.country);
     return address.join("\n");
   }
@@ -21,9 +21,9 @@ export class Address extends AddressBase {
   public static readonly [_internal] = {
     label: "address",
     schema: PartialAddress[_internal].schema.keys({
-      addressLines: Joi.array().items(Joi.string().max(100).allow("").optional()).optional(),
-      cityLocality: Joi.string().max(100).allow("").optional(),
-      stateProvince: Joi.string().max(100).allow("").optional(),
+      addressLines: Joi.array().items(Joi.string().max(100).allow("")).required(),
+      cityLocality: Joi.string().max(100).allow("").required(),
+      stateProvince: Joi.string().max(100).allow("").required(),
       postalCode: Joi.string().max(100).required(),
       country: Joi.string().enum(Country).required()
     }),

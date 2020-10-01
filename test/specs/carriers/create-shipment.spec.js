@@ -303,6 +303,65 @@ describe("createShipment", () => {
     });
   });
 
+  it("should accept a custom package that is not defined in the delivery service", async () => {
+    
+    let app = new CarrierApp(pojo.carrierApp({
+      createShipment: () => ({
+        charges: [{
+          type: "shipping",
+          amount: {
+            value: 123.456,
+            currency: "CAD",
+          },
+        }],
+        label: {
+          type: "label",
+          size: "letter",
+          format: "pdf",
+          data: Buffer.from("data"),
+        }
+      })
+    }));
+
+    const newShipment = pojo.newShipment();
+    newShipment.packages = [{
+      packaging: "A custom package",
+      label: {
+        size: "A4",
+        format: "pdf"
+      }
+    }];
+
+    let confirmation = await app.createShipment(pojo.transaction(), newShipment);
+
+    expect(confirmation).to.deep.equal({
+      trackingNumber: "",
+      identifiers: {},
+      deliveryDateTime: undefined,
+      charges: [{
+        name: "",
+        type: "shipping",
+        amount: {
+          value: 123.46,
+          currency: "CAD",
+        }
+      }],
+      label: {
+        name: "Label",
+        type: "label",
+        size: "letter",
+        format: "pdf",
+        data: Buffer.from("data"),
+        referenceFields: [],
+      },
+      form: undefined,
+      totalAmount: {
+        value: 123.46,
+        currency: "CAD",
+      },
+      packages: []
+    });
+  });
 
   it("should accept decimals as a package weight value", async () => {
     let app = new CarrierApp(pojo.carrierApp({

@@ -62,8 +62,7 @@ export interface Transaction<T extends object = object> {
   readonly id: UUID;
 
   /**
-   * Arbitrary session data that may include Auth data when set by a data driven auth processes.
-   * Must be JSON serializable. Any method may update the session data,
+   * Arbitrary session data. Must be JSON serializable. Any method may update the session data,
    * such as renewing a session token or updating a timestamp.
    */
   session: T;

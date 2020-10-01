@@ -1,6 +1,7 @@
 import { PackageTrackingInfo as PackageTrackingInfoPOJO } from "../../../public";
 import { App, DefinitionIdentifier, Dimensions, hideAndFreeze, Joi, Weight, _internal } from "../../common";
 import { Packaging } from "../packaging";
+import { v4 } from "uuid";
 
 export class PackageTrackingInfo {
   public static readonly [_internal] = {
@@ -25,8 +26,15 @@ export class PackageTrackingInfo {
     try {
       pkg = app[_internal].references.lookup(pojo.packaging, Packaging);
     } catch {
-      if (typeof pojo.packaging === 'string') {
-        pkg = pojo.packaging;
+      if (typeof pojo.packaging === "string") {
+        pkg = new Packaging(
+          {
+            id: v4(),
+            name: pojo.packaging,
+            description: pojo.packaging,
+            code: "custom"
+          }
+        );
       }
     }
 

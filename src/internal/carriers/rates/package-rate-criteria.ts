@@ -2,7 +2,7 @@ import { DimensionsPOJO, MonetaryValuePOJO, PackageRateCriteria as IPackageRateC
 import { App, DefinitionIdentifier, Dimensions, hideAndFreeze, Joi, MonetaryValue, Weight, _internal } from "../../common";
 import { Packaging } from "../packaging";
 import { Customs } from "../customs/customs";
-
+import { v4 } from "uuid";
 
 export interface PackageRateCriteriaPOJO {
   packaging?: PackagingIdentifierPOJO | string;
@@ -47,8 +47,15 @@ export class PackageRateCriteria implements IPackageRateCriteria {
     try {
       pkg = app[_internal].references.lookup(pojo.packaging, Packaging);
     } catch {
-      if (typeof pojo.packaging === 'string') {
-        pkg = pojo.packaging;
+      if (typeof pojo.packaging === "string") {
+        pkg = new Packaging(
+          {
+            id: v4(),
+            name: pojo.packaging,
+            description: pojo.packaging,
+            code: "custom"
+          }
+        );
       }
     }
 

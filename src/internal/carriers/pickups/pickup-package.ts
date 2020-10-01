@@ -2,6 +2,7 @@ import { DimensionsPOJO, PackageIdentifierPOJO, PackagingIdentifierPOJO, PickupP
 import { App, DefinitionIdentifier, Dimensions, hideAndFreeze, Joi, Weight, _internal } from "../../common";
 import { PackageIdentifier, PackageIdentifierBase } from "../packages/package-identifier";
 import { Packaging } from "../packaging";
+import { v4 } from "uuid";
 
 export interface PickupPackagePOJO extends PackageIdentifierPOJO {
   packaging: PackagingIdentifierPOJO | string;
@@ -38,8 +39,15 @@ export class PickupPackage extends PackageIdentifierBase implements IPickupPacka
     try {
       pkg = app[_internal].references.lookup(pojo.packaging, Packaging);
     } catch {
-      if (typeof pojo.packaging === 'string') {
-        pkg = pojo.packaging;
+      if (typeof pojo.packaging === "string") {
+        pkg = new Packaging(
+          {
+            id: v4(),
+            name: pojo.packaging,
+            description: pojo.packaging,
+            code: "custom"
+          }
+        );
       }
     }
 

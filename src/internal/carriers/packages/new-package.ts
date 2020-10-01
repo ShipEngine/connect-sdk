@@ -61,8 +61,7 @@ export class NewPackage implements INewPackage {
             name: pojo.packaging,
             description: pojo.packaging,
             code: "custom"
-          },
-          app
+          }
         );
       }
     }

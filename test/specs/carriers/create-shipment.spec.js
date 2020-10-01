@@ -304,7 +304,7 @@ describe("createShipment", () => {
   });
 
   it("should accept a custom package that is not defined in the delivery service", async () => {
-    
+
     let app = new CarrierApp(pojo.carrierApp({
       createShipment: () => ({
         charges: [{
@@ -361,6 +361,39 @@ describe("createShipment", () => {
       },
       packages: []
     });
+  });
+
+  it("should not throw an error if given a package that doesn't exist ", async () => {
+    let app = new CarrierApp(pojo.carrierApp({
+      createShipment: () => ({
+        charges: [{
+          type: "shipping",
+          amount: {
+            value: 123.456,
+            currency: "CAD",
+          },
+        }],
+        label: {
+          type: "label",
+          size: "letter",
+          format: "pdf",
+          data: Buffer.from("data"),
+        },
+        packages: [{}]
+      })
+    }));
+
+
+    const newShipment = pojo.newShipment();
+    newShipment.packages[0].packaging = "test";
+
+    try {
+      await app.createShipment(pojo.transaction(), newShipment);
+      expect(true).to.equal(true);
+    }
+    catch(error) {
+      expect(true).to.equal(false);
+    }
   });
 
   it("should accept decimals as a package weight value", async () => {

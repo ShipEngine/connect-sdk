@@ -153,6 +153,29 @@ describe("trackShipment", () => {
     });
   });
 
+  it("should allow an unknown package to be returned", async () => {
+    let app = new CarrierApp(pojo.carrierApp({
+      trackShipment: () => ({
+        trackingNumber: "1234-5678",
+        packages: [{
+          packaging: "test"
+        }],
+        events: [{
+          name: "Dummy Event",
+          dateTime: new Date("2005-05-05T05:05:05.005Z"),
+          status: "accepted"
+        }]
+      })
+    }));
+
+
+    let confirmation = await app.trackShipment(pojo.transaction(), pojo.trackingCriteria());
+
+    expect(confirmation.packages[0].packaging.code).to.equal("custom");
+    expect(confirmation.packages[0].packaging.name).to.equal("test");
+    expect(confirmation.packages[0].packaging.description).to.equal("test");
+  });
+
   describe("Failure tests", () => {
 
     it("should throw an error if called with no arguments", async () => {

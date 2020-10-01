@@ -153,6 +153,7 @@ export class CarrierApp extends ConnectionApp {
         packaging.set(parcel.id, parcel);
       }
     }
+
     return Object.freeze(Array.from(packaging.values()));
   }
 
@@ -201,7 +202,7 @@ export class CarrierApp extends ConnectionApp {
     hideAndFreeze(this);
 
     this[_internal].references.add(this);
-    this[_internal].references.finishedLoading();
+    // this[_internal].references.finishedLoading();
   }
 
   // #region  Methods

@@ -4,6 +4,7 @@ import { Customs } from "../customs/customs";
 import { NewLabel, NewLabelPOJO } from "../documents/new-label";
 import { Packaging } from "../packaging";
 import { PackageItem, PackageItemPOJO } from "./package-item";
+import { v4 } from "uuid";
 
 export interface NewPackagePOJO {
   packaging: PackagingIdentifierPOJO | string;
@@ -53,8 +54,16 @@ export class NewPackage implements INewPackage {
     try {
       pkg = app[_internal].references.lookup(pojo.packaging, Packaging);
     } catch {
-      if (typeof pojo.packaging === 'string') {
-        pkg = pojo.packaging;
+      if (typeof pojo.packaging === "string") {
+        pkg = new Packaging(
+          {
+            id: v4(),
+            name: pojo.packaging,
+            description: pojo.packaging,
+            code: "custom"
+          },
+          app
+        );
       }
     }
 

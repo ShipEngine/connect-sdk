@@ -10,7 +10,7 @@ export interface SalesOrderShipmentPOJO extends ShipmentIdentifierPOJO {
   carrierCode?: string;
   carrierServiceCode?: string;
   shipFrom?: AddressWithContactInfoPOJO;
-  shipTo: AddressWithContactInfoPOJO;
+  shipTo?: AddressWithContactInfoPOJO;
   shipDateTime: DateTimeZonePOJO | Date | string;
   contents: readonly SalesOrderPackageItemPOJO[];
 }
@@ -25,7 +25,7 @@ export class SalesOrderShipment extends ShipmentIdentifierBase implements ISales
       carrierCode: Joi.string(),
       carrierServiceCode: Joi.string(),
       shipFrom: AddressWithContactInfo[_internal].schema,
-      shipTo: AddressWithContactInfo[_internal].schema.required(),
+      shipTo: AddressWithContactInfo[_internal].schema,
       shipDateTime: DateTimeZone[_internal].schema.required(),
       contents: Joi.array().min(1).items(SalesOrderPackageItem[_internal].schema).required(),
     }),
@@ -37,7 +37,7 @@ export class SalesOrderShipment extends ShipmentIdentifierBase implements ISales
   public readonly carrierServiceCode?: string;
 
   public readonly shipFrom?: AddressWithContactInfo;
-  public readonly shipTo: AddressWithContactInfo;
+  public readonly shipTo?: AddressWithContactInfo;
   public readonly shipDateTime: DateTimeZone;
   public readonly contents: readonly SalesOrderPackageItem[];
 
@@ -50,7 +50,7 @@ export class SalesOrderShipment extends ShipmentIdentifierBase implements ISales
     this.carrierCode = pojo.carrierCode;
     this.carrierServiceCode = pojo.carrierServiceCode;
     this.shipFrom = pojo.shipFrom && new AddressWithContactInfo(pojo.shipFrom);
-    this.shipTo = new AddressWithContactInfo(pojo.shipTo);
+    this.shipTo = pojo.shipTo && new AddressWithContactInfo(pojo.shipTo);
     this.shipDateTime = new DateTimeZone(pojo.shipDateTime);
     this.contents = (pojo.contents || []).map((item) => new SalesOrderPackageItem(item));
 

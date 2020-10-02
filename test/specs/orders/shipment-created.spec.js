@@ -62,7 +62,7 @@ describe("shipmentCreated", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal("Invalid input to the shipmentCreated method. Invalid shipment: trackingNumber must be a string, identifiers must be of type object, salesOrder is required, shipTo is required, shipDateTime is required, contents must contain at least 1 items");
+        expect(error.message).to.equal("Invalid input to the shipmentCreated method. Invalid shipment: trackingNumber must be a string, identifiers must be of type object, salesOrder is required, shipDateTime is required, contents must contain at least 1 items");
       }
     });
   });

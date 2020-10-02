@@ -36,7 +36,7 @@ export interface SalesOrderShipment extends ShipmentIdentifier {
   /**
    * The recipient's contact info and address
    */
-  readonly shipTo: AddressWithContactInfo;
+  readonly shipTo?: AddressWithContactInfo;
 
   /**
    * The date/time that the shipment was shipped or is expected to ship.

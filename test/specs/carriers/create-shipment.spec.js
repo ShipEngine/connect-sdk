@@ -458,6 +458,134 @@ describe("createShipment", () => {
     });
   });
 
+  it("should accept all values for the dimensions property", async () => {
+    let app = new CarrierApp(pojo.carrierApp({
+      createShipment: () => ({
+        charges: [{
+          type: "shipping",
+          amount: {
+            value: 123.456,
+            currency: "CAD",
+          },
+        }],
+        label: {
+          type: "label",
+          size: "letter",
+          format: "pdf",
+          data: Buffer.from("data"),
+        },
+        packages: [{}]
+      })
+    }));
+
+
+    const newShipment = pojo.newShipment();
+    newShipment.packages[0].dimensions = {
+      length: 1,
+      width: 1,
+      height: 1,
+      unit: "in"
+    };
+
+    let confirmation = await app.createShipment(pojo.transaction(), newShipment);
+
+    expect(confirmation).to.deep.equal({
+      trackingNumber: "",
+      identifiers: {},
+      deliveryDateTime: undefined,
+      charges: [{
+        name: "",
+        type: "shipping",
+        amount: {
+          value: 123.46,
+          currency: "CAD",
+        }
+      }],
+      totalAmount: {
+        value: 123.46,
+        currency: "CAD",
+      },
+      label: {
+        name: "Label",
+        type: "label",
+        size: "letter",
+        format: "pdf",
+        data: Buffer.from("data"),
+        referenceFields: [],
+      },
+      form: undefined,
+      packages: [{
+        trackingNumber: "",
+        identifiers: {},
+        metadata: {}
+      }],
+    });
+  });
+
+  it("should accept two values for the dimensions property", async () => {
+    let app = new CarrierApp(pojo.carrierApp({
+      createShipment: () => ({
+        charges: [{
+          type: "shipping",
+          amount: {
+            value: 123.456,
+            currency: "CAD",
+          },
+        }],
+        label: {
+          type: "label",
+          size: "letter",
+          format: "pdf",
+          data: Buffer.from("data"),
+        },
+        packages: [{}]
+      })
+    }));
+
+
+    const newShipment = pojo.newShipment();
+    newShipment.packages[0].dimensions = {
+      length: 1,
+      width: 1,
+      height: 0,
+      unit: "in"
+    };
+
+    let confirmation = await app.createShipment(pojo.transaction(), newShipment);
+
+    expect(confirmation).to.deep.equal({
+      trackingNumber: "",
+      identifiers: {},
+      deliveryDateTime: undefined,
+      charges: [{
+        name: "",
+        type: "shipping",
+        amount: {
+          value: 123.46,
+          currency: "CAD",
+        }
+      }],
+      totalAmount: {
+        value: 123.46,
+        currency: "CAD",
+      },
+      label: {
+        name: "Label",
+        type: "label",
+        size: "letter",
+        format: "pdf",
+        data: Buffer.from("data"),
+        referenceFields: [],
+      },
+      form: undefined,
+      packages: [{
+        trackingNumber: "",
+        identifiers: {},
+        metadata: {}
+      }],
+    });
+  });
+
   describe("Failure tests", () => {
     it("should throw an error if called with no arguments", async () => {
       let app = new CarrierApp(pojo.carrierApp({
@@ -581,6 +709,68 @@ describe("createShipment", () => {
       }
       catch (error) {
         expect(error.message).to.equal("Error in the createShipment method. Label data cannot be empty");
+      }
+    });
+
+    it("should throw an error if the package weight is set to 0", async () => {
+      let app = new CarrierApp(pojo.carrierApp({
+        createShipment: () => ({
+          charges: [{
+            type: "shipping",
+            amount: {
+              value: 123.456,
+              currency: "CAD",
+            },
+          }],
+          label: {
+            type: "label",
+            size: "letter",
+            format: "pdf",
+            data: Buffer.from("data"),
+          }
+        })
+      }));
+
+      const newShipment = pojo.newShipment();
+      newShipment.packages[0].weight = { value: 0, unit: "lb"};
+      
+      try {
+        await app.createShipment(pojo.transaction(), newShipment);
+        assert.fail("An error should have been thrown");
+      }
+      catch (error) {
+        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: packages[0].weight.value must be greater than 0");
+      }
+    });
+
+    it("should throw an error if the dimensions property doesn't have at least two properties set to greater than 0", async () => {
+      let app = new CarrierApp(pojo.carrierApp({
+        createShipment: () => ({
+          charges: [{
+            type: "shipping",
+            amount: {
+              value: 123.456,
+              currency: "CAD",
+            },
+          }],
+          label: {
+            type: "label",
+            size: "letter",
+            format: "pdf",
+            data: Buffer.from("data"),
+          }
+        })
+      }));
+
+      const newShipment = pojo.newShipment();
+      newShipment.packages[0].dimensions = { length: 0, width: 0, height: 1, unit: "in"};
+      
+      try {
+        await app.createShipment(pojo.transaction(), newShipment);
+        assert.fail("An error should have been thrown");
+      }
+      catch (error) {
+        expect(error.message).to.equal("Invalid input to the createShipment method. Dimensions property must have at least 2 of the 3 length, width, and height properties set.");
       }
     });
   });

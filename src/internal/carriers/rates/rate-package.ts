@@ -1,7 +1,7 @@
 import { RatePackage as RatePackagePOJO } from "../../../public";
 import { App, DefinitionIdentifier, hideAndFreeze, Joi, _internal } from "../../common";
 import { Packaging } from "../packaging";
-import { v4 } from "uuid";
+import { setPackaging } from "../utils";
 
 export class RatePackage {
   public static readonly [_internal] = {
@@ -17,22 +17,12 @@ export class RatePackage {
   public readonly packaging?: Packaging | string;
 
   public constructor(pojo: RatePackagePOJO, app: App) {
-    let pkg;
 
-    try {
-      pkg = app[_internal].references.lookup(pojo.packaging, Packaging);
-    } catch {
-      if (typeof pojo.packaging === "string") {
-        pkg = new Packaging(
-          {
-            id: v4(),
-            name: pojo.packaging,
-            description: pojo.packaging,
-            code: "custom"
-          }
-        );
-      }
+    let pkg;
+    if (pojo.packaging) {
+      pkg = setPackaging(pojo.packaging, app);
     }
+
 
     this.packaging = pkg;
 

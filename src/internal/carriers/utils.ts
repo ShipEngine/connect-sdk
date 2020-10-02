@@ -1,6 +1,7 @@
-import { AppError, ServiceArea } from "../../public";
-import { error, MonetaryValue, SystemErrorCode } from "../common";
-
+import { AppError, Definition, ServiceArea } from "../../public";
+import { App, error, MonetaryValue, SystemErrorCode, _internal } from "../common";
+import { Packaging } from "./packaging";
+import { v4 } from "uuid";
 
 /**
  * Returns the widest service area of the given values
@@ -59,4 +60,31 @@ export function calculateTotalInsuranceAmount(packages: ReadonlyArray<{ insuredV
 
     throw originalError;
   }
+}
+
+/**
+ * A `Packaging` object can be either a definition in the App or a custom one that the 
+ * user sends through the platform to the app, in that case we create a temporary `Packaging` 
+ * object whose code is set to `custom`.
+ */
+export function setPackaging(packaging: string | Definition, app: App): Packaging {
+
+  let pkg;
+
+  try {
+    pkg = app[_internal].references.lookup(packaging, Packaging);
+  } catch {
+    if (typeof packaging === "string") {
+      pkg = new Packaging(
+        {
+          id: v4(),
+          name: packaging,
+          description: packaging,
+          code: "custom"
+        }
+      );
+    }
+  }
+
+  return pkg as Packaging;
 }

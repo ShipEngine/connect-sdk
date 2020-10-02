@@ -39,10 +39,8 @@ export class Packaging extends DefinitionIdentifier implements IPackaging {
       this[_private] = {
         app
       };
-
-      hideAndFreeze(this);
-      
       app[_internal].references.add(this);
     }
+    hideAndFreeze(this);
   }
 }

@@ -50,9 +50,7 @@ export class NewPackage implements INewPackage {
 
   public constructor(pojo: NewPackagePOJO, app: App) {
 
-    const pkg = setPackaging(pojo.packaging, app);
-
-    this.packaging = pkg;
+    this.packaging = setPackaging(app, pojo.packaging);
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
     this.insuredValue = new MonetaryValue(pojo.insuredValue || { value: 0, currency: "usd" });

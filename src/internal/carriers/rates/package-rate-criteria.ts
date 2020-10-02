@@ -43,13 +43,7 @@ export class PackageRateCriteria implements IPackageRateCriteria {
 
   public constructor(pojo: PackageRateCriteriaPOJO, app: App) {
 
-    let pkg;
-
-    if(pojo.packaging) {
-      pkg = setPackaging(pojo.packaging, app);
-    }
-
-    this.packaging = pkg;
+    this.packaging = setPackaging(app, pojo.packaging);
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
     this.insuredValue = pojo.insuredValue && new MonetaryValue(pojo.insuredValue);

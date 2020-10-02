@@ -18,13 +18,7 @@ export class RatePackage {
 
   public constructor(pojo: RatePackagePOJO, app: App) {
 
-    let pkg;
-    if (pojo.packaging) {
-      pkg = setPackaging(pojo.packaging, app);
-    }
-
-
-    this.packaging = pkg;
+    this.packaging = setPackaging(app, pojo.packaging);
 
     // Make this object immutable
     hideAndFreeze(this);

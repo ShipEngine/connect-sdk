@@ -21,13 +21,8 @@ export class PackageTrackingInfo {
   public readonly weight?: Weight;
 
   public constructor(pojo: PackageTrackingInfoPOJO, app: App) {
-    let pkg;
 
-    if (pojo.packaging) {
-      pkg = setPackaging(pojo.packaging, app);
-    }
-
-    this.packaging = pkg;
+    this.packaging = setPackaging(app, pojo.packaging);
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
 

@@ -67,8 +67,7 @@ export function calculateTotalInsuranceAmount(packages: ReadonlyArray<{ insuredV
  * user sends through the platform to the app, in that case we create a temporary `Packaging` 
  * object whose code is set to `custom`.
  */
-export function setPackaging(packaging: string | Definition, app: App): Packaging {
-
+export function setPackaging(app: App, packaging?: string | Definition): Packaging | undefined {
   let pkg;
 
   try {
@@ -86,5 +85,5 @@ export function setPackaging(packaging: string | Definition, app: App): Packagin
     }
   }
 
-  return pkg as Packaging;
+  return pkg;
 }

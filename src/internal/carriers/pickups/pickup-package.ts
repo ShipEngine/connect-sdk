@@ -34,9 +34,7 @@ export class PickupPackage extends PackageIdentifierBase implements IPickupPacka
   public constructor(pojo: PickupPackagePOJO, app: App) {
     super(pojo);
 
-    const pkg = setPackaging(pojo.packaging, app);
-
-    this.packaging = pkg;
+    this.packaging = setPackaging(app, pojo.packaging);
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
     this.metadata = pojo.metadata || {};

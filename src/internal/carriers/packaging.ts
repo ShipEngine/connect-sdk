@@ -26,7 +26,7 @@ export class Packaging extends DefinitionIdentifier implements IPackaging {
   public readonly requiresWeight: boolean;
   public readonly requiresDimensions: boolean;
 
-  public constructor(pojo: PackagingPOJO, app: App) {
+  public constructor(pojo: PackagingPOJO, app?: App) {
     super(pojo);
 
     this.name = pojo.name;
@@ -34,13 +34,13 @@ export class Packaging extends DefinitionIdentifier implements IPackaging {
     this.requiresWeight = pojo.requiresWeight || false;
     this.requiresDimensions = pojo.requiresDimensions || false;
 
-    this[_private] = {
-      app
-    };
-
-    // Make this object immutable
+    if (app) {
+      // Make this object immutable
+      this[_private] = {
+        app
+      };
+      app[_internal].references.add(this);
+    }
     hideAndFreeze(this);
-
-    app[_internal].references.add(this);
   }
 }

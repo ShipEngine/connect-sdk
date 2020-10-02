@@ -2,6 +2,7 @@ import { DimensionsPOJO, PackageIdentifierPOJO, PackagingIdentifierPOJO, PickupP
 import { App, DefinitionIdentifier, Dimensions, hideAndFreeze, Joi, Weight, _internal } from "../../common";
 import { PackageIdentifier, PackageIdentifierBase } from "../packages/package-identifier";
 import { Packaging } from "../packaging";
+import { setPackaging } from "../utils";
 
 export interface PickupPackagePOJO extends PackageIdentifierPOJO {
   packaging: PackagingIdentifierPOJO | string;
@@ -33,17 +34,7 @@ export class PickupPackage extends PackageIdentifierBase implements IPickupPacka
   public constructor(pojo: PickupPackagePOJO, app: App) {
     super(pojo);
 
-    let pkg;
-
-    try {
-      pkg = app[_internal].references.lookup(pojo.packaging, Packaging);
-    } catch {
-      if (typeof pojo.packaging === 'string') {
-        pkg = pojo.packaging;
-      }
-    }
-
-    this.packaging = pkg;
+    this.packaging = setPackaging(app, pojo.packaging);
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
     this.metadata = pojo.metadata || {};

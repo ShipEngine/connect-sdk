@@ -167,6 +167,38 @@ describe("schedulePickup", () => {
     });
   });
 
+  it("should not throw an error if an unknown package is used", async () => {
+    let app = new CarrierApp(pojo.carrierApp({
+      pickupServices: [pojo.pickupService()],
+      schedulePickup: () => ({
+        id: "ABCDEF-123456",
+        timeWindows: [{
+          startDateTime: "2005-05-05T05:05:05.005+05:00",
+          endDateTime: new Date("2005-05-05T05:05:05.005+05:00"),
+        }],
+        charges: [{
+          type: "pickup",
+          amount: {
+            value: 12.34,
+            currency: "AUD",
+          }
+        }]
+      })
+    }));
+
+    const pickupRequest = pojo.pickupRequest();
+
+    pickupRequest.shipments[0].packages[0].packaging = "test";
+
+    try {
+      await app.schedulePickup(pojo.transaction(), pickupRequest);
+      expect(true).to.equal(false);
+    }
+    catch {
+      expect(true).to.equal(true);
+    }
+  });
+
   describe("Failure tests", () => {
 
     it("should throw an error if called with no arguments", async () => {

@@ -202,7 +202,7 @@ export class CarrierApp extends ConnectionApp {
     hideAndFreeze(this);
 
     this[_internal].references.add(this);
-    // this[_internal].references.finishedLoading();
+    this[_internal].references.finishedLoading();
   }
 
   // #region  Methods

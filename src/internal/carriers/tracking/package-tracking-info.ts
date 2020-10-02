@@ -1,6 +1,7 @@
 import { PackageTrackingInfo as PackageTrackingInfoPOJO } from "../../../public";
 import { App, DefinitionIdentifier, Dimensions, hideAndFreeze, Joi, Weight, _internal } from "../../common";
 import { Packaging } from "../packaging";
+import { setPackaging } from "../utils";
 
 export class PackageTrackingInfo {
   public static readonly [_internal] = {
@@ -20,17 +21,8 @@ export class PackageTrackingInfo {
   public readonly weight?: Weight;
 
   public constructor(pojo: PackageTrackingInfoPOJO, app: App) {
-    let pkg;
 
-    try {
-      pkg = app[_internal].references.lookup(pojo.packaging, Packaging);
-    } catch {
-      if (typeof pojo.packaging === 'string') {
-        pkg = pojo.packaging;
-      }
-    }
-
-    this.packaging = pkg;
+    this.packaging = setPackaging(app, pojo.packaging);
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
 

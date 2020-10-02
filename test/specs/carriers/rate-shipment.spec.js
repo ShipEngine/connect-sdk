@@ -472,7 +472,7 @@ describe("rateShipment", () => {
       }
     });
 
-    it("does not throw an error if given a packaging that doesnt exsit", async () => {
+    it("does not throw an error if given a packaging that doesn't exist", async () => {
       let app = new CarrierApp(pojo.carrierApp({
         rateShipment: () => [
           pojo.rate({
@@ -484,68 +484,10 @@ describe("rateShipment", () => {
       }));
 
       const rates = await app.rateShipment(pojo.transaction(), pojo.rateCriteria());
-      expect(rates).to.deep.equal([{
-        "charges": [
-          {
-            "amount": {
-              "currency": "USD",
-              "value": 12.34
-            },
-            "name": "",
-            "type": "shipping"
-          }
-        ],
-        "deliveryConfirmation": undefined,
-        "deliveryDateTime": undefined,
-        "deliveryService": {
-          "allowsMultiplePackages": false,
-          "code": "dummy-ds-code",
-          "deliveryConfirmations": [],
-          "description": "",
-          "destinationCountries": [
-            "US"
-          ],
-          "fulfillmentService": undefined,
-          "id": "22222222-2222-2222-2222-222222222222",
-          "identifiers": {},
-          "isConsolidationService": false,
-          "isInsurable": false,
-          "isTrackable": false,
-          "labelFormats": [],
-          "labelSizes": [],
-          "manifestType": "digital",
-          "name": "Dummy Delivery Service",
-          "originCountries": [
-            "US"
-          ],
-          "packaging": [
-            {
-              "code": "dummy-packaging-code",
-              "description": "",
-              "id": "44444444-4444-4444-4444-444444444444",
-              "identifiers": {},
-              "name": "Dummy Packaging",
-              "requiresDimensions": false,
-              "requiresWeight": false,
-            }
-          ],
-          "serviceArea": undefined,
-          "supportsReturns": false,
-        },
-        "isNegotiatedRate": false,
-        "isTrackable": false,
-        "notes": [],
-        "packages": [
-          {
-            "packaging": "test"
-          }
-        ],
-        "shipDateTime": undefined,
-        "totalAmount": {
-          "currency": "USD",
-          "value": 12.34
-        }
-      }]);
+      
+      expect(rates[0].packages[0].packaging.code).to.equal("custom");
+      expect(rates[0].packages[0].packaging.name).to.equal("test");
+      expect(rates[0].packages[0].packaging.description).to.equal("test");
     });
 
     it("should throw an error if an invalid deliveryConfirmation is returned", async () => {

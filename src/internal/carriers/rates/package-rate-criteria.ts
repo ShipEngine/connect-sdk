@@ -2,7 +2,7 @@ import { DimensionsPOJO, MonetaryValuePOJO, PackageRateCriteria as IPackageRateC
 import { App, DefinitionIdentifier, Dimensions, hideAndFreeze, Joi, MonetaryValue, Weight, _internal } from "../../common";
 import { Packaging } from "../packaging";
 import { Customs } from "../customs/customs";
-
+import { setPackaging } from "../utils";
 
 export interface PackageRateCriteriaPOJO {
   packaging?: PackagingIdentifierPOJO | string;
@@ -42,17 +42,8 @@ export class PackageRateCriteria implements IPackageRateCriteria {
 
 
   public constructor(pojo: PackageRateCriteriaPOJO, app: App) {
-    let pkg;
 
-    try {
-      pkg = app[_internal].references.lookup(pojo.packaging, Packaging);
-    } catch {
-      if (typeof pojo.packaging === 'string') {
-        pkg = pojo.packaging;
-      }
-    }
-
-    this.packaging = pkg;
+    this.packaging = setPackaging(app, pojo.packaging);
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
     this.insuredValue = pojo.insuredValue && new MonetaryValue(pojo.insuredValue);

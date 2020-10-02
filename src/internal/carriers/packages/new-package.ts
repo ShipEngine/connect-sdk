@@ -3,8 +3,8 @@ import { App, DefinitionIdentifier, Dimensions, hideAndFreeze, Joi, MonetaryValu
 import { Customs } from "../customs/customs";
 import { NewLabel, NewLabelPOJO } from "../documents/new-label";
 import { Packaging } from "../packaging";
+import { setPackaging } from "../utils";
 import { PackageItem, PackageItemPOJO } from "./package-item";
-import { v4 } from "uuid";
 
 export interface NewPackagePOJO {
   packaging: PackagingIdentifierPOJO | string;
@@ -49,25 +49,8 @@ export class NewPackage implements INewPackage {
   public readonly customs: Customs;
 
   public constructor(pojo: NewPackagePOJO, app: App) {
-    let pkg;
 
-    try {
-      pkg = app[_internal].references.lookup(pojo.packaging, Packaging);
-    } catch {
-      if (typeof pojo.packaging === "string") {
-        pkg = new Packaging(
-          {
-            id: v4(),
-            name: pojo.packaging,
-            description: pojo.packaging,
-            code: "custom"
-          },
-          app
-        );
-      }
-    }
-
-    this.packaging = pkg;
+    this.packaging = setPackaging(app, pojo.packaging);
     this.dimensions = pojo.dimensions && new Dimensions(pojo.dimensions);
     this.weight = pojo.weight && new Weight(pojo.weight);
     this.insuredValue = new MonetaryValue(pojo.insuredValue || { value: 0, currency: "usd" });

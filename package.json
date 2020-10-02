@@ -1,6 +1,6 @@
 {
   "name": "@shipengine/connect-sdk",
-  "version": "8.0.1",
+  "version": "9.0.0",
   "description": "The official SDK for building ShipEngine connect apps",
   "keywords": [
     "shipengine",

@@ -21,7 +21,13 @@ export class SalesOrders {
     this.salesOrders = []
 
     for (const salesOrder of pojo.salesOrders) {
-      this.salesOrders.push(new SalesOrder(validate(salesOrder, SalesOrder)));
+
+      if(process.env.CONNECT_ENV === "production") {
+        this.salesOrders.push(new SalesOrder(salesOrder));
+      }
+      else {
+        this.salesOrders.push(new SalesOrder(validate(salesOrder, SalesOrder)));
+      }
     }
 
 

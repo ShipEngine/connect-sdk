@@ -9,6 +9,8 @@ export class ShippingPreferences {
       containsAlcohol: Joi.boolean(),
       saturdayDelivery: Joi.boolean(),
       insuredValue: MonetaryValue[_internal].schema,
+      requestedShippingService: Joi.string(),
+      deliverByDate: DateTimeZone[_internal].schema
     }),
   };
 

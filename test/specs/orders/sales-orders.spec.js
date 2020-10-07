@@ -24,7 +24,15 @@ describe("When a sales orders is created", () => {
       salesOrders: [{
         createdDateTime: new Date(),
         status: "awaiting_payment",
-        buyer: { name: "John Doe" },
+        buyer: { 
+          name: "John Doe",
+          address: {
+           addressLines: ["123 Fake Street"],
+           cityLocality: "Austin",
+           stateProvince: "TX",
+           country: "US"
+          }
+        },
         requestedFulfillments: []
       }]
     };

@@ -24,7 +24,7 @@ export class Address extends AddressBase {
       addressLines: Joi.array().items(Joi.string().max(100).allow("")).required(),
       cityLocality: Joi.string().max(100).allow("").required(),
       stateProvince: Joi.string().max(100).allow("").required(),
-      postalCode: Joi.string().max(100).required(),
+      postalCode: Joi.string().max(100),
       country: Joi.string().enum(Country).required()
     }),
   };

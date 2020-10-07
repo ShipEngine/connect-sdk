@@ -8,7 +8,7 @@ export interface AddressPOJO {
   addressLines: readonly string[];
   cityLocality: string;
   stateProvince: string;
-  postalCode: string;
+  postalCode?: string;
   country: Country;
   isResidential?: boolean;
 }
@@ -22,7 +22,7 @@ export interface Address {
   readonly addressLines: readonly string[];
   readonly cityLocality: string;
   readonly stateProvince: string;
-  readonly postalCode: string;
+  readonly postalCode?: string;
   readonly country: Country;
   readonly isResidential?: boolean;
 

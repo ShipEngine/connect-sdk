@@ -5,12 +5,12 @@ export class Buyer extends ContactInfoBase {
   public static readonly [_internal] = {
     label: "buyer",
     schema: ContactInfo[_internal].schema.keys({
-      id: Joi.string().trim().singleLine().min(1).max(100).required(),
+      id: Joi.string().trim().singleLine().min(1).max(100),
       address: Address[_internal].schema
     })
   };
 
-  public readonly id: string;
+  public readonly id?: string;
   public readonly address?: Address;
 
   public constructor(pojo: BuyerPOJO) {

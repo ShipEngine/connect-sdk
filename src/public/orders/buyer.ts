@@ -7,7 +7,7 @@ export interface Buyer extends ContactInfoPOJO {
   /**
    * The marketplace's unique ID for the buyer
    */
-  id: string;
+  id?: string;
 
   address?: AddressPOJO;
 }

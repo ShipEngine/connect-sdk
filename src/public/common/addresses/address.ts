@@ -22,7 +22,7 @@ export interface Address {
   readonly addressLines: readonly string[];
   readonly cityLocality: string;
   readonly stateProvince: string;
-  readonly postalCode?: string;
+  readonly postalCode: string;
   readonly country: Country;
   readonly isResidential?: boolean;
 

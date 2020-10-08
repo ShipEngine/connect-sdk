@@ -31,12 +31,3 @@ export enum PaymentMethod {
   CreditCard = "credit_card",
   BankTransfer = "bank_transfer",
 }
-
-/**
- * Indicates which party is insuring a shipment
- */
-export enum InsuranceProvider {
-  ShipEngine = "shipengine",
-  Carrier = "carrier",
-  ThirdParty = "third_party",
-}

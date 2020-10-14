@@ -25,7 +25,7 @@ export class Document extends DocumentBase {
   public static readonly [_internal] = {
     label: "document",
     schema: Joi.object({
-      name: Joi.string().trim().singleLine().allow("").max(100),
+      name: Joi.string().trim().singleLine().allow(""),
       type: Joi.string().enum(DocumentType).required(),
       size: Joi.string().enum(DocumentSize).required(),
       format: Joi.string().enum(DocumentFormat).required(),

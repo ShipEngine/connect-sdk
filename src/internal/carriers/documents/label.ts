@@ -7,7 +7,7 @@ export class Label extends DocumentBase {
     label: "label",
     schema: Document[_internal].schema.keys({
       referenceFields: Joi.array().items(
-        Joi.string().trim().singleLine().allow("").max(100)
+        Joi.string().trim().singleLine().allow("")
       ),
     }),
   };

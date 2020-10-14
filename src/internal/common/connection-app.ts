@@ -20,8 +20,8 @@ export abstract class ConnectionApp extends App {
   public static readonly [_internal] = {
     label: "ShipEngine Connect app",
     schema: App[_internal].schema.keys({
-      name: Joi.string().trim().singleLine().min(1).max(100).required(),
-      description: Joi.string().trim().singleLine().allow("").max(1000),
+      name: Joi.string().trim().singleLine().min(1).required(),
+      description: Joi.string().trim().singleLine().allow(""),
       websiteURL: Joi.string().website().required(),
       logo: Joi.string().filePath({ ext: ".svg" }).required(),
       icon: Joi.string().filePath({ ext: ".svg" }).required(),

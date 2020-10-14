@@ -13,7 +13,7 @@ export class Identifiers implements IIdentifiers {
   public static readonly [_internal] = {
     label: "identifiers",
     schema: Joi.object().pattern(
-      Joi.string(), Joi.string().trim().singleLine().allow("").max(100),
+      Joi.string(), Joi.string().trim().singleLine().allow(""),
     ),
   };
 

@@ -8,9 +8,9 @@ export class ShipmentCancellationOutcome {
     schema: ShipmentIdentifier[_internal].schema.keys({
       cancellationID: Joi.string().uuid().required(),
       status: Joi.string().enum(CancellationStatus).required(),
-      confirmationNumber: Joi.string().trim().singleLine().allow("").max(100),
-      code: Joi.string().trim().singleLine().allow("").max(100),
-      description: Joi.string().trim().singleLine().allow("").max(1000),
+      confirmationNumber: Joi.string().trim().singleLine().allow(""),
+      code: Joi.string().trim().singleLine().allow(""),
+      description: Joi.string().trim().singleLine().allow(""),
       notes: Note[_internal].notesSchema,
       metadata: Joi.object(),
     }),

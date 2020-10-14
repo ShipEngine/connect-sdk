@@ -34,7 +34,7 @@ export class NewShipment implements INewShipment {
       shipDateTime: DateTimeZone[_internal].schema.required(),
       returns: Joi.object({
         isReturn: Joi.boolean(),
-        rmaNumber: Joi.string().trim().singleLine().allow("").max(100)
+        rmaNumber: Joi.string().trim().singleLine().allow("")
       }),
       deliveryConfirmation: Joi.alternatives(
         DefinitionIdentifier[_internal].schema.unknown(true),

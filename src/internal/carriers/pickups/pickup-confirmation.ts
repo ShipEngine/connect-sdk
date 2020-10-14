@@ -6,7 +6,7 @@ export class PickupConfirmation {
   public static readonly [_internal] = {
     label: "pickup",
     schema: Joi.object({
-      id: Joi.string().trim().singleLine().min(1).max(100).required(),
+      id: Joi.string().trim().singleLine().min(1).required(),
       identifiers: Identifiers[_internal].schema,
       timeWindows: Joi.array().min(1).items(TimeRange[_internal].schema).required(),
       charges: Joi.array().min(1).items(Charge[_internal].schema).required(),

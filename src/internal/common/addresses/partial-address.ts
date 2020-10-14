@@ -39,11 +39,11 @@ export class PartialAddress extends PartialAddressBase {
   public static readonly [_internal] = {
     label: "address",
     schema: Joi.object({
-      company: Joi.string().trim().singleLine().allow("").max(100),
-      addressLines: Joi.array().items(Joi.string().trim().singleLine().max(100).allow("")),
-      cityLocality: Joi.string().trim().singleLine().max(100).allow(""),
-      stateProvince: Joi.string().trim().singleLine().max(100).allow(""),
-      postalCode: Joi.string().trim().singleLine().max(100),
+      company: Joi.string().trim().singleLine().allow(""),
+      addressLines: Joi.array().items(Joi.string().trim().singleLine().allow("")),
+      cityLocality: Joi.string().trim().singleLine().allow(""),
+      stateProvince: Joi.string().trim().singleLine().allow(""),
+      postalCode: Joi.string().trim().singleLine(),
       country: Joi.string().enum(Country),
       isResidential: Joi.boolean()
     }),

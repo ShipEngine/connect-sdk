@@ -6,8 +6,8 @@ export class NonManifestedShipment {
   public static readonly [_internal] = {
     label: "manifest confirmation",
     schema: ShipmentIdentifier[_internal].schema.keys({
-      code: Joi.string().trim().singleLine().allow("").max(100),
-      description: Joi.string().trim().singleLine().allow("").max(1000),
+      code: Joi.string().trim().singleLine().allow(""),
+      description: Joi.string().trim().singleLine().allow(""),
       notes: Note[_internal].notesSchema,
     }),
   };

@@ -20,7 +20,7 @@ export class PackageItem implements IPackageItem {
   public static readonly [_internal] = {
     label: "package item",
     schema: Joi.object({
-      sku: Joi.string().trim().singleLine().allow("").max(100),
+      sku: Joi.string().trim().singleLine().allow(""),
       identifiers: Identifiers[_internal].schema,
       salesOrder: SalesOrderIdentifier[_internal].schema.unknown(true),
       salesOrderItem: SalesOrderItemIdentifier[_internal].schema.unknown(true),

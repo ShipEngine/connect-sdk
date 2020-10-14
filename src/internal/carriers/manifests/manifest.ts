@@ -7,7 +7,7 @@ export class Manifest {
   public static readonly [_internal] = {
     label: "manifest",
     schema: Joi.object({
-      id: Joi.string().trim().singleLine().allow("").max(100),
+      id: Joi.string().trim().singleLine().allow(""),
       identifiers: Identifiers[_internal].schema,
       shipments: Joi.array().min(1).items(
         ShipmentIdentifier[_internal].schema.unknown(true)).required(),

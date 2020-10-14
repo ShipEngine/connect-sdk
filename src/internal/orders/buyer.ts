@@ -5,7 +5,7 @@ export class Buyer extends ContactInfoBase {
   public static readonly [_internal] = {
     label: "buyer",
     schema: ContactInfo[_internal].schema.keys({
-      id: Joi.string().trim().singleLine().min(1).max(100),
+      id: Joi.string().trim().singleLine().min(1),
       address: Address[_internal].schema
     })
   };

@@ -15,7 +15,7 @@ export class NewLabel implements INewLabel {
       format: Joi.string().enum(DocumentFormat).required(),
       size: Joi.string().enum(DocumentSize).required(),
       referenceFields: Joi.array().items(
-        Joi.string().trim().singleLine().allow("").max(100)
+        Joi.string().trim().singleLine().allow("")
       ),
     }),
   };

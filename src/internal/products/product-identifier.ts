@@ -6,13 +6,13 @@ export class ProductIdentifier implements IProductIdentifier {
   public static readonly [_internal] = {
     label: "product",
     schema: Joi.object({
-      id: Joi.string().trim().singleLine().min(1).max(100).required(),
-      sku: Joi.string().trim().singleLine().allow("").max(100),
-      upc: Joi.string().trim().singleLine().allow("").max(100),
-      isbn: Joi.string().trim().singleLine().allow("").max(100),
-      asin: Joi.string().trim().singleLine().allow("").max(100),
-      fulfillmentSku: Joi.string().trim().singleLine().allow("").max(100),
-      inventoryID: Joi.string().trim().singleLine().allow("").max(100),
+      id: Joi.string().trim().singleLine().min(1).required(),
+      sku: Joi.string().trim().singleLine().allow(""),
+      upc: Joi.string().trim().singleLine().allow(""),
+      isbn: Joi.string().trim().singleLine().allow(""),
+      asin: Joi.string().trim().singleLine().allow(""),
+      fulfillmentSku: Joi.string().trim().singleLine().allow(""),
+      inventoryID: Joi.string().trim().singleLine().allow(""),
       identifiers: Identifiers[_internal].schema,
     }),
   };

@@ -18,8 +18,8 @@ export class SalesOrderItemIdentifier extends SalesOrderItemIdentifierBase {
   public static readonly [_internal] = {
     label: "sales order item",
     schema: Joi.object({
-      id: Joi.string().trim().singleLine().min(1).max(100).required(),
-      sku: Joi.string().trim().singleLine().allow("").max(100),
+      id: Joi.string().trim().singleLine().min(1).required(),
+      sku: Joi.string().trim().singleLine().allow(""),
       identifiers: Identifiers[_internal].schema,
     }),
   };

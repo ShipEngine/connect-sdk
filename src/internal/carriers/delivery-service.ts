@@ -18,9 +18,9 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
   public static readonly [_internal] = {
     label: "delivery service",
     schema: DefinitionIdentifier[_internal].schema.keys({
-      name: Joi.string().trim().singleLine().min(1).max(100).required(),
-      description: Joi.string().trim().singleLine().allow("").max(1000),
-      code: Joi.string().trim().singleLine().allow("").max(1000).required(),
+      name: Joi.string().trim().singleLine().min(1).required(),
+      description: Joi.string().trim().singleLine().allow(""),
+      code: Joi.string().trim().singleLine().allow("").required(),
       fulfillmentService: Joi.string().enum(FulfillmentService),
       serviceArea: Joi.string().enum(ServiceArea),
       isConsolidationService: Joi.boolean(),

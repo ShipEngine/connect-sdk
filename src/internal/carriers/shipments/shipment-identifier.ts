@@ -15,7 +15,7 @@ export class ShipmentIdentifier extends ShipmentIdentifierBase {
   public static readonly [_internal] = {
     label: "shipment",
     schema: Joi.object({
-      trackingNumber: Joi.string().trim().singleLine().allow("").max(100),
+      trackingNumber: Joi.string().trim().singleLine().allow(""),
       identifiers: Identifiers[_internal].schema,
     }),
   };

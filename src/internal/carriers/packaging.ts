@@ -9,8 +9,8 @@ export class Packaging extends DefinitionIdentifier implements IPackaging {
   public static readonly [_internal] = {
     label: "packaging",
     schema: DefinitionIdentifier[_internal].schema.keys({
-      name: Joi.string().trim().singleLine().min(1).max(100).required(),
-      description: Joi.string().trim().singleLine().allow("").max(1000),
+      name: Joi.string().trim().singleLine().min(1).required(),
+      description: Joi.string().trim().singleLine().allow(""),
       requiresWeight: Joi.boolean(),
       requiresDimensions: Joi.boolean()
     })

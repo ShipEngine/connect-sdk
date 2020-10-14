@@ -7,13 +7,13 @@ export class Note implements INote {
     label: "note",
     schema: Joi.object({
       type: Joi.string().enum(NoteType).required(),
-      text: Joi.string().allow("").max(5000).required(),
+      text: Joi.string().allow("").required(),
     }),
     notesSchema: Joi.alternatives(
       Joi.array().items(
         Joi.object({
           type: Joi.string().enum(NoteType).required(),
-          text: Joi.string().allow("").max(5000).required(),
+          text: Joi.string().allow("").required(),
         })
       )
     ),

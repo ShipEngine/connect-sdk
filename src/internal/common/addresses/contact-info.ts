@@ -21,7 +21,7 @@ export class ContactInfo extends ContactInfoBase {
     schema: Joi.object({
       name: PersonName[_internal].schema.required(),
       email: Joi.string().email().allow(""),
-      phoneNumber: Joi.string().trim().singleLine().allow("").max(30)
+      phoneNumber: Joi.string().trim().singleLine().allow("")
     }),
   };
 

@@ -12,6 +12,7 @@ export const sdk = manifest as AppManifestPOJO;
  * A ShipEngine Connect app manifest (package.json file)
  */
 export interface AppManifestPOJO {
+  id?: string;
   name: string;
   version: string;
   description?: string;

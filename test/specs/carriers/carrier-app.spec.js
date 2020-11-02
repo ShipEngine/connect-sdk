@@ -26,6 +26,7 @@ describe("CarrierApp", () => {
     expect(app).to.deep.equal({
       type: "carrier",
       id: "12345678-1234-1234-1234-123456789012",
+      providerId: "",
       name: "My carrier",
       description: "",
       websiteURL: new URL("https://my-carrier.com/"),
@@ -63,6 +64,7 @@ describe("CarrierApp", () => {
   it("should create a CarrierApp with all possible fields", () => {
     let app = new CarrierApp({
       id: "12345678-1234-1234-1234-123456789012",
+      providerId: "12345678-1234-1234-1234-123456789012",
       name: "My carrier",
       description: "My carrier description",
       websiteURL: "https://my-carrier.com/",
@@ -102,6 +104,7 @@ describe("CarrierApp", () => {
     expect(app).to.deep.equal({
       type: "carrier",
       id: "12345678-1234-1234-1234-123456789012",
+      providerId: "12345678-1234-1234-1234-123456789012",
       name: "My carrier",
       description: "My carrier description",
       websiteURL: new URL("https://my-carrier.com/"),
@@ -154,6 +157,7 @@ describe("CarrierApp", () => {
     expect(app).to.deep.equal({
       type: "carrier",
       id: "12345678-1234-1234-1234-123456789012",
+      providerId: "",
       name: "My carrier",
       description: "",
       websiteURL: new URL("https://my-carrier.com/"),

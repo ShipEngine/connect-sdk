@@ -15,6 +15,7 @@ export abstract class App {
     label: "ShipEngine Connect app",
     schema: Joi.object({
       id: Joi.string().uuid().required(),
+      providerId: Joi.string().uuid().optional(),
       manifest: Joi.object({
         name: Joi.string().appName().required(),
         version: Joi.string().semver().required(),
@@ -31,11 +32,14 @@ export abstract class App {
 
   public abstract readonly type: AppType;
   public readonly id: UUID;
+  public readonly providerId: UUID;
   public readonly manifest: AppManifest;
   public readonly sdkVersion: number;
 
   public constructor(pojo: AppPOJO) {
+
     this.id = pojo.id;
+    this.providerId = pojo.providerId || "";
     this.sdkVersion = Number.parseFloat(sdk.version);
     this.manifest = {
       ...pojo.manifest,

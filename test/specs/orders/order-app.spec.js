@@ -24,6 +24,7 @@ describe("OrderApp", () => {
     expect(app).to.deep.equal({
       type: "order",
       id: "12345678-1234-1234-1234-123456789012",
+      providerId: "",
       name: "My order",
       description: "",
       websiteURL: new URL("https://my-order.com/"),
@@ -52,6 +53,7 @@ describe("OrderApp", () => {
   it("should create an OrderApp with all possible fields", () => {
     let app = new OrderApp({
       id: "12345678-1234-1234-1234-123456789012",
+      providerId: "12345678-1234-1234-1234-123456789012",
       name: "My order",
       description: "My order description",
       websiteURL: "https://my-order.com/",
@@ -83,6 +85,7 @@ describe("OrderApp", () => {
     expect(app).to.deep.equal({
       type: "order",
       id: "12345678-1234-1234-1234-123456789012",
+      providerId: "12345678-1234-1234-1234-123456789012",
       name: "My order",
       description: "My order description",
       websiteURL: new URL("https://my-order.com/"),
@@ -130,6 +133,7 @@ describe("OrderApp", () => {
     expect(app).to.deep.equal({
       type: "order",
       id: "12345678-1234-1234-1234-123456789012",
+      providerId: "",
       name: "My order",
       description: "",
       websiteURL: new URL("https://my-order.com/"),

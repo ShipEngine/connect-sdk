@@ -13,10 +13,12 @@ export class OAuthTokenProperties {
 
   public readonly accessTokenExpirationLength?: number;
   public readonly refreshTokenExpirationLength?: number;
+  public readonly tokenExpirationLengthTimeUnit?: string;
 
   public constructor(pojo: OAuthTokenPropertiesDefinition) {
     this.accessTokenExpirationLength = pojo.accessTokenExpirationLength;
     this.refreshTokenExpirationLength = pojo.refreshTokenExpirationLength;
+    this.tokenExpirationLengthTimeUnit = pojo.tokenExpirationLengthTimeUnit;
 
     // Make this object immutable
     hideAndFreeze(this);

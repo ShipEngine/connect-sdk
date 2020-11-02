@@ -14,6 +14,7 @@ export abstract class App {
   public static readonly [_internal] = {
     label: "ShipEngine Connect app",
     schema: Joi.object({
+      providerId: Joi.string().uuid().optional(),
       id: Joi.string().uuid().required(),
       manifest: Joi.object({
         name: Joi.string().appName().required(),

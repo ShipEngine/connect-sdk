@@ -6,10 +6,16 @@ import type { UUID } from "./types";
  */
 export interface AppDefinition {
   /**
-   * A UUID that uniquely identifies the carrier.
+   * A UUID that uniquely identifies the app.
    * This ID should never change.
    */
   id: UUID;
+
+  /**
+   * An optional UUID that is used to relate this app to an existing production app.
+   * Do not set this field unless instructed to by the shipengine connect team.
+   */
+  providerId?: UUID;
 }
 
 

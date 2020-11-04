@@ -8,6 +8,7 @@ export class OAuthTokenProperties {
     schema: Joi.object({
       accessTokenExpirationLength: Joi.number().min(1).optional(),
       refreshTokenExpirationLength: Joi.number().min(1).optional(),
+      tokenExpirationLengthTimeUnit: Joi.string().optional(),
     })
   };
 

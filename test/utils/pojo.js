@@ -472,7 +472,8 @@ const pojo = module.exports = {
     return {
       tokenProperties: {
         accessTokenExpirationLength: 100,
-        refreshTokenExpirationLength: 100
+        refreshTokenExpirationLength: 100,
+        tokenExpirationLengthTimeUnit: "s"
       },
       authorizationProcess: {
         loginRequest: {

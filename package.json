@@ -1,6 +1,6 @@
 {
   "name": "@shipengine/connect-sdk",
-  "version": "10.2.0",
+  "version": "10.3.0",
   "description": "The official SDK for building ShipEngine connect apps",
   "keywords": [
     "shipengine",
@@ -47,27 +47,27 @@
     "@jsdevtools/host-environment": "^2.1.2",
     "@jsdevtools/readdir-enhanced": "^6.0.4",
     "@jsdevtools/version-bump-prompt": "^6.1.0",
-    "@types/chai": "^4.2.13",
+    "@types/chai": "^4.2.14",
     "@types/hapi__joi": "^17.1.6",
     "@types/mocha": "^8.0.3",
-    "@types/node": "^14.11.8",
+    "@types/node": "^14.14.6",
     "@types/uuid": "^8.3.0",
-    "@typescript-eslint/eslint-plugin": "^4.4.1",
-    "@typescript-eslint/parser": "^4.4.1",
+    "@typescript-eslint/eslint-plugin": "^4.6.1",
+    "@typescript-eslint/parser": "^4.6.1",
     "chai": "^4.2.0",
-    "eslint": "^7.11.0",
-    "mocha": "^8.1.3",
+    "eslint": "^7.12.1",
+    "mocha": "^8.2.1",
     "npm-check": "^5.9.0",
     "nyc": "^15.1.0",
-    "shx": "^0.3.2",
+    "shx": "^0.3.3",
     "source-map-support": "^0.5.19",
-    "typescript": "^4.0.3"
+    "typescript": "^4.0.5"
   },
   "dependencies": {
     "@types/json-schema": "^7.0.6",
     "@types/react-jsonschema-form": "^1.7.4",
     "currency.js": "^2.0.2",
-    "joi": "^17.2.1",
+    "joi": "^17.3.0",
     "moment-timezone": "^0.5.31",
     "uuid": "^8.3.1"
   }

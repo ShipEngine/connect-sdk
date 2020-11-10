@@ -7,8 +7,7 @@ const _private = Symbol("private fields");
 
 
 export interface DeliveryServicePOJO extends DeliveryServiceDefinition {
-  originCountries: Country[];
-  destinationCountries: Country[];
+  availableCountries: Country[];
   packaging: readonly PackagingPOJO[];
   deliveryConfirmations?: readonly DeliveryConfirmationPOJO[];
 }
@@ -31,8 +30,7 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
       supportsReturns: Joi.boolean(),
       labelFormats: Joi.array().items(Joi.string().enum(DocumentFormat)),
       labelSizes: Joi.array().items(Joi.string().enum(DocumentSize)),
-      originCountries: Joi.array().min(1).items(Joi.string().enum(Country)).required(),
-      destinationCountries: Joi.array().min(1).items(Joi.string().enum(Country)).required(),
+      availableCountries: Joi.array().min(1).items(Joi.string().enum(Country)).required(),
       packaging: Joi.array().items(Packaging[_internal].schema).required(),
       deliveryConfirmations: Joi.array().items(DeliveryConfirmation[_internal].schema),
     }),
@@ -56,13 +54,12 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
   public readonly supportsReturns: boolean;
   public readonly labelFormats: readonly DocumentFormat[];
   public readonly labelSizes: readonly DocumentSize[];
-  public readonly originCountries: readonly Country[];
-  public readonly destinationCountries: readonly Country[];
+  public readonly availableCountries: readonly Country[];
   public readonly packaging: readonly Packaging[];
   public readonly deliveryConfirmations: readonly DeliveryConfirmation[];
 
   public get countries(): readonly Country[] {
-    const countries = new Set(this.originCountries.concat(this.destinationCountries));
+    const countries = new Set(this.availableCountries);
     return Object.freeze([...countries]);
   }
 
@@ -91,8 +88,7 @@ export class DeliveryService extends DefinitionIdentifier implements IDeliverySe
     this.supportsReturns = pojo.supportsReturns || false;
     this.labelFormats = pojo.labelFormats || [];
     this.labelSizes = pojo.labelSizes || [];
-    this.originCountries = pojo.originCountries;
-    this.destinationCountries = pojo.destinationCountries;
+    this.availableCountries = pojo.availableCountries;
     this.packaging = pojo.packaging.map((svc) => new Packaging(svc, app));
     this.deliveryConfirmations = pojo.deliveryConfirmations
       ? pojo.deliveryConfirmations.map((svc) => new DeliveryConfirmation(svc, app)) : [];

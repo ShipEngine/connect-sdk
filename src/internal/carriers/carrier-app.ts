@@ -122,24 +122,14 @@ export class CarrierApp extends ConnectionApp {
   }
 
   public get countries(): readonly Country[] {
-    const countries = new Set(this.originCountries.concat(this.destinationCountries));
+    const countries = new Set(this.availableCountries);
     return Object.freeze([...countries]);
   }
 
-  public get originCountries(): readonly Country[] {
+  public get availableCountries(): readonly Country[] {
     const countries = new Set<Country>();
     for (const service of this.deliveryServices) {
-      for (const country of service.originCountries) {
-        countries.add(country);
-      }
-    }
-    return Object.freeze([...countries]);
-  }
-
-  public get destinationCountries(): readonly Country[] {
-    const countries = new Set<Country>();
-    for (const service of this.deliveryServices) {
-      for (const country of service.destinationCountries) {
+      for (const country of service.availableCountries) {
         countries.add(country);
       }
     }

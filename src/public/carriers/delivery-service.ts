@@ -75,14 +75,9 @@ export interface DeliveryServiceDefinition extends Definition {
   labelSizes?: DocumentSize[];
 
   /**
-   * The countries that can be shipped from using this service
+   * The sellers home countries that should have access to this service.
    */
-  originCountries: InlineOrReference<Country[]>;
-
-  /**
-   * The countries that can be shipped to using this service
-   */
-  destinationCountries: InlineOrReference<Country[]>;
+  availableCountries: InlineOrReference<Country[]>;
 
   /**
    * The types of packaging that are provided/allowed for this service
@@ -172,14 +167,9 @@ export interface DeliveryService extends DeliveryServiceIdentifier {
   readonly labelSizes: readonly DocumentSize[];
 
   /**
-   * The countries that can be shipped from using this service
+   * The countries this service should be available for.
    */
-  readonly originCountries: readonly Country[];
-
-  /**
-   * The countries that can be shipped to using this service
-   */
-  readonly destinationCountries: readonly Country[];
+  readonly availableCountries: readonly Country[];
 
   /**
    * The types of packaging that are provided/allowed for this service
@@ -192,8 +182,7 @@ export interface DeliveryService extends DeliveryServiceIdentifier {
   readonly deliveryConfirmations: readonly DeliveryConfirmation[];
 
   /**
-   * All countries that this service ships to or from.
-   * This list includes all unique origin and destination countries.
+   * All countries that this service is available for.
    */
   readonly countries: readonly Country[];
 

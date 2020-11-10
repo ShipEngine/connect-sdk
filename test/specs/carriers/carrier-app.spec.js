@@ -322,9 +322,9 @@ describe("CarrierApp", () => {
         manifestType: "digital",
 
         deliveryServices: [
-          pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"] }),
-          pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"] }),
-          pojo.deliveryService({ originCountries: ["FR"] }),
+          pojo.deliveryService({ availableCountries: ["US"] }),
+          pojo.deliveryService({ availableCountries: ["US", "MX"] }),
+          pojo.deliveryService({ availableCountries: ["FR"] }),
         ],
 
         manifest: {
@@ -333,8 +333,8 @@ describe("CarrierApp", () => {
         },
       });
 
-      expect(app.countries).to.have.lengthOf(5);
-      expect(app.countries).to.have.members(["US", "MX", "FR", "CN", "CA"]);
+      expect(app.countries).to.have.lengthOf(3);
+      expect(app.countries).to.have.members(["US", "MX", "FR"]);
     });
 
     it("should return a distinct list of origin countries", () => {
@@ -348,9 +348,9 @@ describe("CarrierApp", () => {
         manifestType: "digital",
 
         deliveryServices: [
-          pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"] }),
-          pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"] }),
-          pojo.deliveryService({ originCountries: ["FR"] }),
+          pojo.deliveryService({ availableCountries: ["US"] }),
+          pojo.deliveryService({ availableCountries: ["US", "MX"] }),
+          pojo.deliveryService({ availableCountries: ["FR"] }),
         ],
 
         manifest: {
@@ -359,36 +359,10 @@ describe("CarrierApp", () => {
         },
       });
 
-      expect(app.originCountries).to.have.lengthOf(3);
-      expect(app.originCountries).to.have.members(["US", "MX", "FR"]);
-      expect(app.originCountries).to.not.have.members(["CN", "CA"]);
+      expect(app.availableCountries).to.have.lengthOf(3);
+      expect(app.availableCountries).to.have.members(["US", "MX", "FR"]);
+      expect(app.availableCountries).to.not.have.members(["CN", "CA"]);
 
-    });
-
-    it("should return a distinct list of destination countries", () => {
-      let app = new CarrierApp({
-        id: "12345678-1234-1234-1234-123456789012",
-        name: "My carrier",
-        websiteURL: "https://my-carrier.com/",
-        icon: path.resolve("logo.svg"),
-        logo: path.resolve("logo.svg"),
-        connectionForm: pojo.form(),
-        manifestType: "digital",
-        deliveryServices: [
-          pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"] }),
-          pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"] }),
-          pojo.deliveryService({ originCountries: ["FR"] }),
-        ],
-
-        manifest: {
-          name: "@company/carrier",
-          version: "1.0.0"
-        },
-      });
-
-      expect(app.destinationCountries).to.have.lengthOf(3);
-      expect(app.destinationCountries).to.have.members(["CN", "CA", "US"]);
-      expect(app.destinationCountries).to.not.have.members(["MX", "FR"]);
     });
 
     it("supportsReturns should be false if no delivery services support shipment returns", () => {
@@ -401,9 +375,9 @@ describe("CarrierApp", () => {
         connectionForm: pojo.form(),
         manifestType: "digital",
         deliveryServices: [
-          pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"] }),
-          pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"] }),
-          pojo.deliveryService({ originCountries: ["FR"] }),
+          pojo.deliveryService({ availableCountries: ["US"] }),
+          pojo.deliveryService({ availableCountries: ["US", "MX"] }),
+          pojo.deliveryService({ availableCountries: ["FR"] }),
         ],
 
         manifest: {
@@ -425,9 +399,9 @@ describe("CarrierApp", () => {
         connectionForm: pojo.form(),
         manifestType: "digital",
         deliveryServices: [
-          pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"] }),
-          pojo.deliveryService({ originCountries: ["US", "MX"], destinationCountries: ["CN"] }),
-          pojo.deliveryService({ originCountries: ["FR"], supportsReturns: true }),
+          pojo.deliveryService({ availableCountries: ["US"] }),
+          pojo.deliveryService({ availableCountries: ["US", "MX"] }),
+          pojo.deliveryService({ availableCountries: ["FR"], supportsReturns: true }),
         ],
 
         manifest: {
@@ -452,7 +426,7 @@ describe("CarrierApp", () => {
         manifestType: "digital",
         connectionForm: pojo.form(),
         deliveryServices: [
-          pojo.deliveryService({ originCountries: ["US"], destinationCountries: ["CN", "CA"] }),
+          pojo.deliveryService({ availableCountries: ["US"] }),
         ],
 
         manifest: {
@@ -461,8 +435,8 @@ describe("CarrierApp", () => {
         },
       });
 
-      expect(app.deliveryServices[0].countries).to.have.lengthOf(3);
-      expect(app.deliveryServices[0].countries).to.have.members(["CN", "CA", "US"]);
+      expect(app.deliveryServices[0].countries).to.have.lengthOf(1);
+      expect(app.deliveryServices[0].countries).to.have.members(["US"]);
     });
   });
 

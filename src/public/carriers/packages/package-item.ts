@@ -10,7 +10,7 @@ export interface PackageItem {
   /**
    * The Stock Keeping Unit code
    */
-  readonly sku?: string;
+  readonly sku: string;
 
   /**
    * Your own identifiers for this item

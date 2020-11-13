@@ -18,7 +18,7 @@ export class CustomsItem implements ICustomsItem {
   };
 
   public readonly type: CustomsItemType;
-  public readonly sku?: string;
+  public readonly sku: string;
   public readonly description: string;
   public readonly quantity: Quantity;
   public readonly unitValue: MonetaryValue;

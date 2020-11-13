@@ -45,6 +45,12 @@ export interface Transaction<T extends object = object> {
   readonly id: UUID;
 
   /**
+   * Represents the desired language of the request.
+   * This property should be a string that contains a BCP 47 language tag (e.g. en-US, en-GB).
+   */
+  readonly language: string;
+
+  /**
    * Session data that may include auth data set by a data driven auth processes.
    * May include arbitrary data set by the developer.
    * Must be JSON serializable. Any method may update the session data,

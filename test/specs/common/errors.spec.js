@@ -105,7 +105,7 @@ describe("Errors", () => {
     }));
 
     try {
-      await app.createShipment({});
+      await app.createShipment({ language: 'en' });
       assert.fail("An error should have been thrown");
     }
     catch (error) {

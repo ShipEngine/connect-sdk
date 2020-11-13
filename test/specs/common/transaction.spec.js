@@ -9,10 +9,12 @@ describe("Transaction", () => {
   it("should create a Transaction with the minimum required fields", () => {
     let transaction = new Transaction({
       id: "12345678-1234-1234-1234-123456789012",
+      language: "en"
     });
 
     expect(transaction).to.deep.equal({
       id: "12345678-1234-1234-1234-123456789012",
+      language: "en",
       session: {},
     });
   });
@@ -20,6 +22,7 @@ describe("Transaction", () => {
   it("should create a Transaction with all possible fields", () => {
     let transaction = new Transaction({
       id: "12345678-1234-1234-1234-123456789012",
+      language: "en",
       session: {
         foo: "bar",
         biz: {
@@ -30,6 +33,7 @@ describe("Transaction", () => {
 
     expect(transaction).to.deep.equal({
       id: "12345678-1234-1234-1234-123456789012",
+      language: "en",
       session: {
         foo: "bar",
         biz: {
@@ -148,6 +152,7 @@ describe("Transaction", () => {
       try {
         await createTransaction({
           id: "12345",
+          language: "en",
         });
         assert.fail("An error should have been thrown");
       }
@@ -160,6 +165,7 @@ describe("Transaction", () => {
       try {
         await createTransaction({
           id: "12345678-1234-1234-1234-123456789012",
+          language: "en",
           session: 12345,
         });
         assert.fail("An error should have been thrown");

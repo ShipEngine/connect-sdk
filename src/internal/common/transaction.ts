@@ -15,6 +15,7 @@ export type SessionPOJO<T extends object = object> = T & {
 
 export interface TransactionPOJO<T extends object = object> {
   id: UUID;
+  language: string;
   session?: SessionPOJO<T>;
 }
 
@@ -23,6 +24,7 @@ export class Transaction<T extends object = object> implements ITransaction {
     label: "transaction",
     schema: Joi.object({
       id: Joi.string().uuid().required(),
+      language: Joi.string().required(),
       session: Joi.object(),
     }),
   };
@@ -32,6 +34,7 @@ export class Transaction<T extends object = object> implements ITransaction {
   };
 
   public readonly id: UUID;
+  public readonly language: string;
 
   public get session(): SessionPOJO<T> {
     return this[_private].session;
@@ -60,7 +63,7 @@ export class Transaction<T extends object = object> implements ITransaction {
 
   public constructor(pojo: TransactionPOJO<T>) {
     this.id = pojo.id;
-
+    this.language = pojo.language;
     this[_private] = {
       session: pojo.session || {} as unknown as T,
     };

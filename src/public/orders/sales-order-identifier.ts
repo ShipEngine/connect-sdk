@@ -29,5 +29,5 @@ export interface SalesOrderIdentifier {
   /**
    * Your own identifiers for this sales order
    */
-  readonly identifiers: Identifiers;
+  readonly identifiers?: Identifiers;
 }

@@ -11,8 +11,8 @@ export interface PackageItemPOJO {
   salesOrder?: SalesOrderIdentifierPOJO;
   salesOrderItem?: SalesOrderItemIdentifierPOJO;
   product?: ProductIdentifierPOJO;
-  quantity: QuantityPOJO;
-  unitPrice: MonetaryValuePOJO;
+  quantity?: QuantityPOJO;
+  unitPrice?: MonetaryValuePOJO;
 }
 
 
@@ -25,20 +25,23 @@ export class PackageItem implements IPackageItem {
       salesOrder: SalesOrderIdentifier[_internal].schema.unknown(true),
       salesOrderItem: SalesOrderItemIdentifier[_internal].schema.unknown(true),
       product: ProductIdentifier[_internal].schema.unknown(true),
-      quantity: Quantity[_internal].schema.required(),
-      unitPrice: MonetaryValue[_internal].schema.required(),
+      quantity: Quantity[_internal].schema.optional(),
+      unitPrice: MonetaryValue[_internal].schema.optional(),
     }),
   };
 
-  public readonly sku: string;
-  public readonly identifiers: Identifiers;
+  public readonly sku?: string;
+  public readonly identifiers?: Identifiers;
   public readonly salesOrder?: SalesOrderIdentifier;
   public readonly salesOrderItem?: SalesOrderItemIdentifier;
   public readonly product?: ProductIdentifier;
-  public readonly quantity: Quantity;
-  public readonly unitPrice: MonetaryValue;
+  public readonly quantity?: Quantity;
+  public readonly unitPrice?: MonetaryValue;
 
-  public get totalPrice(): MonetaryValue {
+  public get totalPrice(): MonetaryValue | undefined {
+    if(!this.quantity || !this.unitPrice) {
+      return undefined;
+    }
     return new MonetaryValue({
       value: currency(this.unitPrice.value).multiply(this.quantity.value).value,
       currency: this.unitPrice.currency,
@@ -51,8 +54,8 @@ export class PackageItem implements IPackageItem {
     this.salesOrder = pojo.salesOrder && new SalesOrderIdentifier(pojo.salesOrder);
     this.salesOrderItem = pojo.salesOrderItem && new SalesOrderItemIdentifier(pojo.salesOrderItem);
     this.product = pojo.product && new ProductIdentifier(pojo.product);
-    this.quantity = new Quantity(pojo.quantity);
-    this.unitPrice = new MonetaryValue(pojo.unitPrice);
+    this.quantity = pojo.quantity ? new Quantity(pojo.quantity) : undefined;
+    this.unitPrice = pojo.unitPrice ? new MonetaryValue(pojo.unitPrice) : undefined;
 
     // Make this object immutable
     hideAndFreeze(this);

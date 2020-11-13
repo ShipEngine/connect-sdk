@@ -10,12 +10,12 @@ export interface PackageItem {
   /**
    * The Stock Keeping Unit code
    */
-  readonly sku: string;
+  readonly sku?: string;
 
   /**
    * Your own identifiers for this item
    */
-  readonly identifiers: Identifiers;
+  readonly identifiers?: Identifiers;
 
   /**
    * The sales order associated with this item
@@ -35,15 +35,15 @@ export interface PackageItem {
   /**
    * The quantity of this item in the package
    */
-  readonly quantity: Quantity;
+  readonly quantity?: Quantity;
 
   /**
    * The sale price of each item
    */
-  readonly unitPrice: MonetaryValue;
+  readonly unitPrice?: MonetaryValue;
 
   /**
    * The total price of this item. This is `unitPrice` multiplied by `quantity`.
    */
-  readonly totalPrice: MonetaryValue;
+  readonly totalPrice?: MonetaryValue;
 }

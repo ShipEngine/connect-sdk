@@ -13,7 +13,7 @@ export interface CustomsItemPOJO {
   /**
    * The Stock Keeping Unit code
    */
-  sku?: string;
+  sku: string;
 
   /**
    * A description of the item. Usually required if `type` is `other`.

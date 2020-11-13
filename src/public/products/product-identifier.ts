@@ -12,7 +12,7 @@ export interface ProductIdentifierPOJO {
   /**
    * The Stock Keeping Unit code for this item
    */
-  sku?: string;
+  sku: string;
 
   /**
    * The Universal Product Code for this item.

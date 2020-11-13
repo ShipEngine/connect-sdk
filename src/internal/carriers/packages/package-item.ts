@@ -6,7 +6,7 @@ import { SalesOrderItemIdentifier } from "../../orders/sales-order-item-identifi
 import { ProductIdentifier } from "../../products";
 
 export interface PackageItemPOJO {
-  sku?: string;
+  sku: string;
   identifiers?: IdentifiersPOJO;
   salesOrder?: SalesOrderIdentifierPOJO;
   salesOrderItem?: SalesOrderItemIdentifierPOJO;
@@ -30,7 +30,7 @@ export class PackageItem implements IPackageItem {
     }),
   };
 
-  public readonly sku?: string;
+  public readonly sku: string;
   public readonly identifiers?: Identifiers;
   public readonly salesOrder?: SalesOrderIdentifier;
   public readonly salesOrderItem?: SalesOrderItemIdentifier;

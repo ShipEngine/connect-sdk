@@ -13,7 +13,7 @@ export interface SalesOrderItemIdentifierPOJO {
   /**
    * The Stock Keeping Unit code for this item
    */
-  sku?: string;
+  sku: string;
 
   /**
    * Your own identifiers for this item

@@ -15,7 +15,7 @@ export interface PackageItem {
   /**
    * Your own identifiers for this item
    */
-  readonly identifiers?: Identifiers;
+  readonly identifiers: Identifiers;
 
   /**
    * The sales order associated with this item

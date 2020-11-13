@@ -58,7 +58,7 @@ export interface CustomsItem {
   /**
    * The Stock Keeping Unit code
    */
-  readonly sku: string;
+  readonly sku?: string;
 
   /**
    * A description of the item. Usually required if `type` is `other`.

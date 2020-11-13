@@ -6,8 +6,8 @@ import { SalesOrderItemIdentifier } from "../../orders/sales-order-item-identifi
 import { ProductIdentifier } from "../../products";
 
 export interface PackageItemPOJO {
-  sku: string;
-  identifiers: IdentifiersPOJO;
+  sku?: string;
+  identifiers?: IdentifiersPOJO;
   salesOrder?: SalesOrderIdentifierPOJO;
   salesOrderItem?: SalesOrderItemIdentifierPOJO;
   product?: ProductIdentifierPOJO;

@@ -13,7 +13,7 @@ export interface SalesOrderIdentifierPOJO {
   /**
    * Your own identifiers for this sales order
    */
-  identifiers: IdentifiersPOJO;
+  identifiers?: IdentifiersPOJO;
 }
 
 

@@ -4,5 +4,5 @@
 export interface OAuthParameterDefinition {
   name: string;
   value: string;
-  encoding?: "base64";
+  encoding: string;
 }

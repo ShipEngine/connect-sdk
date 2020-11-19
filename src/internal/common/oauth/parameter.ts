@@ -14,7 +14,7 @@ export class OAuthParameter {
 
   public readonly name: string;
   public readonly value: string;
-  public readonly encoding: string;
+  public readonly encoding?: string;
 
   public constructor(pojo: OAuthParameterDefinition) {
     this.name = pojo.name;

@@ -8,13 +8,13 @@ export class OAuthParameter {
     schema: Joi.object({
       name: Joi.string().required(),
       value: Joi.string().required(),
-      encoding: Joi.string().valid("base64").optional(),
+      encoding: Joi.string().valid("base64", "basic-auth").optional(),
     })
   };
 
   public readonly name: string;
   public readonly value: string;
-  public readonly encoding?: "base64";
+  public readonly encoding: string;
 
   public constructor(pojo: OAuthParameterDefinition) {
     this.name = pojo.name;

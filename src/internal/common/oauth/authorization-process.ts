@@ -28,9 +28,9 @@ export class OAuthAuthorizationProcess {
   public readonly authorizeResponse?: OAuthResponse;
 
   public constructor(pojo: OAuthAuthorizationProcessPOJO) {
-    this.loginRequest = pojo.loginRequest;
+    this.loginRequest = new OAuthRequest(pojo.loginRequest);
     this.redirectRequest = pojo.redirectRequest;
-    this.authorizeRequest = pojo.authorizeRequest;
+    this.authorizeRequest = pojo.authorizeRequest ? new OAuthRequest(pojo.authorizeRequest) : undefined;
     this.authorizeResponse = pojo.authorizeResponse;
 
     // Make this object immutable

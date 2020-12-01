@@ -20,7 +20,7 @@ export class OAuthRequest {
 
   public readonly url: string;
   public readonly method: OAuthRequestMethods;
-  public readonly contentType?: string;
+  public readonly contentType: string;
   public readonly bodyParameters?: readonly OAuthParameterDefinition[];
   public readonly headerParameters?: readonly OAuthParameterDefinition[];
   public readonly queryParameters?: readonly OAuthParameterDefinition[];

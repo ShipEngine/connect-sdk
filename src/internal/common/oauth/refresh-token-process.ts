@@ -22,7 +22,7 @@ export class OAuthRefreshTokenProcess {
   public readonly refreshTokenResponse: OAuthResponse;
 
   public constructor(pojo: OAuthRefreshTokenProcessPOJO) {
-    this.refreshTokenRequest = pojo.refreshTokenRequest;
+    this.refreshTokenRequest = new OAuthRequest(pojo.refreshTokenRequest);
     this.refreshTokenResponse = pojo.refreshTokenResponse;
 
     // Make this object immutable

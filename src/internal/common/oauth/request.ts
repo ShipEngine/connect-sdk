@@ -9,6 +9,7 @@ export class OAuthRequest {
     schema: Joi.object({
       url: Joi.string().website().required(),
       method: Joi.string().valid("GET", "POST", "PUT").required(),
+      contentType: Joi.string().optional(),
       bodyParameters: Joi.array().items(OAuthParameter[_internal].schema).optional(),
       headerParameters: Joi.array().items(OAuthParameter[_internal].schema).optional(),
       queryParameters: Joi.array().items(OAuthParameter[_internal].schema).optional(),
@@ -19,6 +20,7 @@ export class OAuthRequest {
 
   public readonly url: string;
   public readonly method: OAuthRequestMethods;
+  public readonly contentType?: string
   public readonly bodyParameters?: readonly OAuthParameterDefinition[];
   public readonly headerParameters?: readonly OAuthParameterDefinition[];
   public readonly queryParameters?: readonly OAuthParameterDefinition[];

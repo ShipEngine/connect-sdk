@@ -20,7 +20,7 @@ export class OAuthRequest {
 
   public readonly url: string;
   public readonly method: OAuthRequestMethods;
-  public readonly contentType?: string
+  public readonly contentType?: string;
   public readonly bodyParameters?: readonly OAuthParameterDefinition[];
   public readonly headerParameters?: readonly OAuthParameterDefinition[];
   public readonly queryParameters?: readonly OAuthParameterDefinition[];
@@ -28,6 +28,7 @@ export class OAuthRequest {
   public constructor(pojo: OAuthRequestDefinition) {
     this.url = pojo.url;
     this.method = pojo.method;
+    this.contentType = pojo.contentType ? pojo.contentType : "application/json";
     this.bodyParameters = pojo.bodyParameters
       ? pojo.bodyParameters.map((bp) => new OAuthParameter(bp)) : [];
     this.headerParameters = pojo.headerParameters

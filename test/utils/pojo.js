@@ -480,10 +480,13 @@ const pojo = module.exports = {
           method: 'GET',
           url: 'https://sandbox.merchant.wish.com/v3/oauth/authorize',
           bodyParameters: [],
+          headerParameters: [],
+          contentType: "",
           queryParameters: [
             {
               name: 'client_id',
               value: '{CLIENT_ID}',
+              encoding: ""
             }
           ],
         },
@@ -493,6 +496,7 @@ const pojo = module.exports = {
             {
               name: 'code',
               value: '{AUTHORIZATION_CODE}',
+              encoding: ""
             }
           ],
         },
@@ -500,26 +504,33 @@ const pojo = module.exports = {
           method: 'GET',
           url: 'https://sandbox.merchant.wish.com/api/v3/oauth/access_token',
           bodyParameters: [],
+          headerParameters: [],
+          contentType: "application/json",
           queryParameters: [
             {
               name: 'client_id',
               value: '{CLIENT_ID}',
+              encoding: ""
             },
             {
               name: 'client_secret',
               value: '{CLIENT_SECRET}',
+              encoding: ""
             },
             {
               name: 'code',
               value: '{AUTHORIZATION_CODE}',
+              encoding: ""
             },
             {
               name: 'grant_type',
               value: 'authorization_code',
+              encoding: ""
             },
             {
               name: 'redirect_uri',
               value: 'https://ss-devss103.sslocal.com/api/oauth/redirect/WishV2',
+              encoding: ""
             }
           ],
         },
@@ -528,10 +539,12 @@ const pojo = module.exports = {
             {
               name: '$.data.access_token',
               value: '{ACCESS_TOKEN}',
+              encoding: ""
             },
             {
               name: '$.data.refresh_token',
               value: '{REFRESH_TOKEN}',
+              encoding: ""
             }
           ]
         }
@@ -541,22 +554,28 @@ const pojo = module.exports = {
           method: 'GET',
           url: 'https://sandbox.merchant.wish.com/api/v3/oauth/refresh_token',
           bodyParameters: [],
+          headerParameters: [],
+          contentType: "application/json",
           queryParameters: [
             {
               name: 'client_id',
               value: '{CLIENT_ID}',
+              encoding: ""
             },
             {
               name: 'client_secret',
               value: '{CLIENT_SECRET}',
+              encoding: ""
             },
             {
               name: 'grant_type',
               value: 'refresh_token',
+              encoding: ""
             },
             {
               name: 'refresh_token',
               value: '{REFRESH_TOKEN}',
+              encoding: ""
             }
           ],
         },
@@ -565,10 +584,12 @@ const pojo = module.exports = {
             {
               name: '$.data.access_token',
               value: '{ACCESS_TOKEN}',
+              encoding: ""
             },
             {
               name: '$.data.refresh_token',
               value: '{REFRESH_TOKEN}',
+              encoding: ""
             }
           ]
         }

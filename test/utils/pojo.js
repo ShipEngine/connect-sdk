@@ -481,7 +481,7 @@ const pojo = module.exports = {
           url: 'https://sandbox.merchant.wish.com/v3/oauth/authorize',
           bodyParameters: [],
           headerParameters: [],
-          contentType: "application/json",
+          contentType: "",
           queryParameters: [
             {
               name: 'client_id',

@@ -1,6 +1,7 @@
 import type { AddressWithContactInfoPOJO, DateTimeZonePOJO, NotePOJO, URLString, Charge } from "../common";
 import type { Buyer } from "./buyer";
 import type { PaymentMethod, PaymentStatus, SalesOrderStatus } from "./enums";
+import { RequestedFulfillmentPOJO } from "./requested-fulfillment";
 import type { SalesOrderIdentifierPOJO } from "./sales-order-identifier";
 import type { SalesOrderItem } from "./sales-order-item";
 import type { ShippingPreferences } from "./shipping-preferences";
@@ -45,22 +46,7 @@ export interface SalesOrder extends SalesOrderIdentifierPOJO {
   charges?: Charge[];
   
   
-  requestedFulfillments: Array<{
-    /**
-     * The items in this fulfillment request
-     */
-    items: readonly SalesOrderItem[];
-    
-    /**
-     * Shipping preferences for this order fulfillment
-     */
-    shippingPreferences?: ShippingPreferences;
-    
-    /**
-     * The address where the sales order item should be shipped
-     */
-    shipTo: AddressWithContactInfoPOJO;
-  }>;
+  requestedFulfillments: Array<RequestedFulfillmentPOJO>;
 
   /**
    * Human-readable information regarding this sales order, such as gift notes, backorder notices, etc.

@@ -47,4 +47,8 @@ export interface SalesOrderItem extends SalesOrderItemIdentifierPOJO {
    */
   thumbnailURL?: URLString | URL;
 
+  /**
+   * The location the product can be found in a warehouse
+   */
+  location?: string;
 }

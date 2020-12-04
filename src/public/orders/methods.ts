@@ -1,14 +1,14 @@
 import type { Transaction } from "../common";
 import { SalesOrders } from "./sales-orders";
-import type { SalesOrderTimeRange } from "./sales-order-time-range";
 import { SalesOrderShipment } from "./shipments/sales-order-shipment";
 import { SalesOrderNotification } from "./sales-order-notification";
 import { AcknowledgedSalesOrder } from "./acknowledged-sales-order";
+import { GetSalesOrdersByDateRequest } from "./get-sales-orders-by-date-request";
 
 /**
  * Returns all orders that were created and/or modified within a given timeframe
  */
-export type GetSalesOrdersByDate = (transaction: Transaction, range: SalesOrderTimeRange)
+export type GetSalesOrdersByDate = (transaction: Transaction, request: GetSalesOrdersByDateRequest)
 => SalesOrders | Promise<SalesOrders>;
 
 /**

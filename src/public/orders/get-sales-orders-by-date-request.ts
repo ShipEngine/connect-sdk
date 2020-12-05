@@ -15,11 +15,11 @@ export interface SalesOrderStatusMapping {
     /**
      * The raw status string used by the order source.
      */
-    source_status: string;
+    sourceStatus: string;
     /**
      * The sales order status. Values: 'AwaitingPayment',
      * 'AwaitingShipment', 'Cancelled', 'Completed', 'OnHold',
      * 'PendingFulfillment'
     */
-    maps_to: SalesOrderStatus;
+    mapsTo: SalesOrderStatus;
 }

@@ -16,6 +16,7 @@ export class SalesOrderItem extends SalesOrderItemIdentifierBase {
       unitWeight: Weight[_internal].schema,
       itemURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
       thumbnailURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
+      location: Joi.string().optional().allow(""),
     }),
   };
 
@@ -28,6 +29,7 @@ export class SalesOrderItem extends SalesOrderItemIdentifierBase {
   public readonly unitWeight?: Weight;
   public readonly itemURL?: URL;
   public readonly thumbnailURL?: URL;
+  public readonly location?: string;
 
   public constructor(pojo: SalesOrderItemPOJO) {
     super(pojo);
@@ -44,7 +46,7 @@ export class SalesOrderItem extends SalesOrderItemIdentifierBase {
     this.unitWeight = pojo.unitWeight && new Weight(pojo.unitWeight);
     this.itemURL = pojo.itemURL ? new URL(pojo.itemURL as string) : undefined;
     this.thumbnailURL = pojo.thumbnailURL ? new URL(pojo.thumbnailURL as string) : undefined;
-
+    this.location = pojo.location;
     // Make this object immutable
     hideAndFreeze(this);
   }

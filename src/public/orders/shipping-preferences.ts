@@ -34,4 +34,9 @@ export interface ShippingPreferences {
    * The requested date for the sales order to be delivered by.
    */
   deliverByDate?: DateTimeZonePOJO | Date | string;
+
+  /**
+   * The warehouse name associated with the requested warehouse.
+   */
+  requestedWarehouse?: string;
 }

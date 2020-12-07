@@ -1,4 +1,4 @@
-import type { Quantity } from "../../common";
+import type { NotePOJO, Quantity } from "../../common";
 import type { SalesOrderItemIdentifier } from "../../orders";
 import type { ProductIdentifier } from "../../products";
 
@@ -20,4 +20,14 @@ export interface SalesOrderPackageItem {
    * The quantity of this item in the package
    */
   readonly quantity: Quantity;
+  
+  /**
+   * The three character ISO 4217 code of the currency used for all monetary amounts
+   */
+  readonly currency?: string;
+
+  /**
+   * Additional notes associated with this notification or its sales order
+   */
+  readonly notes?: NotePOJO[];
 }

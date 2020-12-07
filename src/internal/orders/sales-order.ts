@@ -1,6 +1,7 @@
 import { PaymentMethod, PaymentStatus, SalesOrder as SalesOrderPOJO, SalesOrderStatus } from "../../public";
 import { AddressWithContactInfo, calculateTotalCharges, Charge, DateTimeZone, hideAndFreeze, Joi, MonetaryValue, Note, _internal } from "../common";
 import { Buyer } from "./buyer";
+import { RequestedFulfillment } from "./requested-fulfillment";
 import { SalesOrderIdentifier, SalesOrderIdentifierBase } from "./sales-order-identifier";
 import { SalesOrderItem } from "./sales-order-item";
 import { ShippingPreferences } from "./shipping-preferences";
@@ -17,13 +18,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
       buyer: Buyer[_internal].schema.required(),
       shippingPreferences: ShippingPreferences[_internal].schema,
       charges: Joi.array().min(1).items(Charge[_internal].schema),
-      requestedFulfillments: Joi.array().min(1).items(
-        Joi.object({
-          items: Joi.array().min(1).items(SalesOrderItem[_internal].schema).required(),
-          shippingPreferences: ShippingPreferences[_internal].schema,
-          shipTo: AddressWithContactInfo[_internal].schema.required()
-        })
-      ),
+      requestedFulfillments: Joi.array().min(1).items(RequestedFulfillment[_internal].schema),
       notes: Note[_internal].notesSchema,
       metadata: Joi.object(),
     }),
@@ -38,12 +33,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
 
   public readonly charges: readonly Charge[];
 
-  public readonly requestedFulfillments: Array<{
-    items: readonly SalesOrderItem[];
-    readonly shippingPreferences: ShippingPreferences;
-    readonly shipTo: AddressWithContactInfo;
-
-  }>;
+  public readonly requestedFulfillments: Array<RequestedFulfillment>;
 
   public readonly totalCharges: MonetaryValue;
   public readonly notes: readonly Note[];
@@ -63,11 +53,12 @@ export class SalesOrder extends SalesOrderIdentifierBase {
     this.totalCharges = calculateTotalCharges(this.charges);
     
     this.requestedFulfillments = pojo.requestedFulfillments.map((requestedFulfillment) => {
-      return {
+      return new RequestedFulfillment({
         items: requestedFulfillment.items.map((item) => new SalesOrderItem(item)),
         shippingPreferences: new ShippingPreferences(requestedFulfillment.shippingPreferences || {}),
-        shipTo: new AddressWithContactInfo(requestedFulfillment.shipTo)
-      };
+        shipTo: new AddressWithContactInfo(requestedFulfillment.shipTo),
+        extensions: requestedFulfillment.extensions
+      });
     });
 
     this.notes = pojo.notes || [];

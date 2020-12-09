@@ -8,6 +8,7 @@ export class ShippingPreferences {
       deliveryConfirmationType: Joi.string().enum(DeliveryConfirmationType),
       containsAlcohol: Joi.boolean(),
       saturdayDelivery: Joi.boolean(),
+      isGift: Joi.boolean().optional(),
       insuredValue: MonetaryValue[_internal].schema,
       requestedShippingService: Joi.string(),
       deliverByDate: DateTimeZone[_internal].schema,
@@ -18,6 +19,7 @@ export class ShippingPreferences {
   public readonly deliveryConfirmationType?: DeliveryConfirmationType;
   public readonly containsAlcohol: boolean;
   public readonly saturdayDelivery: boolean;
+  public readonly isGift: boolean;
   public readonly requestedShippingService: string;
   public readonly insuredValue?: MonetaryValue;
   public readonly deliverByDate?: DateTimeZone;
@@ -27,6 +29,7 @@ export class ShippingPreferences {
     this.deliveryConfirmationType = pojo.deliveryConfirmationType;
     this.containsAlcohol = pojo.containsAlcohol || false;
     this.saturdayDelivery = pojo.saturdayDelivery || false;
+    this.isGift = pojo.isGift || false;
     this.insuredValue = pojo.insuredValue && new MonetaryValue(pojo.insuredValue);
     this.requestedShippingService = pojo.requestedShippingService || "";
     this.deliverByDate = pojo.deliverByDate ? new DateTimeZone(pojo.deliverByDate) : undefined;

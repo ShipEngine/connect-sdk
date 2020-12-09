@@ -1,6 +1,7 @@
 import { PaymentStatus, SalesOrder as SalesOrderPOJO, SalesOrderStatus } from "../../public";
 import { AddressWithContactInfo, calculateTotalCharges, Charge, DateTimeZone, hideAndFreeze, Joi, MonetaryValue, Note, _internal } from "../common";
 import { Buyer } from "./buyer";
+import { OriginalOrderSource } from "./original-order-source";
 import { RequestedFulfillment } from "./requested-fulfillment";
 import { SalesOrderIdentifier, SalesOrderIdentifierBase } from "./sales-order-identifier";
 import { SalesOrderItem } from "./sales-order-item";
@@ -21,6 +22,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
       charges: Joi.array().min(1).items(Charge[_internal].schema),
       requestedFulfillments: Joi.array().min(1).items(RequestedFulfillment[_internal].schema),
       notes: Note[_internal].notesSchema,
+      originalOrderSource: OriginalOrderSource[_internal].schema.optional(),
       metadata: Joi.object(),
     }),
   };
@@ -39,6 +41,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
 
   public readonly totalCharges: MonetaryValue;
   public readonly notes: readonly Note[];
+  public readonly originalOrderSource?: OriginalOrderSource;
   public readonly metadata: object;
 
   public constructor(pojo: SalesOrderPOJO) {
@@ -65,6 +68,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
     });
 
     this.notes = pojo.notes || [];
+    this.originalOrderSource = pojo.originalOrderSource ? new OriginalOrderSource(pojo.originalOrderSource) : undefined;
     this.metadata = pojo.metadata || {};
 
     // Make this object immutable

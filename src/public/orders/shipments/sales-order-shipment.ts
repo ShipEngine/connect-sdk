@@ -48,4 +48,9 @@ export interface SalesOrderShipment extends ShipmentIdentifier {
    * Describes the items inside the package
    */
   readonly contents: readonly SalesOrderPackageItem[];
+
+  /**
+   * true to explicitly instruct the order source to notify the buyer. false to explicitly instruct the order source not to notify the buyer. Omit, or set to null, to retain the order source's default behavior.
+   */
+  readonly notifyBuyer?: boolean;
 }

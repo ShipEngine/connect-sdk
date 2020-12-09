@@ -13,6 +13,7 @@ export interface SalesOrderShipmentPOJO extends ShipmentIdentifierPOJO {
   shipTo?: AddressWithContactInfoPOJO;
   shipDateTime: DateTimeZonePOJO | Date | string;
   contents: readonly SalesOrderPackageItemPOJO[];
+  notifyBuyer?: boolean;
 }
 
 
@@ -28,6 +29,7 @@ export class SalesOrderShipment extends ShipmentIdentifierBase implements ISales
       shipTo: AddressWithContactInfo[_internal].schema,
       shipDateTime: DateTimeZone[_internal].schema.required(),
       contents: Joi.array().min(1).items(SalesOrderPackageItem[_internal].schema).required(),
+      notifyBuyer: Joi.boolean().optional(),
     }),
   };
 
@@ -40,6 +42,7 @@ export class SalesOrderShipment extends ShipmentIdentifierBase implements ISales
   public readonly shipTo?: AddressWithContactInfo;
   public readonly shipDateTime: DateTimeZone;
   public readonly contents: readonly SalesOrderPackageItem[];
+  public readonly notifyBuyer?: boolean;
 
 
   public constructor(pojo: SalesOrderShipmentPOJO) {
@@ -53,6 +56,7 @@ export class SalesOrderShipment extends ShipmentIdentifierBase implements ISales
     this.shipTo = pojo.shipTo && new AddressWithContactInfo(pojo.shipTo);
     this.shipDateTime = new DateTimeZone(pojo.shipDateTime);
     this.contents = (pojo.contents || []).map((item) => new SalesOrderPackageItem(item));
+    this.notifyBuyer = pojo.notifyBuyer;
 
     // Make this object immutable
     hideAndFreeze(this);

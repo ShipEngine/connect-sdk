@@ -71,6 +71,49 @@ describe("getSalesOrdersByDate", () => {
     });
   });
 
+  it("should work with an array with statusMapping data", async () => {
+    let app = new OrderApp(pojo.orderApp({
+      getSalesOrdersByDate() {
+
+        return {
+          salesOrders: [
+            pojo.salesOrder({ id: "Order1" }),
+            pojo.salesOrder({ id: "Order2" }),
+            pojo.salesOrder({ id: "Order3" }),
+          ],
+          paging: {
+            pageSize: 5,
+            pageNumber: 2,
+            pageCount: 10,
+            cursor: "cursor"
+          }
+        }
+      }
+    }));
+
+    const timeRange = pojo.timeRange();
+
+    timeRange.statusMappings = {
+      "customStatus1": "awaiting_payment",
+      "customStatus2": "on_hold"
+    }
+
+    let response = await app.getSalesOrdersByDate(pojo.transaction(), timeRange);
+
+    // The sales orders should be returned in order
+    let index = 0;
+    for (let salesOrder of response.salesOrders) {
+      expect(salesOrder).to.be.an.instanceOf(SalesOrder);
+      expect(salesOrder.id).to.equal(`Order${++index}`);
+    }
+    expect(response.paging).to.deep.equal({
+      pageSize: 5,
+      pageNumber: 2,
+      pageCount: 10,
+      cursor: "cursor"
+    });
+  });
+
 
   describe("Failure tests", () => {
 

@@ -1,18 +1,26 @@
-import { SalesOrderPaging as SalesOrderPagingPOJO, SalesOrderTimeRange as ISalesOrderTimeRange, TimeRangePOJO } from "../../public";
+import Joi = require("joi");
+import {
+  SalesOrderPaging as SalesOrderPagingPOJO,
+  SalesOrderStatus,
+  SalesOrderTimeRange as ISalesOrderTimeRange,
+  TimeRangePOJO
+} from "../../public";
 import { hideAndFreeze, TimeRange, TimeRangeBase, _internal } from "../common";
 import { SalesOrderPaging } from "./sales-order-paging";
 
-
 export interface SalesOrderTimeRangePOJO extends TimeRangePOJO {
   paging?: SalesOrderPagingPOJO;
+  statusMappings?: {
+    [key: string]: SalesOrderStatus;
+  };
 }
-
 
 export class SalesOrderTimeRange extends TimeRangeBase implements ISalesOrderTimeRange {
   public static readonly [_internal] = {
     label: "time range",
     schema: TimeRange[_internal].schema.keys({
-      paging: SalesOrderPaging[_internal].schema
+      paging: SalesOrderPaging[_internal].schema,
+      statusMappings: Joi.object().optional(),
     })
   };
 
@@ -25,12 +33,18 @@ export class SalesOrderTimeRange extends TimeRangeBase implements ISalesOrderTim
     readonly cursor?: string;
   };
 
+  public readonly statusMappings?: Readonly<{
+    [key: string]: SalesOrderStatus;
+  }>;
+
   public constructor(pojo: SalesOrderTimeRangePOJO) {
     super(pojo);
 
-    if(pojo.paging) {
+    if (pojo.paging) {
       this.paging = new SalesOrderPaging(pojo.paging);
     }
+
+    this.statusMappings = pojo.statusMappings;
 
     // Make this object immutable
     hideAndFreeze(this);

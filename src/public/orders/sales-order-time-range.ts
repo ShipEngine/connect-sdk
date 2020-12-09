@@ -1,3 +1,4 @@
+import { SalesOrderStatus } from ".";
 import type { TimeRange } from "../common";
 
 
@@ -6,8 +7,17 @@ import type { TimeRange } from "../common";
  */
 export interface SalesOrderTimeRange extends TimeRange {
   readonly paging?: Readonly<SalesOrderPaging>;
-}
 
+  /**
+   * A mapping of custom user-defined statuses to ShipEngine Connect statuses.
+   * 
+   * Each key is a user-defined status string, and the value is the corresponding
+   * ShipEngine Connect order status.
+   */
+  readonly statusMappings?: Readonly<{
+    [key: string]: SalesOrderStatus;
+  }>;
+}
 
 export interface SalesOrderPaging {
   /** The desired maximum number of items to return */

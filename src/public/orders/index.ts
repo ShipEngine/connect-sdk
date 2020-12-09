@@ -13,5 +13,4 @@ export * from "./sales-order-time-range";
 export * from "./shipments/sales-order-package-item";
 export * from "./shipments/sales-order-shipment";
 export * from "./shipping-preferences";
-export * from "./get-sales-orders-by-date-request";
 export * from "./requested-fulfillment";

@@ -403,6 +403,7 @@ const pojo = module.exports = {
   salesOrderIdentifier(props = {}) {
     return {
       id: "DUMMY_SALES_ORDER_ID",
+      orderNumber: undefined,
       ...props,
     };
   },

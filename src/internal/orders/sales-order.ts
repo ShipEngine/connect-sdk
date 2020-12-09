@@ -1,4 +1,4 @@
-import { PaymentMethod, PaymentStatus, SalesOrder as SalesOrderPOJO, SalesOrderStatus } from "../../public";
+import { PaymentStatus, SalesOrder as SalesOrderPOJO, SalesOrderStatus } from "../../public";
 import { AddressWithContactInfo, calculateTotalCharges, Charge, DateTimeZone, hideAndFreeze, Joi, MonetaryValue, Note, _internal } from "../common";
 import { Buyer } from "./buyer";
 import { RequestedFulfillment } from "./requested-fulfillment";
@@ -13,7 +13,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
       createdDateTime: DateTimeZone[_internal].schema.required(),
       lastModifiedDateTime: DateTimeZone[_internal].schema.optional(),
       status: Joi.string().enum(SalesOrderStatus).required(),
-      paymentMethod: Joi.string().enum(PaymentMethod),
+      paymentMethod: Joi.string(),
       paymentStatus: Joi.string().enum(PaymentStatus),
       orderURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
       buyer: Buyer[_internal].schema.required(),
@@ -28,7 +28,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
   public readonly createdDateTime: DateTimeZone;
   public readonly lastModifiedDateTime?: DateTimeZone;
   public readonly status: SalesOrderStatus;
-  public readonly paymentMethod?: PaymentMethod;
+  public readonly paymentMethod?: string;
   public readonly paymentStatus: PaymentStatus;
   public readonly orderURL?: URL;
   public readonly buyer: Buyer;

@@ -1,10 +1,8 @@
-import type { AddressWithContactInfoPOJO, DateTimeZonePOJO, NotePOJO, URLString, Charge } from "../common";
+import type { DateTimeZonePOJO, NotePOJO, URLString, Charge } from "../common";
 import type { Buyer } from "./buyer";
-import type { PaymentMethod, PaymentStatus, SalesOrderStatus } from "./enums";
+import type { PaymentStatus, SalesOrderStatus } from "./enums";
 import { RequestedFulfillmentPOJO } from "./requested-fulfillment";
 import type { SalesOrderIdentifierPOJO } from "./sales-order-identifier";
-import type { SalesOrderItem } from "./sales-order-item";
-import type { ShippingPreferences } from "./shipping-preferences";
 
 /**
  * A sales order
@@ -28,7 +26,7 @@ export interface SalesOrder extends SalesOrderIdentifierPOJO {
   /**
    * Indicates how the customer has paid for the order
    */
-  paymentMethod?: PaymentMethod;
+  paymentMethod?: string;
 
   /**
    * Indicates what the status of the customer payment for this order is.

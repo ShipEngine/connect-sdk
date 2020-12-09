@@ -11,6 +11,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
     label: "sales order",
     schema: SalesOrderIdentifier[_internal].schema.keys({
       createdDateTime: DateTimeZone[_internal].schema.required(),
+      lastModifiedDateTime: DateTimeZone[_internal].schema.optional(),
       status: Joi.string().enum(SalesOrderStatus).required(),
       paymentMethod: Joi.string().enum(PaymentMethod),
       paymentStatus: Joi.string().enum(PaymentStatus),
@@ -25,6 +26,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
   };
 
   public readonly createdDateTime: DateTimeZone;
+  public readonly lastModifiedDateTime?: DateTimeZone;
   public readonly status: SalesOrderStatus;
   public readonly paymentMethod?: PaymentMethod;
   public readonly paymentStatus: PaymentStatus;
@@ -43,6 +45,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
     super(pojo);
 
     this.createdDateTime = new DateTimeZone(pojo.createdDateTime);
+    this.lastModifiedDateTime = pojo.lastModifiedDateTime ? new DateTimeZone(pojo.lastModifiedDateTime) : undefined;
     this.status = pojo.status;
     this.paymentMethod = pojo.paymentMethod;
     this.paymentStatus = pojo.paymentStatus || PaymentStatus.AwaitingPayment;

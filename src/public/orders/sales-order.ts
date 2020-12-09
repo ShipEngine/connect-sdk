@@ -16,6 +16,11 @@ export interface SalesOrder extends SalesOrderIdentifierPOJO {
   createdDateTime: DateTimeZonePOJO | Date | string;
 
   /**
+   * The date/time that the sales order was last modified
+   */
+  lastModifiedDateTime?: DateTimeZonePOJO | Date | string;
+
+  /**
    * The current status
    */
   status: SalesOrderStatus;

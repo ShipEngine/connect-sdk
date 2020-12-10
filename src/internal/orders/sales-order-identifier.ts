@@ -4,13 +4,13 @@ import { hideAndFreeze, Identifiers, Joi, _internal } from "../common";
 
 export abstract class SalesOrderIdentifierBase implements ISalesOrderIdentifier {
   public readonly id: string;
-  public readonly orderNumber?: string;
+  public readonly orderNumber: string;
   public readonly identifiers: Identifiers;
 
   public constructor(pojo: SalesOrderIdentifierPOJO) {
     this.id = pojo.id;
     this.identifiers = new Identifiers(pojo.identifiers);
-    this.orderNumber = pojo.orderNumber;
+    this.orderNumber = pojo.orderNumber || "";
   }
 }
 

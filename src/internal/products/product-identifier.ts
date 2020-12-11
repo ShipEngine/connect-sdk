@@ -14,6 +14,7 @@ export class ProductIdentifier implements IProductIdentifier {
       fulfillmentSku: Joi.string().trim().singleLine().allow(""),
       inventoryID: Joi.string().trim().singleLine().allow(""),
       identifiers: Identifiers[_internal].schema,
+      details: Identifiers[_internal].schema,
     }),
   };
 
@@ -25,6 +26,7 @@ export class ProductIdentifier implements IProductIdentifier {
   public readonly fulfillmentSku: string;
   public readonly inventoryID: string;
   public readonly identifiers: Identifiers;
+  public readonly details: Identifiers;
 
   public constructor(pojo: ProductIdentifierPOJO) {
     this.id = pojo.id;
@@ -34,7 +36,7 @@ export class ProductIdentifier implements IProductIdentifier {
     this.asin = pojo.asin || "";
     this.fulfillmentSku = pojo.fulfillmentSku || "";
     this.inventoryID = pojo.inventoryID || "";
-
+    this.details = new Identifiers(pojo.details)
     this.identifiers = new Identifiers(pojo.identifiers);
 
     // Make this object immutable

@@ -14,3 +14,4 @@ export * from "./shipments/sales-order-package-item";
 export * from "./shipments/sales-order-shipment";
 export * from "./shipping-preferences";
 export * from "./requested-fulfillment";
+export * from "./original-order-source";

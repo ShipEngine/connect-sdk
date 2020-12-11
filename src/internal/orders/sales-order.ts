@@ -1,6 +1,7 @@
-import { PaymentMethod, PaymentStatus, SalesOrder as SalesOrderPOJO, SalesOrderStatus } from "../../public";
+import { PaymentStatus, SalesOrder as SalesOrderPOJO, SalesOrderStatus } from "../../public";
 import { AddressWithContactInfo, calculateTotalCharges, Charge, DateTimeZone, hideAndFreeze, Joi, MonetaryValue, Note, _internal } from "../common";
 import { Buyer } from "./buyer";
+import { OriginalOrderSource } from "./original-order-source";
 import { RequestedFulfillment } from "./requested-fulfillment";
 import { SalesOrderIdentifier, SalesOrderIdentifierBase } from "./sales-order-identifier";
 import { SalesOrderItem } from "./sales-order-item";
@@ -11,8 +12,9 @@ export class SalesOrder extends SalesOrderIdentifierBase {
     label: "sales order",
     schema: SalesOrderIdentifier[_internal].schema.keys({
       createdDateTime: DateTimeZone[_internal].schema.required(),
+      lastModifiedDateTime: DateTimeZone[_internal].schema.optional(),
       status: Joi.string().enum(SalesOrderStatus).required(),
-      paymentMethod: Joi.string().enum(PaymentMethod),
+      paymentMethod: Joi.string(),
       paymentStatus: Joi.string().enum(PaymentStatus),
       orderURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
       buyer: Buyer[_internal].schema.required(),
@@ -20,13 +22,15 @@ export class SalesOrder extends SalesOrderIdentifierBase {
       charges: Joi.array().min(1).items(Charge[_internal].schema),
       requestedFulfillments: Joi.array().min(1).items(RequestedFulfillment[_internal].schema),
       notes: Note[_internal].notesSchema,
+      originalOrderSource: OriginalOrderSource[_internal].schema.optional(),
       metadata: Joi.object(),
     }),
   };
 
   public readonly createdDateTime: DateTimeZone;
+  public readonly lastModifiedDateTime?: DateTimeZone;
   public readonly status: SalesOrderStatus;
-  public readonly paymentMethod?: PaymentMethod;
+  public readonly paymentMethod?: string;
   public readonly paymentStatus: PaymentStatus;
   public readonly orderURL?: URL;
   public readonly buyer: Buyer;
@@ -37,12 +41,14 @@ export class SalesOrder extends SalesOrderIdentifierBase {
 
   public readonly totalCharges: MonetaryValue;
   public readonly notes: readonly Note[];
+  public readonly originalOrderSource?: OriginalOrderSource;
   public readonly metadata: object;
 
   public constructor(pojo: SalesOrderPOJO) {
     super(pojo);
 
     this.createdDateTime = new DateTimeZone(pojo.createdDateTime);
+    this.lastModifiedDateTime = pojo.lastModifiedDateTime ? new DateTimeZone(pojo.lastModifiedDateTime) : undefined;
     this.status = pojo.status;
     this.paymentMethod = pojo.paymentMethod;
     this.paymentStatus = pojo.paymentStatus || PaymentStatus.AwaitingPayment;
@@ -62,6 +68,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
     });
 
     this.notes = pojo.notes || [];
+    this.originalOrderSource = pojo.originalOrderSource ? new OriginalOrderSource(pojo.originalOrderSource) : undefined;
     this.metadata = pojo.metadata || {};
 
     // Make this object immutable

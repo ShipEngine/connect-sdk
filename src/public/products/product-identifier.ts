@@ -43,6 +43,12 @@ export interface ProductIdentifierPOJO {
    * Your own identifiers for this product
    */
   identifiers?: IdentifiersPOJO;
+
+  /**
+   * A list of details associated with this product
+   * { "Color": "White", "Style": "Avant Garde" }
+   */
+  details?: IdentifiersPOJO;
 }
 
 /**
@@ -88,4 +94,10 @@ export interface ProductIdentifier {
    * Your own identifiers for this product
    */
   readonly identifiers: Identifiers;
+
+  /**
+   * A list of details associated with this product
+   * { "Color": "White", "Style": "Avant Garde" }
+   */
+  readonly details: Identifiers;
 }

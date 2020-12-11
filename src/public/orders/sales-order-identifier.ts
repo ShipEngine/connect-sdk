@@ -11,6 +11,11 @@ export interface SalesOrderIdentifierPOJO {
   id: string;
 
   /**
+   * The customer facing identifier of the sales order
+   */
+  orderNumber?: string;
+
+  /**
    * Your own identifiers for this sales order
    */
   identifiers?: IdentifiersPOJO;
@@ -25,6 +30,11 @@ export interface SalesOrderIdentifier {
    * The marketplace's unique ID for the sales order
    */
   readonly id: string;
+
+  /**
+   * The customer facing identifier of the sales order
+   */
+  readonly orderNumber?: string;
 
   /**
    * Your own identifiers for this sales order

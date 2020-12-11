@@ -21,6 +21,11 @@ export interface ShippingPreferences {
   saturdayDelivery?: boolean;
 
   /**
+   * Indicates whether the item has been marked as a gift
+   */
+  isGift?: boolean;
+
+  /**
    * Requests that the shipment be insured for the specified value
    */
   insuredValue?: MonetaryValuePOJO;

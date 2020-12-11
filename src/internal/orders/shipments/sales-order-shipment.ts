@@ -1,6 +1,6 @@
-import { AddressWithContactInfoPOJO, DateTimeZonePOJO, SalesOrderIdentifierPOJO, SalesOrderShipment as ISalesOrderShipment, ShipmentIdentifierPOJO, URLString } from "../../../public";
+import { AddressWithContactInfoPOJO, ChargePOJO, DateTimeZonePOJO, SalesOrderIdentifierPOJO, SalesOrderShipment as ISalesOrderShipment, ShipmentIdentifierPOJO, URLString } from "../../../public";
 import { ShipmentIdentifier, ShipmentIdentifierBase } from "../../carriers";
-import { AddressWithContactInfo, DateTimeZone, hideAndFreeze, Joi, _internal } from "../../common";
+import { AddressWithContactInfo, DateTimeZone, Charge, hideAndFreeze, Joi, _internal } from "../../common";
 import { SalesOrderPackageItem, SalesOrderPackageItemPOJO } from "./sales-order-package-item";
 import { SalesOrderIdentifier } from "../../orders/sales-order-identifier";
 
@@ -13,6 +13,9 @@ export interface SalesOrderShipmentPOJO extends ShipmentIdentifierPOJO {
   shipTo?: AddressWithContactInfoPOJO;
   shipDateTime: DateTimeZonePOJO | Date | string;
   contents: readonly SalesOrderPackageItemPOJO[];
+  notifyBuyer?: boolean;
+  fulfillmentCost?: ChargePOJO;
+  insuranceCost?: ChargePOJO;
 }
 
 
@@ -28,6 +31,9 @@ export class SalesOrderShipment extends ShipmentIdentifierBase implements ISales
       shipTo: AddressWithContactInfo[_internal].schema,
       shipDateTime: DateTimeZone[_internal].schema.required(),
       contents: Joi.array().min(1).items(SalesOrderPackageItem[_internal].schema).required(),
+      notifyBuyer: Joi.boolean().optional(),
+      fulfillmentCost: Charge[_internal].schema.optional(),
+      insuranceCost: Charge[_internal].schema.optional(),
     }),
   };
 
@@ -40,7 +46,9 @@ export class SalesOrderShipment extends ShipmentIdentifierBase implements ISales
   public readonly shipTo?: AddressWithContactInfo;
   public readonly shipDateTime: DateTimeZone;
   public readonly contents: readonly SalesOrderPackageItem[];
-
+  public readonly notifyBuyer?: boolean;
+  public readonly fulfillmentCost?: Charge;
+  public readonly insuranceCost?: Charge;
 
   public constructor(pojo: SalesOrderShipmentPOJO) {
     super(pojo);
@@ -53,6 +61,9 @@ export class SalesOrderShipment extends ShipmentIdentifierBase implements ISales
     this.shipTo = pojo.shipTo && new AddressWithContactInfo(pojo.shipTo);
     this.shipDateTime = new DateTimeZone(pojo.shipDateTime);
     this.contents = (pojo.contents || []).map((item) => new SalesOrderPackageItem(item));
+    this.notifyBuyer = pojo.notifyBuyer;
+    this.fulfillmentCost = pojo.fulfillmentCost ? new Charge(pojo.fulfillmentCost) : undefined;
+    this.insuranceCost = pojo.insuranceCost ? new Charge(pojo.insuranceCost) : undefined;
 
     // Make this object immutable
     hideAndFreeze(this);

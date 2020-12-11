@@ -1,10 +1,9 @@
-import type { AddressWithContactInfoPOJO, DateTimeZonePOJO, NotePOJO, URLString, Charge } from "../common";
+import type { DateTimeZonePOJO, NotePOJO, URLString, Charge } from "../common";
 import type { Buyer } from "./buyer";
-import type { PaymentMethod, PaymentStatus, SalesOrderStatus } from "./enums";
+import type { PaymentStatus, SalesOrderStatus } from "./enums";
+import { OriginalOrderSource } from "./original-order-source";
 import { RequestedFulfillmentPOJO } from "./requested-fulfillment";
 import type { SalesOrderIdentifierPOJO } from "./sales-order-identifier";
-import type { SalesOrderItem } from "./sales-order-item";
-import type { ShippingPreferences } from "./shipping-preferences";
 
 /**
  * A sales order
@@ -16,6 +15,11 @@ export interface SalesOrder extends SalesOrderIdentifierPOJO {
   createdDateTime: DateTimeZonePOJO | Date | string;
 
   /**
+   * The date/time that the sales order was last modified
+   */
+  lastModifiedDateTime?: DateTimeZonePOJO | Date | string;
+
+  /**
    * The current status
    */
   status: SalesOrderStatus;
@@ -23,7 +27,7 @@ export interface SalesOrder extends SalesOrderIdentifierPOJO {
   /**
    * Indicates how the customer has paid for the order
    */
-  paymentMethod?: PaymentMethod;
+  paymentMethod?: string;
 
   /**
    * Indicates what the status of the customer payment for this order is.
@@ -52,6 +56,11 @@ export interface SalesOrder extends SalesOrderIdentifierPOJO {
    * Human-readable information regarding this sales order, such as gift notes, backorder notices, etc.
    */
   notes?: NotePOJO[];
+
+  /**
+   * Information regarding the original order source.
+   */
+  originalOrderSource?: OriginalOrderSource;
 
   /**
    * Arbitrary data about this sales order that will be persisted by the ShipEngine Connect.

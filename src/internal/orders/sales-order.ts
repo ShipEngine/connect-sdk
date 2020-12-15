@@ -14,7 +14,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
       createdDateTime: DateTimeZone[_internal].schema.required(),
       lastModifiedDateTime: DateTimeZone[_internal].schema.optional(),
       status: Joi.string().enum(SalesOrderStatus).required(),
-      paymentMethod: Joi.alternatives(Joi.string(), Joi.string().enum(PaymentMethod)),
+      paymentMethod: Joi.alternatives(Joi.string().enum(PaymentMethod), Joi.string()),
       paymentStatus: Joi.string().enum(PaymentStatus),
       orderURL: Joi.alternatives(Joi.object().website(), Joi.string().website()),
       buyer: Buyer[_internal].schema.required(),
@@ -30,7 +30,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
   public readonly createdDateTime: DateTimeZone;
   public readonly lastModifiedDateTime?: DateTimeZone;
   public readonly status: SalesOrderStatus;
-  public readonly paymentMethod?: string | PaymentMethod ;
+  public readonly paymentMethod?: PaymentMethod | string;
   public readonly paymentStatus: PaymentStatus;
   public readonly orderURL?: URL;
   public readonly buyer: Buyer;

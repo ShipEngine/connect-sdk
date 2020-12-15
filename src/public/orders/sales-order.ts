@@ -27,7 +27,7 @@ export interface SalesOrder extends SalesOrderIdentifierPOJO {
   /**
    * Indicates how the customer has paid for the order
    */
-  paymentMethod?: string | PaymentMethod;
+  paymentMethod?: PaymentMethod | string;
 
   /**
    * Indicates what the status of the customer payment for this order is.

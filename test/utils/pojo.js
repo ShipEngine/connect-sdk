@@ -428,6 +428,7 @@ const pojo = module.exports = {
       createdDateTime: "2005-05-05T05:05:05Z",
       status: "awaiting_shipment",
       buyer: pojo.buyer(),
+      paymentMethod: "cash",
       requestedFulfillments: [
         {
           items: [pojo.salesOrderItem()],

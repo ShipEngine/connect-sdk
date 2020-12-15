@@ -1,6 +1,4 @@
 import type { DateTimeZonePOJO, DeliveryConfirmationType, MonetaryValuePOJO } from "../common";
-import { OrderSourcePolicies } from "./order-source-policies";
-
 
 /**
  * Preferences about how a sales order or item should be shipped
@@ -47,11 +45,15 @@ export interface ShippingPreferences {
    */
   shipByDate?: DateTimeZonePOJO | Date | string;
 
+  /**
+   * Indicates whether the shipment needs to be marked as a premium program (Prime, Walmart+, etc.)
+   */
+  isPremiumProgram?: boolean;
 
   /**
-   * The requested policies for the requested fulfillment
+   * Name of premium program
    */
-  orderSourcePolicies?: OrderSourcePolicies;
+  premiumProgramName?: string;
 
   /**
    * The warehouse name associated with the requested warehouse.

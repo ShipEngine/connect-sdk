@@ -1,6 +1,5 @@
 import type { DateTimeZonePOJO, DeliveryConfirmationType, MonetaryValuePOJO } from "../common";
 
-
 /**
  * Preferences about how a sales order or item should be shipped
  */
@@ -39,6 +38,22 @@ export interface ShippingPreferences {
    * The requested date for the sales order to be delivered by.
    */
   deliverByDate?: DateTimeZonePOJO | Date | string;
+
+
+  /**
+   * The requested date for the fulfillment to be shipped by.
+   */
+  shipByDate?: DateTimeZonePOJO | Date | string;
+
+  /**
+   * Indicates whether the shipment needs to be marked as a premium program (Prime, Walmart+, etc.)
+   */
+  isPremiumProgram?: boolean;
+
+  /**
+   * Name of premium program
+   */
+  premiumProgramName?: string;
 
   /**
    * The warehouse name associated with the requested warehouse.

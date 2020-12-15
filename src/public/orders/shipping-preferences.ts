@@ -1,4 +1,5 @@
 import type { DateTimeZonePOJO, DeliveryConfirmationType, MonetaryValuePOJO } from "../common";
+import { OrderSourcePolicies } from "./order-source-policies";
 
 
 /**
@@ -39,6 +40,18 @@ export interface ShippingPreferences {
    * The requested date for the sales order to be delivered by.
    */
   deliverByDate?: DateTimeZonePOJO | Date | string;
+
+
+  /**
+   * The requested date for the fulfillment to be shipped by.
+   */
+  shipByDate?: DateTimeZonePOJO | Date | string;
+
+
+  /**
+   * The requested policies for the requested fulfillment
+   */
+  orderSourcePolicies?: OrderSourcePolicies;
 
   /**
    * The warehouse name associated with the requested warehouse.

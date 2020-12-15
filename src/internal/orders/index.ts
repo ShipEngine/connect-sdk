@@ -14,4 +14,5 @@ export * from "./shipping-preferences";
 export * from "./utils";
 export * from "./sales-order-paging";
 export * from "./requested-fulfillment";
+export * from "./order-source-policies";
 export * from "./original-order-source";

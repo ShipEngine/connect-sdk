@@ -1,6 +1,6 @@
 {
   "name": "@shipengine/connect-sdk",
-  "version": "12.3.0",
+  "version": "12.3.1",
   "description": "The official SDK for building ShipEngine connect apps",
   "keywords": [
     "shipengine",
@@ -52,8 +52,8 @@
     "@types/mocha": "^8.2.0",
     "@types/node": "^14.14.13",
     "@types/uuid": "^8.3.0",
-    "@typescript-eslint/eslint-plugin": "^4.9.1",
-    "@typescript-eslint/parser": "^4.9.1",
+    "@typescript-eslint/eslint-plugin": "^4.10.0",
+    "@typescript-eslint/parser": "^4.10.0",
     "chai": "^4.2.0",
     "eslint": "^7.15.0",
     "mocha": "^8.2.1",

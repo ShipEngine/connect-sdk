@@ -63,5 +63,5 @@ export interface SalesOrderShipment extends ShipmentIdentifier {
   /**
    * The insurance cost for this shipment.
    */
-  readonly insuranceCost ?: Charge;
+  readonly insuranceCost?: Charge;
 }

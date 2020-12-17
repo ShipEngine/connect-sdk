@@ -1,5 +1,5 @@
 import { ShipmentIdentifier } from "../../carriers";
-import type { AddressWithContactInfo, DateTimeZone } from "../../common";
+import type { AddressWithContactInfo, Charge, DateTimeZone } from "../../common";
 import { SalesOrderPackageItem } from "./sales-order-package-item";
 import type { SalesOrderIdentifier } from "../../orders";
 
@@ -54,4 +54,14 @@ export interface SalesOrderShipment extends ShipmentIdentifier {
    * Omit, or set to null, to retain the order source's default behavior.
    */
   readonly notifyBuyer?: boolean;
+
+  /**
+   * The total cost of fulfilling the shipment.
+   */
+  readonly fulfillmentCost?: Charge;
+
+  /**
+   * The insurance cost for this shipment.
+   */
+  readonly insuranceCost?: Charge;
 }

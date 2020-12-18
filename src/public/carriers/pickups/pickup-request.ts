@@ -1,4 +1,5 @@
 import type { Address, ContactInfo, Note, TimeRange } from "../../common";
+import { CustomShippingOptions } from "../types";
 import type { PickupService } from "./pickup-service";
 import type { PickupShipment } from "./pickup-shipment";
 
@@ -36,4 +37,7 @@ export interface PickupRequest {
    * The shipments to be picked up
    */
   readonly shipments: readonly PickupShipment[];
+  
+  readonly customShippingOptions: CustomShippingOptions;
+
 }

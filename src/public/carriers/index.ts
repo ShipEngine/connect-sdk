@@ -38,3 +38,4 @@ export * from "./tracking/package-tracking-info";
 export * from "./tracking/tracking-criteria";
 export * from "./tracking/tracking-event";
 export * from "./tracking/tracking-info";
+export * from "./types";

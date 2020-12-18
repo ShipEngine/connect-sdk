@@ -4,6 +4,7 @@ import { DeliveryService } from "../delivery-service";
 import { calculateTotalInsuranceAmount } from "../utils";
 import { PackageRateCriteria, PackageRateCriteriaPOJO } from "./package-rate-criteria";
 import { DeliveryConfirmation } from "../delivery-confirmation";
+import { CustomShippingOptions } from "../../../public/carriers/types";
 
 
 export interface RateCriteriaPOJO {
@@ -16,6 +17,7 @@ export interface RateCriteriaPOJO {
   returns?: { isReturn?: boolean };
   packages: readonly PackageRateCriteriaPOJO[];
   deliveryConfirmation?: DeliveryConfirmationIdentifierPOJO | string;
+  customShippingOptions: CustomShippingOptions;
 }
 
 
@@ -40,6 +42,10 @@ export class RateCriteria implements IRateCriteria {
         DefinitionIdentifier[_internal].schema.unknown(true),
         Joi.string()
       ),
+      customShippingOptions: Joi.object({
+        dangerousGoodsCategory: Joi.string().optional(),
+        billDutiesToSender: Joi.boolean().optional()
+      })
     }),
   };
 
@@ -52,6 +58,7 @@ export class RateCriteria implements IRateCriteria {
   public readonly totalInsuredValue?: MonetaryValue;
   public readonly packages: readonly PackageRateCriteria[];
   public readonly deliveryConfirmation?: DeliveryConfirmation;
+  public readonly customShippingOptions: CustomShippingOptions;
 
   public readonly returns: {
     readonly isReturn: boolean;
@@ -83,6 +90,8 @@ export class RateCriteria implements IRateCriteria {
     this.totalInsuredValue = calculateTotalInsuranceAmount(this.packages);
 
     this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmation, DeliveryConfirmation);
+
+    this.customShippingOptions = pojo.customShippingOptions || {};
 
     // Make this object immutable
     hideAndFreeze(this);

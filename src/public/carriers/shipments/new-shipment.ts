@@ -79,5 +79,8 @@ export interface NewShipment {
    */
   readonly package: NewPackage;
 
+  /**
+   * Custom shipping options for creating rates.
+   */
   readonly customShippingOptions: CustomShippingOptions;
 }

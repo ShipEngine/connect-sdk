@@ -38,6 +38,9 @@ export interface PickupRequest {
    */
   readonly shipments: readonly PickupShipment[];
   
+  /**
+   * Custom carrier shipping options for scheduling the pickup.
+   */
   readonly customShippingOptions: CustomShippingOptions;
 
 }

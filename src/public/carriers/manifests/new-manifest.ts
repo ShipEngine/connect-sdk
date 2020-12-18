@@ -36,6 +36,9 @@ export interface NewManifest {
    */
   readonly shipments: readonly ShipmentIdentifier[];
 
+  /**
+   * Custom carrier shipping options for creating manifests.
+   */
   readonly customShippingOptions: CustomShippingOptions;
 
 }

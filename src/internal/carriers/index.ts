@@ -32,6 +32,7 @@ export * from "./shipments/shipment-cancellation";
 export * from "./shipments/shipment-cancellation-outcome";
 export * from "./shipments/shipment-confirmation";
 export * from "./shipments/shipment-identifier";
+export * from "./shipping-options";
 export * from "./tracking/package-tracking-info";
 export * from "./tracking/tracking-criteria";
 export * from "./tracking/tracking-event";

@@ -3,7 +3,7 @@ import type { DeliveryService } from "../delivery-service";
 import type { FulfillmentService } from "../fulfillment-service";
 import type { PackageRateCriteria } from "./package-rate-criteria";
 import type { DeliveryConfirmation } from "../delivery-confirmation";
-import { ShippingOptions } from "../types";
+import { ShippingOptions } from "../shipping-options";
 
 
 /**
@@ -81,6 +81,6 @@ export interface RateCriteria {
   /**
    * Custom carrier shipping options for creating rates.
    */
-  readonly shippingOptions: ShippingOptions;
+  readonly shippingOptions?: ShippingOptions;
 
 }

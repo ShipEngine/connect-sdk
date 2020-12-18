@@ -4,7 +4,7 @@
  * in the future.
  */
 
-export type ShippingOptions = {
+export interface ShippingOptions {
   /**
    * What category of dangerous goods(if any) does the shipment contents contain.
    */
@@ -14,4 +14,4 @@ export type ShippingOptions = {
    * Indicates if the carrier should bill duties to the sender.
    */
   billDutiesToSender?: boolean;
-};
+}

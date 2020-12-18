@@ -4,8 +4,8 @@ import { DeliveryService } from "../delivery-service";
 import { calculateTotalInsuranceAmount } from "../utils";
 import { PackageRateCriteria, PackageRateCriteriaPOJO } from "./package-rate-criteria";
 import { DeliveryConfirmation } from "../delivery-confirmation";
-import { ShippingOptions } from "../../../public/carriers/types";
-
+import { ShippingOptions } from "../shipping-options";
+import { ShippingOptions as ShippingOptionsPOJO} from "../../../public"
 
 export interface RateCriteriaPOJO {
   deliveryService?: DeliveryServiceIdentifierPOJO | string;
@@ -17,7 +17,7 @@ export interface RateCriteriaPOJO {
   returns?: { isReturn?: boolean };
   packages: readonly PackageRateCriteriaPOJO[];
   deliveryConfirmation?: DeliveryConfirmationIdentifierPOJO | string;
-  shippingOptions: ShippingOptions;
+  shippingOptions: ShippingOptionsPOJO;
 }
 
 
@@ -42,10 +42,8 @@ export class RateCriteria implements IRateCriteria {
         DefinitionIdentifier[_internal].schema.unknown(true),
         Joi.string()
       ),
-      shippingOptions: Joi.object({
-        dangerousGoodsCategory: Joi.string().optional(),
-        billDutiesToSender: Joi.boolean().optional()
-      })
+      shippingOptions: ShippingOptions[_internal].schema
+
     }),
   };
 
@@ -58,7 +56,7 @@ export class RateCriteria implements IRateCriteria {
   public readonly totalInsuredValue?: MonetaryValue;
   public readonly packages: readonly PackageRateCriteria[];
   public readonly deliveryConfirmation?: DeliveryConfirmation;
-  public readonly shippingOptions: ShippingOptions;
+  public readonly shippingOptions?: ShippingOptions;
 
   public readonly returns: {
     readonly isReturn: boolean;
@@ -91,7 +89,7 @@ export class RateCriteria implements IRateCriteria {
 
     this.deliveryConfirmation = app[_internal].references.lookup(pojo.deliveryConfirmation, DeliveryConfirmation);
 
-    this.shippingOptions = pojo.shippingOptions || {};
+    this.shippingOptions = pojo.shippingOptions ? new ShippingOptions(pojo.shippingOptions) : undefined;
 
     // Make this object immutable
     hideAndFreeze(this);

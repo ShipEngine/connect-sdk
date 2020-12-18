@@ -34,6 +34,7 @@ export { PickupRequestPOJO as PickupRequest } from "./carriers/pickups/pickup-re
 export { RateCriteriaPOJO as RateCriteria } from "./carriers/rates/rate-criteria";
 export { NewShipmentPOJO as NewShipment } from "./carriers/shipments/new-shipment";
 export { ShipmentCancellationPOJO as ShipmentCancellation } from "./carriers/shipments/shipment-cancellation";
+export { ShippingOptions } from "./../public/carriers/shipping-options";
 export { TrackingCriteriaPOJO as TrackingCriteria } from "./carriers/tracking/tracking-criteria";
 export { TransactionPOJO as Transaction } from "./common/transaction";
 export { ShipmentIdentifierPOJO as ShipmentIdentifier } from "../public/carriers/shipments/shipment-identifier";

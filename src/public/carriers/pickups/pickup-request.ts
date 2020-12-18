@@ -36,4 +36,5 @@ export interface PickupRequest {
    * The shipments to be picked up
    */
   readonly shipments: readonly PickupShipment[];
+  
 }

@@ -4,6 +4,7 @@ import { DeliveryService } from "../delivery-service";
 import { NewPackage, NewPackagePOJO } from "../packages/new-package";
 import { calculateTotalInsuranceAmount } from "../utils";
 import { DeliveryConfirmation } from "../delivery-confirmation";
+import { ShippingOptions } from "../../../public/carriers/types";
 
 export interface NewShipmentPOJO {
   deliveryService: DeliveryServiceIdentifierPOJO | string;
@@ -17,6 +18,7 @@ export interface NewShipmentPOJO {
   };
   packages: readonly NewPackagePOJO[];
   deliveryConfirmation?: DeliveryConfirmationIdentifierPOJO | DeliveryConfirmationType;
+  shippingOptions?: ShippingOptions;
 }
 
 
@@ -41,6 +43,10 @@ export class NewShipment implements INewShipment {
         Joi.string()
       ),
       packages: Joi.array().min(1).items(NewPackage[_internal].schema).required(),
+      shippingOptions: Joi.object({
+        dangerousGoodsCategory: Joi.string().optional(),
+        billDutiesToSender: Joi.boolean().optional(),
+      })
     }),
   };
 
@@ -51,6 +57,7 @@ export class NewShipment implements INewShipment {
   public readonly shipDateTime: DateTimeZone;
   public readonly totalInsuredValue: MonetaryValue;
   public readonly deliveryConfirmation?: DeliveryConfirmation;
+  public readonly shippingOptions: ShippingOptions;
 
   public get isNonMachinable(): boolean {
     return this.packages.some((pkg) => pkg.isNonMachinable);
@@ -85,6 +92,8 @@ export class NewShipment implements INewShipment {
 
     this.packages = pojo.packages.map((parcel) => new NewPackage(parcel, app));
     this.totalInsuredValue = calculateTotalInsuranceAmount(this.packages);
+
+    this.shippingOptions = pojo.shippingOptions || {};
 
     // Make this object immutable
     hideAndFreeze(this);

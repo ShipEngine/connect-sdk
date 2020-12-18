@@ -12,7 +12,6 @@ export interface PickupRequestPOJO {
   shipments: readonly PickupShipmentPOJO[];
 }
 
-
 export class PickupRequest implements IPickupRequest {
   public static readonly [_internal] = {
     label: "pickup request",

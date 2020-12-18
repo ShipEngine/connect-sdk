@@ -2,6 +2,7 @@ import type { AddressWithContactInfo, DateTimeZone, MonetaryValue } from "../../
 import type { DeliveryService } from "../delivery-service";
 import type { NewPackage } from "../packages/new-package";
 import { DeliveryConfirmation } from "../delivery-confirmation";
+import { ShippingOptions } from "../types";
 
 /**
  * The information needed to create a new shipment
@@ -77,4 +78,9 @@ export interface NewShipment {
    * Useful for carriers that only support single-piece shipments.
    */
   readonly package: NewPackage;
+
+  /**
+   * Custom shipping options for creating shipments.
+   */
+  readonly shippingOptions: ShippingOptions;
 }

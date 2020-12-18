@@ -34,4 +34,5 @@ export interface NewManifest {
    * All other shipments will be manifested.
    */
   readonly shipments: readonly ShipmentIdentifier[];
+
 }

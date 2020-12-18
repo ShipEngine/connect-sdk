@@ -242,6 +242,12 @@ describe("createShipment", () => {
       })
     }));
 
+    const newShipment = pojo.newShipment();
+    newShipment.shippingOptions = {
+      billDutiesToSender: true,
+      dangerousGoodsCategory: "Lithium Metal"
+    }
+
     let confirmation = await app.createShipment(pojo.transaction(), pojo.newShipment());
 
     expect(confirmation).to.deep.equal({
@@ -635,6 +641,26 @@ describe("createShipment", () => {
       catch (error) {
         expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: deliveryService is required, shipFrom must be of type object, shipTo must be of type object, shipDateTime must be one of date, string, object, packages must contain at least 1 items");
       }
+    });
+
+    it("should thrown an error if incorrect custom shipping options are used", async () => {
+      let app = new CarrierApp(pojo.carrierApp({
+        createShipment: () => {}
+      }));
+  
+      const newShipment = pojo.newShipment();
+      newShipment.shippingOptions = {
+        notSupportedOption: true
+      }
+
+      try {
+        await app.createShipment(pojo.transaction(), newShipment);
+        assert.fail("An error should have been thrown");
+      }
+      catch (error) {
+        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: shippingOptions.notSupportedOption is not allowed");
+      }
+  
     });
 
     it("should throw an error if nothing is returned", async () => {

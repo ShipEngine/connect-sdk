@@ -286,6 +286,11 @@ describe("rateShipment", () => {
 
     const rateCritera = pojo.rateCriteria();
 
+    rateCritera.shippingOptions = {
+      billDutiesToSender: true,
+      dangerousGoodsCategory: "Lithium Metal"
+    };
+
     rateCritera.packages[0].customs = {
       contents: [{
         type: "gift",
@@ -409,6 +414,26 @@ describe("rateShipment", () => {
         expect(error.message).to.equal("Invalid input to the rateShipment method. Invalid shipment: deliveryService must be one of object, string, shipDateTime is required, deliveryDateTime must be a valid date/time, shipFrom is required, shipTo is required, packages must contain at least 1 items");
       }
     });
+
+    it("should throw an error if incorrect custom shipping options are used", async () => {
+      let app = new CarrierApp(pojo.carrierApp({
+        rateShipment() { }
+      }));
+
+      const rateCriteria = pojo.rateCriteria();
+      rateCriteria.shippingOptions = {
+        notSupportedOption: true
+      };
+
+      try {
+        await app.rateShipment(pojo.transaction(), rateCriteria);
+        assert.fail("An error should have been thrown");
+      }
+      catch (error) {
+        expect(error.message).to.equal("Invalid input to the rateShipment method. Invalid shipment: shippingOptions.notSupportedOption is not allowed");
+      }
+    });
+    
 
     it("should throw an error if nothing is returned", async () => {
       let app = new CarrierApp(pojo.carrierApp({

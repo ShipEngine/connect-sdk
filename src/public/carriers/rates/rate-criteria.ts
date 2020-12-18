@@ -3,6 +3,7 @@ import type { DeliveryService } from "../delivery-service";
 import type { FulfillmentService } from "../fulfillment-service";
 import type { PackageRateCriteria } from "./package-rate-criteria";
 import type { DeliveryConfirmation } from "../delivery-confirmation";
+import { ShippingOptions } from "../types";
 
 
 /**
@@ -76,4 +77,10 @@ export interface RateCriteria {
    * Useful for carriers that only support single-piece shipments.
    */
   readonly package: PackageRateCriteria;
+
+  /**
+   * Custom carrier shipping options for creating rates.
+   */
+  readonly shippingOptions: ShippingOptions;
+
 }

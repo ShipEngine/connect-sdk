@@ -1,4 +1,4 @@
-import type { NotePOJO, Quantity } from "../../common";
+import type { Note, Quantity } from "../../common";
 import type { SalesOrderItemIdentifier } from "../../orders";
 import type { ProductIdentifier } from "../../products";
 
@@ -29,5 +29,5 @@ export interface SalesOrderPackageItem {
   /**
    * Additional notes associated with this notification or its sales order
    */
-  readonly notes?: NotePOJO[];
+  readonly notes?: Note[];
 }

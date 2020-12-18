@@ -1,5 +1,4 @@
 import type { Address, DateTimeZone } from "../../common";
-import { CustomShippingOptions } from "../types";
 import type { ShipmentIdentifier } from "../shipments/shipment-identifier";
 
 
@@ -35,10 +34,5 @@ export interface NewManifest {
    * All other shipments will be manifested.
    */
   readonly shipments: readonly ShipmentIdentifier[];
-
-  /**
-   * Custom carrier shipping options for creating manifests.
-   */
-  readonly customShippingOptions: CustomShippingOptions;
 
 }

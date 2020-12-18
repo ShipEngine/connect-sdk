@@ -107,12 +107,6 @@ describe("schedulePickup", () => {
       })
     }));
 
-    const pickupRequest = pojo.pickupRequest();
-    pickupRequest.customShippingOptions = {
-      billDutiesToSender: true,
-      dangerousGoodsCategory: "Lithium Metal"
-    };
-
     let confirmation = await app.schedulePickup(pojo.transaction(), pojo.pickupRequest());
 
     expect(confirmation).to.deep.equal({
@@ -232,27 +226,6 @@ describe("schedulePickup", () => {
       }
       catch (error) {
         expect(error.message).to.equal("Invalid input to the schedulePickup method. Invalid pickup request: A value is required");
-      }
-    });
-
-    it("should throw an error if incorrect custom shipping is used", async () => {
-      let app = new CarrierApp(pojo.carrierApp({
-        pickupServices: [pojo.pickupService()],
-        schedulePickup: () => { }
-      }));
-
-      const pickupRequest = pojo.pickupRequest();
-
-      pickupRequest.customShippingOptions = {
-        notSupportedOption: true
-      }
-
-      try {
-        await app.schedulePickup(pojo.transaction(), pickupRequest);
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal("Invalid input to the schedulePickup method. Invalid pickup request: customShippingOptions.notSupportedOption is not allowed");
       }
     });
 

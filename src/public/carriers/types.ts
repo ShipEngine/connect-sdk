@@ -4,7 +4,7 @@
  * in the future.
  */
 
-export type CustomShippingOptions = {
+export type ShippingOptions = {
   /**
    * What category of dangerous goods(if any) does the shipment contents contain.
    */

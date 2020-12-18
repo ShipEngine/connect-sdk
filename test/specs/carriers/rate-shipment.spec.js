@@ -286,7 +286,7 @@ describe("rateShipment", () => {
 
     const rateCritera = pojo.rateCriteria();
 
-    rateCritera.customShippingOptions = {
+    rateCritera.shippingOptions = {
       billDutiesToSender: true,
       dangerousGoodsCategory: "Lithium Metal"
     };
@@ -421,7 +421,7 @@ describe("rateShipment", () => {
       }));
 
       const rateCriteria = pojo.rateCriteria();
-      rateCriteria.customShippingOptions = {
+      rateCriteria.shippingOptions = {
         notSupportedOption: true
       };
 
@@ -430,7 +430,7 @@ describe("rateShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal("Invalid input to the rateShipment method. Invalid shipment: customShippingOptions.notSupportedOption is not allowed");
+        expect(error.message).to.equal("Invalid input to the rateShipment method. Invalid shipment: shippingOptions.notSupportedOption is not allowed");
       }
     });
     

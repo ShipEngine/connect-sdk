@@ -243,7 +243,7 @@ describe("createShipment", () => {
     }));
 
     const newShipment = pojo.newShipment();
-    newShipment.customShippingOptions = {
+    newShipment.shippingOptions = {
       billDutiesToSender: true,
       dangerousGoodsCategory: "Lithium Metal"
     }
@@ -649,7 +649,7 @@ describe("createShipment", () => {
       }));
   
       const newShipment = pojo.newShipment();
-      newShipment.customShippingOptions = {
+      newShipment.shippingOptions = {
         notSupportedOption: true
       }
 
@@ -658,7 +658,7 @@ describe("createShipment", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: customShippingOptions.notSupportedOption is not allowed");
+        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: shippingOptions.notSupportedOption is not allowed");
       }
   
     });

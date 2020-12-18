@@ -1,5 +1,4 @@
 import { AddressPOJO, ContactInfoPOJO, NotePOJO, PickupRequest as IPickupRequest, TimeRangePOJO } from "../../../public";
-import { CustomShippingOptions } from "../../../public/carriers/types";
 import { Address, App, ContactInfo, DefinitionIdentifier, hideAndFreeze, Joi, Note, TimeRange, _internal } from "../../common";
 import { PickupService, PickupServiceIdentifierPOJO } from "./pickup-service";
 import { PickupShipment, PickupShipmentPOJO } from "./pickup-shipment";
@@ -11,9 +10,7 @@ export interface PickupRequestPOJO {
   contact: ContactInfoPOJO;
   notes?: readonly NotePOJO[];
   shipments: readonly PickupShipmentPOJO[];
-  customShippingOptions: CustomShippingOptions;
 }
-
 
 export class PickupRequest implements IPickupRequest {
   public static readonly [_internal] = {
@@ -28,10 +25,6 @@ export class PickupRequest implements IPickupRequest {
       contact: ContactInfo[_internal].schema.required(),
       notes: Note[_internal].notesSchema,
       shipments: Joi.array().min(1).items(PickupShipment[_internal].schema).required(),
-      customShippingOptions: Joi.object({
-        dangerousGoodsCategory: Joi.string().optional(),
-        billDutiesToSender: Joi.boolean().optional()
-      })
     }),
   };
 
@@ -41,7 +34,6 @@ export class PickupRequest implements IPickupRequest {
   public readonly contact: ContactInfo;
   public readonly notes: readonly Note[];
   public readonly shipments: readonly PickupShipment[];
-  public readonly customShippingOptions: CustomShippingOptions;
 
   public constructor(pojo: PickupRequestPOJO, app: App) {
     this.pickupService = app[_internal].references.lookup(pojo.pickupService, PickupService);
@@ -50,7 +42,6 @@ export class PickupRequest implements IPickupRequest {
     this.contact = new ContactInfo(pojo.contact);
     this.notes = pojo.notes || [];
     this.shipments = pojo.shipments.map((shipment) => new PickupShipment(shipment, app));
-    this.customShippingOptions = pojo.customShippingOptions || {};
 
     // Make this object immutable
     hideAndFreeze(this);

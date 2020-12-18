@@ -4,7 +4,7 @@ import { DeliveryService } from "../delivery-service";
 import { NewPackage, NewPackagePOJO } from "../packages/new-package";
 import { calculateTotalInsuranceAmount } from "../utils";
 import { DeliveryConfirmation } from "../delivery-confirmation";
-import { CustomShippingOptions } from "../../../public/carriers/types";
+import { ShippingOptions } from "../../../public/carriers/types";
 
 export interface NewShipmentPOJO {
   deliveryService: DeliveryServiceIdentifierPOJO | string;
@@ -18,7 +18,7 @@ export interface NewShipmentPOJO {
   };
   packages: readonly NewPackagePOJO[];
   deliveryConfirmation?: DeliveryConfirmationIdentifierPOJO | DeliveryConfirmationType;
-  customShippingOptions?: CustomShippingOptions;
+  shippingOptions?: ShippingOptions;
 }
 
 
@@ -43,9 +43,9 @@ export class NewShipment implements INewShipment {
         Joi.string()
       ),
       packages: Joi.array().min(1).items(NewPackage[_internal].schema).required(),
-      customShippingOptions: Joi.object({
+      shippingOptions: Joi.object({
         dangerousGoodsCategory: Joi.string().optional(),
-        billDutiesToSender: Joi.boolean().optional()
+        billDutiesToSender: Joi.boolean().optional(),
       })
     }),
   };
@@ -57,7 +57,7 @@ export class NewShipment implements INewShipment {
   public readonly shipDateTime: DateTimeZone;
   public readonly totalInsuredValue: MonetaryValue;
   public readonly deliveryConfirmation?: DeliveryConfirmation;
-  public readonly customShippingOptions: CustomShippingOptions;
+  public readonly shippingOptions: ShippingOptions;
 
   public get isNonMachinable(): boolean {
     return this.packages.some((pkg) => pkg.isNonMachinable);
@@ -93,7 +93,7 @@ export class NewShipment implements INewShipment {
     this.packages = pojo.packages.map((parcel) => new NewPackage(parcel, app));
     this.totalInsuredValue = calculateTotalInsuranceAmount(this.packages);
 
-    this.customShippingOptions = pojo.customShippingOptions || {};
+    this.shippingOptions = pojo.shippingOptions || {};
 
     // Make this object immutable
     hideAndFreeze(this);

@@ -2,7 +2,7 @@ import type { AddressWithContactInfo, DateTimeZone, MonetaryValue } from "../../
 import type { DeliveryService } from "../delivery-service";
 import type { NewPackage } from "../packages/new-package";
 import { DeliveryConfirmation } from "../delivery-confirmation";
-import { CustomShippingOptions } from "../types";
+import { ShippingOptions } from "../types";
 
 /**
  * The information needed to create a new shipment
@@ -82,5 +82,5 @@ export interface NewShipment {
   /**
    * Custom shipping options for creating rates.
    */
-  readonly customShippingOptions: CustomShippingOptions;
+  readonly shippingOptions: ShippingOptions;
 }

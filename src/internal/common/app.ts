@@ -19,7 +19,7 @@ export abstract class App {
       manifest: Joi.object({
         name: Joi.string().appName().required(),
         version: Joi.string().semver().required(),
-        description: Joi.string().trim().singleLine().allow(""),
+        description: Joi.string().singleLine().allow(""),
         dependencies: Joi.object(),
         devDependencies: Joi.object(),
       }).unknown(true).required(),

@@ -8,8 +8,8 @@ export class SalesOrderItem extends SalesOrderItemIdentifierBase {
   public static readonly [_internal] = {
     label: "sales order item",
     schema: SalesOrderItemIdentifier[_internal].schema.keys({
-      name: Joi.string().trim().singleLine().min(1).required(),
-      description: Joi.string().trim().singleLine().allow(""),
+      name: Joi.string().singleLine().min(1).required(),
+      description: Joi.string().singleLine().allow(""),
       product: ProductIdentifier[_internal].schema.required(),
       quantity: Quantity[_internal].schema.required(),
       unitPrice: MonetaryValue[_internal].schema.required(),

@@ -35,7 +35,7 @@ export class Charge implements ICharge {
   public static readonly [_internal] = {
     label: "charge",
     schema: Joi.object({
-      name: Joi.string().trim().singleLine().allow(""),
+      name: Joi.string().singleLine().allow(""),
       type: Joi.string().enum(ChargeType).required(),
       amount: MonetaryValue[_internal].schema.required(),
     }),

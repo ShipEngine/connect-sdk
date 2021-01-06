@@ -166,7 +166,7 @@ describe("PersonName", () => {
         assert.fail("An error should have been thrown");
       }
       catch (error) {
-        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: shipFrom.name does not match any of the allowed types");
+        expect(error.message).to.equal("Invalid input to the createShipment method. Invalid shipment: shipFrom.name.given cannot contain newlines or tabs");
       }
     });
 

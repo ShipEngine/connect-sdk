@@ -19,7 +19,7 @@ export class SalesOrderItemIdentifier extends SalesOrderItemIdentifierBase {
     label: "sales order item",
     schema: Joi.object({
       id: Joi.string().trim().singleLine().min(1).required(),
-      sku: Joi.string().trim().singleLine().allow(""),
+      sku: Joi.string().singleLine().allow(""),
       identifiers: Identifiers[_internal].schema,
     }),
   };

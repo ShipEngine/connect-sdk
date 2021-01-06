@@ -10,8 +10,8 @@ export class PickupService extends DefinitionIdentifier implements IPickupServic
   public static readonly [_internal] = {
     label: "pickup service",
     schema: DefinitionIdentifier[_internal].schema.keys({
-      name: Joi.string().trim().singleLine().min(1).required(),
-      description: Joi.string().trim().singleLine().allow(""),
+      name: Joi.string().singleLine().min(1).required(),
+      description: Joi.string().singleLine().allow(""),
     }),
   };
 

@@ -5,12 +5,12 @@ export class TrackingEvent {
   public static readonly [_internal] = {
     label: "tracking event",
     schema: Joi.object({
-      name: Joi.string().trim().singleLine().allow(""),
+      name: Joi.string().singleLine().allow(""),
       dateTime: DateTimeZone[_internal].schema.required(),
       status: Joi.string().enum(ShipmentStatus).required(),
       isError: Joi.boolean(),
-      code: Joi.string().trim().singleLine().allow(""),
-      description: Joi.string().trim().singleLine().allow(""),
+      code: Joi.string().singleLine().allow(""),
+      description: Joi.string().singleLine().allow(""),
       address: PartialAddress[_internal].schema,
       signer: PersonName[_internal].schema,
       notes: Note[_internal].notesSchema,

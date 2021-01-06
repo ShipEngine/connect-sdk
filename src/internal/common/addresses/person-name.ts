@@ -8,11 +8,11 @@ export class PersonName implements IPersonName {
     schema: Joi.alternatives(
       Joi.string().allow(""),
       Joi.object({
-        title: Joi.string().trim().singleLine().allow(""),
-        given: Joi.string().trim().singleLine().min(1).required(),
-        middle: Joi.string().trim().singleLine().allow(""),
-        family: Joi.string().trim().singleLine().allow(""),
-        suffix: Joi.string().trim().singleLine().allow(""),
+        title: Joi.string().singleLine().allow(""),
+        given: Joi.string().singleLine().min(1).required(),
+        middle: Joi.string().singleLine().allow(""),
+        family: Joi.string().singleLine().allow(""),
+        suffix: Joi.string().singleLine().allow(""),
       })
     ),
   };

@@ -7,8 +7,8 @@ export class CustomsItem implements ICustomsItem {
     label: "customs item",
     schema: Joi.object({
       type: Joi.string().enum(CustomsItemType).required(),
-      sku: Joi.string().trim().singleLine().allow(""),
-      description: Joi.string().trim().singleLine().allow(""),
+      sku: Joi.string().singleLine().allow(""),
+      description: Joi.string().singleLine().allow(""),
       quantity: Quantity[_internal].schema.required(),
       unitValue: MonetaryValue[_internal].schema.required(),
       countryOfOrigin: Joi.string().enum(Country),

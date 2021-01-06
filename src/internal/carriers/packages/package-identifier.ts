@@ -16,7 +16,7 @@ export class PackageIdentifier extends PackageIdentifierBase {
   public static readonly [_internal] = {
     label: "package",
     schema: Joi.object({
-      trackingNumber: Joi.string().trim().singleLine().allow(""),
+      trackingNumber: Joi.string().singleLine().allow(""),
       identifiers: Identifiers[_internal].schema,
     }),
   };

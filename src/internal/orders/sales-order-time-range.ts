@@ -1,9 +1,7 @@
 import Joi = require("joi");
 import {
-  SalesOrderPaging as SalesOrderPagingPOJO,
   SalesOrderStatus,
-  SalesOrderTimeRange as ISalesOrderTimeRange,
-  TimeRangePOJO
+  SalesOrderTimeRange as ISalesOrderTimeRange
 } from "../../public";
 import { hideAndFreeze, TimeRange, TimeRangeBase, _internal } from "../common";
 import { SalesOrderPaging } from "./sales-order-paging";

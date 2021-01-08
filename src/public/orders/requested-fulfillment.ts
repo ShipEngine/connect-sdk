@@ -1,4 +1,6 @@
-import { AddressWithContactInfo, SalesOrderItem, ShippingPreferences } from "../../internal";
+import { AddressWithContactInfoPOJO } from "../common/addresses/address-with-contact-info"
+import { SalesOrderItem } from "./sales-order-item"
+import { ShippingPreferences } from "./shipping-preferences"
 
 export interface RequestedFulfillmentExtensions {
     customField1?: string;
@@ -9,6 +11,6 @@ export interface RequestedFulfillmentExtensions {
 export interface RequestedFulfillmentPOJO {
     items: SalesOrderItem[];
     shippingPreferences: ShippingPreferences;
-    shipTo: AddressWithContactInfo;
+    shipTo: AddressWithContactInfoPOJO;
     extensions?: RequestedFulfillmentExtensions;
 }

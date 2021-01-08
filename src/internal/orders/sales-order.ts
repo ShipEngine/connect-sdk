@@ -59,12 +59,7 @@ export class SalesOrder extends SalesOrderIdentifierBase {
     this.totalCharges = calculateTotalCharges(this.charges);
     
     this.requestedFulfillments = pojo.requestedFulfillments.map((requestedFulfillment) => {
-      return new RequestedFulfillment({
-        items: requestedFulfillment.items.map((item) => new SalesOrderItem(item)),
-        shippingPreferences: new ShippingPreferences(requestedFulfillment.shippingPreferences || {}),
-        shipTo: new AddressWithContactInfo(requestedFulfillment.shipTo),
-        extensions: requestedFulfillment.extensions
-      });
+      return new RequestedFulfillment(requestedFulfillment);
     });
 
     this.notes = pojo.notes || [];

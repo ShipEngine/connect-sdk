@@ -21,9 +21,9 @@ export class RequestedFulfillment {
     public readonly extensions?: RequestedFulfillmentExtensions;
 
     public constructor(pojo: RequestedFulfillmentPOJO) {
-      this.items = pojo.items;
-      this.shippingPreferences = pojo.shippingPreferences;
-      this.shipTo = pojo.shipTo;
-      this.extensions = pojo.extensions;
+        this.items = pojo.items.map((item) => new SalesOrderItem(item)),
+        this.shippingPreferences = new ShippingPreferences(pojo.shippingPreferences || {}),
+        this.shipTo = new AddressWithContactInfo(pojo.shipTo),
+        this.extensions = pojo.extensions
     }
   }

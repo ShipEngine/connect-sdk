@@ -7,13 +7,7 @@ import {
 } from "../../public";
 import { hideAndFreeze, TimeRange, TimeRangeBase, _internal } from "../common";
 import { SalesOrderPaging } from "./sales-order-paging";
-
-export interface SalesOrderTimeRangePOJO extends TimeRangePOJO {
-  paging?: SalesOrderPagingPOJO;
-  statusMappings?: {
-    [key: string]: SalesOrderStatus;
-  };
-}
+import { SalesOrderCustomFieldMapping } from "./sales-order-custom-field-mapping";
 
 export class SalesOrderTimeRange extends TimeRangeBase implements ISalesOrderTimeRange {
   public static readonly [_internal] = {
@@ -21,6 +15,7 @@ export class SalesOrderTimeRange extends TimeRangeBase implements ISalesOrderTim
     schema: TimeRange[_internal].schema.keys({
       paging: SalesOrderPaging[_internal].schema,
       statusMappings: Joi.object().optional(),
+      fieldMappings: Joi.object().optional(),
     })
   };
 
@@ -37,7 +32,9 @@ export class SalesOrderTimeRange extends TimeRangeBase implements ISalesOrderTim
     [key: string]: SalesOrderStatus;
   }>;
 
-  public constructor(pojo: SalesOrderTimeRangePOJO) {
+  public readonly fieldMappings?: Readonly<SalesOrderCustomFieldMapping>;
+
+  public constructor(pojo: ISalesOrderTimeRange) {
     super(pojo);
 
     if (pojo.paging) {
@@ -45,6 +42,7 @@ export class SalesOrderTimeRange extends TimeRangeBase implements ISalesOrderTim
     }
 
     this.statusMappings = pojo.statusMappings;
+    this.fieldMappings = pojo.fieldMappings && new SalesOrderCustomFieldMapping(pojo.fieldMappings)
 
     // Make this object immutable
     hideAndFreeze(this);

@@ -17,6 +17,11 @@ export interface SalesOrderTimeRange extends TimeRange {
   readonly statusMappings?: Readonly<{
     [key: string]: SalesOrderStatus;
   }>;
+
+  /**
+   * A mapping custom user-defined fields to RequestedFulfillmentExtensions
+   */
+  readonly fieldMappings?: Readonly<SalesOrderCustomFieldMappingPOJO>;
 }
 
 export interface SalesOrderPaging {
@@ -46,4 +51,10 @@ export interface SalesOrderPagingPOJO {
 
   /** Identifies the next page of results to return */
   cursor?: string;
+}
+
+export interface SalesOrderCustomFieldMappingPOJO {
+  customField1?: string;
+  customField2?: string;
+  customField3?: string; 
 }

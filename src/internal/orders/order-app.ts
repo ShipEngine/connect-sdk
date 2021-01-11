@@ -2,7 +2,7 @@ import { AcknowledgeOrders, AppType, Connect, ErrorCode, GetSalesOrdersByDate, O
 import { AppPOJO, ConnectionApp, error, FormPOJO, hideAndFreeze, Joi, SystemErrorCode, Transaction, TransactionPOJO, validate, _internal, OAuthConfigPOJO } from "../common";
 import { AcknowledgedSalesOrder } from "./acknowledged-sales-order";
 import { SalesOrderNotification, SalesOrderNotificationPOJO } from "./sales-order-notification";
-import { SalesOrderTimeRange, SalesOrderTimeRangePOJO  } from "./sales-order-time-range";
+import { SalesOrderTimeRange, SalesOrderTimeRangePOJO } from "./sales-order-time-range";
 import { SalesOrders } from "./sales-orders";
 import { SalesOrderShipment, SalesOrderShipmentPOJO } from "./shipments/sales-order-shipment";
 

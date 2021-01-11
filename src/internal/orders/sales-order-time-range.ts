@@ -1,11 +1,22 @@
 import Joi = require("joi");
 import {
+  SalesOrderPaging as SalesOrderPagingPOJO,
   SalesOrderStatus,
-  SalesOrderTimeRange as ISalesOrderTimeRange
+  SalesOrderTimeRange as ISalesOrderTimeRange,
+  TimeRangePOJO,
+  SalesOrderCustomFieldMappingPOJO
 } from "../../public";
 import { hideAndFreeze, TimeRange, TimeRangeBase, _internal } from "../common";
 import { SalesOrderPaging } from "./sales-order-paging";
 import { SalesOrderCustomFieldMapping } from "./sales-order-custom-field-mapping";
+
+export interface SalesOrderTimeRangePOJO extends TimeRangePOJO {	
+  paging?: SalesOrderPagingPOJO;	
+  statusMappings?: {	
+    [key: string]: SalesOrderStatus;	
+  };	
+  fieldMappings?: SalesOrderCustomFieldMappingPOJO;
+}
 
 export class SalesOrderTimeRange extends TimeRangeBase implements ISalesOrderTimeRange {
   public static readonly [_internal] = {
@@ -32,7 +43,7 @@ export class SalesOrderTimeRange extends TimeRangeBase implements ISalesOrderTim
 
   public readonly fieldMappings?: Readonly<SalesOrderCustomFieldMapping>;
 
-  public constructor(pojo: ISalesOrderTimeRange) {
+  public constructor(pojo: SalesOrderTimeRangePOJO) {
     super(pojo);
 
     if (pojo.paging) {

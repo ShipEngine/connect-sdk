@@ -15,3 +15,4 @@ export * from "./utils";
 export * from "./sales-order-paging";
 export * from "./requested-fulfillment";
 export * from "./original-order-source";
+export * from "./sales-order-custom-field-mapping";

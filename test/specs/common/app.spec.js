@@ -1,6 +1,7 @@
 "use strict";
 
 const { CarrierApp } = require("../../../lib/internal");
+const { regex } = require("../../../lib/internal/common/utils");
 const sdkManifest = require("../../../package.json");
 const pojo = require("../../utils/pojo");
 const { expect } = require("chai");
@@ -100,6 +101,11 @@ describe("App", () => {
     });
   });
 
+  it("should allow all possible valid characters for NPM scope and NPM package name", () => {
+    let npmScopeAndPackageName = "@company-name~test_se.connect/app-name_connect~carrier.app";
+    expect(npmScopeAndPackageName).to.match(regex.appName);
+  });
+
   describe("Failure tests", () => {
 
     it("should throw an error if the pojo is the wrong type", () => {
@@ -145,6 +151,11 @@ describe("App", () => {
         },
       }))
       ).to.throw('Invalid ShipEngine Connect carrier app: manifest.description must be a string');
+    });
+
+    it("should not allow any invalid characters for NPM scope and NPM package name", () => {
+      let npmScopeAndPackageName = "@Company$Name|carrier*app/app,name+shipEngine";
+      expect(npmScopeAndPackageName).to.not.match(regex.appName);
     });
 
   });

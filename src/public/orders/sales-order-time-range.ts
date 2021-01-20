@@ -1,4 +1,3 @@
-import { SalesOrderStatus } from ".";
 import type { TimeRange } from "../common";
 
 
@@ -7,21 +6,6 @@ import type { TimeRange } from "../common";
  */
 export interface SalesOrderTimeRange extends TimeRange {
   readonly paging?: Readonly<SalesOrderPaging>;
-
-  /**
-   * A mapping of custom user-defined statuses to ShipEngine Connect statuses.
-   * 
-   * Each key is a user-defined status string, and the value is the corresponding
-   * ShipEngine Connect order status.
-   */
-  readonly statusMappings?: Readonly<{
-    [key: string]: SalesOrderStatus;
-  }>;
-
-  /**
-   * A mapping custom user-defined fields to RequestedFulfillmentExtensions
-   */
-  readonly fieldMappings?: Readonly<SalesOrderCustomFieldMappingPOJO>;
 }
 
 export interface SalesOrderPaging {
@@ -56,5 +40,5 @@ export interface SalesOrderPagingPOJO {
 export interface SalesOrderCustomFieldMappingPOJO {
   customField1?: string;
   customField2?: string;
-  customField3?: string; 
+  customField3?: string;
 }

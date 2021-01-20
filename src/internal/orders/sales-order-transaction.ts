@@ -1,6 +1,6 @@
-import { SalesOrderStatus, SalesOrderCustomFieldMappingPOJO } from "../../public"
-import { Transaction, TransactionPOJO } from "../common/transaction"
-import { _internal } from "../common/utils";
+import { SalesOrderStatus, SalesOrderCustomFieldMappingPOJO, Transaction as ITransaction, UUID } from "../../public"
+import { TransactionPOJO } from "../common/transaction"
+import { hideAndFreeze, _internal } from "../common/utils";
 import { Joi, validate } from "../common/validation";
 import { SalesOrderCustomFieldMapping } from "./sales-order-custom-field-mapping";
 
@@ -23,7 +23,7 @@ export interface SalesOrderTransactionPOJO<T extends object = object> extends Tr
   fieldMappings?: SalesOrderCustomFieldMappingPOJO;
 }
 
-export class SalesOrderTransaction<T extends object = object> extends Transaction<T> {
+export class SalesOrderTransaction<T extends object = object> implements ITransaction {
   public static readonly [_internal] = {
     label: "transaction",
     schema: Joi.object({
@@ -38,6 +38,9 @@ export class SalesOrderTransaction<T extends object = object> extends Transactio
   private readonly [_private]: {
     session: SalesOrderSessionPOJO<T>;
   };
+
+  public readonly id: UUID;
+  public readonly language: string;
 
   public get session(): SalesOrderSessionPOJO<T> {
     return this[_private].session;
@@ -64,16 +67,30 @@ export class SalesOrderTransaction<T extends object = object> extends Transactio
     }
   }
 
+  public constructor(pojo: SalesOrderTransactionPOJO<T>) {
+    this.id = pojo.id;
+    this.language = pojo.language;
+    this[_private] = {
+      session: pojo.session || {} as unknown as T,
+    };
+
+    // Make the session getter/setter look like a normal property
+    Object.defineProperty(this, "session", {
+      ...Object.getOwnPropertyDescriptor(Object.getPrototypeOf(this), "session"),
+      enumerable: true,
+    });
+
+    this.statusMappings = pojo.statusMappings;
+    this.fieldMappings = pojo.fieldMappings && new SalesOrderCustomFieldMapping(pojo.fieldMappings);
+
+    // Make this object immutable (except for the session property)
+    hideAndFreeze(this, "session");
+  }
+
   public readonly statusMappings?: Readonly<{
     [key: string]: SalesOrderStatus;
   }>;
 
   public readonly fieldMappings?: Readonly<SalesOrderCustomFieldMapping>;
 
-  public constructor(pojo: SalesOrderTransactionPOJO<T>) {
-    super(pojo);
-
-    this.statusMappings = pojo.statusMappings;
-    this.fieldMappings = pojo.fieldMappings && new SalesOrderCustomFieldMapping(pojo.fieldMappings)
-  }
 }

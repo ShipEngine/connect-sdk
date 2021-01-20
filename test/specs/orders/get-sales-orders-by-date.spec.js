@@ -92,13 +92,9 @@ describe("getSalesOrdersByDate", () => {
     }));
 
     const timeRange = pojo.timeRange();
+    const transaction = pojo.transaction({statusMappings: { foo: "bar", bar: "baz"}})
 
-    timeRange.statusMappings = {
-      "customStatus1": "awaiting_payment",
-      "customStatus2": "on_hold"
-    }
-
-    let response = await app.getSalesOrdersByDate(pojo.transaction(), timeRange);
+    let response = await app.getSalesOrdersByDate(transaction, timeRange);
 
     // The sales orders should be returned in order
     let index = 0;

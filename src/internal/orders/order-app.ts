@@ -1,8 +1,9 @@
 import { AcknowledgeOrders, AppType, Connect, ErrorCode, GetSalesOrdersByDate, OrderAppDefinition, SalesOrders as SalesOrdersPOJO, ShipmentCreated } from "../../public";
-import { AppPOJO, ConnectionApp, error, FormPOJO, hideAndFreeze, Joi, SystemErrorCode, Transaction, TransactionPOJO, validate, _internal, OAuthConfigPOJO } from "../common";
+import { AppPOJO, ConnectionApp, error, FormPOJO, hideAndFreeze, Joi, SystemErrorCode, Transaction, validate, _internal, OAuthConfigPOJO } from "../common";
 import { AcknowledgedSalesOrder } from "./acknowledged-sales-order";
 import { SalesOrderNotification, SalesOrderNotificationPOJO } from "./sales-order-notification";
 import { SalesOrderTimeRange, SalesOrderTimeRangePOJO } from "./sales-order-time-range";
+import { SalesOrderTransaction, SalesOrderTransactionPOJO } from "./sales-order-transaction";
 import { SalesOrders } from "./sales-orders";
 import { SalesOrderShipment, SalesOrderShipmentPOJO } from "./shipments/sales-order-shipment";
 
@@ -67,13 +68,13 @@ export class OrderApp extends ConnectionApp {
   }
 
   public async getSalesOrdersByDate?(
-    transaction: TransactionPOJO, range: SalesOrderTimeRangePOJO): Promise<SalesOrders> {
+    transaction: SalesOrderTransactionPOJO, range: SalesOrderTimeRangePOJO): Promise<SalesOrders> {
 
     let _transaction, _range;
     const { getSalesOrdersByDate } = this[_private];
 
     try {
-      _transaction = new Transaction(validate(transaction, Transaction));
+      _transaction = new SalesOrderTransaction(validate(transaction, SalesOrderTransaction));
       _range = new SalesOrderTimeRange(validate(range, SalesOrderTimeRange));
     }
     catch (originalError: unknown) {
@@ -97,12 +98,12 @@ export class OrderApp extends ConnectionApp {
     }
   }
 
-  public async shipmentCreated?(transaction: TransactionPOJO, shipment: SalesOrderShipmentPOJO): Promise<void> {
+  public async shipmentCreated?(transaction: SalesOrderTransactionPOJO, shipment: SalesOrderShipmentPOJO): Promise<void> {
     let _transaction, _shipment;
     const { shipmentCreated } = this[_private];
 
     try {
-      _transaction = new Transaction(validate(transaction, Transaction));
+      _transaction = new SalesOrderTransaction(validate(transaction, SalesOrderTransaction));
       _shipment = new SalesOrderShipment(validate(shipment, SalesOrderShipment));
     }
     catch (originalError: unknown) {
@@ -118,13 +119,13 @@ export class OrderApp extends ConnectionApp {
     }
   }
 
-  public async acknowledgeOrders?(transaction: TransactionPOJO, notifications: SalesOrderNotificationPOJO[]): Promise<AcknowledgedSalesOrder[]> {
+  public async acknowledgeOrders?(transaction: SalesOrderTransactionPOJO, notifications: SalesOrderNotificationPOJO[]): Promise<AcknowledgedSalesOrder[]> {
     let _transaction;
     const _notifications: SalesOrderNotification[] = [];
     const { acknowledgeOrders } = this[_private];
 
     try {
-      _transaction = new Transaction(validate(transaction, Transaction));
+      _transaction = new SalesOrderTransaction(validate(transaction, SalesOrderTransaction));
 
       if (notifications.length === 0) {
         throw error(SystemErrorCode.InvalidInput, "Sales Order Notifications are required");

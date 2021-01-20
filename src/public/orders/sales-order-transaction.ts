@@ -36,8 +36,8 @@ export type SalesOrderSession<T extends object = object> = T & {
 }
 
 /**
- * The ShpEngine Connect passes this object to every method call. It provides information about the
- * transaction being performed, including authentication, metadata, etc.
+ * The ShipEngine Connect passes this object to every method call. It provides information about the
+ * transaction being performed, including authentication, configuration, metadata, etc.
  */
 export interface SalesOrderTransaction<T extends object = object> extends Transaction<T> {
   /**

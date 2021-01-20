@@ -10,6 +10,7 @@ export * from "./sales-order-identifier";
 export * from "./sales-order-item";
 export * from "./sales-order-item-identifier";
 export * from "./sales-order-time-range";
+export * from "./sales-order-transaction";
 export * from "./shipments/sales-order-package-item";
 export * from "./shipments/sales-order-shipment";
 export * from "./shipping-preferences";

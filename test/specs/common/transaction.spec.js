@@ -1,8 +1,7 @@
 "use strict";
 
-const { assert, expect } = require("chai");
-const { CarrierApp, Transaction } = require("../../../lib/internal");
-const pojo = require("../../utils/pojo");
+const { expect } = require("chai");
+const { Transaction } = require("../../../lib/internal");
 
 describe("Transaction", () => {
 
@@ -111,78 +110,5 @@ describe("Transaction", () => {
       firstName: "John",
       lastName: "Doe",
     });
-  });
-
-  describe("Failure tests", () => {
-
-    async function createTransaction(transactionPOJO) {
-      let transaction;
-
-      let app = new CarrierApp(pojo.carrierApp({
-        connect(tx) {
-          transaction = tx;
-        }
-      }));
-
-      await app.connect(transactionPOJO, {});
-      return transaction;
-    }
-
-    it("should throw an error if called without any arguments", async () => {
-      try {
-        await createTransaction();
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal("Invalid transaction: A value is required Invalid transaction: A value is required");
-      }
-    });
-
-    it("should throw an error if called with an invalid pojo", async () => {
-      try {
-        await createTransaction(12345);
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal("Invalid transaction: value must be of type object Invalid transaction: value must be of type object");
-      }
-    });
-
-    it("should throw an error if called with an invalid ID", async () => {
-      try {
-        await createTransaction({
-          id: "12345",
-          language: "en",
-        });
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal("Invalid transaction: id must be a valid GUID Invalid transaction: id must be a valid GUID");
-      }
-    });
-
-    it("should throw an error if called with an invalid session object", async () => {
-      try {
-        await createTransaction({
-          id: "12345678-1234-1234-1234-123456789012",
-          language: "en",
-          session: 12345,
-        });
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal("Invalid transaction: session must be of type object Invalid transaction: session must be of type object");
-      }
-    });
-
-    it("should throw an error if any fields other than session are modified", async () => {
-      let transaction = new Transaction({
-        id: "12345678-1234-1234-1234-123456789012",
-      });
-
-      expect(() => transaction.id = "abc").to.throw(TypeError, "Cannot assign to read only property");
-      expect(() => transaction.newProperty = "hello").to.throw(TypeError, "Cannot add property newProperty, object is not extensible");
-    });
-
   });
 });

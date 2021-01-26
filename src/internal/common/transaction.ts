@@ -45,8 +45,6 @@ export class Transaction<T extends object = object> implements ITransaction {
       value = {} as unknown as SessionPOJO<T>;
     }
 
-    validate(value, "session data", Joi.object());
-
     const session = this[_private].session as Record<string, unknown>;
     const keys = Object.getOwnPropertyNames(session).concat(Object.getOwnPropertyNames(value));
 

@@ -44,7 +44,6 @@ export class OrderApp extends ConnectionApp {
 
 
   public constructor(pojo: OrderAppPOJO) {
-    validate(pojo, OrderApp);
 
     super(pojo);
 
@@ -73,8 +72,8 @@ export class OrderApp extends ConnectionApp {
     const { getSalesOrdersByDate } = this[_private];
 
     try {
-      _transaction = new Transaction(validate(transaction, Transaction));
-      _range = new SalesOrderTimeRange(validate(range, SalesOrderTimeRange));
+      _transaction = new Transaction(transaction);
+      _range = new SalesOrderTimeRange(range);
     }
     catch (originalError: unknown) {
       throw error(SystemErrorCode.InvalidInput, "Invalid input to the getSalesOrdersByDate method.", { originalError });
@@ -102,8 +101,8 @@ export class OrderApp extends ConnectionApp {
     const { shipmentCreated } = this[_private];
 
     try {
-      _transaction = new Transaction(validate(transaction, Transaction));
-      _shipment = new SalesOrderShipment(validate(shipment, SalesOrderShipment));
+      _transaction = new Transaction(transaction);
+      _shipment = new SalesOrderShipment(shipment);
     }
     catch (originalError: unknown) {
       throw error(SystemErrorCode.InvalidInput, "Invalid input to the shipmentCreated method.", { originalError });
@@ -124,14 +123,14 @@ export class OrderApp extends ConnectionApp {
     const { acknowledgeOrders } = this[_private];
 
     try {
-      _transaction = new Transaction(validate(transaction, Transaction));
+      _transaction = new Transaction(transaction);
 
       if (notifications.length === 0) {
         throw error(SystemErrorCode.InvalidInput, "Sales Order Notifications are required");
       }
 
       for (const notification of notifications) {
-        _notifications.push(new SalesOrderNotification(validate(notification, SalesOrderNotification)));
+        _notifications.push(new SalesOrderNotification(notification));
       }
     }
     catch (originalError: unknown) {

@@ -67,7 +67,7 @@ export abstract class ConnectionApp extends App {
     const { connect } = this[_private];
 
     try {
-      _transaction = new Transaction(validate(transaction, Transaction));
+      _transaction = new Transaction(transaction);
       _connectionFormData = Object.assign({}, connectionFormData);
     }
     catch (originalError: unknown) {

@@ -28,7 +28,6 @@ export class ReferenceMap {
    */
   public add(instance: ClassInstance): void {
     const type = instance.constructor as ShipEngineConstructor;
-    validate(instance, type[_internal].label, classInstanceSchema);
 
     const { map, isFinishedLoading } = this[_private];
     const existing = map.get(instance.id);
@@ -79,7 +78,6 @@ export class ReferenceMap {
       }
     }
     else {
-      validate(instance, type[_internal].label, classInstanceSchema);
       reference = map.get(instance.id);
       if (reference && reference.type !== type) {
         throw error(ErrorCode.Invalid,

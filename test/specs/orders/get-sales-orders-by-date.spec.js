@@ -2,7 +2,7 @@
 
 const { OrderApp, SalesOrder } = require("../../../lib/internal");
 const pojo = require("../../utils/pojo");
-const { expect, assert } = require("chai");
+const { expect } = require("chai");
 
 describe("getSalesOrdersByDate", () => {
 
@@ -111,93 +111,6 @@ describe("getSalesOrdersByDate", () => {
       pageNumber: 2,
       pageCount: 10,
       cursor: "cursor"
-    });
-  });
-
-
-  describe("Failure tests", () => {
-
-    it("should throw an error if called with no arguments", async () => {
-      let app = new OrderApp(pojo.orderApp());
-
-      try {
-        await app.getSalesOrdersByDate();
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal("Invalid input to the getSalesOrdersByDate method. Invalid transaction: A value is required");
-      }
-    });
-
-    it("should throw an error if called without a time range", async () => {
-      let app = new OrderApp(pojo.orderApp());
-
-      try {
-        await app.getSalesOrdersByDate(pojo.transaction());
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal("Invalid input to the getSalesOrdersByDate method. Invalid time range: A value is required");
-      }
-    });
-
-    it("should throw an error if called with an invalid time range", async () => {
-      let app = new OrderApp(pojo.orderApp());
-
-      try {
-        await app.getSalesOrdersByDate(pojo.transaction(), {
-          startDateTime: "9999-99-99T99:99:99.999Z",
-          endDateTime: "9999-99-99T99:99:99.999Z",
-        });
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal("Invalid input to the getSalesOrdersByDate method. Invalid time range: startDateTime must be a valid date/time, endDateTime must be a valid date/time");
-      }
-    });
-
-    it.skip("should throw an error if nothing is returned", async () => {
-      let app = new OrderApp(pojo.orderApp({
-        getSalesOrdersByDate() { }
-      }));
-
-      try {
-        await app.getSalesOrdersByDate(pojo.transaction(), pojo.timeRange());
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal(
-          "Error in the getSalesOrdersByDate method. \n" +
-          "salesOrders is not iterable"
-        );
-      }
-    });
-
-    it("should throw an error if an invalid sales order is returned", async () => {
-      let app = new OrderApp(pojo.orderApp({
-        getSalesOrdersByDate() {
-          return {
-            salesOrders: [{
-              identifiers: true,
-              createdDateTime: "9999-99-99T99:99:99.999Z",
-              status: 5,
-              requestedFulfillments: [
-                {
-                  items: []
-                }
-              ]
-            }]
-          };
-        }
-      }));
-
-      try {
-        await app.getSalesOrdersByDate(pojo.transaction(), pojo.timeRange());
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal("Error in the getSalesOrdersByDate method. Invalid sales order: id is required, identifiers must be of type object, createdDateTime must be a valid date/time, status must be a string, buyer is required, requestedFulfillments[0].items must contain at least 1 items, requestedFulfillments[0].shipTo is required");
-      }
     });
   });
 });

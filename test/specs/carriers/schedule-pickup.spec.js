@@ -2,7 +2,7 @@
 
 const { CarrierApp } = require("../../../lib/internal");
 const pojo = require("../../utils/pojo");
-const { expect, assert } = require("chai");
+const { expect } = require("chai");
 
 describe("schedulePickup", () => {
 
@@ -197,113 +197,5 @@ describe("schedulePickup", () => {
     catch {
       expect(true).to.equal(true);
     }
-  });
-
-  describe("Failure tests", () => {
-
-    it("should throw an error if called with no arguments", async () => {
-      let app = new CarrierApp(pojo.carrierApp({
-        schedulePickup() { }
-      }));
-
-      try {
-        await app.schedulePickup();
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal("Invalid input to the schedulePickup method. Invalid transaction: A value is required");
-      }
-    });
-
-    it("should throw an error if called without a PickupRequest", async () => {
-      let app = new CarrierApp(pojo.carrierApp({
-        schedulePickup() { }
-      }));
-
-      try {
-        await app.schedulePickup(pojo.transaction());
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal("Invalid input to the schedulePickup method. Invalid pickup request: A value is required");
-      }
-    });
-
-    it("should throw an error if called with an invalid PickupRequest", async () => {
-      let app = new CarrierApp(pojo.carrierApp({
-        schedulePickup() { }
-      }));
-
-      try {
-        await app.schedulePickup(pojo.transaction(), {
-          pickupService: {
-            id: "Come get it",
-          },
-          timeWindow: {
-            startDateTime: "9999-99-99T99:99:99.999Z",
-            endDateTime: Date.now(),
-          },
-          notes: 12345,
-          shipments: [],
-        });
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal("Invalid input to the schedulePickup method. Invalid pickup request: pickupService.id must be a valid GUID, timeWindow.startDateTime must be a valid date/time, timeWindow.endDateTime must be one of date, string, object, address is required, contact is required, notes must be an array, shipments must contain at least 1 items");
-      }
-    });
-
-    it("should throw an error if called with an invalid pickupService", async () => {
-      let app = new CarrierApp(pojo.carrierApp({
-        schedulePickup() { }
-      }));
-
-      try {
-        await app.schedulePickup(pojo.transaction(), pojo.pickupRequest({
-          pickupService: {
-            id: "22222222-2222-2222-2222-222222222222",
-          }
-        }));
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal("Invalid input to the schedulePickup method. 22222222-2222-2222-2222-222222222222 is a delivery service ID not a pickup service ID");
-      }
-    });
-
-    it("should throw an error if nothing is returned", async () => {
-      let app = new CarrierApp(pojo.carrierApp({
-        pickupServices: [pojo.pickupService()],
-        schedulePickup() { }
-      }));
-
-      try {
-        await app.schedulePickup(pojo.transaction(), pojo.pickupRequest());
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal("Error in the schedulePickup method. Invalid pickup: A value is required");
-      }
-    });
-
-    it("should throw an error if an invalid PickupConfirmation is returned", async () => {
-      let app = new CarrierApp(pojo.carrierApp({
-        pickupServices: [pojo.pickupService()],
-        schedulePickup: () => ({
-          id: 12345,
-          timeWindows: [],
-          notes: [12345],
-          metadata: false
-        })
-      }));
-
-      try {
-        await app.schedulePickup(pojo.transaction(), pojo.pickupRequest());
-        assert.fail("An error should have been thrown");
-      }
-      catch (error) {
-        expect(error.message).to.equal("Error in the schedulePickup method. Invalid pickup: id must be a string, timeWindows must contain at least 1 items, charges is required, notes[0] must be of type object, metadata must be of type object");
-      }
-    });
   });
 });

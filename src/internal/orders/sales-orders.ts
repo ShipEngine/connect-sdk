@@ -21,7 +21,7 @@ export class SalesOrders {
     this.salesOrders = []
 
     for (const salesOrder of pojo.salesOrders) {
-      this.salesOrders.push(new SalesOrder(validate(salesOrder, SalesOrder)));
+      this.salesOrders.push(new SalesOrder(salesOrder));
     }
 
 

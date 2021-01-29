@@ -87,7 +87,7 @@ export const stringValidation: joi.Extension = {
   },
   rules: {
     singleLine: {
-      validate(value: string, helpers: joi.CustomHelpers) {
+      validate(value: string, helpers: joi.CustomHelpers): string | joi.ErrorReport {
         const multiline = /\n|\r|\t/;
         if (multiline.test(value)) {
           return helpers.error("string.singleLine");
@@ -96,10 +96,10 @@ export const stringValidation: joi.Extension = {
       },
     },
     isoDateTime: {
-      method(args: { timeZone: boolean }) {
+      method(args: { timeZone: boolean }): joi.Schema {
         return this.$_addRule({ name: "isoDateTime", args });
       },
-      validate(value: string, helpers: joi.CustomHelpers, args: { timeZone: boolean }) {
+      validate(value: string, helpers: joi.CustomHelpers, args: { timeZone: boolean }): string | joi.ErrorReport {
         const match = regex.isoDateTime.exec(value);
         const hasTimeZone = match && match[2];
 
@@ -124,7 +124,7 @@ export const stringValidation: joi.Extension = {
       },
     },
     timeZone: {
-      validate(value: string, helpers: joi.CustomHelpers) {
+      validate(value: string, helpers: joi.CustomHelpers): string | joi.ErrorReport {
         if (!regex.utcOffset.test(value) && !isValidTimeZone(value)) {
           return helpers.error("string.timeZone");
         }
@@ -132,7 +132,7 @@ export const stringValidation: joi.Extension = {
       },
     },
     appName: {
-      validate(value: string, helpers: joi.CustomHelpers) {
+      validate(value: string, helpers: joi.CustomHelpers): string | joi.ErrorReport {
         if (!regex.appName.test(value)) {
           return helpers.error("string.appName");
         }
@@ -140,7 +140,7 @@ export const stringValidation: joi.Extension = {
       },
     },
     semver: {
-      validate(value: string, helpers: joi.CustomHelpers) {
+      validate(value: string, helpers: joi.CustomHelpers): string | joi.ErrorReport {
         if (!regex.semver.test(value)) {
           return helpers.error("string.semver");
         }
@@ -148,7 +148,7 @@ export const stringValidation: joi.Extension = {
       },
     },
     money: {
-      validate(value: string, helpers: joi.CustomHelpers) {
+      validate(value: string, helpers: joi.CustomHelpers): string | joi.ErrorReport {
         if (!regex.money.test(value)) {
           return helpers.error("string.money");
         }
@@ -156,11 +156,11 @@ export const stringValidation: joi.Extension = {
       },
     },
     enum: {
-      method(enumeration: Record<string, string>) {
+      method(enumeration: Record<string, string>): joi.Schema {
         const valids = Object.values(enumeration);
         return this.$_addRule({ name: "enum", args: { valids } });
       },
-      validate(value: string, helpers: joi.CustomHelpers, { valids }: { valids: string[] }) {
+      validate(value: string, helpers: joi.CustomHelpers, { valids }: { valids: string[] }): string | joi.ErrorReport {
         if (!valids.includes(value)) {
           return helpers.error("any.only", { valids });
         }
@@ -168,7 +168,7 @@ export const stringValidation: joi.Extension = {
       },
     },
     website: {
-      validate(value: string, helpers: joi.CustomHelpers) {
+      validate(value: string, helpers: joi.CustomHelpers): string | joi.ErrorReport {
         if (!regex.protocol.test(value)) {
           return helpers.error("string.websiteIncomplete");
         }
@@ -182,7 +182,7 @@ export const stringValidation: joi.Extension = {
       },
     },
     locale: {
-      validate(value: string, helpers: joi.CustomHelpers) {
+      validate(value: string, helpers: joi.CustomHelpers): string | joi.ErrorReport {
         if (!regex.locale.test(value)) {
           return helpers.error("string.locale");
         }
@@ -190,10 +190,10 @@ export const stringValidation: joi.Extension = {
       },
     },
     filePath: {
-      method(args: Partial<ParsedPath>) {
+      method(args: Partial<ParsedPath>): joi.Schema {
         return this.$_addRule({ name: "filePath", args });
       },
-      validate(value: string, helpers: joi.CustomHelpers, args: Partial<ParsedPath>) {
+      validate(value: string, helpers: joi.CustomHelpers, args: Partial<ParsedPath>): string | joi.ErrorReport {
         if (!path.isAbsolute(value)) {
           return helpers.error("string.filePathRelative", args);
         }

@@ -23,7 +23,7 @@ export const objectValidation: joi.Extension = {
   },
   rules: {
     website: {
-      validate(value: object, helpers: joi.CustomHelpers) {
+      validate(value: object, helpers: joi.CustomHelpers): object | joi.ErrorReport {
         if (value instanceof URL) {
           if (value.protocol !== "http:" && value.protocol !== "https:") {
             return helpers.error("object.websiteProtocol");
@@ -32,6 +32,7 @@ export const objectValidation: joi.Extension = {
         else {
           return helpers.error("object.website");
         }
+        return value;
       },
     },
   }

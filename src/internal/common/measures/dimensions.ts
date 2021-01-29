@@ -44,9 +44,9 @@ export class Dimensions implements IDimensions {
   }
 
   public toInches(): Dimensions {
+    const centimetersToInches = 0.393701;
     switch (this.unit) {
       case LengthUnit.Centimeters:
-        const centimetersToInches = 0.393701;
         return new Dimensions({
           length: this.length * centimetersToInches,
           width: this.width * centimetersToInches,
@@ -60,9 +60,9 @@ export class Dimensions implements IDimensions {
   }
 
   public toCentimeters(): Dimensions {
+    const inchesToCentimeters = 2.54;
     switch (this.unit) {
       case LengthUnit.Inches:
-        const inchesToCentimeters = 2.54;
         return new Dimensions({
           length: this.length * inchesToCentimeters,
           width: this.width * inchesToCentimeters,

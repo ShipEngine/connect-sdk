@@ -1,5 +1,5 @@
 import { SalesOrders as SalesOrdersPOJO } from "../../public";
-import { hideAndFreeze, Joi, _internal, validate } from "../common";
+import { hideAndFreeze, Joi, _internal } from "../common";
 import { SalesOrderPaging } from "./sales-order-paging";
 import { SalesOrder } from "./sales-order";
 

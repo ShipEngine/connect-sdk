@@ -2,7 +2,6 @@ import { ErrorCode, UUID } from "../../public";
 import { error } from "./errors";
 import { ShipEngineConstructor } from "./types";
 import { _internal } from "./utils";
-import { Joi, validate } from "./validation";
 
 interface ClassInstance { id: UUID; code?: string; type?: string }
 
@@ -11,7 +10,6 @@ interface Reference {
   instance: ClassInstance;
 }
 
-const classInstanceSchema = Joi.object({ id: Joi.string().uuid() }).unknown(true);
 const _private = Symbol("private fields");
 
 /**
@@ -119,7 +117,7 @@ export class ReferenceMap {
   /**
    * Once the app has loaded, no new references can be added
    */
-  public finishedLoading() {
+  public finishedLoading(): void {
     this[_private].isFinishedLoading = true;
   }
 }

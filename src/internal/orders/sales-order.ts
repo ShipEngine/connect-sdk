@@ -1,10 +1,9 @@
 import { PaymentMethod, PaymentStatus, SalesOrder as SalesOrderPOJO, SalesOrderStatus } from "../../public";
-import { AddressWithContactInfo, calculateTotalCharges, Charge, DateTimeZone, hideAndFreeze, Joi, MonetaryValue, Note, _internal } from "../common";
+import { calculateTotalCharges, Charge, DateTimeZone, hideAndFreeze, Joi, MonetaryValue, Note, _internal } from "../common";
 import { Buyer } from "./buyer";
 import { OriginalOrderSource } from "./original-order-source";
 import { RequestedFulfillment } from "./requested-fulfillment";
 import { SalesOrderIdentifier, SalesOrderIdentifierBase } from "./sales-order-identifier";
-import { SalesOrderItem } from "./sales-order-item";
 import { ShippingPreferences } from "./shipping-preferences";
 
 export class SalesOrder extends SalesOrderIdentifierBase {
@@ -54,10 +53,10 @@ export class SalesOrder extends SalesOrderIdentifierBase {
     this.paymentStatus = pojo.paymentStatus || PaymentStatus.AwaitingPayment;
     this.orderURL = pojo.orderURL ? new URL(pojo.orderURL as string) : undefined;
     this.buyer = new Buyer(pojo.buyer);
-    
+
     this.charges = pojo.charges ? pojo.charges.map((charge) => new Charge(charge)) : [];
     this.totalCharges = calculateTotalCharges(this.charges);
-    
+
     this.requestedFulfillments = pojo.requestedFulfillments.map((requestedFulfillment) => {
       return new RequestedFulfillment(requestedFulfillment);
     });

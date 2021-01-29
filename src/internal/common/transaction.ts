@@ -1,6 +1,6 @@
 import { Transaction as ITransaction, UUID } from "../../public";
 import { hideAndFreeze, _internal } from "./utils";
-import { Joi, validate } from "./validation";
+import { Joi } from "./validation";
 
 const _private = Symbol("private fields");
 

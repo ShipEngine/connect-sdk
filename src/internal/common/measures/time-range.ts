@@ -20,7 +20,7 @@ export abstract class TimeRangeBase implements ITimeRange {
     }
   }
 
-  public toString() {
+  public toString(): string {
     if (!this.startDateTime || !this.endDateTime) return "";
 
     return `${this.startDateTime.toISOString()} - ${this.endDateTime.toISOString()}`;

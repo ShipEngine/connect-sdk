@@ -1,7 +1,7 @@
 import { App, AppPOJO } from "./app";
 import { Connect, ConnectionAppDefinition, ErrorCode, FilePath } from "../../public";
 import { Form, FormPOJO } from "./form";
-import { Joi, validate } from "./validation";
+import { Joi } from "./validation";
 import { OAuthConfig, OAuthConfigPOJO } from "./oauth-config";
 import { Transaction, TransactionPOJO } from "./transaction";
 import { _internal } from "./utils";

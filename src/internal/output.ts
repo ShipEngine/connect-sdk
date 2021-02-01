@@ -37,5 +37,7 @@ export { ShippingPreferences } from "./orders/shipping-preferences";
 export { SalesOrder } from "./orders/sales-order";
 export { SalesOrders } from "./orders/sales-orders";
 export { SalesOrderPaging } from "./orders/sales-order-paging";
+export { RequestedFulfillment } from "./orders/requested-fulfillment";
+export { RequestedFulfillmentExtensions } from "./orders/requested-fulfillment-extensions";
 export { PersonName } from "./common/addresses/person-name"
 export { AcknowledgedSalesOrder } from "./orders/acknowledged-sales-order";

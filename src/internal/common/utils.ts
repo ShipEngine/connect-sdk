@@ -45,6 +45,7 @@ export function hideAndFreeze<T extends object>(pojo: T, ...omit: Array<keyof T>
   // Hides private/internal symbol fields by making them non-enumerable
   for (const symbol of Object.getOwnPropertySymbols(pojo)) {
     Object.defineProperty(pojo, symbol, { writable: false, enumerable: false });
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
     Object.freeze((pojo as any)[symbol]);
   }
 

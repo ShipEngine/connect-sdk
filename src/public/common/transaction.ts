@@ -48,7 +48,7 @@ export interface Transaction<T extends object = object> {
    * Represents the desired language of the request.
    * This property should be a string that contains a BCP 47 language tag (e.g. en-US, en-GB).
    */
-  readonly language: string;
+  readonly language?: string;
 
   /**
    * Session data that may include auth data set by a data driven auth processes.

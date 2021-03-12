@@ -1,3 +1,7 @@
+> ### ⚠ This is an deprecated repository
+> Development has moved to [**@shipengine/connect**](https://www.npmjs.com/package/@shipengine/connect)
+---
+
 [![ShipEngine Connect](https://connect.shipengine.com/img/logos/shipengine-connect-logo.png)](https://connect.shipengine.com)
 
 ShipEngine Connect SDK

@@ -28,7 +28,8 @@ export class OrderApp extends ConnectionApp {
       shipmentCreated: Joi.function(),
       acknowledgeOrders: Joi.function(),
       sendMail: Joi.boolean(),
-      canConfigureTimeZone: Joi.boolean()
+      canConfigureTimeZone: Joi.boolean(),
+      hasCustomMappings: Joi.boolean()
     }),
   };
 
@@ -41,6 +42,7 @@ export class OrderApp extends ConnectionApp {
   public readonly type: AppType;
   public readonly sendMail: boolean;
   public readonly canConfigureTimeZone: boolean;
+  public readonly hasCustomMappings: boolean;
 
 
   public constructor(pojo: OrderAppPOJO) {
@@ -50,6 +52,7 @@ export class OrderApp extends ConnectionApp {
     this.type = AppType.Order;
     this.sendMail = pojo.sendMail || false;
     this.canConfigureTimeZone = pojo.canConfigureTimeZone || false;
+    this.hasCustomMappings = pojo.hasCustomMappings || false;
 
     this[_private] = {
       getSalesOrdersByDate:

@@ -33,4 +33,9 @@ export interface OrderAppDefinition extends ConnectionAppDefinition {
    * Indicates to show time zone related settings to the user.
    */
   canConfigureTimeZone?: boolean;
+
+    /**
+   * Indicates whether or not the marketplace will override the default sales order status mappings.
+   */
+  hasCustomMappings?: boolean;
 }

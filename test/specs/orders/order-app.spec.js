@@ -33,6 +33,7 @@ describe("OrderApp", () => {
       oauthConfig: undefined,
       connectionForm: app.connectionForm,
       sendMail: false,
+      hasCustomMappings: false,
       canConfigureTimeZone: false,
       settingsForm: undefined,
       connect: undefined,
@@ -63,6 +64,7 @@ describe("OrderApp", () => {
       connectionForm: pojo.form(),
       settingsForm: pojo.form(),
       sendMail: true,
+      hasCustomMappings: true,
       canConfigureTimeZone: true,
       connect() { },
       getSalesOrdersByDate() { },
@@ -96,6 +98,7 @@ describe("OrderApp", () => {
       settingsForm: app.settingsForm,
       sdkVersion: parseFloat(sdkManifest.version),
       sendMail: true,
+      hasCustomMappings: true,
       canConfigureTimeZone: true,
       manifest: {
         name: "@my-company/my-order",
@@ -146,6 +149,7 @@ describe("OrderApp", () => {
       acknowledgeOrders: undefined,
       sdkVersion: parseFloat(sdkManifest.version),
       sendMail: false,
+      hasCustomMappings: false,
       canConfigureTimeZone: false,
       manifest: {
         name: "@company/order",
